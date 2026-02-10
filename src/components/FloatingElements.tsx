@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const FloatingElements = () => {
   const openWhatsApp = () => {
-    window.open("https://wa.me/972000000000?text=Hi, I'm interested in homes for sale in Zichron Yaakov", "_blank");
+    window.open("https://wa.me/972522820632?text=Hi, I'm interested in homes for sale in Zichron Yaakov", "_blank");
   };
 
   const scrollToHomes = () => {
