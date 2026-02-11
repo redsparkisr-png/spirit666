@@ -7,142 +7,58 @@ import property3 from "@/assets/property-3.jpg";
 import property4 from "@/assets/property-4.jpg";
 import property5 from "@/assets/property-5.jpg";
 
-const properties = [
-  {
-    images: [property1, property2, property3],
-    title: "Elegant Villa with Garden",
-    benefit: "Quiet neighborhood, walking distance to the town center",
-    alt: "Mediterranean stone villa with arched windows and landscaped garden",
-    lotSize: "350 sqm",
-    interiorSize: "180 sqm",
-    bedrooms: "4",
-  },
-  {
-    images: [property2, property3, property4],
-    title: "Charming Cottage with Sea Views",
-    benefit: "Panoramic Mediterranean views from a private balcony",
-    alt: "Stone cottage with sea view and bougainvillea",
-    lotSize: "200 sqm",
-    interiorSize: "120 sqm",
-    bedrooms: "3",
-  },
-  {
-    images: [property3, property1, property5],
-    title: "Modern Penthouse Retreat",
-    benefit: "Open-plan living with endless coastal horizons",
-    alt: "Luxury penthouse terrace overlooking the sea",
-    lotSize: "–",
-    interiorSize: "155 sqm",
-    bedrooms: "3",
-  },
-  {
-    images: [property4, property5, property1],
-    title: "Historic Stone Residence",
-    benefit: "Original character preserved, fully renovated interior",
-    alt: "Restored stone house with olive tree courtyard",
-    lotSize: "280 sqm",
-    interiorSize: "160 sqm",
-    bedrooms: "5",
-  },
-  {
-    images: [property5, property4, property2],
-    title: "Contemporary Hilltop Home",
-    benefit: "Private pool and unobstructed views of the valley",
-    alt: "Modern white villa with infinity pool",
-    lotSize: "400 sqm",
-    interiorSize: "210 sqm",
-    bedrooms: "4",
-  },
-];
-
-const MiniCarousel = ({ images, alt }: { images: string[]; alt: string }) => {
+const useCarousel = (count: number) => {
   const [current, setCurrent] = useState(0);
   const touchStartX = useRef<number | null>(null);
-
   const next = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setCurrent((c) => (c + 1) % images.length);
+    setCurrent((c) => (c + 1) % count);
   };
   const prev = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setCurrent((c) => (c - 1 + images.length) % images.length);
+    setCurrent((c) => (c - 1 + count) % count);
   };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
-  const handleTouchEnd = (e: React.TouchEvent) => {
+  const onTouchEnd = (e: React.TouchEvent) => {
     if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) {
-      if (diff > 0) setCurrent((c) => (c + 1) % images.length);
-      else setCurrent((c) => (c - 1 + images.length) % images.length);
+      if (diff > 0) setCurrent((c) => (c + 1) % count);
+      else setCurrent((c) => (c - 1 + count) % count);
     }
     touchStartX.current = null;
   };
-
-  return (
-    <div
-      className="relative h-56 overflow-hidden"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      {images.map((img, i) => (
-        <img
-          key={i}
-          src={img}
-          alt={`${alt} – photo ${i + 1}`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${
-            i === current ? "opacity-100" : "opacity-0"
-          }`}
-          loading="lazy"
-        />
-      ))}
-      <button
-        onClick={prev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-primary/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-        aria-label="Previous image"
-      >
-        <ChevronLeft className="w-4 h-4 text-primary-foreground" />
-      </button>
-      <button
-        onClick={next}
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-primary/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-        aria-label="Next image"
-      >
-        <ChevronRight className="w-4 h-4 text-primary-foreground" />
-      </button>
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
-        {images.map((_, i) => (
-          <div
-            key={i}
-            className={`w-1.5 h-1.5 rounded-full transition-colors ${
-              i === current ? "bg-primary-foreground" : "bg-primary-foreground/40"
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-  );
+  return { current, next, prev, onTouchStart, onTouchEnd };
 };
 
-const AvailableHomes = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const CarouselControls = ({ count, current, prev, next }: { count: number; current: number; prev: (e: React.MouseEvent) => void; next: (e: React.MouseEvent) => void }) => (
+  <>
+    <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-primary/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Previous image">
+      <ChevronLeft className="w-4 h-4 text-primary-foreground" />
+    </button>
+    <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-primary/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Next image">
+      <ChevronRight className="w-4 h-4 text-primary-foreground" />
+    </button>
+    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className={`w-1.5 h-1.5 rounded-full transition-colors ${i === current ? "bg-primary-foreground" : "bg-primary-foreground/40"}`} />
+      ))}
+    </div>
+  </>
+);
 
+const AvailableHomes = () => {
   const scrollToForm = () => {
     document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const next = () => setCurrentIndex((i) => (i + 1) % properties.length);
-  const prev = () => setCurrentIndex((i) => (i - 1 + properties.length) % properties.length);
-
-  const getVisibleCards = () => {
-    const cards = [];
-    for (let i = 0; i < 3; i++) {
-      cards.push(properties[(currentIndex + i) % properties.length]);
-    }
-    return cards;
-  };
+  const c1 = useCarousel(3);
+  const c2 = useCarousel(3);
+  const c3 = useCarousel(3);
+  const c4 = useCarousel(3);
+  const c5 = useCarousel(3);
 
   return (
     <section id="available-homes" className="py-16 md:py-24 lg:py-28 bg-sand-light">
@@ -165,77 +81,136 @@ const AvailableHomes = () => {
           </p>
         </motion.div>
 
-        <div className="relative">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {getVisibleCards().map((property, index) => (
-              <motion.div
-                key={`${property.title}-${currentIndex}-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
-              >
-                <MiniCarousel images={property.images} alt={property.alt} />
-                <div className="p-6">
-                  <h3 className="text-lg font-display font-semibold text-foreground mb-2">
-                    {property.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm font-body mb-4">
-                    {property.benefit}
-                  </p>
-
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-5 flex-wrap">
-                    <span className="flex items-center gap-1.5">
-                      <LandPlot className="w-3.5 h-3.5 text-primary" />
-                      {property.lotSize}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Ruler className="w-3.5 h-3.5 text-primary" />
-                      {property.interiorSize}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <BedDouble className="w-3.5 h-3.5 text-primary" />
-                      {property.bedrooms} Bed
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={scrollToForm}
-                    className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
-                  >
-                    Request Full Details
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="flex justify-center items-center gap-4 mt-8">
-            <button
-              onClick={prev}
-              className="w-10 h-10 rounded-full border border-border hover:bg-card flex items-center justify-center transition-colors"
-              aria-label="Previous properties"
-            >
-              <ChevronLeft className="w-5 h-5 text-foreground" />
-            </button>
-            <div className="flex gap-2">
-              {properties.map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    i === currentIndex ? "bg-gold" : "bg-border"
-                  }`}
-                />
-              ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Property 1 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
+          >
+            <div className="relative h-56 overflow-hidden" onTouchStart={c1.onTouchStart} onTouchEnd={c1.onTouchEnd}>
+              <img src={property1} alt="Mediterranean stone villa – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c1.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property2} alt="Mediterranean stone villa – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c1.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property3} alt="Mediterranean stone villa – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c1.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <CarouselControls count={3} current={c1.current} prev={c1.prev} next={c1.next} />
             </div>
-            <button
-              onClick={next}
-              className="w-10 h-10 rounded-full border border-border hover:bg-card flex items-center justify-center transition-colors"
-              aria-label="Next properties"
-            >
-              <ChevronRight className="w-5 h-5 text-foreground" />
-            </button>
-          </div>
+            <div className="p-6">
+              <h3 className="text-lg font-display font-semibold text-foreground mb-2">Elegant Villa with Garden</h3>
+              <p className="text-muted-foreground text-sm font-body mb-4">Quiet neighborhood, walking distance to the town center</p>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-5 flex-wrap">
+                <span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />350 sqm</span>
+                <span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />180 sqm</span>
+                <span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />4 Bed</span>
+              </div>
+              <button onClick={scrollToForm} className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300">Request Full Details</button>
+            </div>
+          </motion.div>
+
+          {/* Property 2 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
+          >
+            <div className="relative h-56 overflow-hidden" onTouchStart={c2.onTouchStart} onTouchEnd={c2.onTouchEnd}>
+              <img src={property2} alt="Stone cottage with sea view – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c2.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property3} alt="Stone cottage with sea view – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c2.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property4} alt="Stone cottage with sea view – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c2.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <CarouselControls count={3} current={c2.current} prev={c2.prev} next={c2.next} />
+            </div>
+            <div className="p-6">
+              <h3 className="text-lg font-display font-semibold text-foreground mb-2">Charming Cottage with Sea Views</h3>
+              <p className="text-muted-foreground text-sm font-body mb-4">Panoramic Mediterranean views from a private balcony</p>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-5 flex-wrap">
+                <span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />200 sqm</span>
+                <span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />120 sqm</span>
+                <span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />3 Bed</span>
+              </div>
+              <button onClick={scrollToForm} className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300">Request Full Details</button>
+            </div>
+          </motion.div>
+
+          {/* Property 3 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
+          >
+            <div className="relative h-56 overflow-hidden" onTouchStart={c3.onTouchStart} onTouchEnd={c3.onTouchEnd}>
+              <img src={property3} alt="Luxury penthouse terrace – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c3.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property1} alt="Luxury penthouse terrace – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c3.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property5} alt="Luxury penthouse terrace – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c3.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <CarouselControls count={3} current={c3.current} prev={c3.prev} next={c3.next} />
+            </div>
+            <div className="p-6">
+              <h3 className="text-lg font-display font-semibold text-foreground mb-2">Modern Penthouse Retreat</h3>
+              <p className="text-muted-foreground text-sm font-body mb-4">Open-plan living with endless coastal horizons</p>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-5 flex-wrap">
+                <span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />–</span>
+                <span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />155 sqm</span>
+                <span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />3 Bed</span>
+              </div>
+              <button onClick={scrollToForm} className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300">Request Full Details</button>
+            </div>
+          </motion.div>
+
+          {/* Property 4 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
+          >
+            <div className="relative h-56 overflow-hidden" onTouchStart={c4.onTouchStart} onTouchEnd={c4.onTouchEnd}>
+              <img src={property4} alt="Restored stone house – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c4.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property5} alt="Restored stone house – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c4.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property1} alt="Restored stone house – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c4.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <CarouselControls count={3} current={c4.current} prev={c4.prev} next={c4.next} />
+            </div>
+            <div className="p-6">
+              <h3 className="text-lg font-display font-semibold text-foreground mb-2">Historic Stone Residence</h3>
+              <p className="text-muted-foreground text-sm font-body mb-4">Original character preserved, fully renovated interior</p>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-5 flex-wrap">
+                <span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />280 sqm</span>
+                <span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />160 sqm</span>
+                <span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />5 Bed</span>
+              </div>
+              <button onClick={scrollToForm} className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300">Request Full Details</button>
+            </div>
+          </motion.div>
+
+          {/* Property 5 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+            className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
+          >
+            <div className="relative h-56 overflow-hidden" onTouchStart={c5.onTouchStart} onTouchEnd={c5.onTouchEnd}>
+              <img src={property5} alt="Modern white villa – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c5.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property4} alt="Modern white villa – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c5.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property2} alt="Modern white villa – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c5.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <CarouselControls count={3} current={c5.current} prev={c5.prev} next={c5.next} />
+            </div>
+            <div className="p-6">
+              <h3 className="text-lg font-display font-semibold text-foreground mb-2">Contemporary Hilltop Home</h3>
+              <p className="text-muted-foreground text-sm font-body mb-4">Private pool and unobstructed views of the valley</p>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-5 flex-wrap">
+                <span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />400 sqm</span>
+                <span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />210 sqm</span>
+                <span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />4 Bed</span>
+              </div>
+              <button onClick={scrollToForm} className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300">Request Full Details</button>
+            </div>
+          </motion.div>
         </div>
 
         <motion.p
