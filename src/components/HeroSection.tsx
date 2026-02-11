@@ -13,7 +13,6 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image */}
       <div className="absolute inset-0">
         <img
           src={heroBg}
@@ -22,11 +21,9 @@ const HeroSection = () => {
           style={{ filter: 'contrast(1.1) saturate(1.2) brightness(1.02)' }}
           loading="eager"
         />
-        {/* Deep green overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.55)] via-[hsl(160,62%,14%,0.25)] to-[hsl(160,62%,14%,0.60)]" />
       </div>
 
-      {/* Logo top-left */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -40,7 +37,6 @@ const HeroSection = () => {
         />
       </motion.div>
 
-      {/* Content */}
       <div className="relative z-10 container text-center px-6">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -55,18 +51,19 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold text-primary-foreground leading-tight mb-6 max-w-3xl mx-auto"
+          className="text-primary-foreground leading-tight mb-6 max-w-3xl mx-auto"
         >
-          Homes for Sale in Zichron Yaakov
+          Discover the Finest Homes in Zichron Yaakov
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-lg md:text-xl text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10"
+          className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10"
+          style={{ fontSize: '18px' }}
         >
-          Exclusive Homes. Local Expertise. A Seamless Buying Experience from Anywhere in the World.
+          Including Exclusive Off-Market Opportunities Most Buyers Never See
         </motion.p>
 
         <motion.div
@@ -77,30 +74,30 @@ const HeroSection = () => {
         >
           <button
             onClick={scrollToHomes}
-            className="bg-gold hover:bg-gold-hover text-primary-foreground px-8 py-4 rounded-lg font-body font-medium text-base transition-all duration-300 hover:shadow-lg min-w-[220px]"
+            className="bg-gold hover:bg-gold-hover text-primary-foreground px-8 py-4 rounded-lg font-body font-medium transition-all duration-300 hover:shadow-lg min-w-[220px]"
+            style={{ fontSize: '17px' }}
           >
             View Available Homes
           </button>
           <button
             onClick={scrollToForm}
-            className="bg-transparent border-2 border-gold hover:bg-gold/15 text-primary-foreground px-8 py-4 rounded-lg font-body font-medium text-base transition-all duration-300 flex items-center gap-2 min-w-[220px] justify-center"
+            className="bg-transparent border-2 border-gold hover:bg-gold/15 text-primary-foreground px-8 py-4 rounded-lg font-body font-medium transition-all duration-300 flex items-center gap-2 min-w-[220px] justify-center"
+            style={{ fontSize: '17px' }}
           >
-            Get Off-Market Opportunities
+            Get Private Access
           </button>
         </motion.div>
 
-        {/* Trust line */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.1 }}
           className="text-primary-foreground/50 font-body text-xs md:text-sm tracking-wide max-w-xl mx-auto"
         >
-          Trusted by International Buyers · Discreet Off-Market Access · Boutique Advisory Service
+          Trusted by International Buyers · Discreet Off-Market Access · Boutique Advisory
         </motion.p>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

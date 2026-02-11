@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const TrustSection = () => {
   return (
-    <section className="py-16 md:py-20 bg-primary">
+    <footer className="py-12 md:py-16 bg-primary">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -12,12 +13,38 @@ const TrustSection = () => {
           className="max-w-2xl mx-auto text-center"
         >
           <div className="w-12 h-px bg-gold mx-auto mb-8" />
-          <p className="text-primary-foreground/70 font-body leading-relaxed text-sm">
+
+          <nav className="flex justify-center gap-6 mb-6 flex-wrap">
+            <Link
+              to="/privacy"
+              className="text-primary-foreground/60 hover:text-primary-foreground/90 font-body text-sm transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/terms"
+              className="text-primary-foreground/60 hover:text-primary-foreground/90 font-body text-sm transition-colors"
+            >
+              Terms of Use
+            </Link>
+            <Link
+              to="/accessibility"
+              className="text-primary-foreground/60 hover:text-primary-foreground/90 font-body text-sm transition-colors"
+            >
+              Accessibility Statement
+            </Link>
+          </nav>
+
+          <p className="text-primary-foreground/50 font-body text-xs leading-relaxed max-w-lg mx-auto mb-4">
+            Spirit Real Estate is a licensed real estate brokerage in Israel. All property information is subject to change and availability.
+          </p>
+
+          <p className="text-primary-foreground/40 font-body text-xs">
             © {new Date().getFullYear()} Spirit Real Estate · Zichron Yaakov, Israel
           </p>
         </motion.div>
       </div>
-    </section>
+    </footer>
   );
 };
 

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
@@ -21,7 +22,7 @@ const ContactForm = () => {
   };
 
   return (
-    <section id="contact-form" className="py-20 md:py-28 bg-background">
+    <section id="contact-form" className="py-16 md:py-24 lg:py-28 bg-background">
       <div className="container px-6">
         <div className="max-w-lg mx-auto">
           <motion.div
@@ -31,11 +32,11 @@ const ContactForm = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-10"
           >
-            <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
-              Get Access to Homes You Won't See Online
+            <h2 className="font-display font-semibold text-foreground mb-4">
+              Access Zichron Yaakov's Most Discreet Listings
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
-              Some of our most valuable opportunities are never publicly advertised. Leave your details and receive a curated list of exclusive and off-market homes.
+              Some of our most valuable opportunities are never publicly advertised. Leave your details to receive curated off-market homes directly.
             </p>
           </motion.div>
 
@@ -74,9 +75,10 @@ const ContactForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold text-base transition-colors duration-300 disabled:opacity-60"
+              className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold transition-colors duration-300 disabled:opacity-60"
+              style={{ fontSize: '17px' }}
             >
-              {isSubmitting ? "Sending..." : "Send Me Exclusive Homes"}
+              {isSubmitting ? "Sending..." : "Get Private Access"}
             </button>
           </motion.form>
 
@@ -88,7 +90,10 @@ const ContactForm = () => {
             className="text-center mt-5 space-y-2"
           >
             <p className="text-xs text-muted-foreground/70 font-body max-w-sm mx-auto leading-relaxed">
-              Your details are kept private and confidential.
+              By submitting this form, you agree to our{" "}
+              <Link to="/privacy" className="underline hover:text-foreground transition-colors">
+                Privacy Policy
+              </Link>.
             </p>
             <p className="text-xs text-muted-foreground/50 font-body italic">
               Limited inventory. Shared discreetly.

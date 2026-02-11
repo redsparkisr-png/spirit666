@@ -17,7 +17,7 @@ const images = [
 
 const LifestyleSection = () => {
   return (
-    <section className="py-20 md:py-28 bg-sand-light">
+    <section className="py-16 md:py-24 lg:py-28 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -54,6 +54,16 @@ const LifestyleSection = () => {
             </motion.div>
           ))}
         </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+          className="text-center text-muted-foreground font-body text-sm italic mt-10"
+        >
+          This is more than a property. It's a way of life.
+        </motion.p>
       </div>
     </section>
   );

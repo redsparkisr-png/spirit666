@@ -9,6 +9,7 @@ import Testimonials from "@/components/Testimonials";
 import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
+import CookieNotice from "@/components/CookieNotice";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
       <TrustSection />
       <FloatingElements />
       <ExitIntentPopup />
+      <CookieNotice />
     </main>
   );
 };
