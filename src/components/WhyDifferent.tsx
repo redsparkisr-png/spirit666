@@ -1,13 +1,4 @@
 import { motion } from "framer-motion";
-import { User, Globe, Eye, Phone, Heart } from "lucide-react";
-
-const points = [
-  { icon: User, text: "You work with a real local expert, not a call center" },
-  { icon: Globe, text: "You know what's happening, even from abroad" },
-  { icon: Eye, text: "You get access to opportunities others never see online" },
-  { icon: Phone, text: "You have one clear point of contact" },
-  { icon: Heart, text: "You feel confident, not pressured" },
-];
 
 const WhyDifferent = () => {
   return (
@@ -18,32 +9,28 @@ const WhyDifferent = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14"
+          className="text-center max-w-2xl mx-auto"
         >
-          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground">
-            Why Buyers Feel Comfortable Working With Us
+          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-6">
+            Real People. Local Presence.
           </h2>
-        </motion.div>
 
-        <div className="max-w-2xl mx-auto space-y-5">
-          {points.map((point, index) => (
-            <motion.div
-              key={point.text}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="flex items-start gap-4 p-4 rounded-xl hover:bg-sand-light transition-colors duration-300"
-            >
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <point.icon className="w-5 h-5 text-primary" />
-              </div>
-              <p className="text-foreground font-body text-base leading-relaxed pt-2">
-                {point.text}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+          {/* Placeholder for team images */}
+          <div className="flex justify-center gap-4 mb-8">
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-sand-light border border-border" />
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-sand-light border border-border" />
+          </div>
+
+          <p className="text-foreground font-body leading-relaxed text-base md:text-lg mb-4">
+            Spirit Real Estate is a boutique real estate team based in Zichron Yaakov.
+          </p>
+          <p className="text-muted-foreground font-body leading-relaxed text-base md:text-lg mb-4">
+            We work closely with clients on the ground, providing real local presence, clear communication, and personal guidance — especially for buyers purchasing from abroad.
+          </p>
+          <p className="text-muted-foreground font-body leading-relaxed text-base md:text-lg">
+            Our approach is human, calm, and focused on doing things right.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

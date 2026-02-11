@@ -30,7 +30,7 @@ const SoldHomes = () => {
             Recently Sold Homes in Zichron Yaakov
           </h2>
           <p className="text-muted-foreground font-body max-w-xl mx-auto">
-            Real homes sold through local expertise and personal guidance.
+            Some of these homes were sold before appearing on public listing sites.
           </p>
         </motion.div>
 
@@ -52,7 +52,6 @@ const SoldHomes = () => {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-foreground/20" />
-                {/* SOLD badge */}
                 <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-body font-semibold tracking-wider uppercase px-3 py-1.5 rounded">
                   Sold
                 </div>
@@ -64,18 +63,6 @@ const SoldHomes = () => {
           ))}
         </div>
 
-        {/* Trust hook */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="text-center text-sm text-muted-foreground/80 italic font-body mt-10 max-w-lg mx-auto"
-        >
-          Many of these homes were sold before appearing on large property portals.
-        </motion.p>
-
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
