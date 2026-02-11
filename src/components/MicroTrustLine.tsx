@@ -11,7 +11,7 @@ const MicroTrustLine = () => {
     >
       <div className="container px-6">
         <p className="text-center text-sm text-muted-foreground font-body tracking-wide">
-          Local presence · Personal guidance · Clear process · Trusted by foreign buyers
+          Local presence · Personal guidance · Clear process · Trusted by international buyers
         </p>
       </div>
     </motion.div>

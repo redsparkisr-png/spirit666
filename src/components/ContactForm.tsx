@@ -32,10 +32,10 @@ const ContactForm = () => {
             className="text-center mb-10"
           >
             <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
-              Get Access to Homes You Won't Always See Online
+              Get Access to Homes You Won't See Online
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
-              Get access to available and off-market homes in Zichron Yaakov.
+              Some of our most attractive opportunities are never publicly advertised. Leave your details and receive a curated list of exclusive and off-market homes.
             </p>
           </motion.div>
 
@@ -49,7 +49,7 @@ const ContactForm = () => {
           >
             <input
               type="text"
-              placeholder="Name"
+              placeholder="Full Name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               maxLength={100}
@@ -76,19 +76,24 @@ const ContactForm = () => {
               disabled={isSubmitting}
               className="w-full bg-primary hover:bg-accent text-primary-foreground py-4 rounded-lg font-body font-semibold text-base transition-colors duration-300 disabled:opacity-60"
             >
-              {isSubmitting ? "Sending..." : "Get Matching Homes"}
+              {isSubmitting ? "Sending..." : "Send Me Exclusive Homes"}
             </button>
           </motion.form>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.5 }}
-            className="text-center text-xs text-muted-foreground/70 font-body mt-5 max-w-sm mx-auto leading-relaxed"
+            className="text-center mt-5 space-y-2"
           >
-            Personal update. No spam. No mass listings.
-          </motion.p>
+            <p className="text-xs text-muted-foreground/70 font-body max-w-sm mx-auto leading-relaxed">
+              Your details are kept private and confidential.
+            </p>
+            <p className="text-xs text-muted-foreground/50 font-body italic">
+              Limited inventory. Shared discreetly.
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>

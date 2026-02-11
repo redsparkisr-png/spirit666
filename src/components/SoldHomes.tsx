@@ -12,8 +12,11 @@ const soldProperties = [
 ];
 
 const SoldHomes = () => {
-  const scrollToForm = () => {
-    document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
+  const openWhatsApp = () => {
+    window.open(
+      "https://wa.me/972522820632?text=" + encodeURIComponent("Hi, I'd like to schedule a private consultation about homes in Zichron Yaakov"),
+      "_blank"
+    );
   };
 
   return (
@@ -26,12 +29,12 @@ const SoldHomes = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
-            Recently Sold Homes in Zichron Yaakov
-          </h2>
-          <p className="text-muted-foreground font-body max-w-xl mx-auto">
-            Some of these homes were sold before appearing on public listing sites.
+          <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">
+            Proven track record. Real results.
           </p>
+          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
+            Recently Sold Homes
+          </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
@@ -68,14 +71,16 @@ const SoldHomes = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          className="text-center mt-10"
+          className="text-center mt-10 space-y-4"
         >
-          <p className="text-foreground font-body mb-4">Looking for something similar?</p>
+          <p className="text-muted-foreground font-body text-sm italic">
+            More successful transactions available upon request.
+          </p>
           <button
-            onClick={scrollToForm}
+            onClick={openWhatsApp}
             className="bg-primary hover:bg-accent text-primary-foreground px-8 py-3.5 rounded-lg font-body font-medium text-sm transition-colors duration-300"
           >
-            Get Matching Homes
+            Schedule a Private Consultation
           </button>
         </motion.div>
       </div>
