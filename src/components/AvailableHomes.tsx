@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight, LandPlot, Ruler, BedDouble } from "lucide-react";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
@@ -98,7 +98,6 @@ const MiniCarousel = ({ images, alt }: { images: string[]; alt: string }) => {
           loading="lazy"
         />
       ))}
-      {/* Arrows */}
       <button
         onClick={prev}
         className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-foreground/30 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
@@ -113,7 +112,6 @@ const MiniCarousel = ({ images, alt }: { images: string[]; alt: string }) => {
       >
         <ChevronRight className="w-4 h-4 text-primary-foreground" />
       </button>
-      {/* Dots */}
       <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
         {images.map((_, i) => (
           <div
@@ -160,7 +158,7 @@ const AvailableHomes = () => {
             Available Homes in Zichron Yaakov
           </h2>
           <p className="text-muted-foreground font-body max-w-xl mx-auto">
-            The homes shown here are a curated selection from a broader portfolio we actively market.
+            These represent only a portion of the homes we discreetly market.
           </p>
         </motion.div>
 
@@ -183,7 +181,6 @@ const AvailableHomes = () => {
                     {property.benefit}
                   </p>
 
-                  {/* Property details row */}
                   <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-5 flex-wrap">
                     <span className="flex items-center gap-1.5">
                       <LandPlot className="w-3.5 h-3.5 text-primary" />
@@ -210,7 +207,6 @@ const AvailableHomes = () => {
             ))}
           </div>
 
-          {/* Navigation arrows */}
           <div className="flex justify-center items-center gap-4 mt-8">
             <button
               onClick={prev}

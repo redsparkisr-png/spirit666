@@ -4,9 +4,9 @@ import hagitImg from "@/assets/hagit-cohen-morgan.png";
 import aviImg from "@/assets/avi-suliman.png";
 
 const team = [
-  { name: "Eliran Amsalem", role: "Digital Marketing & Strategy", img: eliranImg },
-  { name: "Hagit Cohen Morgan", role: "Senior Real Estate & Client Advisory", img: hagitImg },
-  { name: "Avi Suliman", role: "Senior Real Estate & Client Advisory", img: aviImg },
+  { name: "Eliran Amsalem", role: "Marketing & Digital Strategy", img: eliranImg },
+  { name: "Hagit Cohen Morgan", role: "Senior Real Estate Advisor & Co-Founder", img: hagitImg },
+  { name: "Avi Suliman", role: "Senior Real Estate Advisor & Co-Founder", img: aviImg },
 ];
 
 const WhyDifferent = () => {
@@ -20,30 +20,33 @@ const WhyDifferent = () => {
           transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto"
         >
-          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-6">
+          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-3">
             Real People. Local Presence.
           </h2>
+          <p className="text-muted-foreground font-body text-base md:text-lg mb-10">
+            We live here. We work here. We guide our clients personally.
+          </p>
 
-          <div className="flex justify-center items-start gap-6 md:gap-10 mb-8">
+          <div className="flex justify-center items-start gap-6 md:gap-10 mb-10">
             {team.map((member) => (
-              <div key={member.name} className="flex flex-col items-center">
-                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-border">
+              <div key={member.name} className="flex flex-col items-center max-w-[140px]">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-border shadow-sm">
                   <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
                 </div>
-                <p className="mt-3 text-sm md:text-base font-display font-semibold text-foreground leading-tight">{member.name}</p>
-                <p className="text-xs md:text-sm text-muted-foreground font-body leading-tight mt-0.5">{member.role}</p>
+                <p className="mt-3 text-sm md:text-base font-display font-semibold text-foreground leading-tight text-center">
+                  {member.name}
+                </p>
+                <p className="text-xs md:text-sm text-muted-foreground font-body leading-tight mt-0.5 text-center">
+                  {member.role}
+                </p>
               </div>
             ))}
           </div>
 
-          <p className="text-foreground font-body leading-relaxed text-base md:text-lg mb-4">
-            Spirit Real Estate is a boutique real estate team based in Zichron Yaakov.
-          </p>
-          <p className="text-muted-foreground font-body leading-relaxed text-base md:text-lg mb-4">
-            We work closely with clients on the ground, providing real local presence, clear communication, and personal guidance — especially for buyers purchasing from abroad.
-          </p>
-          <p className="text-muted-foreground font-body leading-relaxed text-base md:text-lg">
-            Our approach is human, calm, and focused on doing things right.
+          <div className="w-12 h-px bg-primary/30 mx-auto mb-6" />
+
+          <p className="text-muted-foreground font-body text-sm italic">
+            A boutique team combining experience, strategy, and personal care.
           </p>
         </motion.div>
       </div>

@@ -7,17 +7,17 @@ const testimonials = [
   },
   {
     quote: "We felt someone was truly representing us locally.\nCommunication was transparent, and we always knew what was happening.",
-    author: "Michael R., Los Angeles",
+    author: "Michael R., Toronto",
   },
   {
     quote: "The local presence made all the difference.\nEven from abroad, we felt confident making the right decision.",
-    author: "Jonathan & Rebecca L., London",
+    author: "Jonathan & Lisa B., London",
   },
 ];
 
 const Testimonials = () => {
   return (
-    <section className="py-20 md:py-28 bg-sand-light">
+    <section className="py-20 md:py-28 bg-background">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

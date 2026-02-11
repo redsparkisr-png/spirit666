@@ -7,8 +7,8 @@ const HeroSection = () => {
     document.getElementById("available-homes")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const openWhatsApp = () => {
-    window.open("https://wa.me/972522820632?text=Hi, I'm interested in homes for sale in Zichron Yaakov", "_blank");
+  const scrollToForm = () => {
+    document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -19,10 +19,10 @@ const HeroSection = () => {
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover object-[center_35%]"
-          style={{ filter: 'contrast(1.08) saturate(1.05)', }}
+          style={{ filter: 'contrast(1.1) saturate(1.15) brightness(1.02)' }}
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-foreground/35 to-foreground/65" />
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/55 via-foreground/25 to-foreground/60" />
       </div>
 
       {/* Content */}
@@ -49,25 +49,16 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-lg md:text-xl text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-4"
+          className="text-lg md:text-xl text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10"
         >
-          A clear and safe way to buy a home in Israel – even from abroad
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.75 }}
-          className="text-sm md:text-base text-primary-foreground/70 font-body max-w-xl mx-auto mb-10"
-        >
-          Local expertise, personal guidance, and real opportunities you won't always find online.
+          Exclusive Homes. Local Expertise. A Seamless Buying Experience from Anywhere in the World.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.9 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
         >
           <button
             onClick={scrollToHomes}
@@ -76,13 +67,22 @@ const HeroSection = () => {
             View Available Homes
           </button>
           <button
-            onClick={openWhatsApp}
+            onClick={scrollToForm}
             className="bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/30 hover:bg-primary-foreground/20 text-primary-foreground px-8 py-4 rounded-lg font-body font-medium text-base transition-all duration-300 flex items-center gap-2 min-w-[220px] justify-center"
           >
-            <MessageCircle className="w-5 h-5" />
-            Contact Us on WhatsApp
+            Get Off-Market Opportunities
           </button>
         </motion.div>
+
+        {/* Trust line */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
+          className="text-primary-foreground/50 font-body text-xs md:text-sm tracking-wide max-w-xl mx-auto"
+        >
+          Trusted by International Buyers · Discreet Off-Market Access · Personal Guidance from Start to Finish
+        </motion.p>
       </div>
 
       {/* Scroll indicator */}
