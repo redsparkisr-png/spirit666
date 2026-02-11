@@ -39,7 +39,7 @@ const Testimonials = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.12 }}
-              className="bg-card rounded-xl p-6 shadow-sm border border-border"
+              className="bg-card rounded-xl p-6 shadow-sm border border-gold/10"
             >
               <p className="text-foreground font-body text-sm leading-relaxed whitespace-pre-line mb-4">
                 "{t.quote}"

@@ -43,7 +43,7 @@ const WhyDifferent = () => {
             ))}
           </div>
 
-          <div className="w-12 h-px bg-primary/30 mx-auto mb-6" />
+          <div className="w-12 h-px bg-gold/40 mx-auto mb-6" />
 
           <p className="text-muted-foreground font-body text-sm italic">
             A boutique team combining experience, strategy, and personal care.

@@ -35,7 +35,7 @@ const ContactForm = () => {
               Get Access to Homes You Won't See Online
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
-              Some of our most attractive opportunities are never publicly advertised. Leave your details and receive a curated list of exclusive and off-market homes.
+              Some of our most valuable opportunities are never publicly advertised. Leave your details and receive a curated list of exclusive and off-market homes.
             </p>
           </motion.div>
 
@@ -74,7 +74,7 @@ const ContactForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-primary hover:bg-accent text-primary-foreground py-4 rounded-lg font-body font-semibold text-base transition-colors duration-300 disabled:opacity-60"
+              className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold text-base transition-colors duration-300 disabled:opacity-60"
             >
               {isSubmitting ? "Sending..." : "Send Me Exclusive Homes"}
             </button>

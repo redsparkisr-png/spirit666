@@ -50,7 +50,7 @@ const ExitIntentPopup = () => {
         >
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-foreground/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-primary/50 backdrop-blur-sm"
             onClick={() => setIsVisible(false)}
           />
 
@@ -60,7 +60,7 @@ const ExitIntentPopup = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="relative bg-card rounded-2xl shadow-2xl max-w-md w-full p-8 z-10"
+            className="relative bg-card rounded-2xl shadow-2xl max-w-md w-full p-8 z-10 border border-gold/20"
           >
             <button
               onClick={() => setIsVisible(false)}
@@ -87,7 +87,7 @@ const ExitIntentPopup = () => {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 maxLength={100}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
               />
               <input
                 type="tel"
@@ -95,7 +95,7 @@ const ExitIntentPopup = () => {
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 maxLength={20}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
               />
               <input
                 type="email"
@@ -103,12 +103,12 @@ const ExitIntentPopup = () => {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 maxLength={255}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
               />
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-primary hover:bg-accent text-primary-foreground py-3.5 rounded-lg font-body font-semibold text-sm transition-colors duration-300 disabled:opacity-60"
+                className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3.5 rounded-lg font-body font-semibold text-sm transition-colors duration-300 disabled:opacity-60"
               >
                 {isSubmitting ? "Sending..." : "Send Me Off-Market Homes"}
               </button>

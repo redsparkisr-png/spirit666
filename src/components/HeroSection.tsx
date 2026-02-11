@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { MessageCircle } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
+import spiritLogo from "@/assets/spirit-logo.jpg";
 
 const HeroSection = () => {
   const scrollToHomes = () => {
@@ -19,11 +19,26 @@ const HeroSection = () => {
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover object-[center_35%]"
-          style={{ filter: 'contrast(1.1) saturate(1.15) brightness(1.02)' }}
+          style={{ filter: 'contrast(1.1) saturate(1.2) brightness(1.02)' }}
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/55 via-foreground/25 to-foreground/60" />
+        {/* Deep green overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.55)] via-[hsl(160,62%,14%,0.25)] to-[hsl(160,62%,14%,0.60)]" />
       </div>
+
+      {/* Logo top-left */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.1 }}
+        className="absolute top-6 left-6 z-20"
+      >
+        <img
+          src={spiritLogo}
+          alt="Spirit Real Estate"
+          className="w-16 md:w-20 rounded-lg"
+        />
+      </motion.div>
 
       {/* Content */}
       <div className="relative z-10 container text-center px-6">
@@ -62,13 +77,13 @@ const HeroSection = () => {
         >
           <button
             onClick={scrollToHomes}
-            className="bg-primary hover:bg-accent text-primary-foreground px-8 py-4 rounded-lg font-body font-medium text-base transition-all duration-300 hover:shadow-lg min-w-[220px]"
+            className="bg-gold hover:bg-gold-hover text-primary-foreground px-8 py-4 rounded-lg font-body font-medium text-base transition-all duration-300 hover:shadow-lg min-w-[220px]"
           >
             View Available Homes
           </button>
           <button
             onClick={scrollToForm}
-            className="bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/30 hover:bg-primary-foreground/20 text-primary-foreground px-8 py-4 rounded-lg font-body font-medium text-base transition-all duration-300 flex items-center gap-2 min-w-[220px] justify-center"
+            className="bg-transparent border-2 border-gold hover:bg-gold/15 text-primary-foreground px-8 py-4 rounded-lg font-body font-medium text-base transition-all duration-300 flex items-center gap-2 min-w-[220px] justify-center"
           >
             Get Off-Market Opportunities
           </button>
@@ -81,7 +96,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 1.1 }}
           className="text-primary-foreground/50 font-body text-xs md:text-sm tracking-wide max-w-xl mx-auto"
         >
-          Trusted by International Buyers · Discreet Off-Market Access · Personal Guidance from Start to Finish
+          Trusted by International Buyers · Discreet Off-Market Access · Boutique Advisory Service
         </motion.p>
       </div>
 
