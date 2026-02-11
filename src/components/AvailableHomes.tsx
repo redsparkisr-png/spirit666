@@ -43,7 +43,7 @@ const CarouselControls = ({ count, current, prev, next }: { count: number; curre
     </button>
     <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className={`w-1.5 h-1.5 rounded-full transition-colors ${i === current ? "bg-primary-foreground" : "bg-primary-foreground/40"}`} />
+        <div key={i} className="w-1.5 h-1.5 rounded-full transition-colors" style={{ backgroundColor: i === current ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground) / 0.4)" }} />
       ))}
     </div>
   </>
@@ -91,9 +91,9 @@ const AvailableHomes = () => {
             className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
           >
             <div className="relative h-56 overflow-hidden" onTouchStart={c1.onTouchStart} onTouchEnd={c1.onTouchEnd}>
-              <img src={property1} alt="Mediterranean stone villa – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c1.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property2} alt="Mediterranean stone villa – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c1.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property3} alt="Mediterranean stone villa – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c1.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property1} alt="Mediterranean stone villa – photo 1" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c1.current === 0 ? 1 : 0 }} loading="lazy" />
+              <img src={property2} alt="Mediterranean stone villa – photo 2" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c1.current === 1 ? 1 : 0 }} loading="lazy" />
+              <img src={property3} alt="Mediterranean stone villa – photo 3" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c1.current === 2 ? 1 : 0 }} loading="lazy" />
               <CarouselControls count={3} current={c1.current} prev={c1.prev} next={c1.next} />
             </div>
             <div className="p-6">
@@ -117,9 +117,9 @@ const AvailableHomes = () => {
             className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
           >
             <div className="relative h-56 overflow-hidden" onTouchStart={c2.onTouchStart} onTouchEnd={c2.onTouchEnd}>
-              <img src={property2} alt="Stone cottage with sea view – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c2.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property3} alt="Stone cottage with sea view – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c2.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property4} alt="Stone cottage with sea view – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c2.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property2} alt="Stone cottage with sea view – photo 1" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c2.current === 0 ? 1 : 0 }} loading="lazy" />
+              <img src={property3} alt="Stone cottage with sea view – photo 2" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c2.current === 1 ? 1 : 0 }} loading="lazy" />
+              <img src={property4} alt="Stone cottage with sea view – photo 3" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c2.current === 2 ? 1 : 0 }} loading="lazy" />
               <CarouselControls count={3} current={c2.current} prev={c2.prev} next={c2.next} />
             </div>
             <div className="p-6">
@@ -143,9 +143,9 @@ const AvailableHomes = () => {
             className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
           >
             <div className="relative h-56 overflow-hidden" onTouchStart={c3.onTouchStart} onTouchEnd={c3.onTouchEnd}>
-              <img src={property3} alt="Luxury penthouse terrace – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c3.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property1} alt="Luxury penthouse terrace – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c3.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property5} alt="Luxury penthouse terrace – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c3.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property3} alt="Luxury penthouse terrace – photo 1" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c3.current === 0 ? 1 : 0 }} loading="lazy" />
+              <img src={property1} alt="Luxury penthouse terrace – photo 2" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c3.current === 1 ? 1 : 0 }} loading="lazy" />
+              <img src={property5} alt="Luxury penthouse terrace – photo 3" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c3.current === 2 ? 1 : 0 }} loading="lazy" />
               <CarouselControls count={3} current={c3.current} prev={c3.prev} next={c3.next} />
             </div>
             <div className="p-6">
@@ -169,9 +169,9 @@ const AvailableHomes = () => {
             className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
           >
             <div className="relative h-56 overflow-hidden" onTouchStart={c4.onTouchStart} onTouchEnd={c4.onTouchEnd}>
-              <img src={property4} alt="Restored stone house – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c4.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property5} alt="Restored stone house – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c4.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property1} alt="Restored stone house – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c4.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property4} alt="Restored stone house – photo 1" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c4.current === 0 ? 1 : 0 }} loading="lazy" />
+              <img src={property5} alt="Restored stone house – photo 2" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c4.current === 1 ? 1 : 0 }} loading="lazy" />
+              <img src={property1} alt="Restored stone house – photo 3" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c4.current === 2 ? 1 : 0 }} loading="lazy" />
               <CarouselControls count={3} current={c4.current} prev={c4.prev} next={c4.next} />
             </div>
             <div className="p-6">
@@ -195,9 +195,9 @@ const AvailableHomes = () => {
             className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
           >
             <div className="relative h-56 overflow-hidden" onTouchStart={c5.onTouchStart} onTouchEnd={c5.onTouchEnd}>
-              <img src={property5} alt="Modern white villa – photo 1" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c5.current === 0 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property4} alt="Modern white villa – photo 2" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c5.current === 1 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
-              <img src={property2} alt="Modern white villa – photo 3" className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${c5.current === 2 ? "opacity-100" : "opacity-0"}`} loading="lazy" />
+              <img src={property5} alt="Modern white villa – photo 1" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c5.current === 0 ? 1 : 0 }} loading="lazy" />
+              <img src={property4} alt="Modern white villa – photo 2" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c5.current === 1 ? 1 : 0 }} loading="lazy" />
+              <img src={property2} alt="Modern white villa – photo 3" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: c5.current === 2 ? 1 : 0 }} loading="lazy" />
               <CarouselControls count={3} current={c5.current} prev={c5.prev} next={c5.next} />
             </div>
             <div className="p-6">
