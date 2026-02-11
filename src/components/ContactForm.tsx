@@ -13,7 +13,6 @@ const ContactForm = () => {
       return;
     }
     setIsSubmitting(true);
-    // Simulate form submission
     setTimeout(() => {
       toast.success("Thank you! We'll be in touch with matching homes soon.");
       setFormData({ name: "", phone: "", email: "" });
@@ -35,6 +34,9 @@ const ContactForm = () => {
             <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
               Get Access to Homes You Won't Always See Online
             </h2>
+            <p className="text-muted-foreground font-body max-w-md mx-auto">
+              Get access to available and off-market homes in Zichron Yaakov.
+            </p>
           </motion.div>
 
           <motion.form
@@ -47,7 +49,7 @@ const ContactForm = () => {
           >
             <input
               type="text"
-              placeholder="Your name"
+              placeholder="Name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               maxLength={100}
@@ -55,7 +57,7 @@ const ContactForm = () => {
             />
             <input
               type="tel"
-              placeholder="Phone number (with country code)"
+              placeholder="Phone"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               maxLength={20}
@@ -63,7 +65,7 @@ const ContactForm = () => {
             />
             <input
               type="email"
-              placeholder="Email address"
+              placeholder="Email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               maxLength={255}
@@ -85,9 +87,7 @@ const ContactForm = () => {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="text-center text-xs text-muted-foreground/70 font-body mt-5 max-w-sm mx-auto leading-relaxed"
           >
-            We'll send you a personal update with available and off-market opportunities.
-            <br />
-            No spam. No mass listings.
+            Personal update. No spam. No mass listings.
           </motion.p>
         </div>
       </div>
