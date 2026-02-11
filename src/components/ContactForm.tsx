@@ -2,23 +2,32 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
       toast.error("Please fill in all fields.");
       return;
     }
     setIsSubmitting(true);
-    setTimeout(() => {
+    const { error } = await supabase.from("leads").insert({
+      full_name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
+      source: "landing_page",
+    });
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+    } else {
       toast.success("Thank you! We'll be in touch with matching homes soon.");
       setFormData({ name: "", phone: "", email: "" });
-      setIsSubmitting(false);
-    }, 1000);
+    }
+    setIsSubmitting(false);
   };
 
   return (

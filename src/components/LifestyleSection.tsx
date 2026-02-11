@@ -1,12 +1,27 @@
 import { motion } from "framer-motion";
-import lifestyle1 from "@/assets/lifestyle-1.jpg";
-import lifestyle2 from "@/assets/lifestyle-2.jpg";
-import lifestyle3 from "@/assets/lifestyle-3.jpg";
-import lifestyle4 from "@/assets/lifestyle-4.jpg";
-import lifestyle5 from "@/assets/lifestyle-5.jpg";
-import lifestyle6 from "@/assets/lifestyle-6.jpg";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
+
+type GalleryItem = Tables<"lifestyle_gallery">;
 
 const LifestyleSection = () => {
+  const [items, setItems] = useState<GalleryItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    supabase
+      .from("lifestyle_gallery")
+      .select("*")
+      .order("display_order")
+      .then(({ data }) => {
+        if (data) setItems(data);
+        setLoaded(true);
+      });
+  }, []);
+
+  if (loaded && items.length === 0) return null;
+
   return (
     <section className="py-16 md:py-24 lg:py-28 bg-sand-light">
       <div className="container px-6">
@@ -26,35 +41,24 @@ const LifestyleSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default">
-            <img src={lifestyle1} alt="Vineyard sunset in Zichron Yaakov" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.08 }} className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default">
-            <img src={lifestyle2} alt="Charming stone street with flowers" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.16 }} className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default">
-            <img src={lifestyle3} alt="Mediterranean sea view from hilltop" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.24 }} className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default">
-            <img src={lifestyle4} alt="Morning coffee at a village cafe" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.32 }} className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default">
-            <img src={lifestyle5} alt="Lavender garden path in residential neighborhood" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }} className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default">
-            <img src={lifestyle6} alt="Sunset over Mediterranean coastline" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
-          </motion.div>
+          {items.map((item, idx) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.08 }}
+              className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default"
+            >
+              <img
+                src={item.image_url}
+                alt={`Lifestyle in Zichron Yaakov ${idx + 1}`}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
+            </motion.div>
+          ))}
         </div>
 
         <motion.p
