@@ -18,10 +18,11 @@ const HeroSection = () => {
         <img
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-[center_35%]"
+          style={{ filter: 'contrast(1.08) saturate(1.05)', }}
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/40 to-foreground/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-foreground/35 to-foreground/65" />
       </div>
 
       {/* Content */}
