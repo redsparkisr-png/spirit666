@@ -55,11 +55,11 @@ export default {
           DEFAULT: "hsl(var(--sand))",
           light: "hsl(var(--sand-light))",
         },
-        teal: {
-          deep: "hsl(var(--teal-deep))",
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          hover: "hsl(var(--gold-hover))",
         },
-        ocean: "hsl(var(--ocean))",
-        "warm-stone": "hsl(var(--warm-stone))",
+        "deep-green": "hsl(var(--teal-deep))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

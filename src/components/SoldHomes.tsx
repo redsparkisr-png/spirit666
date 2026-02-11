@@ -54,7 +54,7 @@ const SoldHomes = () => {
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-foreground/20" />
+                <div className="absolute inset-0 bg-primary/15" />
                 <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-body font-semibold tracking-wider uppercase px-3 py-1.5 rounded">
                   Sold
                 </div>
@@ -78,7 +78,7 @@ const SoldHomes = () => {
           </p>
           <button
             onClick={openWhatsApp}
-            className="bg-primary hover:bg-accent text-primary-foreground px-8 py-3.5 rounded-lg font-body font-medium text-sm transition-colors duration-300"
+            className="bg-gold hover:bg-gold-hover text-primary-foreground px-8 py-3.5 rounded-lg font-body font-medium text-sm transition-colors duration-300"
           >
             Schedule a Private Consultation
           </button>

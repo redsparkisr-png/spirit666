@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const TrustSection = () => {
   return (
-    <section className="py-16 md:py-20 bg-secondary">
+    <section className="py-16 md:py-20 bg-primary">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -11,8 +11,8 @@ const TrustSection = () => {
           transition={{ duration: 0.6 }}
           className="max-w-2xl mx-auto text-center"
         >
-          <div className="w-12 h-px bg-primary mx-auto mb-8" />
-          <p className="text-muted-foreground font-body leading-relaxed text-sm">
+          <div className="w-12 h-px bg-gold mx-auto mb-8" />
+          <p className="text-primary-foreground/70 font-body leading-relaxed text-sm">
             © {new Date().getFullYear()} Spirit Real Estate · Zichron Yaakov, Israel
           </p>
         </motion.div>

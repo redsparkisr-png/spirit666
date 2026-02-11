@@ -100,14 +100,14 @@ const MiniCarousel = ({ images, alt }: { images: string[]; alt: string }) => {
       ))}
       <button
         onClick={prev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-foreground/30 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-primary/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
         aria-label="Previous image"
       >
         <ChevronLeft className="w-4 h-4 text-primary-foreground" />
       </button>
       <button
         onClick={next}
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-foreground/30 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-primary/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
         aria-label="Next image"
       >
         <ChevronRight className="w-4 h-4 text-primary-foreground" />
@@ -198,7 +198,7 @@ const AvailableHomes = () => {
 
                   <button
                     onClick={scrollToForm}
-                    className="w-full bg-primary hover:bg-accent text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
+                    className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
                   >
                     Request Details
                   </button>
@@ -220,7 +220,7 @@ const AvailableHomes = () => {
                 <div
                   key={i}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    i === currentIndex ? "bg-primary" : "bg-border"
+                    i === currentIndex ? "bg-gold" : "bg-border"
                   }`}
                 />
               ))}

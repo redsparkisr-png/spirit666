@@ -21,10 +21,10 @@ const FloatingElements = () => {
         className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
         aria-label="Contact us on WhatsApp"
       >
-        <MessageCircle className="w-6 h-6 text-[hsl(0,0%,100%)]" />
+        <MessageCircle className="w-6 h-6 text-primary-foreground" />
       </motion.button>
 
-      {/* Sticky bottom bar - mobile-optimized */}
+      {/* Sticky bottom bar */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ const FloatingElements = () => {
           onClick={scrollToHomes}
           className="bg-card/95 backdrop-blur-sm border border-border hover:bg-card text-foreground px-5 py-3 rounded-full font-body text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
         >
-          <Home className="w-4 h-4 text-primary" />
+          <Home className="w-4 h-4 text-gold" />
           <span className="hidden sm:inline">Homes for Sale in Zichron Yaakov</span>
           <span className="sm:hidden">View Homes</span>
         </button>
