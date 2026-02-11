@@ -1,4 +1,13 @@
 import { motion } from "framer-motion";
+import eliranImg from "@/assets/eliran-amsalem.jpg";
+import hagitImg from "@/assets/hagit-cohen-morgan.png";
+import aviImg from "@/assets/avi-suliman.png";
+
+const team = [
+  { name: "Eliran Amsalem", role: "Digital Marketing & Strategy", img: eliranImg },
+  { name: "Hagit Cohen Morgan", role: "Senior Real Estate & Client Advisory", img: hagitImg },
+  { name: "Avi Suliman", role: "Senior Real Estate & Client Advisory", img: aviImg },
+];
 
 const WhyDifferent = () => {
   return (
@@ -15,10 +24,16 @@ const WhyDifferent = () => {
             Real People. Local Presence.
           </h2>
 
-          {/* Placeholder for team images */}
-          <div className="flex justify-center gap-4 mb-8">
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-sand-light border border-border" />
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-sand-light border border-border" />
+          <div className="flex justify-center items-start gap-6 md:gap-10 mb-8">
+            {team.map((member) => (
+              <div key={member.name} className="flex flex-col items-center">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-border">
+                  <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
+                </div>
+                <p className="mt-3 text-sm md:text-base font-display font-semibold text-foreground leading-tight">{member.name}</p>
+                <p className="text-xs md:text-sm text-muted-foreground font-body leading-tight mt-0.5">{member.role}</p>
+              </div>
+            ))}
           </div>
 
           <p className="text-foreground font-body leading-relaxed text-base md:text-lg mb-4">
