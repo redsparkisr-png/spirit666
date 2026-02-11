@@ -48,13 +48,11 @@ const ExitIntentPopup = () => {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[100] flex items-center justify-center px-4"
         >
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-primary/50 backdrop-blur-sm"
             onClick={() => setIsVisible(false)}
           />
 
-          {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -74,10 +72,10 @@ const ExitIntentPopup = () => {
               Before You Go…
             </h3>
             <p className="text-muted-foreground font-body text-sm text-center mb-2">
-              Some of the best homes in Zichron Yaakov are never publicly advertised.
+              Some of the most desirable homes in Zichron Yaakov are never publicly listed.
             </p>
             <p className="text-muted-foreground font-body text-sm text-center mb-6">
-              Leave your details and receive exclusive off-market opportunities directly.
+              Leave your details to receive exclusive opportunities.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -110,7 +108,7 @@ const ExitIntentPopup = () => {
                 disabled={isSubmitting}
                 className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3.5 rounded-lg font-body font-semibold text-sm transition-colors duration-300 disabled:opacity-60"
               >
-                {isSubmitting ? "Sending..." : "Send Me Off-Market Homes"}
+                {isSubmitting ? "Sending..." : "Send Me Private Listings"}
               </button>
             </form>
           </motion.div>

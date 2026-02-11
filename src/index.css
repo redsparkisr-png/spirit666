@@ -60,10 +60,31 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    font-size: 17px;
+    line-height: 1.6;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1 {
+    @apply font-display font-semibold;
+    font-size: 36px;
+  }
+
+  h2 {
+    @apply font-display font-semibold;
+    font-size: 26px;
+  }
+
+  h3, h4, h5, h6 {
     @apply font-display;
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 52px;
+    }
+    h2 {
+      font-size: 34px;
+    }
   }
 }
 

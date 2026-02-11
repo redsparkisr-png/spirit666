@@ -145,7 +145,7 @@ const AvailableHomes = () => {
   };
 
   return (
-    <section id="available-homes" className="py-20 md:py-28 bg-sand-light">
+    <section id="available-homes" className="py-16 md:py-24 lg:py-28 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -154,7 +154,10 @@ const AvailableHomes = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
+          <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">
+            Hand-Selected Homes for International Buyers
+          </p>
+          <h2 className="font-display font-semibold text-foreground mb-4">
             Available Homes in Zichron Yaakov
           </h2>
           <p className="text-muted-foreground font-body max-w-xl mx-auto">
@@ -200,7 +203,7 @@ const AvailableHomes = () => {
                     onClick={scrollToForm}
                     className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
                   >
-                    Request Details
+                    Request Full Details
                   </button>
                 </div>
               </motion.div>
