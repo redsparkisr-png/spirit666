@@ -18,7 +18,7 @@ const WhyDifferent = () => {
             Real People. Local Presence.
           </h2>
           <p className="text-muted-foreground font-body text-base md:text-lg mb-10">
-            We live here. We work here. We guide our clients personally.
+            We personally visit and evaluate every property we recommend. When you buy through us, you're not navigating Israel alone.
           </p>
 
           <div className="flex justify-center items-start gap-6 md:gap-10 mb-10">

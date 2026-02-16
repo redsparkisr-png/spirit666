@@ -17,10 +17,12 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
 
   if (!property) return null;
 
-  const featuredImage = property.images?.[0];
+  const images = property.images || [];
+  const featuredImage = images[activeImage] || images[0];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +51,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
     if (!v) {
       setForm({ name: "", email: "", phone: "" });
       setSubmitted(false);
+      setActiveImage(0);
     }
     onOpenChange(v);
   };
@@ -63,12 +66,31 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
 
         {/* Featured Image */}
         {featuredImage && (
-          <div className="aspect-[4/3] w-full overflow-hidden">
+          <div className="aspect-[4/3] w-full overflow-hidden bg-muted">
             <img
               src={featuredImage}
               alt={property.title}
               className="w-full h-full object-cover"
             />
+          </div>
+        )}
+
+        {/* Thumbnail Strip */}
+        {images.length > 1 && (
+          <div className="flex gap-1.5 px-4 pt-3 overflow-x-auto scrollbar-hide">
+            {images.map((url, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveImage(idx)}
+                className={`shrink-0 w-16 h-12 rounded overflow-hidden border-2 transition-all ${
+                  activeImage === idx
+                    ? "border-primary opacity-100"
+                    : "border-transparent opacity-60 hover:opacity-90"
+                }`}
+              >
+                <img src={url} alt="" className="w-full h-full object-cover" loading="lazy" />
+              </button>
+            ))}
           </div>
         )}
 
@@ -78,6 +100,11 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
             <h3 className="font-display font-semibold text-foreground text-xl">
               {property.title}
             </h3>
+            {(property as any).neighborhood_note && (
+              <p className="text-muted-foreground font-body text-sm mt-0.5">
+                {(property as any).neighborhood_note}
+              </p>
+            )}
             <p className="text-primary font-body font-semibold text-sm mt-1">
               {property.price_label || "Price Upon Request"}
             </p>
@@ -97,20 +124,24 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
               <LandPlot className="w-4 h-4 text-primary" />
               {property.lot_sqm ? `${property.lot_sqm} sqm lot` : "–"}
             </span>
-            {property.neighborhood_note && (
+            {(property as any).neighborhood_note && (
               <span className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-primary" />
-                {property.neighborhood_note}
+                {(property as any).neighborhood_note}
               </span>
             )}
           </div>
 
           {/* Description */}
           {property.short_description && (
-            <p className="text-muted-foreground font-body text-sm leading-relaxed">
+            <p className="text-muted-foreground font-body text-sm leading-relaxed line-clamp-6">
               {property.short_description}
             </p>
           )}
+
+          <p className="text-xs text-muted-foreground/70 font-body italic">
+            Private viewing available via secure video call.
+          </p>
 
           {/* Divider */}
           <div className="border-t border-border" />

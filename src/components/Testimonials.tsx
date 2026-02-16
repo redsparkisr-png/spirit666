@@ -26,9 +26,12 @@ const Testimonials = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground">
+          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-3">
             What Our Clients Say
           </h2>
+          <p className="text-muted-foreground font-body text-sm max-w-md mx-auto">
+            Recent buyers from New York, Toronto and London trusted us with their move.
+          </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">

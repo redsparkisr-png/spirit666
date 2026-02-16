@@ -51,7 +51,7 @@ const SoldHomes = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="rounded-xl overflow-hidden">
-                <div className="h-52 bg-muted animate-pulse" />
+                <div className="aspect-[4/3] bg-muted animate-pulse" />
                 <div className="p-4 bg-card"><div className="h-4 bg-muted rounded w-3/4 animate-pulse" /></div>
               </div>
             ))}
@@ -67,9 +67,9 @@ const SoldHomes = () => {
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
                 className="relative rounded-xl overflow-hidden group"
               >
-                <div className="relative h-52">
+                <div className="relative aspect-[4/3] bg-muted">
                   {p.images && p.images[0] ? (
-                    <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover" loading="lazy" />
+                    <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover object-center" loading="lazy" />
                   ) : (
                     <div className="w-full h-full bg-muted" />
                   )}

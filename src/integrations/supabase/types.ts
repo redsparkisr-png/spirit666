@@ -21,8 +21,10 @@ export type Database = {
           full_name: string
           id: string
           message: string | null
+          notes: string | null
           phone: string | null
           source: string
+          status: string
         }
         Insert: {
           created_at?: string
@@ -30,8 +32,10 @@ export type Database = {
           full_name: string
           id?: string
           message?: string | null
+          notes?: string | null
           phone?: string | null
           source?: string
+          status?: string
         }
         Update: {
           created_at?: string
@@ -39,26 +43,37 @@ export type Database = {
           full_name?: string
           id?: string
           message?: string | null
+          notes?: string | null
           phone?: string | null
           source?: string
+          status?: string
         }
         Relationships: []
       }
       lifestyle_gallery: {
         Row: {
+          caption: string | null
+          category: string | null
           display_order: number
           id: string
           image_url: string
+          is_hero: boolean
         }
         Insert: {
+          caption?: string | null
+          category?: string | null
           display_order?: number
           id?: string
           image_url: string
+          is_hero?: boolean
         }
         Update: {
+          caption?: string | null
+          category?: string | null
           display_order?: number
           id?: string
           image_url?: string
+          is_hero?: boolean
         }
         Relationships: []
       }
@@ -67,64 +82,112 @@ export type Database = {
           bedrooms: number | null
           built_sqm: number | null
           created_at: string
+          currency: string
+          featured: boolean
           id: string
           images: string[] | null
           lot_sqm: number | null
+          meta_description: string | null
+          meta_title: string | null
           neighborhood_note: string | null
+          og_image: string | null
           price_label: string | null
+          price_number: number | null
+          price_status: string
           priority_order: number
+          property_status: string
           short_description: string | null
+          slug: string | null
           title: string
         }
         Insert: {
           bedrooms?: number | null
           built_sqm?: number | null
           created_at?: string
+          currency?: string
+          featured?: boolean
           id?: string
           images?: string[] | null
           lot_sqm?: number | null
+          meta_description?: string | null
+          meta_title?: string | null
           neighborhood_note?: string | null
+          og_image?: string | null
           price_label?: string | null
+          price_number?: number | null
+          price_status?: string
           priority_order?: number
+          property_status?: string
           short_description?: string | null
+          slug?: string | null
           title: string
         }
         Update: {
           bedrooms?: number | null
           built_sqm?: number | null
           created_at?: string
+          currency?: string
+          featured?: boolean
           id?: string
           images?: string[] | null
           lot_sqm?: number | null
+          meta_description?: string | null
+          meta_title?: string | null
           neighborhood_note?: string | null
+          og_image?: string | null
           price_label?: string | null
+          price_number?: number | null
+          price_status?: string
           priority_order?: number
+          property_status?: string
           short_description?: string | null
+          slug?: string | null
           title?: string
         }
         Relationships: []
       }
       properties_sold: {
         Row: {
+          bedrooms: number | null
+          built_sqm: number | null
           created_at: string
+          currency: string
           id: string
           images: string[] | null
+          lot_sqm: number | null
+          neighborhood_note: string | null
+          price_label: string | null
+          price_number: number | null
           short_description: string | null
           sold_date: string | null
           title: string
         }
         Insert: {
+          bedrooms?: number | null
+          built_sqm?: number | null
           created_at?: string
+          currency?: string
           id?: string
           images?: string[] | null
+          lot_sqm?: number | null
+          neighborhood_note?: string | null
+          price_label?: string | null
+          price_number?: number | null
           short_description?: string | null
           sold_date?: string | null
           title: string
         }
         Update: {
+          bedrooms?: number | null
+          built_sqm?: number | null
           created_at?: string
+          currency?: string
           id?: string
           images?: string[] | null
+          lot_sqm?: number | null
+          neighborhood_note?: string | null
+          price_label?: string | null
+          price_number?: number | null
           short_description?: string | null
           sold_date?: string | null
           title?: string

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const ExitIntentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -24,19 +25,27 @@ const ExitIntentPopup = () => {
     return () => document.removeEventListener("mouseleave", handleMouseLeave);
   }, [handleMouseLeave]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
       toast.error("Please fill in all fields.");
       return;
     }
     setIsSubmitting(true);
-    setTimeout(() => {
+    const { error } = await supabase.from("leads").insert({
+      full_name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
+      source: "exit_intent",
+    });
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+    } else {
       toast.success("Thank you! You'll receive exclusive listings soon.");
       setFormData({ name: "", phone: "", email: "" });
-      setIsSubmitting(false);
       setIsVisible(false);
-    }, 1000);
+    }
+    setIsSubmitting(false);
   };
 
   return (
@@ -69,13 +78,10 @@ const ExitIntentPopup = () => {
             </button>
 
             <h3 className="text-2xl font-display font-semibold text-foreground mb-3 text-center">
-              Before You Go…
+              Before You Go — Want Access to Properties Most Buyers Never See?
             </h3>
-            <p className="text-muted-foreground font-body text-sm text-center mb-2">
-              Some of the most desirable homes in Zichron Yaakov are never publicly listed.
-            </p>
             <p className="text-muted-foreground font-body text-sm text-center mb-6">
-              Leave your details to receive exclusive opportunities.
+              Receive a private list of off-market and under-the-radar opportunities in Zichron Yaakov.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-3">
