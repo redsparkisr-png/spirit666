@@ -44,7 +44,7 @@ const CookieNotice = () => {
           <div className="mx-auto max-w-lg w-full bg-card border border-border rounded-xl shadow-lg overflow-hidden">
             <div className="px-4 py-3">
               <p className="text-foreground font-body text-xs leading-snug mb-3">
-                We use cookies to improve performance, personalize content, and analyze traffic.{" "}
+                We use cookies to improve your browsing experience and analyze traffic.{" "}
                 <Link to="/privacy" className="text-primary underline underline-offset-2 hover:text-primary/80">
                   Privacy Policy
                 </Link>

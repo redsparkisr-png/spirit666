@@ -259,9 +259,9 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
                                 <TooltipTrigger asChild>
                                   <button
                                     onClick={(e) => { e.stopPropagation(); setDeleteTarget(idx); }}
-                                    className="w-11 h-11 rounded-md bg-destructive/90 flex items-center justify-center hover:bg-destructive transition-colors"
+                                    className="w-11 h-11 rounded-md bg-destructive/80 flex items-center justify-center hover:bg-destructive text-white shadow-sm transition-all duration-200"
                                   >
-                                    <Trash2 className="w-4 h-4 text-destructive-foreground" />
+                                    <Trash2 className="w-5 h-5" />
                                   </button>
                                 </TooltipTrigger>
                                 <TooltipContent>Delete image</TooltipContent>

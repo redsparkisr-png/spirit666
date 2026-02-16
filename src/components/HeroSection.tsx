@@ -25,17 +25,17 @@ const HeroSection = () => {
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover object-[center_35%]"
-          style={{ filter: "contrast(1.14) saturate(1.10) brightness(0.95)" }}
+          style={{ filter: "contrast(1.15) saturate(1.15) brightness(0.92)" }}
           width={1920}
           height={1080}
           loading="eager"
         />
         {/* Cinematic overlay: brand green top + warm mid + deep brand bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.55)] via-[hsl(30,18%,18%,0.20)] to-[hsl(160,62%,14%,0.88)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.65)] via-[hsl(30,18%,18%,0.25)] to-[hsl(160,62%,14%,0.92)]" />
         {/* Vignette */}
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 30%, hsl(160,62%,14%,0.55) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 20%, hsl(160,62%,14%,0.65) 100%)" }} />
         {/* Strong bottom fade for guaranteed text readability */}
-        <div className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-[75%] bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
       </div>
 
       <motion.div
@@ -65,11 +65,11 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="text-primary-foreground mb-6 max-w-3xl mx-auto"
+          className="text-primary-foreground mb-6 max-w-4xl mx-auto px-4"
           style={{
-            fontSize: "clamp(28px, 6vw, 52px)",
-            lineHeight: 1.15,
-            textShadow: "0 3px 24px rgba(0,0,0,0.7), 0 1px 6px rgba(0,0,0,0.45)",
+            fontSize: "clamp(32px, 7vw, 56px)",
+            lineHeight: 1.1,
+            textShadow: "0 4px 28px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.6)",
             textWrap: "balance",
           }}
         >
@@ -80,10 +80,10 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10 leading-relaxed text-balance"
           style={{
-            fontSize: "clamp(15px, 2.5vw, 18px)",
-            textShadow: "0 2px 16px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.35)",
+            fontSize: "clamp(16px, 2.8vw, 20px)",
+            textShadow: "0 2px 16px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.4)",
           }}
         >
           Buying from abroad shouldn't feel risky. We are your trusted eyes and voice on the ground in Zichron Yaakov.

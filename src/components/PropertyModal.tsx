@@ -344,17 +344,17 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3.5 rounded-lg font-body font-semibold text-sm transition-colors duration-300 disabled:opacity-60"
+                className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold text-base shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-60"
                 style={{ marginBottom: isMobile ? "env(safe-area-inset-bottom, 0px)" : undefined }}
               >
                 {submitting ? "Sending..." : "Unlock Full Property Details"}
               </button>
             </form>
 
-            <p className="text-center text-xs text-muted-foreground/60 font-body leading-relaxed">
+            <p className="text-center text-xs text-muted-foreground/70 font-body leading-relaxed">
               We respond within 1–2 business hours.
               <br />
-              <span className="text-muted-foreground/45">Discreet · Confidential · No spam.</span>
+              <span className="text-muted-foreground/50">Discreet · Confidential · No spam.</span>
             </p>
           </div>
         )}
