@@ -24,8 +24,8 @@ const HeroSection = () => {
         <img
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
-          className="w-full h-full object-cover object-[center_35%]"
-          style={{ filter: "contrast(1.15) saturate(1.15) brightness(0.92)" }}
+          className="w-full h-full object-cover object-[center_35%] scale-105"
+          style={{ filter: "contrast(1.1) saturate(1.1) brightness(0.9) sepia(0.05)" }}
           width={1920}
           height={1080}
           loading="eager"
@@ -33,9 +33,10 @@ const HeroSection = () => {
         {/* Cinematic overlay: brand green top + warm mid + deep brand bottom */}
         <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.65)] via-[hsl(30,18%,18%,0.25)] to-[hsl(160,62%,14%,0.92)]" />
         {/* Vignette */}
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 20%, hsl(160,62%,14%,0.65) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.4) 100%)" }} />
         {/* Strong bottom fade for guaranteed text readability */}
-        <div className="absolute inset-x-0 bottom-0 h-[75%] bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-[85%] bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-black/50 to-transparent" />
       </div>
 
       <motion.div
@@ -73,7 +74,7 @@ const HeroSection = () => {
             textWrap: "balance",
           }}
         >
-          Discover the Finest Homes in Zichron Yaakov
+          Homes for Sale in Zichron Yaakov – Including Off-Market Opportunities
         </motion.h1>
 
         <motion.p
@@ -86,7 +87,7 @@ const HeroSection = () => {
             textShadow: "0 2px 16px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.4)",
           }}
         >
-          Buying from abroad shouldn't feel risky. We are your trusted eyes and voice on the ground in Zichron Yaakov.
+          Private access to Zichron’s most desirable homes — curated for serious buyers.
         </motion.p>
 
         <motion.div
@@ -136,20 +137,6 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <div className="w-6 h-10 rounded-full border-2 border-primary-foreground/40 flex items-start justify-center p-1.5">
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="w-1.5 h-1.5 rounded-full bg-primary-foreground/60"
-          />
-        </div>
-      </motion.div>
     </section>
   );
 };

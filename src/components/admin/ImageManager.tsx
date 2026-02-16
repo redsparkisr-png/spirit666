@@ -206,10 +206,10 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
                           {/* Drag handle — only this triggers drag, min 44x44 hit area */}
                           <div
                             {...prov.dragHandleProps}
-                            className="absolute top-1 right-1 w-11 h-11 rounded-md bg-black/50 flex items-center justify-center cursor-grab opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute top-1.5 right-1.5 w-11 h-11 rounded-md bg-black/40 backdrop-blur-sm flex items-center justify-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity"
                             title="Drag to reorder"
                           >
-                            <GripVertical className="w-5 h-5 text-white" />
+                            <GripVertical className="w-6 h-6 text-white" />
                           </div>
 
                           {/* Bulk select overlay */}
@@ -259,9 +259,9 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
                                 <TooltipTrigger asChild>
                                   <button
                                     onClick={(e) => { e.stopPropagation(); setDeleteTarget(idx); }}
-                                    className="w-11 h-11 rounded-md bg-destructive/80 flex items-center justify-center hover:bg-destructive text-white shadow-sm transition-all duration-200"
+                                    className="w-12 h-12 rounded-lg bg-red-500/80 hover:bg-red-500 flex items-center justify-center text-white shadow-lg transition-all duration-200 active:scale-90"
                                   >
-                                    <Trash2 className="w-5 h-5" />
+                                    <Trash2 className="w-6 h-6" />
                                   </button>
                                 </TooltipTrigger>
                                 <TooltipContent>Delete image</TooltipContent>
