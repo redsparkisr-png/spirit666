@@ -27,7 +27,7 @@ const SoldHomes = () => {
     );
   };
 
-  if (loaded && items.length === 0) return null;
+  const isEmpty = loaded && items.length === 0;
 
   return (
     <section className="py-16 md:py-24 lg:py-28 bg-secondary">
@@ -47,33 +47,44 @@ const SoldHomes = () => {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-          {items.map((p, idx) => (
-            <motion.div
-              key={p.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
-              className="relative rounded-xl overflow-hidden group"
-            >
-              <div className="relative h-52">
-                {p.images && p.images[0] ? (
-                  <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover" loading="lazy" />
-                ) : (
-                  <div className="w-full h-full bg-muted" />
-                )}
-                <div className="absolute inset-0 bg-primary/15" />
-                <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-body font-semibold tracking-wider uppercase px-3 py-1.5 rounded">
-                  Sold
+        {isEmpty ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="rounded-xl overflow-hidden">
+                <div className="h-52 bg-muted animate-pulse" />
+                <div className="p-4 bg-card"><div className="h-4 bg-muted rounded w-3/4 animate-pulse" /></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {items.map((p, idx) => (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                className="relative rounded-xl overflow-hidden group"
+              >
+                <div className="relative h-52">
+                  {p.images && p.images[0] ? (
+                    <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="w-full h-full bg-muted" />
+                  )}
+                  <div className="absolute inset-0 bg-primary/15" />
+                  <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-body font-semibold tracking-wider uppercase px-3 py-1.5 rounded">
+                    Sold
+                  </div>
                 </div>
-              </div>
-              <div className="p-4 bg-card">
-                <p className="text-sm font-body text-foreground">{p.short_description || p.title}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                <div className="p-4 bg-card">
+                  <p className="text-sm font-body text-foreground">{p.short_description || p.title}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 15 }}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, X } from "lucide-react";
+import { Pencil, Trash2, Plus, X, Copy } from "lucide-react";
 import ImageManager from "./ImageManager";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -22,6 +22,11 @@ const SoldManager = () => {
 
   const startNew = () => {
     setEditing({ id: "", title: "", short_description: "", images: [], sold_date: "", created_at: "" } as SoldProp);
+    setIsNew(true);
+  };
+
+  const duplicate = (p: SoldProp) => {
+    setEditing({ ...p, id: "", created_at: "", title: `${p.title} (Copy)` } as SoldProp);
     setIsNew(true);
   };
 
@@ -85,13 +90,24 @@ const SoldManager = () => {
         <div className="space-y-2">
           {items.map((p) => (
             <div key={p.id} className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg">
-              {p.images && p.images[0] && <img src={p.images[0]} alt="" className="w-12 h-9 object-cover rounded" />}
+              {p.images && p.images[0] ? (
+                <img src={p.images[0]} alt="" className="w-12 h-9 object-cover rounded" />
+              ) : (
+                <div className="w-12 h-9 bg-muted rounded flex items-center justify-center text-[10px] text-muted-foreground">No img</div>
+              )}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-body font-medium text-foreground truncate">{p.title}</p>
-                <p className="text-xs text-muted-foreground">{p.sold_date}</p>
+                <p className="text-xs text-muted-foreground">{p.sold_date || "—"}</p>
               </div>
-              <button onClick={() => { setEditing({ ...p }); setIsNew(false); }} className="p-1.5 hover:bg-muted rounded"><Pencil className="w-4 h-4 text-muted-foreground" /></button>
-              <button onClick={() => remove(p.id)} className="p-1.5 hover:bg-destructive/10 rounded"><Trash2 className="w-4 h-4 text-destructive" /></button>
+              <button onClick={() => duplicate(p)} className="p-1.5 hover:bg-muted rounded" title="Duplicate">
+                <Copy className="w-4 h-4 text-muted-foreground" />
+              </button>
+              <button onClick={() => { setEditing({ ...p }); setIsNew(false); }} className="p-1.5 hover:bg-muted rounded" title="Edit">
+                <Pencil className="w-4 h-4 text-muted-foreground" />
+              </button>
+              <button onClick={() => remove(p.id)} className="p-1.5 hover:bg-destructive/10 rounded" title="Delete">
+                <Trash2 className="w-4 h-4 text-destructive" />
+              </button>
             </div>
           ))}
         </div>
