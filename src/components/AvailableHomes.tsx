@@ -124,7 +124,7 @@ const AvailableHomes = () => {
       });
   }, []);
 
-  if (loaded && properties.length === 0) return null;
+  const isEmpty = loaded && properties.length === 0;
 
   return (
     <section id="available-homes" className="py-16 md:py-24 lg:py-28 bg-sand-light">
@@ -147,11 +147,26 @@ const AvailableHomes = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {properties.map((p, idx) => (
-            <PropertyCard key={p.id} property={p} index={idx} />
-          ))}
-        </div>
+        {isEmpty ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-card rounded-xl overflow-hidden shadow-sm">
+                <div className="h-56 bg-muted animate-pulse" />
+                <div className="p-6 space-y-3">
+                  <div className="h-5 bg-muted rounded w-3/4 animate-pulse" />
+                  <div className="h-4 bg-muted rounded w-full animate-pulse" />
+                  <div className="h-10 bg-muted rounded w-full animate-pulse mt-4" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {properties.map((p, idx) => (
+              <PropertyCard key={p.id} property={p} index={idx} />
+            ))}
+          </div>
+        )}
 
         <motion.p
           initial={{ opacity: 0 }}

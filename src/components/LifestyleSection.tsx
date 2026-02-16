@@ -20,7 +20,7 @@ const LifestyleSection = () => {
       });
   }, []);
 
-  if (loaded && items.length === 0) return null;
+  const isEmpty = loaded && items.length === 0;
 
   return (
     <section className="py-16 md:py-24 lg:py-28 bg-sand-light">
@@ -40,26 +40,34 @@ const LifestyleSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
-          {items.map((item, idx) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.08 }}
-              className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default"
-            >
-              <img
-                src={item.image_url}
-                alt={`Lifestyle in Zichron Yaakov ${idx + 1}`}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
-            </motion.div>
-          ))}
-        </div>
+        {isEmpty ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="rounded-xl aspect-[4/3] bg-muted animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
+            {items.map((item, idx) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default"
+              >
+                <img
+                  src={item.image_url}
+                  alt={`Lifestyle in Zichron Yaakov ${idx + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         <motion.p
           initial={{ opacity: 0 }}

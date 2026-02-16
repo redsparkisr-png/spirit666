@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
-import { GripVertical, Pencil, Trash2, Plus, X } from "lucide-react";
+import { GripVertical, Pencil, Trash2, Plus, X, Copy, ArrowRightCircle } from "lucide-react";
 import ImageManager from "./ImageManager";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -49,6 +49,31 @@ const AvailableManager = () => {
   const startEdit = (p: Property) => {
     setEditing({ ...p });
     setIsNew(false);
+  };
+
+  const duplicate = (p: Property) => {
+    setEditing({
+      ...p,
+      id: "",
+      created_at: "",
+      title: `${p.title} (Copy)`,
+      priority_order: items.length,
+    } as Property);
+    setIsNew(true);
+  };
+
+  const markAsSold = async (p: Property) => {
+    if (!confirm(`Mark "${p.title}" as sold? This will move it to the Sold tab.`)) return;
+    const { error: insertErr } = await supabase.from("properties_sold").insert({
+      title: p.title,
+      short_description: p.short_description,
+      images: p.images,
+      sold_date: new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+    });
+    if (insertErr) { toast.error(insertErr.message); return; }
+    await supabase.from("properties_available").delete().eq("id", p.id);
+    toast.success(`"${p.title}" moved to Sold`);
+    load();
   };
 
   const save = async () => {
@@ -103,65 +128,19 @@ const AvailableManager = () => {
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <input
-            placeholder="Title"
-            value={editing.title}
-            onChange={(e) => setEditing({ ...editing, title: e.target.value })}
-            className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm"
-          />
-          <input
-            placeholder="Neighborhood note"
-            value={editing.neighborhood_note || ""}
-            onChange={(e) => setEditing({ ...editing, neighborhood_note: e.target.value })}
-            className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm"
-          />
-          <input
-            placeholder="Short description"
-            value={editing.short_description || ""}
-            onChange={(e) => setEditing({ ...editing, short_description: e.target.value })}
-            className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm sm:col-span-2"
-          />
-          <input
-            type="number"
-            placeholder="Lot sqm"
-            value={editing.lot_sqm ?? ""}
-            onChange={(e) => setEditing({ ...editing, lot_sqm: e.target.value ? Number(e.target.value) : null })}
-            className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm"
-          />
-          <input
-            type="number"
-            placeholder="Built sqm"
-            value={editing.built_sqm ?? ""}
-            onChange={(e) => setEditing({ ...editing, built_sqm: e.target.value ? Number(e.target.value) : null })}
-            className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm"
-          />
-          <input
-            type="number"
-            placeholder="Bedrooms"
-            value={editing.bedrooms ?? ""}
-            onChange={(e) => setEditing({ ...editing, bedrooms: e.target.value ? Number(e.target.value) : null })}
-            className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm"
-          />
-          <input
-            placeholder="Price label (optional)"
-            value={editing.price_label || ""}
-            onChange={(e) => setEditing({ ...editing, price_label: e.target.value })}
-            className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm"
-          />
+          <input placeholder="Title" value={editing.title} onChange={(e) => setEditing({ ...editing, title: e.target.value })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
+          <input placeholder="Neighborhood note" value={editing.neighborhood_note || ""} onChange={(e) => setEditing({ ...editing, neighborhood_note: e.target.value })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
+          <input placeholder="Short description" value={editing.short_description || ""} onChange={(e) => setEditing({ ...editing, short_description: e.target.value })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm sm:col-span-2" />
+          <input type="number" placeholder="Lot sqm" value={editing.lot_sqm ?? ""} onChange={(e) => setEditing({ ...editing, lot_sqm: e.target.value ? Number(e.target.value) : null })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
+          <input type="number" placeholder="Built sqm" value={editing.built_sqm ?? ""} onChange={(e) => setEditing({ ...editing, built_sqm: e.target.value ? Number(e.target.value) : null })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
+          <input type="number" placeholder="Bedrooms" value={editing.bedrooms ?? ""} onChange={(e) => setEditing({ ...editing, bedrooms: e.target.value ? Number(e.target.value) : null })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
+          <input placeholder="Price label (optional)" value={editing.price_label || ""} onChange={(e) => setEditing({ ...editing, price_label: e.target.value })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
         </div>
         <div>
           <p className="text-sm font-body font-medium text-foreground mb-2">Images</p>
-          <ImageManager
-            images={editing.images || []}
-            onChange={(imgs) => setEditing({ ...editing, images: imgs })}
-            folder="properties"
-          />
+          <ImageManager images={editing.images || []} onChange={(imgs) => setEditing({ ...editing, images: imgs })} folder="properties" />
         </div>
-        <button
-          onClick={save}
-          disabled={saving || !editing.title.trim()}
-          className="bg-primary text-primary-foreground px-6 py-2 rounded-md font-body text-sm hover:bg-primary/90 disabled:opacity-50"
-        >
+        <button onClick={save} disabled={saving || !editing.title.trim()} className="bg-primary text-primary-foreground px-6 py-2 rounded-md font-body text-sm hover:bg-primary/90 disabled:opacity-50">
           {saving ? "Saving..." : "Save"}
         </button>
       </div>
@@ -194,17 +173,27 @@ const AvailableManager = () => {
                         <div {...prov.dragHandleProps} className="cursor-grab">
                           <GripVertical className="w-4 h-4 text-muted-foreground" />
                         </div>
-                        {p.images && p.images[0] && (
+                        {p.images && p.images[0] ? (
                           <img src={p.images[0]} alt="" className="w-12 h-9 object-cover rounded" />
+                        ) : (
+                          <div className="w-12 h-9 bg-muted rounded flex items-center justify-center text-[10px] text-muted-foreground">No img</div>
                         )}
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-body font-medium text-foreground truncate">{p.title}</p>
-                          <p className="text-xs text-muted-foreground truncate">{p.short_description}</p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {p.price_label || p.short_description || "—"}
+                          </p>
                         </div>
-                        <button onClick={() => startEdit(p)} className="p-1.5 hover:bg-muted rounded">
+                        <button onClick={() => duplicate(p)} className="p-1.5 hover:bg-muted rounded" title="Duplicate">
+                          <Copy className="w-4 h-4 text-muted-foreground" />
+                        </button>
+                        <button onClick={() => markAsSold(p)} className="p-1.5 hover:bg-muted rounded" title="Mark as Sold">
+                          <ArrowRightCircle className="w-4 h-4 text-muted-foreground" />
+                        </button>
+                        <button onClick={() => startEdit(p)} className="p-1.5 hover:bg-muted rounded" title="Edit">
                           <Pencil className="w-4 h-4 text-muted-foreground" />
                         </button>
-                        <button onClick={() => remove(p.id)} className="p-1.5 hover:bg-destructive/10 rounded">
+                        <button onClick={() => remove(p.id)} className="p-1.5 hover:bg-destructive/10 rounded" title="Delete">
                           <Trash2 className="w-4 h-4 text-destructive" />
                         </button>
                       </div>
