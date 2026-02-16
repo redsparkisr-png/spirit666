@@ -64,7 +64,7 @@ const ImageGallery = ({
           key={idx}
           src={url}
           alt={`${title} – photo ${idx + 1}`}
-          className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300"
+          className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ease-in-out"
           style={{ opacity: active === idx ? 1 : 0 }}
           loading={idx === 0 ? "eager" : "lazy"}
         />
@@ -73,22 +73,28 @@ const ImageGallery = ({
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.45))",
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.30), rgba(0,0,0,0.03) 45%, rgba(0,0,0,0.40))",
         }}
       />
+      {/* Image counter */}
+      {images.length > 1 && (
+        <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-xs font-body px-2.5 py-1 rounded-full pointer-events-none">
+          {active + 1} / {images.length}
+        </div>
+      )}
       {/* Nav arrows */}
       {images.length > 1 && (
         <>
           <button
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center text-white/80 hover:bg-black/45 hover:text-white transition-all"
             aria-label="Previous image"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center text-white/80 hover:bg-black/45 hover:text-white transition-all"
             aria-label="Next image"
           >
             <ChevronRight className="w-4 h-4" />
@@ -100,7 +106,7 @@ const ImageGallery = ({
                 key={i}
                 onClick={() => setActive(i)}
                 className={`w-2 h-2 rounded-full transition-all ${
-                  i === active ? "bg-white scale-110" : "bg-white/50"
+                  i === active ? "bg-white scale-110" : "bg-white/40"
                 }`}
                 aria-label={`Go to image ${i + 1}`}
               />
@@ -127,7 +133,6 @@ const MobileModal = ({
   <AnimatePresence>
     {open && (
       <>
-        {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -135,7 +140,6 @@ const MobileModal = ({
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
           onClick={onClose}
         />
-        {/* Slide-up panel */}
         <motion.div
           initial={{ y: "100%" }}
           animate={{ y: 0 }}
@@ -143,7 +147,6 @@ const MobileModal = ({
           transition={{ type: "spring", damping: 30, stiffness: 300 }}
           className="fixed inset-x-0 bottom-0 z-50 bg-background rounded-t-2xl max-h-[95vh] flex flex-col overflow-hidden"
         >
-          {/* Header bar */}
           <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-background border-b border-border rounded-t-2xl">
             <div className="w-10 h-1 rounded-full bg-muted-foreground/30 absolute top-2 left-1/2 -translate-x-1/2" />
             <span className="text-sm font-display font-semibold text-foreground truncate pr-4">{title}</span>
@@ -155,7 +158,6 @@ const MobileModal = ({
               <X className="w-5 h-5" />
             </button>
           </div>
-          {/* Scrollable content */}
           <div className="flex-1 overflow-y-auto overscroll-contain">
             {children}
           </div>
@@ -213,22 +215,22 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
     <>
       <ImageGallery images={images} title={property.title} isMobile={isMobile} />
 
-      <div className="p-4 md:p-6 space-y-4">
+      <div className="px-5 pt-4 pb-5 md:px-6 md:pt-5 md:pb-6 space-y-5">
         {/* Title + price */}
         <div>
-          <h3 className="font-display font-semibold text-foreground text-lg md:text-xl leading-snug">
+          <h3 className="font-display font-semibold text-foreground text-lg md:text-xl" style={{ lineHeight: "1.35" }}>
             {property.title}
           </h3>
           {property.neighborhood_note && (
-            <p className="text-muted-foreground font-body text-sm mt-0.5">{property.neighborhood_note}</p>
+            <p className="text-muted-foreground font-body text-sm mt-1">{property.neighborhood_note}</p>
           )}
-          <p className="text-primary font-body font-semibold text-sm mt-2">
+          <p className="font-body font-semibold text-sm mt-2.5" style={{ color: "hsl(var(--gold))" }}>
             {property.price_label || "Price Upon Request"}
           </p>
         </div>
 
         {/* Stats row */}
-        <div className="flex items-center gap-4 text-sm text-muted-foreground font-body flex-wrap">
+        <div className="flex items-center gap-5 md:gap-6 text-sm text-muted-foreground font-body flex-wrap">
           <span className="flex items-center gap-1.5">
             <BedDouble className="w-4 h-4 text-primary" />
             {property.bedrooms ? `${property.bedrooms} Bed` : "–"}
@@ -249,14 +251,14 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
           )}
         </div>
 
-        {/* Description */}
+        {/* Description — single block, no duplication */}
         {property.short_description && (
-          <p className="text-muted-foreground font-body text-sm leading-relaxed line-clamp-6">
+          <p className="text-muted-foreground font-body text-sm leading-relaxed">
             {property.short_description}
           </p>
         )}
 
-        <p className="text-xs text-muted-foreground/70 font-body italic">
+        <p className="text-xs text-muted-foreground/60 font-body italic">
           Private viewing available via secure video call.
         </p>
 
@@ -277,7 +279,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
                 Some properties in Zichron Yaakov are never publicly advertised.
               </p>
               <p className="text-muted-foreground font-body text-sm mt-1.5">
-                Leave your details to receive full pricing, availability, and access to off-market opportunities.
+                Leave your details for full pricing and off-market access.
               </p>
             </div>
 
@@ -315,27 +317,26 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
               </button>
             </form>
 
-            <p className="text-center text-xs text-muted-foreground/70 font-body">
-              We respond within 1–2 business hours.
+            <p className="text-center text-xs text-muted-foreground/50 font-body">
+              Discreet · Confidential · No spam
             </p>
           </div>
         )}
 
-        {/* WhatsApp link */}
+        {/* WhatsApp link — subdued */}
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 text-sm font-body font-medium text-foreground hover:text-primary transition-colors py-2"
+          className="flex items-center justify-center gap-2 text-xs font-body font-medium text-muted-foreground hover:text-foreground transition-colors py-1.5"
         >
-          <MessageCircle className="w-4 h-4 text-[hsl(142,70%,40%)]" />
-          Quick contact via WhatsApp
+          <MessageCircle className="w-3.5 h-3.5 text-[hsl(142,70%,40%)]" />
+          Or message us on WhatsApp
         </a>
       </div>
     </>
   );
 
-  /* Mobile: full-screen slide-up */
   if (isMobile) {
     return (
       <MobileModal open={open} onClose={() => handleClose(false)} title={property.title}>
@@ -344,7 +345,6 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
     );
   }
 
-  /* Desktop: centered dialog */
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto p-0 gap-0">

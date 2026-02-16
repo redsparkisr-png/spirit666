@@ -83,7 +83,7 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
       <div className="p-5 md:p-6">
         {/* Price first for visibility */}
         {property.price_label && (
-          <p className="text-sm font-body font-semibold text-primary mb-2">{property.price_label}</p>
+          <p className="text-sm font-body font-semibold mb-2" style={{ color: "hsl(var(--gold))" }}>{property.price_label}</p>
         )}
         <h3 className="text-lg font-display font-semibold text-foreground mb-1.5 leading-snug">{property.title}</h3>
         {property.short_description && (

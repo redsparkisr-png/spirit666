@@ -18,12 +18,12 @@ const HeroSection = () => {
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover object-[center_35%]"
-          style={{ filter: "contrast(1.08) saturate(1.05)" }}
+          style={{ filter: "contrast(1.12) saturate(1.08) brightness(0.97)" }}
           loading="eager"
         />
-        {/* Cinematic overlay: warmth + vignette + bottom gradient for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.50)] via-[hsl(30,20%,20%,0.12)] to-[hsl(160,62%,14%,0.65)]" />
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 50%, hsl(160,62%,14%,0.25) 100%)" }} />
+        {/* Cinematic overlay: deep bottom gradient + warmth + vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.50)] via-[hsl(30,20%,20%,0.10)] to-[hsl(160,62%,14%,0.72)]" />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 40%, hsl(160,62%,14%,0.35) 100%)" }} />
       </div>
 
       <motion.div
@@ -54,7 +54,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
           className="text-primary-foreground leading-tight mb-6 max-w-3xl mx-auto"
-          style={{ textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}
+          style={{ textShadow: "0 2px 16px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.3)" }}
         >
           Discover the Finest Homes in Zichron Yaakov
         </motion.h1>
@@ -64,7 +64,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
           className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10 text-base md:text-lg leading-relaxed"
-          style={{ textShadow: "0 1px 6px rgba(0,0,0,0.35)" }}
+          style={{ textShadow: "0 2px 10px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.25)" }}
         >
           Buying from abroad shouldn't feel risky. We are your trusted eyes and voice on the ground in Zichron Yaakov.
         </motion.p>
