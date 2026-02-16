@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, LandPlot, Ruler, BedDouble } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import PropertyModal from "./PropertyModal";
 
 type Property = Tables<"properties_available">;
 
@@ -48,13 +49,9 @@ const CarouselControls = ({ count, current, prev, next }: { count: number; curre
   </>
 );
 
-const PropertyCard = ({ property, index }: { property: Property; index: number }) => {
+const PropertyCard = ({ property, index, onSelect }: { property: Property; index: number; onSelect: (p: Property) => void }) => {
   const images = property.images || [];
   const carousel = useCarousel(Math.max(images.length, 1));
-
-  const scrollToForm = () => {
-    document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <motion.div
@@ -62,7 +59,8 @@ const PropertyCard = ({ property, index }: { property: Property; index: number }
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
+      className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group cursor-pointer"
+      onClick={() => onSelect(property)}
     >
       <div className="relative h-56 overflow-hidden" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
         {images.map((url, idx) => (
@@ -82,7 +80,7 @@ const PropertyCard = ({ property, index }: { property: Property; index: number }
       <div className="p-6">
         <h3 className="text-lg font-display font-semibold text-foreground mb-2">{property.title}</h3>
         {property.short_description && (
-          <p className="text-muted-foreground text-sm font-body mb-4">{property.short_description}</p>
+          <p className="text-muted-foreground text-sm font-body mb-4 line-clamp-2">{property.short_description}</p>
         )}
         <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-5 flex-wrap">
           <span className="flex items-center gap-1.5">
@@ -101,7 +99,10 @@ const PropertyCard = ({ property, index }: { property: Property; index: number }
         {property.price_label && (
           <p className="text-sm font-body font-semibold text-primary mb-3">{property.price_label}</p>
         )}
-        <button onClick={scrollToForm} className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300">
+        <button
+          onClick={(e) => { e.stopPropagation(); onSelect(property); }}
+          className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
+        >
           Request Full Details
         </button>
       </div>
@@ -112,6 +113,7 @@ const PropertyCard = ({ property, index }: { property: Property; index: number }
 const AvailableHomes = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   useEffect(() => {
     supabase
@@ -163,7 +165,7 @@ const AvailableHomes = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {properties.map((p, idx) => (
-              <PropertyCard key={p.id} property={p} index={idx} />
+              <PropertyCard key={p.id} property={p} index={idx} onSelect={setSelectedProperty} />
             ))}
           </div>
         )}
@@ -178,6 +180,12 @@ const AvailableHomes = () => {
           Some of our best opportunities are sold quietly and never reach public listing sites.
         </motion.p>
       </div>
+
+      <PropertyModal
+        property={selectedProperty}
+        open={!!selectedProperty}
+        onOpenChange={(open) => { if (!open) setSelectedProperty(null); }}
+      />
     </section>
   );
 };
