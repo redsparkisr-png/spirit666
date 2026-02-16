@@ -30,9 +30,11 @@ const HeroSection = () => {
           height={1080}
           loading="eager"
         />
-        {/* Cinematic overlay: deep bottom gradient + warmth + vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.55)] via-[hsl(30,20%,20%,0.12)] to-[hsl(160,62%,14%,0.78)]" />
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 40%, hsl(160,62%,14%,0.40) 100%)" }} />
+        {/* Cinematic overlay: stronger bottom gradient (60-70%) + warmth + deep vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.50)] via-[hsl(30,18%,18%,0.25)] to-[hsl(160,62%,14%,0.85)]" />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 35%, hsl(160,62%,14%,0.50) 100%)" }} />
+        {/* Extra bottom fade for text readability against sky */}
+        <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
       </div>
 
       <motion.div
