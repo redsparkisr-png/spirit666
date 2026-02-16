@@ -12,18 +12,27 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden">
+    <section
+      className="relative flex items-center justify-center overflow-hidden"
+      style={{
+        minHeight: "100svh",
+        paddingTop: "max(72px, env(safe-area-inset-top))",
+        paddingBottom: "max(24px, env(safe-area-inset-bottom))",
+      }}
+    >
       <div className="absolute inset-0">
         <img
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover object-[center_35%]"
           style={{ filter: "contrast(1.12) saturate(1.08) brightness(0.97)" }}
+          width={1920}
+          height={1080}
           loading="eager"
         />
         {/* Cinematic overlay: deep bottom gradient + warmth + vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.50)] via-[hsl(30,20%,20%,0.10)] to-[hsl(160,62%,14%,0.72)]" />
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 40%, hsl(160,62%,14%,0.35) 100%)" }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.55)] via-[hsl(30,20%,20%,0.12)] to-[hsl(160,62%,14%,0.78)]" />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 40%, hsl(160,62%,14%,0.40) 100%)" }} />
       </div>
 
       <motion.div
@@ -53,8 +62,12 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="text-primary-foreground leading-tight mb-6 max-w-3xl mx-auto"
-          style={{ textShadow: "0 2px 16px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.3)" }}
+          className="text-primary-foreground mb-6 max-w-3xl mx-auto text-balance"
+          style={{
+            fontSize: "clamp(28px, 6vw, 52px)",
+            lineHeight: 1.15,
+            textShadow: "0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.35)",
+          }}
         >
           Discover the Finest Homes in Zichron Yaakov
         </motion.h1>
@@ -63,8 +76,11 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10 text-base md:text-lg leading-relaxed"
-          style={{ textShadow: "0 2px 10px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.25)" }}
+          className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10 leading-relaxed"
+          style={{
+            fontSize: "clamp(15px, 2.5vw, 18px)",
+            textShadow: "0 2px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.3)",
+          }}
         >
           Buying from abroad shouldn't feel risky. We are your trusted eyes and voice on the ground in Zichron Yaakov.
         </motion.p>

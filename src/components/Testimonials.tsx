@@ -1,21 +1,26 @@
 import { motion } from "framer-motion";
-import { User } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "Buying from the US felt overwhelming at first.\nSpirit Real Estate made the entire process clear, calm, and well managed from start to finish.",
+    quote: "Buying from the US felt overwhelming at first. Spirit Real Estate made the entire process clear, calm, and well managed from start to finish.",
     author: "David & Sarah M.",
+    initials: "DS",
     location: "New York",
+    context: "Buyer · 2024 · Zichron Yaakov",
   },
   {
-    quote: "We felt someone was truly representing us locally.\nCommunication was transparent, and we always knew what was happening.",
+    quote: "We felt someone was truly representing us locally. Communication was transparent, and we always knew what was happening.",
     author: "Michael R.",
+    initials: "MR",
     location: "Toronto",
+    context: "Buyer · Recently · Zichron Yaakov",
   },
   {
-    quote: "The local presence made all the difference.\nEven from abroad, we felt confident making the right decision.",
+    quote: "The local presence made all the difference. Even from abroad, we felt confident making the right decision.",
     author: "Jonathan & Lisa B.",
+    initials: "JL",
     location: "London",
+    context: "Investor · 2024 · Zichron Yaakov",
   },
 ];
 
@@ -49,15 +54,17 @@ const Testimonials = () => {
               className="bg-card rounded-xl p-6 shadow-md border border-gold/10 hover:shadow-lg transition-shadow duration-300"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <User className="w-5 h-5 text-primary" />
+                {/* Initials avatar */}
+                <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <span className="text-sm font-display font-semibold text-primary">{t.initials}</span>
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm font-body font-semibold text-foreground leading-tight">{t.author}</p>
                   <p className="text-xs text-muted-foreground font-body">{t.location}</p>
+                  <p className="text-[11px] text-muted-foreground/60 font-body">{t.context}</p>
                 </div>
               </div>
-              <p className="text-foreground font-body text-sm leading-relaxed whitespace-pre-line">
+              <p className="text-foreground font-body text-sm leading-relaxed">
                 "{t.quote}"
               </p>
             </motion.blockquote>
