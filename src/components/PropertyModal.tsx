@@ -64,14 +64,44 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
         <DialogTitle className="sr-only">{property.title}</DialogTitle>
         <DialogDescription className="sr-only">Property details and inquiry form</DialogDescription>
 
-        {/* Featured Image */}
+        {/* Featured Image — mobile: capped height with gradient overlay */}
         {featuredImage && (
-          <div className="aspect-[4/3] w-full overflow-hidden bg-muted">
-            <img
-              src={featuredImage}
-              alt={property.title}
-              className="w-full h-full object-cover"
+          <div
+            className="relative w-full overflow-hidden bg-muted"
+            style={{ maxHeight: "clamp(220px, 32vh, 340px)" }}
+          >
+            <div className="aspect-[4/3] w-full">
+              <img
+                src={featuredImage}
+                alt={property.title}
+                className="w-full h-full object-cover object-center"
+                loading="eager"
+              />
+            </div>
+            {/* Strong gradient overlay for text readability */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: "linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.10) 50%, rgba(0,0,0,0.20))",
+              }}
             />
+            {/* Title overlaid on image for mobile impact */}
+            <div className="absolute bottom-0 inset-x-0 p-4 md:hidden">
+              <h3
+                className="font-display font-semibold text-white text-lg leading-snug"
+                style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}
+              >
+                {property.title}
+              </h3>
+              {property.neighborhood_note && (
+                <p
+                  className="text-white/80 font-body text-xs mt-0.5"
+                  style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
+                >
+                  {property.neighborhood_note}
+                </p>
+              )}
+            </div>
           </div>
         )}
 
@@ -94,24 +124,26 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
           </div>
         )}
 
-        <div className="p-6 space-y-5">
-          {/* Title & Price */}
-          <div>
+        <div className="p-5 md:p-6 space-y-4 md:space-y-5">
+          {/* Title & Price — desktop only (mobile title is overlaid on image) */}
+          <div className="hidden md:block">
             <h3 className="font-display font-semibold text-foreground text-xl">
               {property.title}
             </h3>
-            {(property as any).neighborhood_note && (
+            {property.neighborhood_note && (
               <p className="text-muted-foreground font-body text-sm mt-0.5">
-                {(property as any).neighborhood_note}
+                {property.neighborhood_note}
               </p>
             )}
-            <p className="text-primary font-body font-semibold text-sm mt-1">
-              {property.price_label || "Price Upon Request"}
-            </p>
           </div>
 
+          {/* Price */}
+          <p className="text-primary font-body font-semibold text-sm">
+            {property.price_label || "Price Upon Request"}
+          </p>
+
           {/* Stats Row */}
-          <div className="flex items-center gap-5 text-sm text-muted-foreground font-body flex-wrap">
+          <div className="flex items-center gap-4 md:gap-5 text-sm text-muted-foreground font-body flex-wrap">
             <span className="flex items-center gap-1.5">
               <BedDouble className="w-4 h-4 text-primary" />
               {property.bedrooms ? `${property.bedrooms} Bed` : "–"}
@@ -124,10 +156,10 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
               <LandPlot className="w-4 h-4 text-primary" />
               {property.lot_sqm ? `${property.lot_sqm} sqm lot` : "–"}
             </span>
-            {(property as any).neighborhood_note && (
+            {property.neighborhood_note && (
               <span className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-primary" />
-                {(property as any).neighborhood_note}
+                {property.neighborhood_note}
               </span>
             )}
           </div>

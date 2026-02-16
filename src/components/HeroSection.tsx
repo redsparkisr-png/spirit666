@@ -12,7 +12,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
         <img
           src={heroBg}
@@ -54,6 +54,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
           className="text-primary-foreground leading-tight mb-6 max-w-3xl mx-auto"
+          style={{ textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}
         >
           Discover the Finest Homes in Zichron Yaakov
         </motion.h1>
@@ -62,8 +63,8 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10"
-          style={{ fontSize: '18px' }}
+          className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10 line-clamp-2 md:line-clamp-none"
+          style={{ fontSize: '18px', textShadow: "0 1px 6px rgba(0,0,0,0.35)" }}
         >
           Buying from abroad shouldn't feel risky. We are your trusted eyes and voice on the ground in Zichron Yaakov.
         </motion.p>
