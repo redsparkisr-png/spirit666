@@ -10,13 +10,35 @@ import { LogOut } from "lucide-react";
 const tabs = ["Available", "Sold", "Lifestyle", "Leads"] as const;
 
 const Admin = () => {
-  const { user, isAdmin, loading, signOut } = useAuth();
+  const { user, isAdmin, loading, error, signOut, retry } = useAuth();
   const [tab, setTab] = useState<typeof tabs[number]>("Available");
 
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground font-body">Loading...</p>
+        <div className="text-center space-y-3">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-muted-foreground font-body text-sm">Checking access…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <div className="text-center space-y-4">
+          <h2 className="text-xl font-display font-semibold text-foreground">Something went wrong</h2>
+          <p className="text-muted-foreground font-body text-sm">{error}</p>
+          <div className="flex gap-3 justify-center">
+            <button onClick={retry} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-body text-sm hover:bg-primary/90">
+              Retry
+            </button>
+            <a href="/" className="px-4 py-2 border border-border rounded-lg font-body text-sm text-muted-foreground hover:text-foreground">
+              Back to Home
+            </a>
+          </div>
+        </div>
       </div>
     );
   }

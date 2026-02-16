@@ -1,47 +1,80 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
+
+const TIMEOUT_MS = 8000;
+const isDev = import.meta.env.DEV;
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const checkedRef = useRef(false);
+
+  const checkRole = useCallback(async (u: User | null) => {
+    if (!u) {
+      setUser(null);
+      setIsAdmin(false);
+      setLoading(false);
+      return;
+    }
+    setUser(u);
+    try {
+      const { data, error: rpcError } = await supabase.rpc("has_role", {
+        _user_id: u.id,
+        _role: "admin",
+      });
+      if (rpcError) throw rpcError;
+      setIsAdmin(!!data);
+    } catch (e: any) {
+      if (isDev) console.warn("Role check failed:", e?.message);
+      setIsAdmin(false);
+      setError("Failed to verify admin role. Please retry.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const retry = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    checkedRef.current = false;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      checkRole(session?.user ?? null);
+    });
+  }, [checkRole]);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        const u = session?.user ?? null;
-        setUser(u);
-        if (u) {
-          const { data } = await supabase.rpc("has_role", {
-            _user_id: u.id,
-            _role: "admin",
-          });
-          setIsAdmin(!!data);
-        } else {
-          setIsAdmin(false);
-        }
+    const timeout = setTimeout(() => {
+      if (loading) {
         setLoading(false);
+        setError("Loading timed out. Please retry.");
+      }
+    }, TIMEOUT_MS);
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (checkedRef.current) {
+          // Only handle subsequent auth changes (sign in/out)
+          checkRole(session?.user ?? null);
+        }
       }
     );
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      if (u) {
-        const { data } = await supabase.rpc("has_role", {
-          _user_id: u.id,
-          _role: "admin",
-        });
-        setIsAdmin(!!data);
-      }
-      setLoading(false);
+    // Initial check
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      checkedRef.current = true;
+      checkRole(session?.user ?? null);
     });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return () => {
+      clearTimeout(timeout);
+      subscription.unsubscribe();
+    };
+  }, [checkRole, loading]);
 
   const signOut = () => supabase.auth.signOut();
 
-  return { user, isAdmin, loading, signOut };
+  return { user, isAdmin, loading, error, signOut, retry };
 };
