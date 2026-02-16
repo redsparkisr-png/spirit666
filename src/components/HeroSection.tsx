@@ -63,8 +63,8 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10 line-clamp-2 md:line-clamp-none"
-          style={{ fontSize: '18px', textShadow: "0 1px 6px rgba(0,0,0,0.35)" }}
+          className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10 text-base md:text-lg leading-relaxed"
+          style={{ textShadow: "0 1px 6px rgba(0,0,0,0.35)" }}
         >
           Buying from abroad shouldn't feel risky. We are your trusted eyes and voice on the ground in Zichron Yaakov.
         </motion.p>

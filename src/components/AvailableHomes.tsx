@@ -59,7 +59,7 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group cursor-pointer"
+      className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group cursor-pointer hover:-translate-y-1"
       onClick={() => onSelect(property)}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
@@ -72,7 +72,7 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
             src={url}
             alt={`${property.title} – photo ${idx + 1}`}
             className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-400"
-            style={{ opacity: carousel.current === idx ? 1 : 0 }}
+            style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }}
             loading="lazy"
           />
         ))}
@@ -80,12 +80,16 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
           <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />
         )}
       </div>
-      <div className="p-6">
-        <h3 className="text-lg font-display font-semibold text-foreground mb-2">{property.title}</h3>
-        {property.short_description && (
-          <p className="text-muted-foreground text-sm font-body mb-4 line-clamp-2">{property.short_description}</p>
+      <div className="p-5 md:p-6">
+        {/* Price first for visibility */}
+        {property.price_label && (
+          <p className="text-sm font-body font-semibold text-primary mb-2">{property.price_label}</p>
         )}
-        <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-4 flex-wrap">
+        <h3 className="text-lg font-display font-semibold text-foreground mb-1.5 leading-snug">{property.title}</h3>
+        {property.short_description && (
+          <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{property.short_description}</p>
+        )}
+        <div className="flex items-center gap-3 text-xs text-muted-foreground font-body mb-4 flex-wrap">
           <span className="flex items-center gap-1.5">
             <LandPlot className="w-3.5 h-3.5 text-primary" />
             {property.lot_sqm ? `${property.lot_sqm} sqm` : "–"}
@@ -99,12 +103,6 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
             {property.bedrooms ? `${property.bedrooms} Bed` : "–"}
           </span>
         </div>
-        {property.price_label && (
-          <p className="text-sm font-body font-semibold text-primary mb-3">{property.price_label}</p>
-        )}
-        <p className="text-xs text-muted-foreground/70 font-body italic mb-4">
-          Private viewing available via secure video call.
-        </p>
         <button
           onClick={(e) => { e.stopPropagation(); onSelect(property); }}
           className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"

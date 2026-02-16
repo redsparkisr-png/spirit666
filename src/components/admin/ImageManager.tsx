@@ -1,8 +1,24 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { X, Upload, Star, Trash2 } from "lucide-react";
+import { GripVertical, Upload, Star, Trash2, Replace, CheckSquare, X } from "lucide-react";
 import { toast } from "sonner";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Props {
   images: string[];
@@ -12,18 +28,25 @@ interface Props {
 
 const ImageManager = ({ images, onChange, folder }: Props) => {
   const [uploading, setUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
+  const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
+  const [bulkMode, setBulkMode] = useState(false);
+  const [bulkSelected, setBulkSelected] = useState<Set<number>>(new Set());
+  const replaceRef = useRef<HTMLInputElement>(null);
+  const [replaceIndex, setReplaceIndex] = useState<number | null>(null);
 
-  const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files?.length) return;
+  const uploadFiles = async (files: FileList, insertAt?: number) => {
     setUploading(true);
     const total = files.length;
-    let done = 0;
     const newUrls: string[] = [];
+    const progress: Record<string, number> = {};
+
     for (const file of Array.from(files)) {
       const ext = file.name.split(".").pop();
       const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      progress[file.name] = 0;
+      setUploadProgress({ ...progress });
+
       const { error } = await supabase.storage.from("images").upload(path, file);
       if (error) {
         toast.error(`Upload failed: ${error.message}`);
@@ -31,17 +54,49 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
       }
       const { data } = supabase.storage.from("images").getPublicUrl(path);
       newUrls.push(data.publicUrl);
-      done++;
-      setProgress(Math.round((done / total) * 100));
+      progress[file.name] = 100;
+      setUploadProgress({ ...progress });
     }
-    onChange([...images, ...newUrls]);
+
+    if (insertAt !== null && insertAt !== undefined) {
+      // Replace single image
+      const arr = [...images];
+      arr[insertAt] = newUrls[0];
+      onChange(arr);
+    } else {
+      onChange([...images, ...newUrls]);
+    }
     setUploading(false);
-    setProgress(0);
+    setUploadProgress({});
+  };
+
+  const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    await uploadFiles(files);
     e.target.value = "";
   };
 
-  const remove = (idx: number) => {
-    onChange(images.filter((_, i) => i !== idx));
+  const handleReplace = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length || replaceIndex === null) return;
+    await uploadFiles(files, replaceIndex);
+    setReplaceIndex(null);
+    e.target.value = "";
+  };
+
+  const confirmDelete = () => {
+    if (deleteTarget === null) return;
+    onChange(images.filter((_, i) => i !== deleteTarget));
+    toast.success("Image removed");
+    setDeleteTarget(null);
+  };
+
+  const bulkDelete = () => {
+    onChange(images.filter((_, i) => !bulkSelected.has(i)));
+    toast.success(`${bulkSelected.size} image(s) removed`);
+    setBulkSelected(new Set());
+    setBulkMode(false);
   };
 
   const setFirst = (idx: number) => {
@@ -60,74 +115,189 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
     onChange(arr);
   };
 
+  const toggleBulkItem = (idx: number) => {
+    const next = new Set(bulkSelected);
+    next.has(idx) ? next.delete(idx) : next.add(idx);
+    setBulkSelected(next);
+  };
+
+  const activeUploads = Object.entries(uploadProgress);
+
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2">
-        <label className="cursor-pointer inline-flex items-center gap-1.5 text-sm bg-primary/10 text-primary px-3 py-1.5 rounded-md hover:bg-primary/20 transition-colors">
-          <Upload className="w-3.5 h-3.5" />
-          {uploading ? `Uploading ${progress}%` : "Add Images"}
-          <input type="file" accept="image/*" multiple onChange={upload} className="hidden" disabled={uploading} />
-        </label>
-        <span className="text-xs text-muted-foreground">{images.length} image(s)</span>
-      </div>
-
-      {/* Upload progress bar */}
-      {uploading && (
-        <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-          <div
-            className="h-full bg-primary transition-all duration-300 rounded-full"
-            style={{ width: `${progress}%` }}
-          />
+    <TooltipProvider>
+      <div className="space-y-3">
+        {/* Controls row */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <label className="cursor-pointer inline-flex items-center gap-1.5 text-sm bg-primary/10 text-primary px-3 py-1.5 rounded-md hover:bg-primary/20 transition-colors">
+            <Upload className="w-3.5 h-3.5" />
+            {uploading ? "Uploading…" : "Add Images"}
+            <input type="file" accept="image/*" multiple onChange={upload} className="hidden" disabled={uploading} />
+          </label>
+          <span className="text-xs text-muted-foreground">{images.length} image(s)</span>
+          {images.length > 1 && (
+            <button
+              onClick={() => { setBulkMode(!bulkMode); setBulkSelected(new Set()); }}
+              className={`ml-auto inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-md transition-colors ${
+                bulkMode ? "bg-destructive/10 text-destructive" : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+            >
+              <CheckSquare className="w-3.5 h-3.5" />
+              {bulkMode ? "Cancel" : "Bulk"}
+            </button>
+          )}
         </div>
-      )}
 
-      {images.length > 0 && (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="image-grid" direction="horizontal">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="grid grid-cols-3 sm:grid-cols-4 gap-2"
-              >
-                {images.map((url, idx) => (
-                  <Draggable key={`${url}-${idx}`} draggableId={`img-${idx}`} index={idx}>
-                    {(prov, snapshot) => (
-                      <div
-                        ref={prov.innerRef}
-                        {...prov.draggableProps}
-                        {...prov.dragHandleProps}
-                        className={`relative group aspect-[4/3] rounded-md overflow-hidden border cursor-grab ${
-                          snapshot.isDragging ? "border-primary shadow-lg z-10" : "border-border"
-                        }`}
-                      >
-                        <img src={url} alt="" className="w-full h-full object-cover" />
-                        {idx === 0 && (
-                          <div className="absolute top-1 left-1 bg-gold text-primary-foreground text-[10px] px-1.5 py-0.5 rounded font-body font-semibold">
-                            Primary
+        {/* Bulk action bar */}
+        {bulkMode && bulkSelected.size > 0 && (
+          <div className="flex items-center gap-2 p-2 bg-destructive/5 rounded-md border border-destructive/20">
+            <span className="text-xs text-destructive font-body font-medium">{bulkSelected.size} selected</span>
+            <button
+              onClick={bulkDelete}
+              className="ml-auto text-xs bg-destructive text-destructive-foreground px-3 py-1.5 rounded-md hover:bg-destructive/90 transition-colors"
+            >
+              Delete Selected
+            </button>
+          </div>
+        )}
+
+        {/* Upload progress */}
+        {activeUploads.length > 0 && (
+          <div className="space-y-1">
+            {activeUploads.map(([name, pct]) => (
+              <div key={name} className="flex items-center gap-2 text-xs text-muted-foreground">
+                <span className="truncate max-w-[120px]">{name}</span>
+                <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-primary transition-all duration-300 rounded-full" style={{ width: `${pct}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Image grid with drag-and-drop */}
+        {images.length > 0 && (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="image-grid" direction="horizontal">
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="grid grid-cols-3 sm:grid-cols-4 gap-2"
+                >
+                  {images.map((url, idx) => (
+                    <Draggable key={`${url}-${idx}`} draggableId={`img-${idx}`} index={idx}>
+                      {(prov, snapshot) => (
+                        <div
+                          ref={prov.innerRef}
+                          {...prov.draggableProps}
+                          className={`relative group aspect-[4/3] rounded-md overflow-hidden border transition-all ${
+                            snapshot.isDragging ? "border-primary shadow-lg z-10 scale-105" : "border-border"
+                          } ${bulkMode && bulkSelected.has(idx) ? "ring-2 ring-destructive" : ""}`}
+                        >
+                          <img src={url} alt="" className="w-full h-full object-cover" />
+
+                          {/* Primary badge */}
+                          {idx === 0 && (
+                            <div className="absolute top-1 left-1 bg-gold text-primary-foreground text-[10px] px-1.5 py-0.5 rounded font-body font-semibold">
+                              Primary
+                            </div>
+                          )}
+
+                          {/* Drag handle */}
+                          <div
+                            {...prov.dragHandleProps}
+                            className="absolute top-1 right-1 w-7 h-7 rounded bg-black/50 flex items-center justify-center cursor-grab opacity-0 group-hover:opacity-100 transition-opacity"
+                            title="Drag to reorder"
+                          >
+                            <GripVertical className="w-4 h-4 text-white" />
                           </div>
-                        )}
-                        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-colors flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100">
-                          {idx > 0 && (
-                            <button onClick={() => setFirst(idx)} className="p-1 bg-card rounded" title="Set as primary">
-                              <Star className="w-3.5 h-3.5 text-gold" />
+
+                          {/* Bulk select overlay */}
+                          {bulkMode && (
+                            <button
+                              onClick={() => toggleBulkItem(idx)}
+                              className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/40 transition-colors"
+                            >
+                              {bulkSelected.has(idx) && (
+                                <CheckSquare className="w-6 h-6 text-white" />
+                              )}
                             </button>
                           )}
-                          <button onClick={() => remove(idx)} className="p-1 bg-destructive/90 rounded" title="Remove">
-                            <Trash2 className="w-3.5 h-3.5 text-destructive-foreground" />
-                          </button>
+
+                          {/* Hover actions (non-bulk) */}
+                          {!bulkMode && (
+                            <div className="absolute bottom-0 inset-x-0 p-1.5 flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/60 to-transparent">
+                              {idx > 0 && (
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <button
+                                      onClick={() => setFirst(idx)}
+                                      className="w-8 h-8 rounded-md bg-card/90 flex items-center justify-center hover:bg-card transition-colors"
+                                    >
+                                      <Star className="w-3.5 h-3.5 text-gold" />
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>Set as primary</TooltipContent>
+                                </Tooltip>
+                              )}
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    onClick={() => {
+                                      setReplaceIndex(idx);
+                                      replaceRef.current?.click();
+                                    }}
+                                    className="w-8 h-8 rounded-md bg-card/90 flex items-center justify-center hover:bg-card transition-colors"
+                                  >
+                                    <Replace className="w-3.5 h-3.5 text-foreground" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent>Replace image</TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    onClick={() => setDeleteTarget(idx)}
+                                    className="w-8 h-8 rounded-md bg-destructive/90 flex items-center justify-center hover:bg-destructive transition-colors"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5 text-destructive-foreground" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent>Delete image</TooltipContent>
+                              </Tooltip>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      )}
-    </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        )}
+
+        {/* Hidden replace input */}
+        <input ref={replaceRef} type="file" accept="image/*" onChange={handleReplace} className="hidden" />
+
+        {/* Delete confirmation */}
+        <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete this image?</AlertDialogTitle>
+              <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </TooltipProvider>
   );
 };
 

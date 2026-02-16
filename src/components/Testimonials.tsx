@@ -1,17 +1,21 @@
 import { motion } from "framer-motion";
+import { User } from "lucide-react";
 
 const testimonials = [
   {
     quote: "Buying from the US felt overwhelming at first.\nSpirit Real Estate made the entire process clear, calm, and well managed from start to finish.",
-    author: "David & Sarah M., New York",
+    author: "David & Sarah M.",
+    location: "New York",
   },
   {
     quote: "We felt someone was truly representing us locally.\nCommunication was transparent, and we always knew what was happening.",
-    author: "Michael R., Toronto",
+    author: "Michael R.",
+    location: "Toronto",
   },
   {
     quote: "The local presence made all the difference.\nEven from abroad, we felt confident making the right decision.",
-    author: "Jonathan & Lisa B., London",
+    author: "Jonathan & Lisa B.",
+    location: "London",
   },
 ];
 
@@ -34,7 +38,7 @@ const Testimonials = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto">
           {testimonials.map((t, index) => (
             <motion.blockquote
               key={t.author}
@@ -42,14 +46,20 @@ const Testimonials = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.12 }}
-              className="bg-card rounded-xl p-6 shadow-sm border border-gold/10"
+              className="bg-card rounded-xl p-6 shadow-sm border border-gold/10 hover:shadow-md transition-shadow duration-300"
             >
-              <p className="text-foreground font-body text-sm leading-relaxed whitespace-pre-line mb-4">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <User className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-body font-semibold text-foreground leading-tight">{t.author}</p>
+                  <p className="text-xs text-muted-foreground font-body">{t.location}</p>
+                </div>
+              </div>
+              <p className="text-foreground font-body text-sm leading-relaxed whitespace-pre-line">
                 "{t.quote}"
               </p>
-              <footer className="text-xs text-muted-foreground font-body">
-                — {t.author}
-              </footer>
             </motion.blockquote>
           ))}
         </div>
