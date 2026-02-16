@@ -1,15 +1,10 @@
-import { useState } from "react";
-import { BedDouble, Ruler, LandPlot, MapPin, MessageCircle, X } from "lucide-react";
+import { useState, useRef } from "react";
+import { BedDouble, Ruler, LandPlot, MapPin, MessageCircle, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Tables } from "@/integrations/supabase/types";
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Dialog,
   DialogContent,
@@ -25,122 +20,226 @@ interface Props {
   onOpenChange: (open: boolean) => void;
 }
 
-/* ── Shared inner content ── */
-const ModalBody = ({
-  property,
-  activeImage,
-  setActiveImage,
-  form,
-  setForm,
-  submitting,
-  submitted,
-  handleSubmit,
-  whatsappUrl,
+/* ── Swipeable Image Gallery ── */
+const ImageGallery = ({
+  images,
+  title,
   isMobile,
 }: {
-  property: Property;
-  activeImage: number;
-  setActiveImage: (i: number) => void;
-  form: { name: string; email: string; phone: string };
-  setForm: (f: { name: string; email: string; phone: string }) => void;
-  submitting: boolean;
-  submitted: boolean;
-  handleSubmit: (e: React.FormEvent) => void;
-  whatsappUrl: string;
+  images: string[];
+  title: string;
   isMobile: boolean;
 }) => {
-  const images = property.images || [];
-  const featuredImage = images[activeImage] || images[0];
+  const [active, setActive] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
+  if (images.length === 0) {
+    return (
+      <div
+        className="w-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body shrink-0"
+        style={{ height: isMobile ? "min(55vh, 360px)" : "340px" }}
+      >
+        No image
+      </div>
+    );
+  }
+
+  const prev = () => setActive((c) => (c - 1 + images.length) % images.length);
+  const next = () => setActive((c) => (c + 1) % images.length);
 
   return (
-    <>
-      {/* Featured Image */}
-      {featuredImage && (
-        <div
-          className="relative w-full overflow-hidden bg-muted shrink-0"
-          style={{ maxHeight: isMobile ? "clamp(200px, 38vh, 320px)" : "340px" }}
-        >
-          <div className="aspect-[4/3] w-full">
-            <img
-              src={featuredImage}
-              alt={property.title}
-              className="w-full h-full object-cover object-center"
-              loading="eager"
-            />
-          </div>
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.18))",
-            }}
-          />
-          {/* Mobile-only overlay title */}
-          <div className="absolute bottom-0 inset-x-0 p-4 md:hidden">
-            <h3
-              className="font-display font-semibold text-white text-lg leading-snug"
-              style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}
-            >
-              {property.title}
-            </h3>
-            {property.neighborhood_note && (
-              <p
-                className="text-white/80 font-body text-xs mt-0.5"
-                style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
-              >
-                {property.neighborhood_note}
-              </p>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Thumbnail Strip */}
+    <div
+      className="relative w-full overflow-hidden bg-muted shrink-0"
+      style={{ height: isMobile ? "min(55vh, 360px)" : "340px" }}
+      onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+      onTouchEnd={(e) => {
+        if (touchStartX.current === null) return;
+        const diff = touchStartX.current - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+        touchStartX.current = null;
+      }}
+    >
+      {images.map((url, idx) => (
+        <img
+          key={idx}
+          src={url}
+          alt={`${title} – photo ${idx + 1}`}
+          className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300"
+          style={{ opacity: active === idx ? 1 : 0 }}
+          loading={idx === 0 ? "eager" : "lazy"}
+        />
+      ))}
+      {/* Gradient overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.45))",
+        }}
+      />
+      {/* Nav arrows */}
       {images.length > 1 && (
-        <div className="flex gap-1.5 px-4 pt-3 overflow-x-auto scrollbar-hide shrink-0">
-          {images.map((url, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveImage(idx)}
-              className={`shrink-0 w-16 h-12 rounded overflow-hidden border-2 transition-all ${
-                activeImage === idx
-                  ? "border-primary opacity-100"
-                  : "border-transparent opacity-60 hover:opacity-90"
-              }`}
-            >
-              <img src={url} alt="" className="w-full h-full object-cover" loading="lazy" />
-            </button>
-          ))}
-        </div>
+        <>
+          <button
+            onClick={prev}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+          {/* Dots */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  i === active ? "bg-white scale-110" : "bg-white/50"
+                }`}
+                aria-label={`Go to image ${i + 1}`}
+              />
+            ))}
+          </div>
+        </>
       )}
+    </div>
+  );
+};
 
-      {/* Content */}
-      <div className="p-5 md:p-6 space-y-4 md:space-y-5">
-        {/* Desktop title */}
-        <div className="hidden md:block">
-          <h3 className="font-display font-semibold text-foreground text-xl">{property.title}</h3>
+/* ── Mobile Full-screen Slide-up Modal ── */
+const MobileModal = ({
+  open,
+  onClose,
+  children,
+  title,
+}: {
+  open: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  title: string;
+}) => (
+  <AnimatePresence>
+    {open && (
+      <>
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+          onClick={onClose}
+        />
+        {/* Slide-up panel */}
+        <motion.div
+          initial={{ y: "100%" }}
+          animate={{ y: 0 }}
+          exit={{ y: "100%" }}
+          transition={{ type: "spring", damping: 30, stiffness: 300 }}
+          className="fixed inset-x-0 bottom-0 z-50 bg-background rounded-t-2xl max-h-[95vh] flex flex-col overflow-hidden"
+        >
+          {/* Header bar */}
+          <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-background border-b border-border rounded-t-2xl">
+            <div className="w-10 h-1 rounded-full bg-muted-foreground/30 absolute top-2 left-1/2 -translate-x-1/2" />
+            <span className="text-sm font-display font-semibold text-foreground truncate pr-4">{title}</span>
+            <button
+              onClick={onClose}
+              className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-foreground hover:bg-muted-foreground/20 transition-colors shrink-0"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          {/* Scrollable content */}
+          <div className="flex-1 overflow-y-auto overscroll-contain">
+            {children}
+          </div>
+        </motion.div>
+      </>
+    )}
+  </AnimatePresence>
+);
+
+/* ── Main wrapper ── */
+const PropertyModal = ({ property, open, onOpenChange }: Props) => {
+  const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const isMobile = useIsMobile();
+
+  if (!property) return null;
+
+  const images = property.images || [];
+  const whatsappUrl = `https://wa.me/972522820632?text=${encodeURIComponent(`Hi, I'm interested in "${property.title}" in Zichron Yaakov.`)}`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await supabase.from("leads").insert({
+      full_name: form.name.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      source: `property_modal:${property.title}`,
+      message: `Interested in: ${property.title}`,
+    });
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+    } else {
+      setSubmitted(true);
+      toast.success("Thank you! We'll send you the full details shortly.");
+    }
+    setSubmitting(false);
+  };
+
+  const handleClose = (v: boolean) => {
+    if (!v) {
+      setForm({ name: "", email: "", phone: "" });
+      setSubmitted(false);
+    }
+    onOpenChange(v);
+  };
+
+  /* ── Shared content body ── */
+  const content = (
+    <>
+      <ImageGallery images={images} title={property.title} isMobile={isMobile} />
+
+      <div className="p-4 md:p-6 space-y-4">
+        {/* Title + price */}
+        <div>
+          <h3 className="font-display font-semibold text-foreground text-lg md:text-xl leading-snug">
+            {property.title}
+          </h3>
           {property.neighborhood_note && (
             <p className="text-muted-foreground font-body text-sm mt-0.5">{property.neighborhood_note}</p>
           )}
+          <p className="text-primary font-body font-semibold text-sm mt-2">
+            {property.price_label || "Price Upon Request"}
+          </p>
         </div>
 
-        <p className="text-primary font-body font-semibold text-sm">
-          {property.price_label || "Price Upon Request"}
-        </p>
-
-        {/* Stats */}
-        <div className="flex items-center gap-4 md:gap-5 text-sm text-muted-foreground font-body flex-wrap">
+        {/* Stats row */}
+        <div className="flex items-center gap-4 text-sm text-muted-foreground font-body flex-wrap">
           <span className="flex items-center gap-1.5">
             <BedDouble className="w-4 h-4 text-primary" />
             {property.bedrooms ? `${property.bedrooms} Bed` : "–"}
           </span>
           <span className="flex items-center gap-1.5">
             <Ruler className="w-4 h-4 text-primary" />
-            {property.built_sqm ? `${property.built_sqm} sqm built` : "–"}
+            {property.built_sqm ? `${property.built_sqm} sqm` : "–"}
           </span>
           <span className="flex items-center gap-1.5">
             <LandPlot className="w-4 h-4 text-primary" />
-            {property.lot_sqm ? `${property.lot_sqm} sqm lot` : "–"}
+            {property.lot_sqm ? `${property.lot_sqm} sqm` : "–"}
           </span>
           {property.neighborhood_note && (
             <span className="flex items-center gap-1.5">
@@ -150,6 +249,7 @@ const ModalBody = ({
           )}
         </div>
 
+        {/* Description */}
         {property.short_description && (
           <p className="text-muted-foreground font-body text-sm leading-relaxed line-clamp-6">
             {property.short_description}
@@ -221,6 +321,7 @@ const ModalBody = ({
           </div>
         )}
 
+        {/* WhatsApp link */}
         <a
           href={whatsappUrl}
           target="_blank"
@@ -233,79 +334,13 @@ const ModalBody = ({
       </div>
     </>
   );
-};
 
-/* ── Main wrapper: Sheet on mobile, Dialog on desktop ── */
-const PropertyModal = ({ property, open, onOpenChange }: Props) => {
-  const [form, setForm] = useState({ name: "", email: "", phone: "" });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [activeImage, setActiveImage] = useState(0);
-  const isMobile = useIsMobile();
-
-  if (!property) return null;
-
-  const whatsappUrl = `https://wa.me/972522820632?text=${encodeURIComponent(`Hi, I'm interested in "${property.title}" in Zichron Yaakov.`)}`;
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-    setSubmitting(true);
-    const { error } = await supabase.from("leads").insert({
-      full_name: form.name.trim(),
-      email: form.email.trim(),
-      phone: form.phone.trim(),
-      source: `property_modal:${property.title}`,
-      message: `Interested in: ${property.title}`,
-    });
-    if (error) {
-      toast.error("Something went wrong. Please try again.");
-    } else {
-      setSubmitted(true);
-      toast.success("Thank you! We'll send you the full details shortly.");
-    }
-    setSubmitting(false);
-  };
-
-  const handleClose = (v: boolean) => {
-    if (!v) {
-      setForm({ name: "", email: "", phone: "" });
-      setSubmitted(false);
-      setActiveImage(0);
-    }
-    onOpenChange(v);
-  };
-
-  const bodyProps = {
-    property,
-    activeImage,
-    setActiveImage,
-    form,
-    setForm,
-    submitting,
-    submitted,
-    handleSubmit,
-    whatsappUrl,
-    isMobile,
-  };
-
-  /* Mobile: bottom sheet */
+  /* Mobile: full-screen slide-up */
   if (isMobile) {
     return (
-      <Sheet open={open} onOpenChange={handleClose}>
-        <SheetContent side="bottom" className="p-0 rounded-t-2xl max-h-[92vh] overflow-y-auto">
-          <SheetTitle className="sr-only">{property.title}</SheetTitle>
-          <SheetDescription className="sr-only">Property details and inquiry form</SheetDescription>
-          {/* Drag indicator */}
-          <div className="sticky top-0 z-10 flex justify-center pt-3 pb-1 bg-background rounded-t-2xl">
-            <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
-          </div>
-          <ModalBody {...bodyProps} />
-        </SheetContent>
-      </Sheet>
+      <MobileModal open={open} onClose={() => handleClose(false)} title={property.title}>
+        {content}
+      </MobileModal>
     );
   }
 
@@ -315,7 +350,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
       <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto p-0 gap-0">
         <DialogTitle className="sr-only">{property.title}</DialogTitle>
         <DialogDescription className="sr-only">Property details and inquiry form</DialogDescription>
-        <ModalBody {...bodyProps} />
+        {content}
       </DialogContent>
     </Dialog>
   );
