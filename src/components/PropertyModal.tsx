@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BedDouble, Ruler, LandPlot, MapPin, MessageCircle, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -50,7 +50,7 @@ const ImageGallery = ({
   return (
     <div
       className="relative w-full overflow-hidden bg-muted shrink-0"
-      style={{ height: isMobile ? "min(55vh, 360px)" : "340px" }}
+      style={{ aspectRatio: "4/3", maxHeight: isMobile ? "min(55vh, 360px)" : "340px" }}
       onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
       onTouchEnd={(e) => {
         if (touchStartX.current === null) return;
@@ -67,13 +67,15 @@ const ImageGallery = ({
           className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ease-in-out"
           style={{ opacity: active === idx ? 1 : 0 }}
           loading={idx === 0 ? "eager" : "lazy"}
+          width={800}
+          height={600}
         />
       ))}
       {/* Gradient overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.30), rgba(0,0,0,0.03) 45%, rgba(0,0,0,0.40))",
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.02) 45%, rgba(0,0,0,0.35))",
         }}
       />
       {/* Image counter */}
@@ -87,14 +89,14 @@ const ImageGallery = ({
         <>
           <button
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center text-white/80 hover:bg-black/45 hover:text-white transition-all"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white/70 hover:bg-black/40 hover:text-white transition-all"
             aria-label="Previous image"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center text-white/80 hover:bg-black/45 hover:text-white transition-all"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white/70 hover:bg-black/40 hover:text-white transition-all"
             aria-label="Next image"
           >
             <ChevronRight className="w-4 h-4" />
@@ -118,7 +120,7 @@ const ImageGallery = ({
   );
 };
 
-/* ── Mobile Full-screen Slide-up Modal ── */
+/* ── Mobile Full-screen Modal ── */
 const MobileModal = ({
   open,
   onClose,
@@ -129,43 +131,61 @@ const MobileModal = ({
   onClose: () => void;
   children: React.ReactNode;
   title: string;
-}) => (
-  <AnimatePresence>
-    {open && (
-      <>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
-          onClick={onClose}
-        />
-        <motion.div
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          exit={{ y: "100%" }}
-          transition={{ type: "spring", damping: 30, stiffness: 300 }}
-          className="fixed inset-x-0 bottom-0 z-50 bg-background rounded-t-2xl max-h-[95vh] flex flex-col overflow-hidden"
-        >
-          <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-background border-b border-border rounded-t-2xl">
-            <div className="w-10 h-1 rounded-full bg-muted-foreground/30 absolute top-2 left-1/2 -translate-x-1/2" />
-            <span className="text-sm font-display font-semibold text-foreground truncate pr-4">{title}</span>
-            <button
-              onClick={onClose}
-              className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-foreground hover:bg-muted-foreground/20 transition-colors shrink-0"
-              aria-label="Close"
+}) => {
+  // Lock body scroll when open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = ""; };
+    }
+  }, [open]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            onClick={onClose}
+          />
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-modal-title"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className="fixed inset-x-0 bottom-0 z-50 bg-background rounded-t-2xl flex flex-col overflow-hidden"
+            style={{ height: "100dvh" }}
+          >
+            {/* Sticky header */}
+            <div
+              className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-background border-b border-border rounded-t-2xl"
+              style={{ paddingTop: "max(12px, env(safe-area-inset-top))" }}
             >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto overscroll-contain">
-            {children}
-          </div>
-        </motion.div>
-      </>
-    )}
-  </AnimatePresence>
-);
+              <div className="w-10 h-1 rounded-full bg-muted-foreground/30 absolute top-2 left-1/2 -translate-x-1/2" />
+              <span id="mobile-modal-title" className="text-sm font-display font-semibold text-foreground truncate pr-4">{title}</span>
+              <button
+                onClick={onClose}
+                className="w-11 h-11 rounded-full bg-muted flex items-center justify-center text-foreground hover:bg-muted-foreground/20 transition-colors shrink-0"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto overscroll-contain">
+              {children}
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
 
 /* ── Main wrapper ── */
 const PropertyModal = ({ property, open, onOpenChange }: Props) => {
@@ -215,52 +235,58 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
     <>
       <ImageGallery images={images} title={property.title} isMobile={isMobile} />
 
-      <div className="px-5 pt-4 pb-5 md:px-6 md:pt-5 md:pb-6 space-y-5">
+      <div className="px-5 pt-5 pb-6 md:px-6 md:pt-5 md:pb-6 space-y-5">
         {/* Title + price */}
         <div>
-          <h3 className="font-display font-semibold text-foreground text-lg md:text-xl" style={{ lineHeight: "1.35" }}>
+          <h3
+            className="font-display font-semibold text-foreground text-lg md:text-xl"
+            style={{ lineHeight: "1.35" }}
+          >
             {property.title}
           </h3>
           {property.neighborhood_note && (
             <p className="text-muted-foreground font-body text-sm mt-1">{property.neighborhood_note}</p>
           )}
-          <p className="font-body font-semibold text-sm mt-2.5" style={{ color: "hsl(var(--gold))" }}>
+          <p className="font-body font-semibold text-sm mt-3" style={{ color: "hsl(var(--gold))" }}>
             {property.price_label || "Price Upon Request"}
           </p>
         </div>
 
-        {/* Stats row */}
+        {/* Stats row — 20-24px gaps */}
         <div className="flex items-center gap-5 md:gap-6 text-sm text-muted-foreground font-body flex-wrap">
-          <span className="flex items-center gap-1.5">
+          <span className="inline-flex items-center gap-1.5">
             <BedDouble className="w-4 h-4 text-primary" />
             {property.bedrooms ? `${property.bedrooms} Bed` : "–"}
           </span>
-          <span className="flex items-center gap-1.5">
+          <span className="inline-flex items-center gap-1.5">
             <Ruler className="w-4 h-4 text-primary" />
             {property.built_sqm ? `${property.built_sqm} sqm` : "–"}
           </span>
-          <span className="flex items-center gap-1.5">
+          <span className="inline-flex items-center gap-1.5">
             <LandPlot className="w-4 h-4 text-primary" />
-            {property.lot_sqm ? `${property.lot_sqm} sqm` : "–"}
+            {property.lot_sqm ? `${property.lot_sqm} sqm lot` : "–"}
           </span>
           {property.neighborhood_note && (
-            <span className="flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1.5">
               <MapPin className="w-4 h-4 text-primary" />
               {property.neighborhood_note}
             </span>
           )}
         </div>
 
-        {/* Description — single block, no duplication */}
+        {/* Description — single block */}
         {property.short_description && (
           <p className="text-muted-foreground font-body text-sm leading-relaxed">
             {property.short_description}
           </p>
         )}
 
-        <p className="text-xs text-muted-foreground/60 font-body italic">
-          Private viewing available via secure video call.
-        </p>
+        {/* Bullet highlights */}
+        <ul className="text-muted-foreground font-body text-sm space-y-1.5 list-disc list-inside">
+          <li>Private viewing available via secure video call</li>
+          <li>Assistance with legal, tax and relocation</li>
+          <li>Licensed Israeli brokerage</li>
+        </ul>
 
         <div className="border-t border-border" />
 
@@ -312,13 +338,14 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
                 type="submit"
                 disabled={submitting}
                 className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3.5 rounded-lg font-body font-semibold text-sm transition-colors duration-300 disabled:opacity-60"
+                style={{ marginBottom: isMobile ? "env(safe-area-inset-bottom, 0px)" : undefined }}
               >
                 {submitting ? "Sending..." : "Unlock Full Property Details"}
               </button>
             </form>
 
             <p className="text-center text-xs text-muted-foreground/50 font-body">
-              Discreet · Confidential · No spam
+              Discreet · Confidential · No spam · We never share your details.
             </p>
           </div>
         )}

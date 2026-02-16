@@ -32,12 +32,12 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
   const [bulkMode, setBulkMode] = useState(false);
   const [bulkSelected, setBulkSelected] = useState<Set<number>>(new Set());
+  const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
   const replaceRef = useRef<HTMLInputElement>(null);
   const [replaceIndex, setReplaceIndex] = useState<number | null>(null);
 
   const uploadFiles = async (files: FileList, insertAt?: number) => {
     setUploading(true);
-    const total = files.length;
     const newUrls: string[] = [];
     const progress: Record<string, number> = {};
 
@@ -59,7 +59,6 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
     }
 
     if (insertAt !== null && insertAt !== undefined) {
-      // Replace single image
       const arr = [...images];
       arr[insertAt] = newUrls[0];
       onChange(arr);
@@ -92,11 +91,12 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
     setDeleteTarget(null);
   };
 
-  const bulkDelete = () => {
+  const confirmBulkDelete = () => {
     onChange(images.filter((_, i) => !bulkSelected.has(i)));
     toast.success(`${bulkSelected.size} image(s) removed`);
     setBulkSelected(new Set());
     setBulkMode(false);
+    setBulkDeleteConfirm(false);
   };
 
   const setFirst = (idx: number) => {
@@ -152,7 +152,7 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
           <div className="flex items-center gap-2 p-2 bg-destructive/5 rounded-md border border-destructive/20">
             <span className="text-xs text-destructive font-body font-medium">{bulkSelected.size} selected</span>
             <button
-              onClick={bulkDelete}
+              onClick={() => setBulkDeleteConfirm(true)}
               className="ml-auto text-xs bg-destructive text-destructive-foreground px-3 py-1.5 rounded-md hover:bg-destructive/90 transition-colors"
             >
               Delete Selected
@@ -194,7 +194,7 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
                             snapshot.isDragging ? "border-primary shadow-lg z-10 scale-105" : "border-border"
                           } ${bulkMode && bulkSelected.has(idx) ? "ring-2 ring-destructive" : ""}`}
                         >
-                          <img src={url} alt="" className="w-full h-full object-cover" />
+                          <img src={url} alt="" className="w-full h-full object-cover" loading="lazy" />
 
                           {/* Primary badge */}
                           {idx === 0 && (
@@ -203,13 +203,13 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
                             </div>
                           )}
 
-                          {/* Drag handle */}
+                          {/* Drag handle — only this triggers drag, min 44x44 hit area */}
                           <div
                             {...prov.dragHandleProps}
-                            className="absolute top-1 right-1 w-7 h-7 rounded bg-black/50 flex items-center justify-center cursor-grab opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute top-1 right-1 w-11 h-11 rounded-md bg-black/50 flex items-center justify-center cursor-grab opacity-0 group-hover:opacity-100 transition-opacity"
                             title="Drag to reorder"
                           >
-                            <GripVertical className="w-4 h-4 text-white" />
+                            <GripVertical className="w-5 h-5 text-white" />
                           </div>
 
                           {/* Bulk select overlay */}
@@ -224,17 +224,17 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
                             </button>
                           )}
 
-                          {/* Hover actions (non-bulk) */}
+                          {/* Hover actions (non-bulk) — large hit targets (44x44) */}
                           {!bulkMode && (
-                            <div className="absolute bottom-0 inset-x-0 p-1.5 flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/60 to-transparent">
+                            <div className="absolute bottom-0 inset-x-0 p-1.5 flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/60 to-transparent">
                               {idx > 0 && (
                                 <Tooltip>
                                   <TooltipTrigger asChild>
                                     <button
-                                      onClick={() => setFirst(idx)}
-                                      className="w-8 h-8 rounded-md bg-card/90 flex items-center justify-center hover:bg-card transition-colors"
+                                      onClick={(e) => { e.stopPropagation(); setFirst(idx); }}
+                                      className="w-11 h-11 rounded-md bg-card/90 flex items-center justify-center hover:bg-card transition-colors"
                                     >
-                                      <Star className="w-3.5 h-3.5 text-gold" />
+                                      <Star className="w-4 h-4 text-gold" />
                                     </button>
                                   </TooltipTrigger>
                                   <TooltipContent>Set as primary</TooltipContent>
@@ -243,13 +243,14 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
                               <Tooltip>
                                 <TooltipTrigger asChild>
                                   <button
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                      e.stopPropagation();
                                       setReplaceIndex(idx);
                                       replaceRef.current?.click();
                                     }}
-                                    className="w-8 h-8 rounded-md bg-card/90 flex items-center justify-center hover:bg-card transition-colors"
+                                    className="w-11 h-11 rounded-md bg-card/90 flex items-center justify-center hover:bg-card transition-colors"
                                   >
-                                    <Replace className="w-3.5 h-3.5 text-foreground" />
+                                    <Replace className="w-4 h-4 text-foreground" />
                                   </button>
                                 </TooltipTrigger>
                                 <TooltipContent>Replace image</TooltipContent>
@@ -257,10 +258,10 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
                               <Tooltip>
                                 <TooltipTrigger asChild>
                                   <button
-                                    onClick={() => setDeleteTarget(idx)}
-                                    className="w-8 h-8 rounded-md bg-destructive/90 flex items-center justify-center hover:bg-destructive transition-colors"
+                                    onClick={(e) => { e.stopPropagation(); setDeleteTarget(idx); }}
+                                    className="w-11 h-11 rounded-md bg-destructive/90 flex items-center justify-center hover:bg-destructive transition-colors"
                                   >
-                                    <Trash2 className="w-3.5 h-3.5 text-destructive-foreground" />
+                                    <Trash2 className="w-4 h-4 text-destructive-foreground" />
                                   </button>
                                 </TooltipTrigger>
                                 <TooltipContent>Delete image</TooltipContent>
@@ -281,7 +282,7 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
         {/* Hidden replace input */}
         <input ref={replaceRef} type="file" accept="image/*" onChange={handleReplace} className="hidden" />
 
-        {/* Delete confirmation */}
+        {/* Single delete confirmation */}
         <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -292,6 +293,22 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
                 Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* Bulk delete confirmation */}
+        <AlertDialog open={bulkDeleteConfirm} onOpenChange={setBulkDeleteConfirm}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete {bulkSelected.size} image(s)?</AlertDialogTitle>
+              <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmBulkDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Delete All
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
