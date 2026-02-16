@@ -48,13 +48,18 @@ const SoldHomes = () => {
         </motion.div>
 
         {isEmpty ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="rounded-xl overflow-hidden">
-                <div className="aspect-[4/3] bg-muted animate-pulse" />
-                <div className="p-4 bg-card"><div className="h-4 bg-muted rounded w-3/4 animate-pulse" /></div>
-              </div>
-            ))}
+          <div className="max-w-5xl mx-auto space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="rounded-xl overflow-hidden">
+                  <div className="aspect-[4/3] bg-muted/60 animate-pulse" />
+                  <div className="p-4 bg-card"><div className="h-4 bg-muted/60 rounded w-3/4 animate-pulse" /></div>
+                </div>
+              ))}
+            </div>
+            <p className="text-center text-sm text-muted-foreground/60 font-body italic">
+              Recent sales will appear here soon.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
