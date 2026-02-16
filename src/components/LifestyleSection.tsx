@@ -33,11 +33,13 @@ const LifestyleSection = () => {
           className="text-center mb-14"
         >
           <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
-            Life in Zichron Yaakov
+            Why Overseas Families Fall in Love with Zichron Yaakov
           </h2>
-          <p className="text-muted-foreground font-body max-w-lg mx-auto text-base md:text-lg">
-            Morning sea breeze. Vineyard sunsets. Quiet streets. A Mediterranean rhythm that feels like home.
-          </p>
+          <div className="text-muted-foreground font-body max-w-lg mx-auto text-base md:text-lg space-y-2">
+            <p>Coastal Mediterranean lifestyle without Tel Aviv chaos</p>
+            <p>Strong long-term value and limited land supply</p>
+            <p>Welcoming English-speaking community</p>
+          </div>
         </motion.div>
 
         {isEmpty ? (
@@ -59,11 +61,16 @@ const LifestyleSection = () => {
               >
                 <img
                   src={item.image_url}
-                  alt={`Lifestyle in Zichron Yaakov ${idx + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  alt={(item as any).caption || `Lifestyle in Zichron Yaakov ${idx + 1}`}
+                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
+                {(item as any).caption && (
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-foreground/50 to-transparent p-3">
+                    <p className="text-primary-foreground font-body text-xs">{(item as any).caption}</p>
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>

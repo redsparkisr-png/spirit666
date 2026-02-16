@@ -62,13 +62,16 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
       className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group cursor-pointer"
       onClick={() => onSelect(property)}
     >
-      <div className="relative h-56 overflow-hidden" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
+      <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
+        {images.length === 0 && (
+          <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
+        )}
         {images.map((url, idx) => (
           <img
             key={idx}
             src={url}
             alt={`${property.title} – photo ${idx + 1}`}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400"
+            className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-400"
             style={{ opacity: carousel.current === idx ? 1 : 0 }}
             loading="lazy"
           />
@@ -82,7 +85,7 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
         {property.short_description && (
           <p className="text-muted-foreground text-sm font-body mb-4 line-clamp-2">{property.short_description}</p>
         )}
-        <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-5 flex-wrap">
+        <div className="flex items-center gap-4 text-xs text-muted-foreground font-body mb-4 flex-wrap">
           <span className="flex items-center gap-1.5">
             <LandPlot className="w-3.5 h-3.5 text-primary" />
             {property.lot_sqm ? `${property.lot_sqm} sqm` : "–"}
@@ -99,6 +102,9 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
         {property.price_label && (
           <p className="text-sm font-body font-semibold text-primary mb-3">{property.price_label}</p>
         )}
+        <p className="text-xs text-muted-foreground/70 font-body italic mb-4">
+          Private viewing available via secure video call.
+        </p>
         <button
           onClick={(e) => { e.stopPropagation(); onSelect(property); }}
           className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
@@ -145,7 +151,7 @@ const AvailableHomes = () => {
             Available Homes in Zichron Yaakov
           </h2>
           <p className="text-muted-foreground font-body max-w-xl mx-auto">
-            These represent only a portion of the homes we discreetly market.
+            This is a small curated selection of homes currently available. Some of our most attractive opportunities are shared privately with qualified buyers.
           </p>
         </motion.div>
 
@@ -153,7 +159,7 @@ const AvailableHomes = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-card rounded-xl overflow-hidden shadow-sm">
-                <div className="h-56 bg-muted animate-pulse" />
+                <div className="aspect-[4/3] bg-muted animate-pulse" />
                 <div className="p-6 space-y-3">
                   <div className="h-5 bg-muted rounded w-3/4 animate-pulse" />
                   <div className="h-4 bg-muted rounded w-full animate-pulse" />

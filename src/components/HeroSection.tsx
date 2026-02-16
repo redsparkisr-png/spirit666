@@ -18,9 +18,12 @@ const HeroSection = () => {
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover object-[center_35%]"
+          style={{ filter: "contrast(1.08) saturate(1.05)" }}
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.55)] via-[hsl(160,62%,14%,0.25)] to-[hsl(160,62%,14%,0.60)]" />
+        {/* Cinematic overlay: warmth + vignette + bottom gradient for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.50)] via-[hsl(30,20%,20%,0.12)] to-[hsl(160,62%,14%,0.65)]" />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 50%, hsl(160,62%,14%,0.25) 100%)" }} />
       </div>
 
       <motion.div
@@ -62,7 +65,7 @@ const HeroSection = () => {
           className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10"
           style={{ fontSize: '18px' }}
         >
-          Including Exclusive Off-Market Opportunities Most Buyers Never See
+          Buying from abroad shouldn't feel risky. We are your trusted eyes and voice on the ground in Zichron Yaakov.
         </motion.p>
 
         <motion.div
@@ -87,14 +90,18 @@ const HeroSection = () => {
           </button>
         </motion.div>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.1 }}
-          className="text-primary-foreground/50 font-body text-xs md:text-sm tracking-wide max-w-xl mx-auto"
+          className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-primary-foreground/60 font-body text-xs md:text-sm tracking-wide max-w-xl mx-auto"
         >
-          Trusted by International Buyers · Discreet Off-Market Access · Boutique Advisory
-        </motion.p>
+          <span>Licensed Israeli Brokerage</span>
+          <span>·</span>
+          <span>20+ Years Combined Experience</span>
+          <span>·</span>
+          <span>Specialized in Overseas Buyers</span>
+        </motion.div>
       </div>
 
       <motion.div

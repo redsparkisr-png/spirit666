@@ -9,7 +9,7 @@ type SoldProp = Tables<"properties_sold">;
 
 const SoldManager = () => {
   const [items, setItems] = useState<SoldProp[]>([]);
-  const [editing, setEditing] = useState<SoldProp | null>(null);
+  const [editing, setEditing] = useState<any | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -21,26 +21,25 @@ const SoldManager = () => {
   useEffect(() => { load(); }, []);
 
   const startNew = () => {
-    setEditing({ id: "", title: "", short_description: "", images: [], sold_date: "", created_at: "" } as SoldProp);
+    setEditing({ id: "", title: "", short_description: "", images: [], sold_date: "", created_at: "", bedrooms: null, built_sqm: null, lot_sqm: null, neighborhood_note: "", price_label: "", price_number: null, currency: "ILS" });
     setIsNew(true);
   };
 
   const duplicate = (p: SoldProp) => {
-    setEditing({ ...p, id: "", created_at: "", title: `${p.title} (Copy)` } as SoldProp);
+    setEditing({ ...p, id: "", created_at: "", title: `${p.title} (Copy)` });
     setIsNew(true);
   };
 
   const save = async () => {
     if (!editing) return;
     setSaving(true);
+    const { id, created_at, ...rest } = editing;
     if (isNew) {
-      const { id, created_at, ...rest } = editing;
       const { error } = await supabase.from("properties_sold").insert(rest);
       if (error) toast.error(error.message);
       else toast.success("Added");
     } else {
-      const { created_at, ...rest } = editing;
-      const { error } = await supabase.from("properties_sold").update(rest).eq("id", editing.id);
+      const { error } = await supabase.from("properties_sold").update(rest).eq("id", id);
       if (error) toast.error(error.message);
       else toast.success("Updated");
     }
@@ -67,9 +66,13 @@ const SoldManager = () => {
           <input placeholder="Title" value={editing.title} onChange={(e) => setEditing({ ...editing, title: e.target.value })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
           <input placeholder="Sold date (e.g. Jan 2025)" value={editing.sold_date || ""} onChange={(e) => setEditing({ ...editing, sold_date: e.target.value })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
           <input placeholder="Short description" value={editing.short_description || ""} onChange={(e) => setEditing({ ...editing, short_description: e.target.value })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm sm:col-span-2" />
+          <input type="number" placeholder="Bedrooms" value={editing.bedrooms ?? ""} onChange={(e) => setEditing({ ...editing, bedrooms: e.target.value ? Number(e.target.value) : null })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
+          <input type="number" placeholder="Built sqm" value={editing.built_sqm ?? ""} onChange={(e) => setEditing({ ...editing, built_sqm: e.target.value ? Number(e.target.value) : null })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
+          <input type="number" placeholder="Lot sqm" value={editing.lot_sqm ?? ""} onChange={(e) => setEditing({ ...editing, lot_sqm: e.target.value ? Number(e.target.value) : null })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
+          <input placeholder="Price label" value={editing.price_label || ""} onChange={(e) => setEditing({ ...editing, price_label: e.target.value })} className="px-3 py-2 border border-border rounded-md bg-card text-foreground font-body text-sm" />
         </div>
         <ImageManager images={editing.images || []} onChange={(imgs) => setEditing({ ...editing, images: imgs })} folder="sold" />
-        <button onClick={save} disabled={saving || !editing.title.trim()} className="bg-primary text-primary-foreground px-6 py-2 rounded-md font-body text-sm hover:bg-primary/90 disabled:opacity-50">
+        <button onClick={save} disabled={saving || !editing.title?.trim()} className="bg-primary text-primary-foreground px-6 py-2 rounded-md font-body text-sm hover:bg-primary/90 disabled:opacity-50">
           {saving ? "Saving..." : "Save"}
         </button>
       </div>
@@ -91,7 +94,7 @@ const SoldManager = () => {
           {items.map((p) => (
             <div key={p.id} className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg">
               {p.images && p.images[0] ? (
-                <img src={p.images[0]} alt="" className="w-12 h-9 object-cover rounded" />
+                <img src={p.images[0]} alt="" className="w-12 h-9 object-cover object-center rounded" />
               ) : (
                 <div className="w-12 h-9 bg-muted rounded flex items-center justify-center text-[10px] text-muted-foreground">No img</div>
               )}
