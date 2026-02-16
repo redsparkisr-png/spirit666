@@ -1,5 +1,6 @@
 import HeroSection from "@/components/HeroSection";
 import MicroTrustLine from "@/components/MicroTrustLine";
+import { FeaturedTestimonial } from "@/components/Testimonials";
 import AvailableHomes from "@/components/AvailableHomes";
 import ContactForm from "@/components/ContactForm";
 import SoldHomes from "@/components/SoldHomes";
@@ -16,6 +17,7 @@ const Index = () => {
     <main>
       <HeroSection />
       <MicroTrustLine />
+      <FeaturedTestimonial />
       <AvailableHomes />
       <ContactForm />
       <SoldHomes />

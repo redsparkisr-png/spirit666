@@ -25,16 +25,17 @@ const HeroSection = () => {
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover object-[center_35%]"
-          style={{ filter: "contrast(1.12) saturate(1.08) brightness(0.97)" }}
+          style={{ filter: "contrast(1.14) saturate(1.10) brightness(0.95)" }}
           width={1920}
           height={1080}
           loading="eager"
         />
-        {/* Cinematic overlay: stronger bottom gradient (60-70%) + warmth + deep vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.50)] via-[hsl(30,18%,18%,0.25)] to-[hsl(160,62%,14%,0.85)]" />
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 35%, hsl(160,62%,14%,0.50) 100%)" }} />
-        {/* Extra bottom fade for text readability against sky */}
-        <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
+        {/* Cinematic overlay: brand green top + warm mid + deep brand bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,62%,14%,0.55)] via-[hsl(30,18%,18%,0.20)] to-[hsl(160,62%,14%,0.88)]" />
+        {/* Vignette */}
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 30%, hsl(160,62%,14%,0.55) 100%)" }} />
+        {/* Strong bottom fade for guaranteed text readability */}
+        <div className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
       </div>
 
       <motion.div
@@ -64,11 +65,12 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="text-primary-foreground mb-6 max-w-3xl mx-auto text-balance"
+          className="text-primary-foreground mb-6 max-w-3xl mx-auto"
           style={{
             fontSize: "clamp(28px, 6vw, 52px)",
             lineHeight: 1.15,
-            textShadow: "0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.35)",
+            textShadow: "0 3px 24px rgba(0,0,0,0.7), 0 1px 6px rgba(0,0,0,0.45)",
+            textWrap: "balance",
           }}
         >
           Discover the Finest Homes in Zichron Yaakov
@@ -81,7 +83,7 @@ const HeroSection = () => {
           className="text-primary-foreground/90 font-body font-light max-w-2xl mx-auto mb-10 leading-relaxed"
           style={{
             fontSize: "clamp(15px, 2.5vw, 18px)",
-            textShadow: "0 2px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.3)",
+            textShadow: "0 2px 16px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.35)",
           }}
         >
           Buying from abroad shouldn't feel risky. We are your trusted eyes and voice on the ground in Zichron Yaakov.
@@ -91,7 +93,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4"
         >
           <button
             onClick={scrollToHomes}
@@ -109,17 +111,28 @@ const HeroSection = () => {
           </button>
         </motion.div>
 
+        {/* Secondary anchor text */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.95 }}
+          className="text-primary-foreground/50 font-body text-xs tracking-wide mb-8 cursor-pointer hover:text-primary-foreground/70 transition-colors"
+          onClick={scrollToForm}
+        >
+          Access Off-Market Opportunities →
+        </motion.p>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.1 }}
-          className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-primary-foreground/60 font-body text-xs md:text-sm tracking-wide max-w-xl mx-auto"
+          className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-primary-foreground/55 font-body text-xs md:text-sm tracking-wide max-w-xl mx-auto"
         >
-          <span>Licensed Israeli Brokerage</span>
+          <span>Discreet transactions</span>
           <span>·</span>
-          <span>20+ Years Combined Experience</span>
+          <span>Local expertise</span>
           <span>·</span>
-          <span>Specialized in Overseas Buyers</span>
+          <span>International clients</span>
         </motion.div>
       </div>
 

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Quote } from "lucide-react";
 
 const testimonials = [
   {
@@ -24,7 +25,41 @@ const testimonials = [
   },
 ];
 
+/* ── Compact featured testimonial for under-hero placement ── */
+export const FeaturedTestimonial = () => {
+  const featured = testimonials[0];
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="py-10 md:py-14 bg-primary/[0.04]"
+    >
+      <div className="container px-6 max-w-2xl mx-auto text-center">
+        <Quote className="w-6 h-6 mx-auto mb-3 text-gold/60" />
+        <p className="font-body text-foreground text-sm md:text-base leading-relaxed italic mb-4">
+          "{featured.quote}"
+        </p>
+        <div className="flex items-center justify-center gap-2.5">
+          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+            <span className="text-xs font-display font-semibold text-primary">{featured.initials}</span>
+          </div>
+          <div className="text-left">
+            <p className="text-xs font-body font-semibold text-foreground leading-tight">{featured.author}</p>
+            <p className="text-[11px] text-muted-foreground font-body">{featured.location} · {featured.context}</p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const Testimonials = () => {
+  const scrollToForm = () => {
+    document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="py-16 md:py-24 lg:py-28 bg-background">
       <div className="container px-6">
@@ -51,8 +86,9 @@ const Testimonials = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.12 }}
-              className="bg-card rounded-xl p-6 shadow-md border border-gold/10 hover:shadow-lg transition-shadow duration-300"
+              className="bg-card rounded-xl p-6 shadow-md border border-gold/10 hover:shadow-lg transition-shadow duration-300 relative"
             >
+              <Quote className="w-5 h-5 text-gold/25 absolute top-4 right-4" />
               <div className="flex items-center gap-3 mb-4">
                 {/* Initials avatar */}
                 <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -70,6 +106,25 @@ const Testimonials = () => {
             </motion.blockquote>
           ))}
         </div>
+
+        {/* Soft CTA below testimonials */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="text-center mt-12 space-y-3"
+        >
+          <p className="text-sm text-muted-foreground/70 font-body italic">
+            Private opportunities are rarely advertised publicly.
+          </p>
+          <button
+            onClick={scrollToForm}
+            className="bg-gold hover:bg-gold-hover text-primary-foreground px-6 py-3 rounded-lg font-body font-medium text-sm transition-all duration-300 hover:shadow-md"
+          >
+            Request Private Access
+          </button>
+        </motion.div>
       </div>
     </section>
   );
