@@ -42,7 +42,7 @@ const ContactForm = () => {
             className="text-center mb-10"
           >
             <h2 className="font-display font-semibold text-foreground mb-4">
-              Access Zichron Yaakov's Most Discreet Listings
+              Homes for Sale in Zichron Yaakov – Including Off-Market Opportunities
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
               Receive curated off-market homes before they hit the public market.
@@ -98,17 +98,17 @@ const ContactForm = () => {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="text-center mt-5 space-y-2"
           >
-            <p className="text-xs text-muted-foreground/60 font-body">
+            <p className="text-xs text-muted-foreground/70 font-body">
               We respond within 1–2 business hours.
             </p>
-            <p className="text-xs text-muted-foreground/70 font-body max-w-sm mx-auto leading-relaxed">
+            <p className="text-xs text-muted-foreground/50 font-body italic">
+              Discreet • No spam • Personal guidance
+            </p>
+            <p className="text-[11px] text-muted-foreground/60 font-body max-w-sm mx-auto leading-relaxed pt-2">
               By submitting this form, you agree to our{" "}
               <Link to="/privacy" className="underline hover:text-foreground transition-colors">
                 Privacy Policy
               </Link>.
-            </p>
-            <p className="text-xs text-muted-foreground/50 font-body italic">
-              No spam. Direct contact from our senior team only.
             </p>
           </motion.div>
         </div>

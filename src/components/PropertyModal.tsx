@@ -161,19 +161,19 @@ const MobileModal = ({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed inset-x-0 bottom-0 z-50 bg-background rounded-t-2xl flex flex-col overflow-hidden"
+            className="fixed inset-x-0 bottom-0 z-50 bg-background rounded-t-3xl flex flex-col overflow-hidden shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
             style={{ height: "100dvh" }}
           >
             {/* Sticky header */}
             <div
-              className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-background border-b border-border rounded-t-2xl"
-              style={{ paddingTop: "max(12px, env(safe-area-inset-top))" }}
+              className="sticky top-0 z-20 flex items-center justify-between px-5 py-4 bg-background/95 backdrop-blur-md border-b border-border/40"
+              style={{ paddingTop: "max(16px, env(safe-area-inset-top))" }}
             >
-              <div className="w-10 h-1 rounded-full bg-muted-foreground/30 absolute top-2 left-1/2 -translate-x-1/2" />
-              <span id="mobile-modal-title" className="text-sm font-display font-semibold text-foreground truncate pr-4">{title}</span>
+              <div className="w-12 h-1.5 rounded-full bg-muted-foreground/20 absolute top-2.5 left-1/2 -translate-x-1/2" />
+              <span id="mobile-modal-title" className="text-sm font-display font-semibold text-foreground truncate pr-6 max-w-[70vw]">{title}</span>
               <button
                 onClick={onClose}
-                className="w-11 h-11 rounded-full bg-muted flex items-center justify-center text-foreground hover:bg-muted-foreground/20 transition-colors shrink-0"
+                className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-foreground/70 hover:bg-muted-foreground/20 transition-all shrink-0 active:scale-90"
                 aria-label="Close"
               >
                 <X className="w-5 h-5" />
@@ -237,27 +237,27 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
     <>
       <ImageGallery images={images} title={property.title} isMobile={isMobile} />
 
-      <div className="px-5 pt-4 pb-6 md:px-6 md:pt-5 md:pb-6 space-y-4">
+      <div className="px-6 py-6 space-y-5">
         {/* Title + price */}
-        <div>
+        <div className="space-y-3">
           <h3
-            className="font-display font-semibold text-foreground text-lg md:text-xl"
-            style={{ lineHeight: "1.35" }}
+            className="font-display font-semibold text-foreground text-xl md:text-2xl leading-tight text-balance"
           >
             {property.title}
           </h3>
-          {property.neighborhood_note && (
-            <p className="text-muted-foreground font-body text-sm mt-1 flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-primary inline shrink-0" />
-              {property.neighborhood_note}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p
+              className="font-display font-bold text-gold text-lg md:text-xl"
+            >
+              {property.price_label || "Price Upon Request"}
             </p>
-          )}
-          <p
-            className="font-display font-bold mt-3"
-            style={{ color: "hsl(var(--gold))", fontSize: "18px" }}
-          >
-            {property.price_label || "Price Upon Request"}
-          </p>
+            {property.neighborhood_note && (
+              <p className="text-muted-foreground/80 font-body text-xs md:text-sm flex items-center gap-1.5 bg-muted/30 px-2 py-1 rounded-md w-fit">
+                <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
+                {property.neighborhood_note}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Stats row — 20-24px gaps */}
