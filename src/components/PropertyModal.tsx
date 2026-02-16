@@ -75,7 +75,7 @@ const ImageGallery = ({
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.02) 45%, rgba(0,0,0,0.35))",
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.20), rgba(0,0,0,0.02) 45%, rgba(0,0,0,0.30))",
         }}
       />
       {/* Image counter */}
@@ -84,35 +84,38 @@ const ImageGallery = ({
           {active + 1} / {images.length}
         </div>
       )}
-      {/* Nav arrows */}
+      {/* Nav arrows — vertically centered */}
       {images.length > 1 && (
         <>
           <button
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white/70 hover:bg-black/40 hover:text-white transition-all"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center text-white/80 hover:bg-white/30 hover:text-white transition-all"
             aria-label="Previous image"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white/70 hover:bg-black/40 hover:text-white transition-all"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center text-white/80 hover:bg-white/30 hover:text-white transition-all"
             aria-label="Next image"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
           {/* Dots */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-            {images.map((_, i) => (
+            {images.slice(0, 8).map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActive(i)}
                 className={`w-2 h-2 rounded-full transition-all ${
-                  i === active ? "bg-white scale-110" : "bg-white/40"
+                  i === active ? "bg-white scale-125 shadow-sm" : "bg-white/50"
                 }`}
                 aria-label={`Go to image ${i + 1}`}
               />
             ))}
+            {images.length > 8 && (
+              <span className="text-white/50 text-[10px] leading-none self-center">+{images.length - 8}</span>
+            )}
           </div>
         </>
       )}
@@ -132,7 +135,6 @@ const MobileModal = ({
   children: React.ReactNode;
   title: string;
 }) => {
-  // Lock body scroll when open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -235,7 +237,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
     <>
       <ImageGallery images={images} title={property.title} isMobile={isMobile} />
 
-      <div className="px-5 pt-5 pb-6 md:px-6 md:pt-5 md:pb-6 space-y-5">
+      <div className="px-5 pt-4 pb-6 md:px-6 md:pt-5 md:pb-6 space-y-4">
         {/* Title + price */}
         <div>
           <h3
@@ -245,9 +247,15 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
             {property.title}
           </h3>
           {property.neighborhood_note && (
-            <p className="text-muted-foreground font-body text-sm mt-1">{property.neighborhood_note}</p>
+            <p className="text-muted-foreground font-body text-sm mt-1 flex items-center gap-1">
+              <MapPin className="w-3.5 h-3.5 text-primary inline shrink-0" />
+              {property.neighborhood_note}
+            </p>
           )}
-          <p className="font-body font-semibold text-sm mt-3" style={{ color: "hsl(var(--gold))" }}>
+          <p
+            className="font-display font-bold mt-3"
+            style={{ color: "hsl(var(--gold))", fontSize: "18px" }}
+          >
             {property.price_label || "Price Upon Request"}
           </p>
         </div>
@@ -266,12 +274,6 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
             <LandPlot className="w-4 h-4 text-primary" />
             {property.lot_sqm ? `${property.lot_sqm} sqm lot` : "–"}
           </span>
-          {property.neighborhood_note && (
-            <span className="inline-flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-primary" />
-              {property.neighborhood_note}
-            </span>
-          )}
         </div>
 
         {/* Description — single block */}
@@ -288,6 +290,11 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
           <li>Licensed Israeli brokerage</li>
         </ul>
 
+        {/* Scarcity line */}
+        <p className="text-xs font-body italic text-muted-foreground/60 text-center">
+          Limited availability in central Zichron.
+        </p>
+
         <div className="border-t border-border" />
 
         {/* Conversion Block */}
@@ -299,12 +306,12 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="text-center">
               <p className="font-display font-semibold text-foreground text-base leading-snug">
                 Some properties in Zichron Yaakov are never publicly advertised.
               </p>
-              <p className="text-muted-foreground font-body text-sm mt-1.5">
+              <p className="text-muted-foreground font-body text-sm mt-1">
                 Leave your details for full pricing and off-market access.
               </p>
             </div>
@@ -316,7 +323,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 maxLength={100}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                className="w-full px-4 py-3.5 rounded-lg border border-border bg-card text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               />
               <input
                 type="email"
@@ -324,7 +331,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 maxLength={255}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                className="w-full px-4 py-3.5 rounded-lg border border-border bg-card text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               />
               <input
                 type="tel"
@@ -332,7 +339,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 maxLength={20}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                className="w-full px-4 py-3.5 rounded-lg border border-border bg-card text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               />
               <button
                 type="submit"
@@ -344,8 +351,10 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
               </button>
             </form>
 
-            <p className="text-center text-xs text-muted-foreground/50 font-body">
-              Discreet · Confidential · No spam · We never share your details.
+            <p className="text-center text-xs text-muted-foreground/60 font-body leading-relaxed">
+              We respond within 1–2 business hours.
+              <br />
+              <span className="text-muted-foreground/45">Discreet · Confidential · No spam.</span>
             </p>
           </div>
         )}

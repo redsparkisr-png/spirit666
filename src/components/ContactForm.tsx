@@ -98,6 +98,9 @@ const ContactForm = () => {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="text-center mt-5 space-y-2"
           >
+            <p className="text-xs text-muted-foreground/60 font-body">
+              We respond within 1–2 business hours.
+            </p>
             <p className="text-xs text-muted-foreground/70 font-body max-w-sm mx-auto leading-relaxed">
               By submitting this form, you agree to our{" "}
               <Link to="/privacy" className="underline hover:text-foreground transition-colors">
