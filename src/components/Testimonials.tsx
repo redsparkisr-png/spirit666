@@ -86,21 +86,21 @@ const Testimonials = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.12 }}
-              className="bg-card rounded-xl p-6 shadow-md border border-gold/10 hover:shadow-lg transition-shadow duration-300 relative"
+              className="bg-card rounded-xl p-8 shadow-sm border border-border/40 hover:shadow-xl hover:border-gold/20 transition-all duration-500 relative group"
             >
-              <Quote className="w-5 h-5 text-gold/25 absolute top-4 right-4" />
-              <div className="flex items-center gap-3 mb-4">
-                {/* Initials avatar */}
-                <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <span className="text-sm font-display font-semibold text-primary">{t.initials}</span>
+              <Quote className="w-8 h-8 text-gold/10 absolute top-4 right-4 group-hover:text-gold/20 transition-colors" />
+              <div className="flex items-center gap-4 mb-6">
+                {/* Portrait avatar placeholder */}
+                <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center shrink-0 border border-border/50 overflow-hidden">
+                  <span className="text-base font-display font-semibold text-muted-foreground/70">{t.initials}</span>
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-body font-semibold text-foreground leading-tight">{t.author}</p>
-                  <p className="text-xs text-muted-foreground font-body">{t.location}</p>
-                  <p className="text-[11px] text-muted-foreground/60 font-body">{t.context}</p>
+                  <p className="text-sm font-body font-bold text-foreground leading-tight">{t.author}</p>
+                  <p className="text-xs text-muted-foreground font-body font-medium">{t.location}</p>
+                  <p className="text-[11px] text-muted-foreground/60 font-body italic mt-0.5">{t.context}</p>
                 </div>
               </div>
-              <p className="text-foreground font-body text-sm leading-relaxed">
+              <p className="text-foreground font-body text-[15px] leading-relaxed italic">
                 "{t.quote}"
               </p>
             </motion.blockquote>

@@ -45,7 +45,7 @@ const ContactForm = () => {
               Access Zichron Yaakov's Most Discreet Listings
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
-              Some of our most valuable opportunities are never publicly advertised. Leave your details to receive curated off-market homes directly.
+              Receive curated off-market homes before they hit the public market.
             </p>
           </motion.div>
 
@@ -108,7 +108,7 @@ const ContactForm = () => {
               </Link>.
             </p>
             <p className="text-xs text-muted-foreground/50 font-body italic">
-              Limited inventory. Shared discreetly.
+              No spam. Direct contact from our senior team only.
             </p>
           </motion.div>
         </div>
