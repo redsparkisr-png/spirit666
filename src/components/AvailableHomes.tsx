@@ -156,17 +156,22 @@ const AvailableHomes = () => {
         </motion.div>
 
         {isEmpty ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-card rounded-xl overflow-hidden shadow-sm">
-                <div className="aspect-[4/3] bg-muted animate-pulse" />
-                <div className="p-6 space-y-3">
-                  <div className="h-5 bg-muted rounded w-3/4 animate-pulse" />
-                  <div className="h-4 bg-muted rounded w-full animate-pulse" />
-                  <div className="h-10 bg-muted rounded w-full animate-pulse mt-4" />
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-card rounded-xl overflow-hidden shadow-sm">
+                  <div className="aspect-[4/3] bg-muted/60 animate-pulse" />
+                  <div className="p-6 space-y-3">
+                    <div className="h-5 bg-muted/60 rounded w-3/4 animate-pulse" />
+                    <div className="h-4 bg-muted/60 rounded w-full animate-pulse" />
+                    <div className="h-10 bg-muted/60 rounded w-full animate-pulse mt-4" />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <p className="text-center text-sm text-muted-foreground/60 font-body italic">
+              New listings are being prepared — check back soon.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
