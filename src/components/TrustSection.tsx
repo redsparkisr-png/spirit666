@@ -35,8 +35,12 @@ const TrustSection = () => {
             </Link>
           </nav>
 
-          <p className="text-primary-foreground/50 font-body text-xs leading-relaxed max-w-lg mx-auto mb-4">
+          <p className="text-primary-foreground/50 font-body text-xs leading-relaxed max-w-lg mx-auto mb-3">
             Spirit Real Estate is a licensed real estate brokerage in Israel. All property information is subject to change and availability.
+          </p>
+
+          <p className="text-primary-foreground/40 font-body text-[11px] leading-relaxed max-w-lg mx-auto mb-4">
+            Information presented is for marketing purposes only and does not constitute legal, tax, or investment advice. Spirit Real Estate provides equal service regardless of race, color, religion, sex, national origin, disability, or familial status.
           </p>
 
           <p className="text-primary-foreground/40 font-body text-xs">
