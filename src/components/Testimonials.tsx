@@ -6,29 +6,28 @@ import eliranImage from "@/assets/eliran-amsalem.jpg";
 
 const testimonials = [
   {
-    quote: "Buying from the US felt overwhelming at first. Spirit Real Estate made the entire process clear, calm, and well managed from start to finish.",
+    quote: "The entire process was handled remotely. Clear communication at every step — we always knew exactly where things stood.",
     author: "David & Sarah M.",
     location: "New York",
     image: aviImage,
-    context: "Family from New York · 2024",
+    context: "Family from New York · Purchased 2024",
   },
   {
-    quote: "We felt someone was truly representing us locally. Communication was transparent, and we always knew what was happening.",
+    quote: "No pressure, no rush. They represented us professionally and made sure every document was explained in English before we signed.",
     author: "Michael R.",
     location: "Toronto",
     image: hagitImage,
-    context: "Investor from Toronto · 2024",
+    context: "Investor from Toronto · Purchased 2024",
   },
   {
-    quote: "The local presence made all the difference. Even from abroad, we felt confident making the right decision.",
+    quote: "We bought remotely with full confidence. The local presence made all the difference — it felt like having family on the ground.",
     author: "Jonathan & Lisa B.",
     location: "London",
     image: eliranImage,
-    context: "Retirees from London · 2024",
+    context: "Retirees from London · Purchased 2024",
   },
 ];
 
-/* ── Compact featured testimonial for under-hero placement ── */
 export const FeaturedTestimonial = () => {
   const featured = testimonials[0];
   return (
@@ -77,7 +76,7 @@ const Testimonials = () => {
             Trusted by International Clients
           </h2>
           <p className="text-muted-foreground font-body text-sm max-w-md mx-auto">
-            Recent buyers from New York, Toronto and London shared their experience moving to Zichron.
+            Buyers from New York, Toronto and London share their experience working with Spirit.
           </p>
         </motion.div>
 
@@ -109,7 +108,6 @@ const Testimonials = () => {
           ))}
         </div>
 
-        {/* Soft CTA below testimonials */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
