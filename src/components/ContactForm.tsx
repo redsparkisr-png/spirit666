@@ -4,57 +4,28 @@ import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
-const budgetRanges = [
-  "Under $500,000",
-  "$500,000 – $1,000,000",
-  "$1,000,000 – $2,000,000",
-  "Above $2,000,000",
-];
-
-const timelines = [
-  "0–3 months",
-  "3–6 months",
-  "6–12 months",
-  "Just exploring",
-];
-
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    country: "",
-    budget: "",
-    timeline: "",
-    whatsapp: "",
-  });
+  const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.whatsapp.trim()) {
-      toast.error("Please fill in at least your name and WhatsApp number.");
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
+      toast.error("Please fill in all fields.");
       return;
     }
     setIsSubmitting(true);
-
-    // Compose extra fields into the message column to avoid schema changes
-    const messageParts = [
-      formData.country && `Country: ${formData.country}`,
-      formData.budget && `Budget: ${formData.budget}`,
-      formData.timeline && `Timeline: ${formData.timeline}`,
-    ].filter(Boolean);
-
     const { error } = await supabase.from("leads").insert({
       full_name: formData.name.trim(),
-      phone: formData.whatsapp.trim(),
-      message: messageParts.length > 0 ? messageParts.join(" | ") : null,
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
       source: "landing_page",
     });
-
     if (error) {
       toast.error("Something went wrong. Please try again.");
     } else {
-      toast.success("Thank you! We'll be in touch with matching opportunities soon.");
-      setFormData({ name: "", country: "", budget: "", timeline: "", whatsapp: "" });
+      toast.success("Thank you! We'll be in touch with matching homes soon.");
+      setFormData({ name: "", phone: "", email: "" });
     }
     setIsSubmitting(false);
   };
@@ -71,10 +42,10 @@ const ContactForm = () => {
             className="text-center mb-10"
           >
             <h2 className="font-display font-semibold text-foreground mb-4">
-              Let's Find the Right Opportunity for You
+              Homes for Sale in Zichron Yaakov – Including Off-Market Opportunities
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
-              Tell us about your plans and we'll guide you personally.
+              Receive curated off-market homes before they hit the public market.
             </p>
           </motion.div>
 
@@ -88,48 +59,26 @@ const ContactForm = () => {
           >
             <input
               type="text"
-              placeholder="Full Name *"
+              placeholder="Full Name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               maxLength={100}
               className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
             />
             <input
-              type="text"
-              placeholder="Country of Residence"
-              value={formData.country}
-              onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-              maxLength={100}
+              type="tel"
+              placeholder="Phone"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              maxLength={20}
               className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
             />
-            <select
-              value={formData.budget}
-              onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-              className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all appearance-none"
-              style={{ color: formData.budget ? undefined : "hsl(var(--muted-foreground) / 0.6)" }}
-            >
-              <option value="" disabled>Budget Range</option>
-              {budgetRanges.map((b) => (
-                <option key={b} value={b} style={{ color: "hsl(var(--foreground))" }}>{b}</option>
-              ))}
-            </select>
-            <select
-              value={formData.timeline}
-              onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-              className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all appearance-none"
-              style={{ color: formData.timeline ? undefined : "hsl(var(--muted-foreground) / 0.6)" }}
-            >
-              <option value="" disabled>Timeline</option>
-              {timelines.map((t) => (
-                <option key={t} value={t} style={{ color: "hsl(var(--foreground))" }}>{t}</option>
-              ))}
-            </select>
             <input
-              type="tel"
-              placeholder="WhatsApp Number *"
-              value={formData.whatsapp}
-              onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-              maxLength={20}
+              type="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              maxLength={255}
               className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
             />
             <button
@@ -138,7 +87,7 @@ const ContactForm = () => {
               className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold transition-colors duration-300 disabled:opacity-60"
               style={{ fontSize: '17px' }}
             >
-              {isSubmitting ? "Sending..." : "Get Personal Guidance"}
+              {isSubmitting ? "Sending..." : "Get Private Access"}
             </button>
           </motion.form>
 

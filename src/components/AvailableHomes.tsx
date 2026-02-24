@@ -81,6 +81,7 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
         )}
       </div>
       <div className="p-5 md:p-6">
+        {/* Price first for visibility */}
         {property.price_label && (
           <p className="text-sm font-body font-semibold mb-2" style={{ color: "hsl(var(--gold))" }}>{property.price_label}</p>
         )}
@@ -106,7 +107,7 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
           onClick={(e) => { e.stopPropagation(); onSelect(property); }}
           className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
         >
-          Schedule Viewing
+          Request Full Details
         </button>
       </div>
     </motion.div>
@@ -142,10 +143,10 @@ const AvailableHomes = () => {
           className="text-center mb-14"
         >
           <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">
-            Hand-Selected for International Buyers
+            Hand-Selected Homes for International Buyers
           </p>
           <h2 className="font-display font-semibold text-foreground mb-4">
-            Current Opportunities in Zichron Yaakov
+            Available Homes in Zichron Yaakov
           </h2>
           <p className="text-muted-foreground font-body max-w-xl mx-auto">
             This is a small curated selection of homes currently available. Some of our most attractive opportunities are shared privately with qualified buyers.
