@@ -32,8 +32,10 @@ const HeroSection = () => {
         />
         {/* Soft warm top wash — keeps sky bright */}
         <div className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-[hsl(35,40%,85%,0.3)] to-transparent" />
-        {/* Gentle bottom fade for text readability — NOT heavy dark */}
-        <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[hsl(160,30%,8%,0.7)] via-[hsl(160,20%,12%,0.35)] to-transparent" />
+        {/* Gentle bottom fade for text readability */}
+        <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[hsl(160,30%,8%,0.55)] via-[hsl(160,20%,12%,0.28)] to-transparent" />
+        {/* Localised text backdrop — subtle darkening only behind the content area */}
+        <div className="absolute inset-x-0 bottom-[5%] h-[45%] bg-gradient-to-t from-[hsl(0,0%,0%,0.3)] via-[hsl(0,0%,0%,0.15)] to-transparent" />
         {/* Very subtle vignette */}
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.15) 100%)" }} />
       </div>

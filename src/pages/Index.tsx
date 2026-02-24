@@ -1,6 +1,6 @@
 import HeroSection from "@/components/HeroSection";
 import MicroTrustLine from "@/components/MicroTrustLine";
-import { FeaturedTestimonial } from "@/components/Testimonials";
+import { FeaturedTestimonial, BottomTestimonial } from "@/components/Testimonials";
 import AvailableHomes from "@/components/AvailableHomes";
 import ContactForm from "@/components/ContactForm";
 import SoldHomes from "@/components/SoldHomes";
@@ -24,6 +24,7 @@ const Index = () => {
       <WhyDifferent />
       <LifestyleSection />
       <Testimonials />
+      <BottomTestimonial />
       <TrustSection />
       <FloatingElements />
       <ExitIntentPopup />

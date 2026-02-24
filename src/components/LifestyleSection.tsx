@@ -23,7 +23,7 @@ const LifestyleSection = () => {
   const isEmpty = loaded && items.length === 0;
 
   return (
-    <section className="py-16 md:py-24 lg:py-28 bg-sand-light">
+    <section className="py-12 md:py-20 lg:py-24 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -31,7 +31,7 @@ const ContactForm = () => {
   };
 
   return (
-    <section id="contact-form" className="py-16 md:py-24 lg:py-28 bg-background">
+    <section id="contact-form" className="py-12 md:py-20 lg:py-24 bg-background">
       <div className="container px-6">
         <div className="max-w-lg mx-auto">
           <motion.div
