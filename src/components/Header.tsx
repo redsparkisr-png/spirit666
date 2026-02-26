@@ -24,9 +24,9 @@ const Header = () => {
   const navLinks = [
     { to: prefix + "/", label: t("header.nav.home") },
     { to: prefix + "/#available-homes", label: t("header.nav.properties") },
-    { to: prefix + "/privacy", label: t("header.nav.privacy") },
-    { to: prefix + "/terms", label: t("header.nav.terms") },
-    { to: prefix + "/accessibility", label: t("header.nav.accessibility") },
+    { to: prefix + "/sell", label: t("header.nav.sell") },
+    { to: prefix + "/about", label: t("header.nav.about") },
+    { to: prefix + "/contact", label: t("header.nav.contact") },
   ];
 
   return (
