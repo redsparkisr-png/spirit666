@@ -9,6 +9,9 @@ import Index from "./pages/Index";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Accessibility from "./pages/Accessibility";
+import Sell from "./pages/Sell";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
@@ -37,6 +40,9 @@ const App = () => (
               <Route path="privacy" element={<Privacy />} />
               <Route path="terms" element={<Terms />} />
               <Route path="accessibility" element={<Accessibility />} />
+              <Route path="sell" element={<Sell />} />
+              <Route path="about" element={<About />} />
+              <Route path="contact" element={<Contact />} />
               <Route path="admin" element={<Admin />} />
             </Route>
             {/* Backward compat for /admin */}

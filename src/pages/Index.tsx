@@ -12,18 +12,24 @@ import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
 import CookieNotice from "@/components/CookieNotice";
+import BlueprintSection from "@/components/BlueprintSection";
+import MarketSnapshot from "@/components/MarketSnapshot";
+import SchemaOrg from "@/components/SchemaOrg";
 
 const Index = () => {
   return (
     <main>
+      <SchemaOrg />
       <Header />
       <HeroSection />
       <MicroTrustLine />
       <FeaturedTestimonial />
       <AvailableHomes />
+      <MarketSnapshot />
       <ContactForm />
       <SoldHomes />
       <WhyDifferent />
+      <BlueprintSection />
       <LifestyleSection />
       <Testimonials />
       <BottomTestimonial />
