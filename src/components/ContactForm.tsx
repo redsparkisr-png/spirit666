@@ -3,15 +3,19 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useSiteContent } from "@/hooks/useSiteContent";
+import { useLanguage } from "@/lib/i18n";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useSiteContent();
+  const { lang } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
-      toast.error("Please fill in all fields.");
+      toast.error(t("home.contact.validation_error"));
       return;
     }
     setIsSubmitting(true);
@@ -22,9 +26,9 @@ const ContactForm = () => {
       source: "landing_page",
     });
     if (error) {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t("home.contact.error"));
     } else {
-      toast.success("Thank you! We'll be in touch with matching homes soon.");
+      toast.success(t("home.contact.success"));
       setFormData({ name: "", phone: "", email: "" });
     }
     setIsSubmitting(false);
@@ -42,10 +46,10 @@ const ContactForm = () => {
             className="text-center mb-10"
           >
             <h2 className="font-display font-semibold text-foreground mb-4">
-              Homes for Sale in Zichron Yaakov – Including Off-Market Opportunities
+              {t("home.contact.title")}
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
-              Receive curated off-market homes before they hit the public market.
+              {t("home.contact.subtitle")}
             </p>
           </motion.div>
 
@@ -59,7 +63,7 @@ const ContactForm = () => {
           >
             <input
               type="text"
-              placeholder="Full Name"
+              placeholder={t("home.contact.placeholder_name")}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               maxLength={100}
@@ -67,7 +71,7 @@ const ContactForm = () => {
             />
             <input
               type="tel"
-              placeholder="Phone"
+              placeholder={t("home.contact.placeholder_phone")}
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               maxLength={20}
@@ -75,7 +79,7 @@ const ContactForm = () => {
             />
             <input
               type="email"
-              placeholder="Email"
+              placeholder={t("home.contact.placeholder_email")}
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               maxLength={255}
@@ -87,7 +91,7 @@ const ContactForm = () => {
               className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold transition-colors duration-300 disabled:opacity-60"
               style={{ fontSize: '17px' }}
             >
-              {isSubmitting ? "Sending..." : "Get Private Access"}
+              {isSubmitting ? t("home.contact.sending") : t("home.contact.button")}
             </button>
           </motion.form>
 
@@ -99,15 +103,15 @@ const ContactForm = () => {
             className="text-center mt-5 space-y-2"
           >
             <p className="text-xs text-muted-foreground/70 font-body">
-              We respond within 1–2 business hours.
+              {t("home.contact.response_time")}
             </p>
             <p className="text-xs text-muted-foreground/50 font-body italic">
-              Discreet • No spam • Personal guidance
+              {t("home.contact.trust_text")}
             </p>
             <p className="text-[11px] text-muted-foreground/60 font-body max-w-sm mx-auto leading-relaxed pt-2">
-              By submitting this form, you agree to our{" "}
-              <Link to="/privacy" className="underline hover:text-foreground transition-colors">
-                Privacy Policy
+              {t("home.contact.privacy_text")}{" "}
+              <Link to={`/${lang}/privacy`} className="underline hover:text-foreground transition-colors">
+                {t("header.nav.privacy")}
               </Link>.
             </p>
           </motion.div>

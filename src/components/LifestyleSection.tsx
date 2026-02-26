@@ -2,12 +2,14 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 type GalleryItem = Tables<"lifestyle_gallery">;
 
 const LifestyleSection = () => {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const { t } = useSiteContent();
 
   useEffect(() => {
     supabase
@@ -33,12 +35,12 @@ const LifestyleSection = () => {
           className="text-center mb-14"
         >
           <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
-            Why Overseas Families Fall in Love with Zichron Yaakov
+            {t("home.lifestyle.title")}
           </h2>
           <div className="text-muted-foreground font-body max-w-lg mx-auto text-base md:text-lg space-y-2">
-            <p>Coastal Mediterranean lifestyle without Tel Aviv chaos</p>
-            <p>Strong long-term value and limited land supply</p>
-            <p>Welcoming English-speaking community</p>
+            <p>{t("home.lifestyle.bullet_1")}</p>
+            <p>{t("home.lifestyle.bullet_2")}</p>
+            <p>{t("home.lifestyle.bullet_3")}</p>
           </div>
         </motion.div>
 
@@ -50,7 +52,7 @@ const LifestyleSection = () => {
               ))}
             </div>
             <p className="text-center text-sm text-muted-foreground/60 font-body italic">
-              Gallery coming soon — beautiful scenes from life in Zichron Yaakov.
+              {t("home.lifestyle.empty_text")}
             </p>
           </div>
         ) : (
@@ -88,7 +90,7 @@ const LifestyleSection = () => {
           transition={{ delay: 0.5, duration: 0.6 }}
           className="text-center text-muted-foreground font-body text-sm italic mt-10"
         >
-          This is more than a property. It's a way of life.
+          {t("home.lifestyle.bottom_line")}
         </motion.p>
       </div>
     </section>

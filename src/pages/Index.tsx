@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import MicroTrustLine from "@/components/MicroTrustLine";
 import { FeaturedTestimonial, BottomTestimonial } from "@/components/Testimonials";
@@ -15,6 +16,7 @@ import CookieNotice from "@/components/CookieNotice";
 const Index = () => {
   return (
     <main>
+      <Header />
       <HeroSection />
       <MicroTrustLine />
       <FeaturedTestimonial />

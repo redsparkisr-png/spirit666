@@ -3,12 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const ExitIntentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasFired, setHasFired] = useState(false);
+  const { t } = useSiteContent();
 
   const handleMouseLeave = useCallback(
     (e: MouseEvent) => {
@@ -28,7 +30,7 @@ const ExitIntentPopup = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
-      toast.error("Please fill in all fields.");
+      toast.error(t("home.contact.validation_error"));
       return;
     }
     setIsSubmitting(true);
@@ -39,9 +41,9 @@ const ExitIntentPopup = () => {
       source: "exit_intent",
     });
     if (error) {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t("home.contact.error"));
     } else {
-      toast.success("Thank you! You'll receive exclusive listings soon.");
+      toast.success(t("home.contact.success"));
       setFormData({ name: "", phone: "", email: "" });
       setIsVisible(false);
     }
@@ -71,23 +73,23 @@ const ExitIntentPopup = () => {
           >
             <button
               onClick={() => setIsVisible(false)}
-              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute top-4 right-4 rtl:right-auto rtl:left-4 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Close popup"
             >
               <X className="w-5 h-5" />
             </button>
 
             <h3 className="text-2xl font-display font-semibold text-foreground mb-3 text-center">
-              Before You Go — Want Access to Properties Most Buyers Never See?
+              {t("home.exit.headline")}
             </h3>
             <p className="text-muted-foreground font-body text-sm text-center mb-6">
-              Receive a private list of off-market and under-the-radar opportunities in Zichron Yaakov.
+              {t("home.exit.subline")}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-3">
               <input
                 type="text"
-                placeholder="Name"
+                placeholder={t("home.contact.placeholder_name")}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 maxLength={100}
@@ -95,7 +97,7 @@ const ExitIntentPopup = () => {
               />
               <input
                 type="tel"
-                placeholder="Phone"
+                placeholder={t("home.contact.placeholder_phone")}
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 maxLength={20}
@@ -103,7 +105,7 @@ const ExitIntentPopup = () => {
               />
               <input
                 type="email"
-                placeholder="Email"
+                placeholder={t("home.contact.placeholder_email")}
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 maxLength={255}
@@ -114,7 +116,7 @@ const ExitIntentPopup = () => {
                 disabled={isSubmitting}
                 className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3.5 rounded-lg font-body font-semibold text-sm transition-colors duration-300 disabled:opacity-60"
               >
-                {isSubmitting ? "Sending..." : "Send Me Private Listings"}
+                {isSubmitting ? t("home.contact.sending") : t("home.exit.button")}
               </button>
             </form>
           </motion.div>

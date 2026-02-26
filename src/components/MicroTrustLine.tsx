@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const MicroTrustLine = () => {
+  const { t } = useSiteContent();
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -11,7 +14,7 @@ const MicroTrustLine = () => {
     >
       <div className="container px-6">
         <p className="text-center text-sm text-primary-foreground/70 font-body tracking-wide">
-          Local presence · Personal guidance · Clear process · Trusted by international buyers
+          {t("home.trust_line.text")}
         </p>
       </div>
     </motion.div>

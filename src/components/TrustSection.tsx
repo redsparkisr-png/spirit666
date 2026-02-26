@@ -1,7 +1,13 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useSiteContent } from "@/hooks/useSiteContent";
+import { useLanguage } from "@/lib/i18n";
 
 const TrustSection = () => {
+  const { t } = useSiteContent();
+  const { lang } = useLanguage();
+  const prefix = `/${lang}`;
+
   return (
     <footer className="py-12 md:py-16 bg-primary">
       <div className="container px-6">
@@ -16,31 +22,31 @@ const TrustSection = () => {
 
           <nav className="flex justify-center gap-6 mb-6 flex-wrap">
             <Link
-              to="/privacy"
+              to={`${prefix}/privacy`}
               className="text-primary-foreground/60 hover:text-primary-foreground/90 font-body text-sm transition-colors"
             >
-              Privacy Policy
+              {t("header.nav.privacy")}
             </Link>
             <Link
-              to="/terms"
+              to={`${prefix}/terms`}
               className="text-primary-foreground/60 hover:text-primary-foreground/90 font-body text-sm transition-colors"
             >
-              Terms of Use
+              {t("header.nav.terms")}
             </Link>
             <Link
-              to="/accessibility"
+              to={`${prefix}/accessibility`}
               className="text-primary-foreground/60 hover:text-primary-foreground/90 font-body text-sm transition-colors"
             >
-              Accessibility Statement
+              {t("header.nav.accessibility")}
             </Link>
           </nav>
 
           <p className="text-primary-foreground/50 font-body text-xs leading-relaxed max-w-lg mx-auto mb-4">
-            Spirit Real Estate is a licensed real estate brokerage in Israel. All property information is subject to change and availability.
+            {t("home.footer.disclaimer")}
           </p>
 
           <p className="text-primary-foreground/40 font-body text-xs">
-            © {new Date().getFullYear()} Spirit Real Estate · Zichron Yaakov, Israel
+            {t("home.footer.copyright").replace("{year}", new Date().getFullYear().toString())}
           </p>
         </motion.div>
       </div>

@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import eliranImg from "@/assets/eliran-amsalem.jpg";
 import hagitImg from "@/assets/hagit-cohen-morgan.png";
 import aviImg from "@/assets/avi-suliman.png";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const WhyDifferent = () => {
+  const { t } = useSiteContent();
+
   return (
     <section className="py-12 md:py-20 lg:py-24 bg-background">
       <div className="container px-6">
@@ -15,45 +18,42 @@ const WhyDifferent = () => {
           className="text-center max-w-2xl mx-auto"
         >
           <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-3">
-            Real People. Local Presence.
+            {t("home.why.title")}
           </h2>
           <p className="text-muted-foreground font-body text-base md:text-lg mb-10">
-            We personally visit and evaluate every property we recommend. When you buy through us, you're not navigating Israel alone.
+            {t("home.why.subtitle")}
           </p>
 
           <div className="flex justify-center items-start gap-6 md:gap-10 mb-10">
-            {/* Team Member 1 — Avi (left) */}
             <div className="flex flex-col items-center max-w-[140px]">
               <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-border shadow-sm">
-                <img src={aviImg} alt="Avi Suliman" className="w-full h-full object-cover" />
+                <img src={aviImg} alt={t("home.why.avi_name")} className="w-full h-full object-cover" />
               </div>
-              <p className="mt-3 text-sm md:text-base font-display font-semibold text-foreground leading-tight text-center">Avi Suliman</p>
-              <p className="text-xs md:text-sm text-muted-foreground font-body leading-tight mt-0.5 text-center">Senior Real Estate Advisor & Co-Founder</p>
+              <p className="mt-3 text-sm md:text-base font-display font-semibold text-foreground leading-tight text-center">{t("home.why.avi_name")}</p>
+              <p className="text-xs md:text-sm text-muted-foreground font-body leading-tight mt-0.5 text-center">{t("home.why.avi_role")}</p>
             </div>
 
-            {/* Team Member 2 — Hagit (center) */}
             <div className="flex flex-col items-center max-w-[140px]">
               <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-border shadow-sm">
-                <img src={hagitImg} alt="Hagit Cohen Morgan" className="w-full h-full object-cover" />
+                <img src={hagitImg} alt={t("home.why.hagit_name")} className="w-full h-full object-cover" />
               </div>
-              <p className="mt-3 text-sm md:text-base font-display font-semibold text-foreground leading-tight text-center">Hagit Cohen Morgan</p>
-              <p className="text-xs md:text-sm text-muted-foreground font-body leading-tight mt-0.5 text-center">Senior Real Estate Advisor & Co-Founder</p>
+              <p className="mt-3 text-sm md:text-base font-display font-semibold text-foreground leading-tight text-center">{t("home.why.hagit_name")}</p>
+              <p className="text-xs md:text-sm text-muted-foreground font-body leading-tight mt-0.5 text-center">{t("home.why.hagit_role")}</p>
             </div>
 
-            {/* Team Member 3 — Eliran (right) */}
             <div className="flex flex-col items-center max-w-[140px]">
               <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-border shadow-sm">
-                <img src={eliranImg} alt="Eliran Amsalem" className="w-full h-full object-cover" />
+                <img src={eliranImg} alt={t("home.why.eliran_name")} className="w-full h-full object-cover" />
               </div>
-              <p className="mt-3 text-sm md:text-base font-display font-semibold text-foreground leading-tight text-center">Eliran Amsalem</p>
-              <p className="text-xs md:text-sm text-muted-foreground font-body leading-tight mt-0.5 text-center">Marketing & Digital Strategy</p>
+              <p className="mt-3 text-sm md:text-base font-display font-semibold text-foreground leading-tight text-center">{t("home.why.eliran_name")}</p>
+              <p className="text-xs md:text-sm text-muted-foreground font-body leading-tight mt-0.5 text-center">{t("home.why.eliran_role")}</p>
             </div>
           </div>
 
           <div className="w-12 h-px bg-gold/40 mx-auto mb-6" />
 
           <p className="text-muted-foreground font-body text-sm italic">
-            A boutique team combining experience, strategy, and personal care.
+            {t("home.why.tagline")}
           </p>
         </motion.div>
       </div>
