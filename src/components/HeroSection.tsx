@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import heroBg from "@/assets/hero-bg.jpg";
 import spiritLogo from "@/assets/spirit-logo.jpg";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const HeroSection = () => {
+  const { t } = useSiteContent();
+
   const scrollToHomes = () => {
     document.getElementById("available-homes")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -30,13 +33,9 @@ const HeroSection = () => {
           height={1080}
           loading="eager"
         />
-        {/* Soft warm top wash — keeps sky bright */}
         <div className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-[hsl(35,40%,85%,0.3)] to-transparent" />
-        {/* Gentle bottom fade for text readability */}
         <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[hsl(160,30%,8%,0.55)] via-[hsl(160,20%,12%,0.28)] to-transparent" />
-        {/* Localised text backdrop — subtle darkening only behind the content area */}
         <div className="absolute inset-x-0 bottom-[5%] h-[45%] bg-gradient-to-t from-[hsl(0,0%,0%,0.3)] via-[hsl(0,0%,0%,0.15)] to-transparent" />
-        {/* Very subtle vignette */}
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.15) 100%)" }} />
       </div>
 
@@ -44,7 +43,7 @@ const HeroSection = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.1 }}
-        className="absolute top-6 left-6 z-20"
+        className="absolute top-6 left-6 z-20 rtl:left-auto rtl:right-6"
       >
         <img
           src={spiritLogo}
@@ -60,7 +59,7 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-primary-foreground/80 font-body text-sm tracking-[0.2em] uppercase mb-6"
         >
-          Spirit Real Estate
+          {t("home.hero.pre_title")}
         </motion.p>
 
         <motion.h1
@@ -76,7 +75,7 @@ const HeroSection = () => {
             textWrap: "balance",
           }}
         >
-          Homes for Sale in Zichron Yaakov – Including Off-Market Opportunities
+          {t("home.hero.headline")}
         </motion.h1>
 
         <motion.p
@@ -89,7 +88,7 @@ const HeroSection = () => {
             textShadow: "0 1px 12px rgba(0,0,0,0.35), 0 1px 3px rgba(0,0,0,0.2)",
           }}
         >
-          Private access to Zichron's most desirable homes — curated for serious buyers.
+          {t("home.hero.subline")}
         </motion.p>
 
         <motion.div
@@ -105,18 +104,17 @@ const HeroSection = () => {
             onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.2)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.15)'; }}
           >
-            View Available Homes
+            {t("home.hero.cta_primary")}
           </button>
           <button
             onClick={scrollToForm}
             className="bg-transparent border-2 border-primary-foreground/40 hover:border-primary-foreground/70 hover:bg-primary-foreground/10 text-primary-foreground px-8 py-4 rounded-lg font-body font-medium transition-all duration-300 flex items-center gap-2 min-w-[220px] justify-center"
             style={{ fontSize: '17px' }}
           >
-            Get Private Access
+            {t("home.hero.cta_secondary")}
           </button>
         </motion.div>
 
-        {/* Secondary anchor text */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -124,7 +122,7 @@ const HeroSection = () => {
           className="text-primary-foreground/45 font-body text-xs tracking-wide mb-8 cursor-pointer hover:text-primary-foreground/65 transition-colors"
           onClick={scrollToForm}
         >
-          Access Off-Market Opportunities →
+          {t("home.hero.anchor_text")}
         </motion.p>
 
         <motion.div
@@ -133,14 +131,13 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 1.1 }}
           className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-primary-foreground/45 font-body text-xs md:text-sm tracking-wide max-w-xl mx-auto"
         >
-          <span>Discreet transactions</span>
+          <span>{t("home.hero.trust_1")}</span>
           <span>·</span>
-          <span>Local expertise</span>
+          <span>{t("home.hero.trust_2")}</span>
           <span>·</span>
-          <span>International clients</span>
+          <span>{t("home.hero.trust_3")}</span>
         </motion.div>
       </div>
-
     </section>
   );
 };

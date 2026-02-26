@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useSiteContent } from "@/hooks/useSiteContent";
+import { useLanguage } from "@/lib/i18n";
 
 export type CookieConsentState = "visible" | "dismissed";
 
@@ -12,6 +14,8 @@ const emitCookieEvent = (state: CookieConsentState) => {
 
 const CookieNotice = () => {
   const [visible, setVisible] = useState(false);
+  const { t } = useSiteContent();
+  const { lang } = useLanguage();
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -44,9 +48,9 @@ const CookieNotice = () => {
           <div className="mx-auto max-w-lg w-full bg-card border border-border rounded-xl shadow-lg overflow-hidden">
             <div className="px-4 py-3">
               <p className="text-foreground font-body text-xs leading-snug mb-3">
-                This website uses cookies to improve your experience, analyze traffic, and enhance marketing performance.{" "}
-                <Link to="/privacy" className="text-primary underline underline-offset-2 hover:text-primary/80">
-                  Privacy Policy
+                {t("home.cookie.text")}{" "}
+                <Link to={`/${lang}/privacy`} className="text-primary underline underline-offset-2 hover:text-primary/80">
+                  {t("header.nav.privacy")}
                 </Link>
               </p>
               <div className="flex items-center gap-2">
@@ -54,13 +58,13 @@ const CookieNotice = () => {
                   onClick={() => dismiss("accepted")}
                   className="flex-1 bg-gold hover:bg-gold-hover text-primary-foreground py-2.5 rounded-lg font-body font-medium text-xs transition-colors"
                 >
-                  Accept
+                  {t("home.cookie.accept")}
                 </button>
                 <button
                   onClick={() => dismiss("declined")}
                   className="flex-1 bg-muted hover:bg-muted/80 text-foreground py-2.5 rounded-lg font-body font-medium text-xs transition-colors"
                 >
-                  Decline
+                  {t("home.cookie.decline")}
                 </button>
               </div>
             </div>

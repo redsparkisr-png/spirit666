@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Heebo:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -119,4 +119,29 @@ html {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  font-family: "Heebo", "DM Sans", system-ui, sans-serif;
+}
+
+[dir="rtl"] .font-display {
+  font-family: "Heebo", "Playfair Display", Georgia, serif;
+}
+
+[dir="rtl"] .font-body {
+  font-family: "Heebo", "DM Sans", system-ui, sans-serif;
+}
+
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
 }

@@ -4,10 +4,11 @@ import AvailableManager from "@/components/admin/AvailableManager";
 import SoldManager from "@/components/admin/SoldManager";
 import LifestyleManager from "@/components/admin/LifestyleManager";
 import LeadsList from "@/components/admin/LeadsList";
+import ContentManager from "@/components/admin/ContentManager";
 import { useState } from "react";
 import { LogOut } from "lucide-react";
 
-const tabs = ["Available", "Sold", "Lifestyle", "Leads"] as const;
+const tabs = ["Available", "Sold", "Lifestyle", "Leads", "Content"] as const;
 
 const Admin = () => {
   const { user, isAdmin, loading, error, signOut, retry } = useAuth();
@@ -76,12 +77,12 @@ const Admin = () => {
       </header>
 
       <div className="container px-6 py-6">
-        <div className="flex gap-1 mb-6 border-b border-border">
+        <div className="flex gap-1 mb-6 border-b border-border overflow-x-auto">
           {tabs.map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-4 py-2 text-sm font-body font-medium transition-colors border-b-2 -mb-px ${
+              className={`px-4 py-2 text-sm font-body font-medium transition-colors border-b-2 -mb-px whitespace-nowrap ${
                 tab === t
                   ? "border-primary text-primary"
                   : "border-transparent text-muted-foreground hover:text-foreground"
@@ -96,6 +97,7 @@ const Admin = () => {
         {tab === "Sold" && <SoldManager />}
         {tab === "Lifestyle" && <LifestyleManager />}
         {tab === "Leads" && <LeadsList />}
+        {tab === "Content" && <ContentManager />}
       </div>
     </div>
   );

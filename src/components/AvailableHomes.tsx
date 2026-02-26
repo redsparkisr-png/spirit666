@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, LandPlot, Ruler, BedDouble } from "lucide-re
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import PropertyModal from "./PropertyModal";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 type Property = Tables<"properties_available">;
 
@@ -49,7 +50,7 @@ const CarouselControls = ({ count, current, prev, next }: { count: number; curre
   </>
 );
 
-const PropertyCard = ({ property, index, onSelect }: { property: Property; index: number; onSelect: (p: Property) => void }) => {
+const PropertyCard = ({ property, index, onSelect, detailsLabel }: { property: Property; index: number; onSelect: (p: Property) => void; detailsLabel: string }) => {
   const images = property.images || [];
   const carousel = useCarousel(Math.max(images.length, 1));
 
@@ -81,7 +82,6 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
         )}
       </div>
       <div className="p-5 md:p-6">
-        {/* Price first for visibility */}
         {property.price_label && (
           <p className="text-sm font-body font-semibold mb-2" style={{ color: "hsl(var(--gold))" }}>{property.price_label}</p>
         )}
@@ -107,7 +107,7 @@ const PropertyCard = ({ property, index, onSelect }: { property: Property; index
           onClick={(e) => { e.stopPropagation(); onSelect(property); }}
           className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
         >
-          Request Full Details
+          {detailsLabel}
         </button>
       </div>
     </motion.div>
@@ -118,6 +118,7 @@ const AvailableHomes = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const { t } = useSiteContent();
 
   useEffect(() => {
     supabase
@@ -143,13 +144,13 @@ const AvailableHomes = () => {
           className="text-center mb-14"
         >
           <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">
-            Hand-Selected Homes for International Buyers
+            {t("home.available.pre_title")}
           </p>
           <h2 className="font-display font-semibold text-foreground mb-4">
-            Available Homes in Zichron Yaakov
+            {t("home.available.title")}
           </h2>
           <p className="text-muted-foreground font-body max-w-xl mx-auto">
-            This is a small curated selection of homes currently available. Some of our most attractive opportunities are shared privately with qualified buyers.
+            {t("home.available.subtitle")}
           </p>
         </motion.div>
 
@@ -168,13 +169,13 @@ const AvailableHomes = () => {
               ))}
             </div>
             <p className="text-center text-sm text-muted-foreground/60 font-body italic">
-              New listings are being prepared — check back soon.
+              {t("home.available.empty_text")}
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {properties.map((p, idx) => (
-              <PropertyCard key={p.id} property={p} index={idx} onSelect={setSelectedProperty} />
+              <PropertyCard key={p.id} property={p} index={idx} onSelect={setSelectedProperty} detailsLabel={t("home.available.details_button")} />
             ))}
           </div>
         )}
@@ -186,7 +187,7 @@ const AvailableHomes = () => {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="text-center text-sm text-muted-foreground/80 italic font-body mt-10 max-w-lg mx-auto"
         >
-          Some of our best opportunities are sold quietly and never reach public listing sites.
+          {t("home.available.bottom_text")}
         </motion.p>
       </div>
 

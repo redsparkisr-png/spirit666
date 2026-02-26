@@ -2,12 +2,14 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 type SoldProp = Tables<"properties_sold">;
 
 const SoldHomes = () => {
   const [items, setItems] = useState<SoldProp[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const { t } = useSiteContent();
 
   useEffect(() => {
     supabase
@@ -40,10 +42,10 @@ const SoldHomes = () => {
           className="text-center mb-14"
         >
           <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">
-            Proven track record. Real results.
+            {t("home.sold.pre_title")}
           </p>
           <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
-            Recently Sold Homes
+            {t("home.sold.title")}
           </h2>
         </motion.div>
 
@@ -58,7 +60,7 @@ const SoldHomes = () => {
               ))}
             </div>
             <p className="text-center text-sm text-muted-foreground/60 font-body italic">
-              Recent sales will appear here soon.
+              {t("home.sold.empty_text")}
             </p>
           </div>
         ) : (
@@ -79,8 +81,8 @@ const SoldHomes = () => {
                     <div className="w-full h-full bg-muted" />
                   )}
                   <div className="absolute inset-0 bg-primary/15" />
-                  <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-body font-semibold tracking-wider uppercase px-3 py-1.5 rounded">
-                    Sold
+                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-primary text-primary-foreground text-xs font-body font-semibold tracking-wider uppercase px-3 py-1.5 rounded">
+                    {t("home.sold.badge")}
                   </div>
                 </div>
                 <div className="p-4 bg-card">
@@ -99,13 +101,13 @@ const SoldHomes = () => {
           className="text-center mt-10 space-y-4"
         >
           <p className="text-muted-foreground font-body text-sm italic">
-            More successful transactions available upon request.
+            {t("home.sold.bottom_text")}
           </p>
           <button
             onClick={openWhatsApp}
             className="bg-gold hover:bg-gold-hover text-primary-foreground px-8 py-3.5 rounded-lg font-body font-medium text-sm transition-colors duration-300"
           >
-            Schedule a Private Consultation
+            {t("home.sold.cta_button")}
           </button>
         </motion.div>
       </div>
