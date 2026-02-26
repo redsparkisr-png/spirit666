@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Tables } from "@/integrations/supabase/types";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import {
   Dialog,
   DialogContent,
@@ -25,10 +26,12 @@ const ImageGallery = ({
   images,
   title,
   isMobile,
+  noImageText,
 }: {
   images: string[];
   title: string;
   isMobile: boolean;
+  noImageText: string;
 }) => {
   const [active, setActive] = useState(0);
   const touchStartX = useRef<number | null>(null);
@@ -39,7 +42,7 @@ const ImageGallery = ({
         className="w-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body shrink-0"
         style={{ height: isMobile ? "min(55vh, 360px)" : "340px" }}
       >
-        No image
+        {noImageText}
       </div>
     );
   }
@@ -71,20 +74,17 @@ const ImageGallery = ({
           height={600}
         />
       ))}
-      {/* Gradient overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: "linear-gradient(to bottom, rgba(0,0,0,0.20), rgba(0,0,0,0.02) 45%, rgba(0,0,0,0.30))",
         }}
       />
-      {/* Image counter */}
       {images.length > 1 && (
         <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-xs font-body px-2.5 py-1 rounded-full pointer-events-none">
           {active + 1} / {images.length}
         </div>
       )}
-      {/* Nav arrows — vertically centered */}
       {images.length > 1 && (
         <>
           <button
@@ -101,7 +101,6 @@ const ImageGallery = ({
           >
             <ChevronRight className="w-4 h-4" />
           </button>
-          {/* Dots */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
             {images.slice(0, 8).map((_, i) => (
               <button
@@ -164,7 +163,6 @@ const MobileModal = ({
             className="fixed inset-x-0 bottom-0 z-50 bg-background rounded-t-3xl flex flex-col overflow-hidden shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
             style={{ height: "100dvh" }}
           >
-            {/* Sticky header */}
             <div
               className="sticky top-0 z-20 flex items-center justify-between px-5 py-4 bg-background/95 backdrop-blur-md border-b border-border/40"
               style={{ paddingTop: "max(16px, env(safe-area-inset-top))" }}
@@ -179,7 +177,7 @@ const MobileModal = ({
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto overscroll-contain">
+            <div className="flex-1 overflow-y-auto overscroll-contain pb-20">
               {children}
             </div>
           </motion.div>
@@ -189,22 +187,40 @@ const MobileModal = ({
   );
 };
 
+/* ── Sticky Mobile CTA ── */
+const StickyMobileCTA = ({ onClick, label }: { onClick: () => void; label: string }) => (
+  <div
+    className="fixed bottom-0 inset-x-0 z-[60] bg-background/95 backdrop-blur-md border-t border-border px-5 py-3 md:hidden"
+    style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}
+  >
+    <button
+      onClick={onClick}
+      className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3.5 rounded-lg font-body font-semibold text-base transition-colors duration-300"
+    >
+      {label}
+    </button>
+  </div>
+);
+
 /* ── Main wrapper ── */
 const PropertyModal = ({ property, open, onOpenChange }: Props) => {
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const isMobile = useIsMobile();
+  const { t } = useSiteContent();
+  const formRef = useRef<HTMLFormElement>(null);
 
   if (!property) return null;
 
   const images = property.images || [];
-  const whatsappUrl = `https://wa.me/972522820632?text=${encodeURIComponent(`Hi, I'm interested in "${property.title}" in Zichron Yaakov.`)}`;
+  const whatsappText = t("property.modal.whatsapp_text").replace("{title}", property.title);
+  const whatsappUrl = `https://wa.me/972522820632?text=${encodeURIComponent(whatsappText)}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
-      toast.error("Please fill in all fields.");
+      toast.error(t("property.modal.validation_error"));
       return;
     }
     setSubmitting(true);
@@ -213,13 +229,13 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
       email: form.email.trim(),
       phone: form.phone.trim(),
       source: `property_modal:${property.title}`,
-      message: `Interested in: ${property.title}`,
+      message: `${t("property.modal.interested_in")} ${property.title}`,
     });
     if (error) {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t("property.modal.error"));
     } else {
       setSubmitted(true);
-      toast.success("Thank you! We'll send you the full details shortly.");
+      toast.success(t("property.modal.success"));
     }
     setSubmitting(false);
   };
@@ -232,24 +248,23 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
     onOpenChange(v);
   };
 
-  /* ── Shared content body ── */
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   const content = (
     <>
-      <ImageGallery images={images} title={property.title} isMobile={isMobile} />
+      <ImageGallery images={images} title={property.title} isMobile={isMobile} noImageText={t("property.modal.no_image")} />
 
       <div className="px-6 py-6 space-y-5">
         {/* Title + price */}
         <div className="space-y-3">
-          <h3
-            className="font-display font-semibold text-foreground text-xl md:text-2xl leading-tight text-balance"
-          >
+          <h3 className="font-display font-semibold text-foreground text-xl md:text-2xl leading-tight text-balance">
             {property.title}
           </h3>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <p
-              className="font-display font-bold text-gold text-lg md:text-xl"
-            >
-              {property.price_label || "Price Upon Request"}
+            <p className="font-display font-bold text-gold text-lg md:text-xl">
+              {property.price_label || t("property.modal.price_upon_request")}
             </p>
             {property.neighborhood_note && (
               <p className="text-muted-foreground/80 font-body text-xs md:text-sm flex items-center gap-1.5 bg-muted/30 px-2 py-1 rounded-md w-fit">
@@ -260,23 +275,23 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
           </div>
         </div>
 
-        {/* Stats row — 20-24px gaps */}
+        {/* Stats */}
         <div className="flex items-center gap-5 md:gap-6 text-sm text-muted-foreground font-body flex-wrap">
           <span className="inline-flex items-center gap-1.5">
             <BedDouble className="w-4 h-4 text-primary" />
-            {property.bedrooms ? `${property.bedrooms} Bed` : "–"}
+            {property.bedrooms ? `${property.bedrooms} ${t("property.modal.bed")}` : "–"}
           </span>
           <span className="inline-flex items-center gap-1.5">
             <Ruler className="w-4 h-4 text-primary" />
-            {property.built_sqm ? `${property.built_sqm} sqm` : "–"}
+            {property.built_sqm ? `${property.built_sqm} ${t("property.modal.sqm")}` : "–"}
           </span>
           <span className="inline-flex items-center gap-1.5">
             <LandPlot className="w-4 h-4 text-primary" />
-            {property.lot_sqm ? `${property.lot_sqm} sqm lot` : "–"}
+            {property.lot_sqm ? `${property.lot_sqm} ${t("property.modal.sqm_lot")}` : "–"}
           </span>
         </div>
 
-        {/* Description — single block */}
+        {/* Description */}
         {property.short_description && (
           <p className="text-muted-foreground font-body text-sm leading-relaxed">
             {property.short_description}
@@ -285,14 +300,13 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
 
         {/* Bullet highlights */}
         <ul className="text-muted-foreground font-body text-sm space-y-1.5 list-disc list-inside">
-          <li>Private viewing available via secure video call</li>
-          <li>Assistance with legal, tax and relocation</li>
-          <li>Licensed Israeli brokerage</li>
+          <li>{t("property.modal.bullet_1")}</li>
+          <li>{t("property.modal.bullet_2")}</li>
+          <li>{t("property.modal.bullet_3")}</li>
         </ul>
 
-        {/* Scarcity line */}
         <p className="text-xs font-body italic text-muted-foreground/60 text-center">
-          Limited availability in central Zichron.
+          {t("property.modal.scarcity")}
         </p>
 
         <div className="border-t border-border" />
@@ -300,26 +314,27 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
         {/* Conversion Block */}
         {submitted ? (
           <div className="text-center py-4 space-y-2">
-            <p className="font-display font-semibold text-foreground">Thank you!</p>
+            <p className="font-display font-semibold text-foreground">{t("property.modal.thank_you")}</p>
             <p className="text-sm text-muted-foreground font-body">
-              We'll send you full pricing and details within 1–2 business hours.
+              {t("property.modal.thank_you_sub")}
             </p>
           </div>
         ) : (
           <div className="space-y-3">
+            {/* Desktop sticky inquiry — hidden on mobile since we use the sticky bottom CTA */}
             <div className="text-center">
               <p className="font-display font-semibold text-foreground text-base leading-snug">
-                Some properties in Zichron Yaakov are never publicly advertised.
+                {t("property.modal.cta_headline")}
               </p>
               <p className="text-muted-foreground font-body text-sm mt-1">
-                Leave your details for full pricing and off-market access.
+                {t("property.modal.cta_subline")}
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
               <input
                 type="text"
-                placeholder="Full Name"
+                placeholder={t("property.modal.placeholder_name")}
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 maxLength={100}
@@ -327,7 +342,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
               />
               <input
                 type="email"
-                placeholder="Email"
+                placeholder={t("property.modal.placeholder_email")}
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 maxLength={255}
@@ -335,7 +350,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
               />
               <input
                 type="tel"
-                placeholder="Phone"
+                placeholder={t("property.modal.placeholder_phone")}
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 maxLength={20}
@@ -344,22 +359,21 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold text-base shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-60"
-                style={{ marginBottom: isMobile ? "env(safe-area-inset-bottom, 0px)" : undefined }}
+                className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold text-base shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-60 hidden md:block"
               >
-                {submitting ? "Sending..." : "Unlock Full Property Details"}
+                {submitting ? t("property.modal.sending") : t("property.modal.submit")}
               </button>
             </form>
 
             <p className="text-center text-xs text-muted-foreground/70 font-body leading-relaxed">
-              We respond within 1–2 business hours.
+              {t("property.modal.response_time")}
               <br />
-              <span className="text-muted-foreground/50">Discreet · Confidential · No spam.</span>
+              <span className="text-muted-foreground/50">{t("property.modal.trust")}</span>
             </p>
           </div>
         )}
 
-        {/* WhatsApp link — subdued */}
+        {/* WhatsApp */}
         <a
           href={whatsappUrl}
           target="_blank"
@@ -367,7 +381,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
           className="flex items-center justify-center gap-2 text-xs font-body font-medium text-muted-foreground hover:text-foreground transition-colors py-1.5"
         >
           <MessageCircle className="w-3.5 h-3.5 text-[hsl(142,70%,40%)]" />
-          Or message us on WhatsApp
+          {t("property.modal.whatsapp")}
         </a>
       </div>
     </>
@@ -377,6 +391,12 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
     return (
       <MobileModal open={open} onClose={() => handleClose(false)} title={property.title}>
         {content}
+        {!submitted && (
+          <StickyMobileCTA
+            onClick={scrollToForm}
+            label={t("property.modal.submit")}
+          />
+        )}
       </MobileModal>
     );
   }
