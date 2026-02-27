@@ -5,10 +5,12 @@ import SoldManager from "@/components/admin/SoldManager";
 import LifestyleManager from "@/components/admin/LifestyleManager";
 import LeadsList from "@/components/admin/LeadsList";
 import ContentManager from "@/components/admin/ContentManager";
+import LocationsManager from "@/components/admin/LocationsManager";
+import PropertyTypesManager from "@/components/admin/PropertyTypesManager";
 import { useState } from "react";
 import { LogOut } from "lucide-react";
 
-const tabs = ["Available", "Sold", "Lifestyle", "Leads", "Content"] as const;
+const tabs = ["Available", "Sold", "Lifestyle", "Leads", "Content", "Locations", "Property Types"] as const;
 
 const Admin = () => {
   const { user, isAdmin, loading, error, signOut, retry } = useAuth();
@@ -98,6 +100,8 @@ const Admin = () => {
         {tab === "Lifestyle" && <LifestyleManager />}
         {tab === "Leads" && <LeadsList />}
         {tab === "Content" && <ContentManager />}
+        {tab === "Locations" && <LocationsManager />}
+        {tab === "Property Types" && <PropertyTypesManager />}
       </div>
     </div>
   );
