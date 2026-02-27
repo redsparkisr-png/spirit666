@@ -25,6 +25,7 @@ const BREADCRUMB_BASE = {
 
 const ROUTE_NAMES: Record<string, string> = {
   "": "Home",
+  properties: "Properties",
   sell: "Sell",
   about: "About",
   contact: "Contact",

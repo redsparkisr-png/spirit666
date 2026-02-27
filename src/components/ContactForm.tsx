@@ -35,7 +35,7 @@ const ContactForm = () => {
   };
 
   return (
-    <section id="contact-form" className="py-12 md:py-20 lg:py-24 bg-background">
+    <section id="contact-form" className="py-20 md:py-28 lg:py-32 bg-background" aria-labelledby="contact-heading">
       <div className="container px-6">
         <div className="max-w-lg mx-auto">
           <motion.div
@@ -45,7 +45,7 @@ const ContactForm = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-10"
           >
-            <h2 className="font-display font-semibold text-foreground mb-4">
+            <h2 id="contact-heading" className="font-display font-semibold text-foreground mb-4">
               {t("home.contact.title")}
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
@@ -61,30 +61,37 @@ const ContactForm = () => {
             onSubmit={handleSubmit}
             className="space-y-4"
           >
+            <label htmlFor="contact-name" className="sr-only">{t("home.contact.placeholder_name")}</label>
             <input
+              id="contact-name"
               type="text"
               placeholder={t("home.contact.placeholder_name")}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               maxLength={100}
-              className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+              className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
             />
+            <label htmlFor="contact-phone" className="sr-only">{t("home.contact.placeholder_phone")}</label>
             <input
+              id="contact-phone"
               type="tel"
               placeholder={t("home.contact.placeholder_phone")}
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               maxLength={20}
-              className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+              className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
             />
+            <label htmlFor="contact-email" className="sr-only">{t("home.contact.placeholder_email")}</label>
             <input
+              id="contact-email"
               type="email"
               placeholder={t("home.contact.placeholder_email")}
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               maxLength={255}
-              className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+              className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
             />
+            
             <button
               type="submit"
               disabled={isSubmitting}

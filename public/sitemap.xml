@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/" />
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/" />
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/properties</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/properties" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/properties" />
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/properties</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/properties" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/properties" />
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/sell</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/sell" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/sell" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/sell</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/sell" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/sell" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/about" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/about" />
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/about" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/about" />
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/contact" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/contact" />
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/contact" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/contact" />
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/privacy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/privacy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/accessibility</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/accessibility</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>

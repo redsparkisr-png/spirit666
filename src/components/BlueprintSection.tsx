@@ -36,7 +36,7 @@ const BlueprintSection = () => {
     "w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-charcoal/20 focus:border-charcoal transition-all";
 
   return (
-    <section id="blueprint" className="py-16 md:py-24 lg:py-28 bg-card relative overflow-hidden">
+    <section id="blueprint" className="py-20 md:py-28 lg:py-32 bg-card relative overflow-hidden" aria-labelledby="blueprint-heading">
       {/* Subtle decorative accent */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-bronze/[0.03] blur-3xl pointer-events-none" />
 
@@ -52,7 +52,7 @@ const BlueprintSection = () => {
             <div className="w-14 h-14 rounded-full bg-charcoal/10 flex items-center justify-center mx-auto mb-5">
               <FileText className="w-6 h-6 text-charcoal" />
             </div>
-            <h2 className="font-display font-semibold text-foreground mb-4 text-2xl md:text-[34px]">
+            <h2 id="blueprint-heading" className="font-display font-semibold text-foreground mb-4 text-2xl md:text-[34px]">
               {t("home.blueprint.title")}
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
@@ -68,7 +68,9 @@ const BlueprintSection = () => {
             onSubmit={handleSubmit}
             className="space-y-4"
           >
+            <label htmlFor="bp-name" className="sr-only">{t("home.blueprint.placeholder_name")}</label>
             <input
+              id="bp-name"
               type="text"
               placeholder={t("home.blueprint.placeholder_name")}
               value={formData.name}
@@ -76,7 +78,9 @@ const BlueprintSection = () => {
               maxLength={100}
               className={inputClasses}
             />
+            <label htmlFor="bp-email" className="sr-only">{t("home.blueprint.placeholder_email")}</label>
             <input
+              id="bp-email"
               type="email"
               placeholder={t("home.blueprint.placeholder_email")}
               value={formData.email}
@@ -84,7 +88,9 @@ const BlueprintSection = () => {
               maxLength={255}
               className={inputClasses}
             />
+            <label htmlFor="bp-phone" className="sr-only">{t("home.blueprint.placeholder_phone")}</label>
             <input
+              id="bp-phone"
               type="tel"
               placeholder={t("home.blueprint.placeholder_phone")}
               value={formData.phone}

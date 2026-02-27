@@ -1,40 +1,53 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
+import { useSiteContent } from "@/hooks/useSiteContent";
+import Header from "@/components/Header";
+
+const SECTIONS = [
+  { titleKey: "accessibility.commitment_title", bodyKey: "accessibility.commitment_body" },
+  { titleKey: "accessibility.standards_title", bodyKey: "accessibility.standards_body" },
+  { titleKey: "accessibility.measures_title", bodyKey: "accessibility.measures_body" },
+  { titleKey: "accessibility.feedback_title", bodyKey: "accessibility.feedback_body" },
+];
 
 const Accessibility = () => {
   const { lang } = useLanguage();
+  const { t } = useSiteContent();
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container px-6 py-16 md:py-24 max-w-3xl mx-auto">
-        <Link to={`/${lang}/`} className="text-primary font-body text-sm hover:underline mb-8 inline-block">
-          ← Back to Home
-        </Link>
-        <h1 className="text-foreground mb-8">Accessibility Statement</h1>
+    <>
+      <Header />
+      <main className="min-h-screen bg-background">
+        <div className="container px-6 py-20 md:py-28 max-w-3xl mx-auto">
+          <Link
+            to={`/${lang}/`}
+            className="text-primary font-body text-sm hover:underline mb-8 inline-block"
+          >
+            ← {lang === "he" ? "חזרה לדף הבית" : "Back to Home"}
+          </Link>
+          <h1 className="text-foreground mb-8">{t("accessibility.page_title")}</h1>
 
-        <div className="prose prose-neutral font-body space-y-6 text-foreground/80 text-[15px] leading-relaxed">
-          <p><strong>Last updated:</strong> {new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" })}</p>
+          <div className="font-body space-y-8 text-foreground/80 text-[15px] leading-relaxed">
+            <p>
+              <strong>{lang === "he" ? "עדכון אחרון:" : "Last updated:"}</strong>{" "}
+              {new Date().toLocaleDateString(lang === "he" ? "he-IL" : "en-US", {
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
 
-          <h2 className="text-xl font-display font-semibold text-foreground">Our Commitment</h2>
-          <p>Spirit Real Estate is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone and applying relevant accessibility standards.</p>
-
-          <h2 className="text-xl font-display font-semibold text-foreground">Standards</h2>
-          <p>We aim to conform to the Web Content Accessibility Guidelines (WCAG) 2.1 at Level AA. These guidelines explain how to make web content more accessible to people with a wide range of disabilities.</p>
-
-          <h2 className="text-xl font-display font-semibold text-foreground">Measures Taken</h2>
-          <ul className="list-disc pl-5 space-y-2">
-            <li>Semantic HTML structure for screen reader compatibility</li>
-            <li>Sufficient color contrast ratios for text and interactive elements</li>
-            <li>Alt text for all meaningful images</li>
-            <li>Keyboard navigable interface</li>
-            <li>Responsive design for various devices and screen sizes</li>
-            <li>Clear and consistent navigation</li>
-          </ul>
-
-          <h2 className="text-xl font-display font-semibold text-foreground">Feedback</h2>
-          <p>We welcome your feedback on the accessibility of this website. If you encounter any barriers or have suggestions for improvement, please contact us at info@spiritrealestate.co.il.</p>
+            {SECTIONS.map((section, i) => (
+              <div key={i}>
+                <h2 className="text-xl font-display font-semibold text-foreground mb-2">
+                  {t(section.titleKey)}
+                </h2>
+                <p>{t(section.bodyKey)}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
 };
 
