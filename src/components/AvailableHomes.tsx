@@ -105,7 +105,7 @@ const PropertyCard = ({ property, index, onSelect, detailsLabel }: { property: P
         </div>
         <button
           onClick={(e) => { e.stopPropagation(); onSelect(property); }}
-          className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
+          className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
         >
           {detailsLabel}
         </button>
