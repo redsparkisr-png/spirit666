@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, LandPlot, Ruler, BedDouble } from "lucide-react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import PropertyModal from "./PropertyModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { useLanguage } from "@/lib/i18n";
 
 type Property = Tables<"properties_available">;
 
@@ -13,10 +14,12 @@ const useCarousel = (count: number) => {
   const touchStartX = useRef<number | null>(null);
   const next = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     setCurrent((c) => (c + 1) % count);
   };
   const prev = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     setCurrent((c) => (c - 1 + count) % count);
   };
   const onTouchStart = (e: React.TouchEvent) => {
@@ -50,9 +53,10 @@ const CarouselControls = ({ count, current, prev, next }: { count: number; curre
   </>
 );
 
-const PropertyCard = ({ property, index, onSelect, detailsLabel }: { property: Property; index: number; onSelect: (p: Property) => void; detailsLabel: string }) => {
+const PropertyCard = ({ property, index, detailsLabel }: { property: Property; index: number; detailsLabel: string }) => {
   const images = property.images || [];
   const carousel = useCarousel(Math.max(images.length, 1));
+  const { lang } = useLanguage();
 
   return (
     <motion.div
@@ -60,8 +64,7 @@ const PropertyCard = ({ property, index, onSelect, detailsLabel }: { property: P
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group cursor-pointer hover:-translate-y-1"
-      onClick={() => onSelect(property)}
+      className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group hover:-translate-y-1"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
         {images.length === 0 && (
@@ -80,35 +83,46 @@ const PropertyCard = ({ property, index, onSelect, detailsLabel }: { property: P
         {images.length > 1 && (
           <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />
         )}
+        {property.property_status && property.property_status !== "Active" && (
+          <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">
+            {property.property_status}
+          </span>
+        )}
       </div>
       <div className="p-5 md:p-6">
         {property.price_label && (
-          <p className="text-sm font-body font-semibold mb-2" style={{ color: "hsl(var(--gold))" }}>{property.price_label}</p>
+          <p className="text-sm font-body font-semibold mb-2 text-gold">{property.price_label}</p>
         )}
         <h3 className="text-lg font-display font-semibold text-foreground mb-1.5 leading-snug">{property.title}</h3>
         {property.short_description && (
           <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{property.short_description}</p>
         )}
         <div className="flex items-center gap-3 text-xs text-muted-foreground font-body mb-4 flex-wrap">
-          <span className="flex items-center gap-1.5">
-            <LandPlot className="w-3.5 h-3.5 text-primary" />
-            {property.lot_sqm ? `${property.lot_sqm} sqm` : "–"}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Ruler className="w-3.5 h-3.5 text-primary" />
-            {property.built_sqm ? `${property.built_sqm} sqm` : "–"}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <BedDouble className="w-3.5 h-3.5 text-primary" />
-            {property.bedrooms ? `${property.bedrooms} Bed` : "–"}
-          </span>
+          {property.lot_sqm && (
+            <span className="flex items-center gap-1.5">
+              <LandPlot className="w-3.5 h-3.5 text-primary" />
+              {property.lot_sqm} sqm
+            </span>
+          )}
+          {property.built_sqm && (
+            <span className="flex items-center gap-1.5">
+              <Ruler className="w-3.5 h-3.5 text-primary" />
+              {property.built_sqm} sqm
+            </span>
+          )}
+          {property.bedrooms && (
+            <span className="flex items-center gap-1.5">
+              <BedDouble className="w-3.5 h-3.5 text-primary" />
+              {property.bedrooms} Bed
+            </span>
+          )}
         </div>
-        <button
-          onClick={(e) => { e.stopPropagation(); onSelect(property); }}
-          className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300"
+        <Link
+          to={`/${lang}/property/${property.slug || property.id}`}
+          className="block w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300 text-center"
         >
           {detailsLabel}
-        </button>
+        </Link>
       </div>
     </motion.div>
   );
@@ -117,7 +131,6 @@ const PropertyCard = ({ property, index, onSelect, detailsLabel }: { property: P
 const AvailableHomes = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const { t } = useSiteContent();
 
   useEffect(() => {
@@ -134,7 +147,7 @@ const AvailableHomes = () => {
   const isEmpty = loaded && properties.length === 0;
 
   return (
-    <section id="available-homes" className="py-12 md:py-20 lg:py-24 bg-sand-light">
+    <section id="available-homes" className="py-16 md:py-24 lg:py-28 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -175,7 +188,7 @@ const AvailableHomes = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {properties.map((p, idx) => (
-              <PropertyCard key={p.id} property={p} index={idx} onSelect={setSelectedProperty} detailsLabel={t("home.available.details_button")} />
+              <PropertyCard key={p.id} property={p} index={idx} detailsLabel={t("home.available.details_button")} />
             ))}
           </div>
         )}
@@ -190,12 +203,6 @@ const AvailableHomes = () => {
           {t("home.available.bottom_text")}
         </motion.p>
       </div>
-
-      <PropertyModal
-        property={selectedProperty}
-        open={!!selectedProperty}
-        onOpenChange={(open) => { if (!open) setSelectedProperty(null); }}
-      />
     </section>
   );
 };
