@@ -45,6 +45,19 @@ const CookieNotice = () => {
     }
   }, []);
 
+  // Listen for cookie-reopen event from footer link
+  useEffect(() => {
+    const handleReopen = () => {
+      localStorage.removeItem(STORAGE_KEY);
+      setShowPrefs(false);
+      setAnalytics(false);
+      setMarketing(false);
+      setVisible(true);
+    };
+    window.addEventListener("cookie-reopen", handleReopen);
+    return () => window.removeEventListener("cookie-reopen", handleReopen);
+  }, []);
+
   const saveAndClose = (prefs: CookiePreferences) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
     emitConsentEvent(prefs);

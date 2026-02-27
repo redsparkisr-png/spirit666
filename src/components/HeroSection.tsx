@@ -8,7 +8,7 @@ const HeroSection = () => {
 
   return (
     <section
-      className="relative flex flex-col items-center justify-center overflow-hidden"
+      className="relative flex flex-col items-center justify-center"
       style={{
         minHeight: "100svh",
         paddingTop: "max(72px, env(safe-area-inset-top))",
@@ -16,7 +16,7 @@ const HeroSection = () => {
       }}
     >
       {/* Background */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         <img
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"

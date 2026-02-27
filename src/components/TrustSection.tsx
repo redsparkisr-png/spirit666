@@ -68,6 +68,12 @@ const TrustSection = () => {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={() => window.dispatchEvent(new Event("cookie-reopen"))}
+              className="text-primary-foreground/50 hover:text-primary-foreground/80 font-body text-xs transition-colors cursor-pointer"
+            >
+              {lang === "he" ? "העדפות עוגיות" : "Cookie Preferences"}
+            </button>
           </nav>
 
           <p className="text-primary-foreground/50 font-body text-xs leading-relaxed max-w-lg mx-auto mb-4">
