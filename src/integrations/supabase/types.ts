@@ -86,6 +86,7 @@ export type Database = {
           featured: boolean
           id: string
           images: string[] | null
+          location: string | null
           lot_sqm: number | null
           meta_description: string | null
           meta_title: string | null
@@ -96,6 +97,7 @@ export type Database = {
           price_status: string
           priority_order: number
           property_status: string
+          property_type: string | null
           short_description: string | null
           slug: string | null
           title: string
@@ -108,6 +110,7 @@ export type Database = {
           featured?: boolean
           id?: string
           images?: string[] | null
+          location?: string | null
           lot_sqm?: number | null
           meta_description?: string | null
           meta_title?: string | null
@@ -118,6 +121,7 @@ export type Database = {
           price_status?: string
           priority_order?: number
           property_status?: string
+          property_type?: string | null
           short_description?: string | null
           slug?: string | null
           title: string
@@ -130,6 +134,7 @@ export type Database = {
           featured?: boolean
           id?: string
           images?: string[] | null
+          location?: string | null
           lot_sqm?: number | null
           meta_description?: string | null
           meta_title?: string | null
@@ -140,6 +145,7 @@ export type Database = {
           price_status?: string
           priority_order?: number
           property_status?: string
+          property_type?: string | null
           short_description?: string | null
           slug?: string | null
           title?: string
@@ -191,6 +197,48 @@ export type Database = {
           short_description?: string | null
           sold_date?: string | null
           title?: string
+        }
+        Relationships: []
+      }
+      search_locations: {
+        Row: {
+          display_order: number
+          id: string
+          name_en: string
+          name_he: string
+        }
+        Insert: {
+          display_order?: number
+          id?: string
+          name_en: string
+          name_he: string
+        }
+        Update: {
+          display_order?: number
+          id?: string
+          name_en?: string
+          name_he?: string
+        }
+        Relationships: []
+      }
+      search_property_types: {
+        Row: {
+          display_order: number
+          id: string
+          name_en: string
+          name_he: string
+        }
+        Insert: {
+          display_order?: number
+          id?: string
+          name_en: string
+          name_he: string
+        }
+        Update: {
+          display_order?: number
+          id?: string
+          name_en?: string
+          name_he?: string
         }
         Relationships: []
       }

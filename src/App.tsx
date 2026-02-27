@@ -13,6 +13,8 @@ import Sell from "./pages/Sell";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
+import Properties from "./pages/Properties";
+import PropertyDetail from "./pages/PropertyDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +45,8 @@ const App = () => (
               <Route path="sell" element={<Sell />} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
+              <Route path="properties" element={<Properties />} />
+              <Route path="property/:slug" element={<PropertyDetail />} />
               <Route path="admin" element={<Admin />} />
             </Route>
             {/* Backward compat for /admin */}

@@ -60,6 +60,11 @@ export default {
           hover: "hsl(var(--gold-hover))",
         },
         "deep-green": "hsl(var(--teal-deep))",
+        charcoal: {
+          DEFAULT: "hsl(var(--charcoal))",
+          hover: "hsl(var(--charcoal-hover))",
+        },
+        bronze: "hsl(var(--bronze))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
