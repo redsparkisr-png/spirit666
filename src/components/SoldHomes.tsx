@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { BedDouble, Ruler } from "lucide-react";
 
 type SoldProp = Tables<"properties_sold">;
 
@@ -32,7 +33,7 @@ const SoldHomes = () => {
   const isEmpty = loaded && items.length === 0;
 
   return (
-    <section className="py-12 md:py-20 lg:py-24 bg-secondary">
+    <section className="py-16 md:py-24 lg:py-28 bg-secondary">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -41,21 +42,24 @@ const SoldHomes = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">
+          <p className="text-bronze font-body text-sm tracking-widest uppercase mb-3">
             {t("home.sold.pre_title")}
           </p>
-          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
+          <h2 className="text-3xl md:text-[34px] font-display font-semibold text-foreground mb-4">
             {t("home.sold.title")}
           </h2>
         </motion.div>
 
         {isEmpty ? (
           <div className="max-w-5xl mx-auto space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="rounded-xl overflow-hidden">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="rounded-xl overflow-hidden bg-card border border-border">
                   <div className="aspect-[4/3] bg-muted/60 animate-pulse" />
-                  <div className="p-4 bg-card"><div className="h-4 bg-muted/60 rounded w-3/4 animate-pulse" /></div>
+                  <div className="p-5">
+                    <div className="h-4 bg-muted/60 rounded w-3/4 animate-pulse mb-2" />
+                    <div className="h-3 bg-muted/40 rounded w-1/2 animate-pulse" />
+                  </div>
                 </div>
               ))}
             </div>
@@ -64,7 +68,7 @@ const SoldHomes = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {items.map((p, idx) => (
               <motion.div
                 key={p.id}
@@ -72,21 +76,51 @@ const SoldHomes = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="relative rounded-xl overflow-hidden group"
+                className="relative rounded-xl overflow-hidden bg-card border border-border group"
               >
-                <div className="relative aspect-[4/3] bg-muted">
+                <div className="relative aspect-[4/3] bg-muted overflow-hidden">
                   {p.images && p.images[0] ? (
-                    <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover object-center" loading="lazy" />
+                    <img
+                      src={p.images[0]}
+                      alt={p.title}
+                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
                   ) : (
                     <div className="w-full h-full bg-muted" />
                   )}
-                  <div className="absolute inset-0 bg-primary/15" />
-                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-primary text-primary-foreground text-xs font-body font-semibold tracking-wider uppercase px-3 py-1.5 rounded">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-3 py-1.5 rounded">
                     {t("home.sold.badge")}
                   </div>
                 </div>
-                <div className="p-4 bg-card">
-                  <p className="text-sm font-body text-foreground">{p.short_description || p.title}</p>
+
+                <div className="p-5 space-y-3">
+                  <p className="text-base font-display font-semibold text-foreground leading-snug">
+                    {p.title}
+                  </p>
+                  {p.short_description && (
+                    <p className="text-sm text-muted-foreground font-body line-clamp-2">
+                      {p.short_description}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground font-body pt-1">
+                    {p.bedrooms && (
+                      <span className="flex items-center gap-1">
+                        <BedDouble className="w-3.5 h-3.5" />
+                        {p.bedrooms}
+                      </span>
+                    )}
+                    {p.built_sqm && (
+                      <span className="flex items-center gap-1">
+                        <Ruler className="w-3.5 h-3.5" />
+                        {p.built_sqm} sqm
+                      </span>
+                    )}
+                    {p.sold_date && (
+                      <span className="text-bronze">{p.sold_date}</span>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -98,14 +132,14 @@ const SoldHomes = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          className="text-center mt-10 space-y-4"
+          className="text-center mt-12 space-y-4"
         >
           <p className="text-muted-foreground font-body text-sm italic">
             {t("home.sold.bottom_text")}
           </p>
           <button
             onClick={openWhatsApp}
-            className="bg-gold hover:bg-gold-hover text-primary-foreground px-8 py-3.5 rounded-lg font-body font-medium text-sm transition-colors duration-300"
+            className="bg-charcoal hover:bg-charcoal-hover text-white px-8 py-3.5 rounded-lg font-body font-medium text-sm transition-colors duration-300"
           >
             {t("home.sold.cta_button")}
           </button>

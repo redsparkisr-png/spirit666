@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { BedDouble, Ruler, LandPlot, ChevronLeft, ChevronRight } from "lucide-react";
+import { BedDouble, Ruler, LandPlot, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 type Property = Tables<"properties_available">;
 
@@ -15,6 +16,7 @@ const PropertyDetail = () => {
   const { lang } = useLanguage();
   const { t } = useSiteContent();
   const [property, setProperty] = useState<Property | null>(null);
+  const [similar, setSimilar] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentImg, setCurrentImg] = useState(0);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
@@ -22,7 +24,6 @@ const PropertyDetail = () => {
 
   useEffect(() => {
     const load = async () => {
-      // Try slug first, then id
       let { data } = await supabase
         .from("properties_available")
         .select("*")
@@ -34,6 +35,16 @@ const PropertyDetail = () => {
       }
       setProperty(data);
       setLoading(false);
+
+      // Load similar properties
+      if (data) {
+        const { data: sim } = await supabase
+          .from("properties_available")
+          .select("*")
+          .neq("id", data.id)
+          .limit(3);
+        if (sim) setSimilar(sim);
+      }
     };
     load();
   }, [slug]);
@@ -55,6 +66,11 @@ const PropertyDetail = () => {
     toast.success(t("property.detail.inquiry_success"));
     setFormData({ name: "", phone: "", email: "", message: "" });
     setSubmitting(false);
+  };
+
+  const openWhatsApp = () => {
+    const text = `Hi, I'm interested in: ${property?.title || "a property"}`;
+    window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
 
   if (loading) {
@@ -85,9 +101,11 @@ const PropertyDetail = () => {
   }
 
   const images = property.images || [];
+  const inputClasses =
+    "w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30";
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background pb-20 lg:pb-0">
       <Header />
 
       {/* Gallery */}
@@ -203,7 +221,7 @@ const PropertyDetail = () => {
               )}
             </div>
 
-            {/* Description */}
+            {/* Description blocks */}
             {property.short_description && (
               <div>
                 <h2 className="text-xl font-display font-semibold text-foreground mb-3">
@@ -213,15 +231,65 @@ const PropertyDetail = () => {
               </div>
             )}
 
+            {property.location && (
+              <div>
+                <h2 className="text-xl font-display font-semibold text-foreground mb-3">
+                  {t("property.detail.location_title")}
+                </h2>
+                <p className="text-muted-foreground font-body leading-relaxed">
+                  {property.location}{property.neighborhood_note ? ` — ${property.neighborhood_note}` : ""}
+                </p>
+              </div>
+            )}
+
             {/* FOMO line */}
-            <p className="text-sm text-bronze font-body italic">
-              {t("property.detail.fomo_line")}
-            </p>
+            <div className="bg-bronze/10 border border-bronze/20 rounded-lg px-5 py-3">
+              <p className="text-sm text-bronze font-body italic">
+                {t("property.detail.fomo_line")}
+              </p>
+            </div>
+
+            {/* Similar Properties */}
+            {similar.length > 0 && (
+              <div className="pt-4">
+                <h2 className="text-xl font-display font-semibold text-foreground mb-6">
+                  {t("property.detail.similar_title")}
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {similar.map((sp) => (
+                    <Link
+                      key={sp.id}
+                      to={`/${lang}/property/${sp.slug || sp.id}`}
+                      className="group rounded-xl overflow-hidden bg-card border border-border hover:shadow-md transition-shadow"
+                    >
+                      <div className="aspect-[4/3] bg-muted overflow-hidden">
+                        {sp.images?.[0] ? (
+                          <img
+                            src={sp.images[0]}
+                            alt={sp.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-muted" />
+                        )}
+                      </div>
+                      <div className="p-3">
+                        <p className="font-display font-semibold text-foreground text-sm truncate">{sp.title}</p>
+                        {sp.price_label && (
+                          <p className="text-xs text-gold font-body mt-1">{sp.price_label}</p>
+                        )}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Sidebar inquiry form */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-20 bg-card rounded-xl border border-border p-6 space-y-4">
+          {/* Sticky sidebar inquiry form */}
+          <div className="lg:col-span-1 hidden lg:block">
+            <div id="inquiry-form" className="sticky top-20 bg-card rounded-xl border border-border p-6 space-y-4 shadow-sm">
               <h3 className="font-display font-semibold text-foreground text-lg">
                 {t("property.detail.inquiry_title")}
               </h3>
@@ -231,28 +299,28 @@ const PropertyDetail = () => {
                   placeholder={t("property.detail.name_placeholder")}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30"
+                  className={inputClasses}
                 />
                 <input
                   type="tel"
                   placeholder={t("property.detail.phone_placeholder")}
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30"
+                  className={inputClasses}
                 />
                 <input
                   type="email"
                   placeholder={t("property.detail.email_placeholder")}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30"
+                  className={inputClasses}
                 />
                 <textarea
                   placeholder={t("property.detail.message_placeholder")}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30 resize-none"
+                  className={`${inputClasses} resize-none`}
                 />
                 <button
                   type="submit"
@@ -262,6 +330,15 @@ const PropertyDetail = () => {
                   {submitting ? "..." : t("property.detail.send_inquiry")}
                 </button>
               </form>
+
+              <button
+                onClick={openWhatsApp}
+                className="w-full flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" />
+                {t("property.detail.whatsapp_cta")}
+              </button>
+
               <p className="text-[11px] text-muted-foreground/60 font-body text-center">
                 {t("property.detail.privacy_note")}
               </p>
@@ -272,14 +349,15 @@ const PropertyDetail = () => {
 
       {/* Mobile sticky CTA */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border px-4 py-3 flex gap-3">
-        <a
-          href={`tel:+972500000000`}
-          className="flex-1 bg-gold hover:bg-gold-hover text-white py-3 rounded-lg font-body font-medium text-sm text-center transition-colors"
-        >
-          {t("property.detail.call_now")}
-        </a>
         <button
-          onClick={() => document.getElementById("inquiry-form")?.scrollIntoView({ behavior: "smooth" })}
+          onClick={openWhatsApp}
+          className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
+        >
+          <MessageCircle className="w-4 h-4" />
+          {t("property.detail.whatsapp_cta")}
+        </button>
+        <button
+          onClick={() => document.getElementById("inquiry-form-mobile")?.scrollIntoView({ behavior: "smooth" })}
           className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
         >
           {t("property.detail.send_inquiry")}
