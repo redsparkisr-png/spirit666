@@ -125,7 +125,11 @@ const Properties = () => {
       setLoading(true);
       let query = supabase.from("properties_available").select("*");
 
-      if (locFilter) query = query.eq("location", locFilter);
+      if (locFilter) {
+        const locs = locFilter.split(",").filter(Boolean);
+        if (locs.length === 1) query = query.eq("location", locs[0]);
+        else if (locs.length > 1) query = query.in("location", locs);
+      }
       if (typeFilter) query = query.eq("property_type", typeFilter);
       if (bedsFilter) {
         const minBeds = parseInt(bedsFilter);

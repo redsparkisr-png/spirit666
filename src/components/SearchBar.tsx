@@ -1,10 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search, ChevronDown, X, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { useIsMobile } from "@/hooks/use-mobile";
 import * as SliderPrimitive from "@radix-ui/react-slider";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Option {
   id: string;
@@ -29,6 +31,192 @@ interface SearchBarProps {
   inline?: boolean;
 }
 
+/* ─── Custom Dropdown ─── */
+interface DropdownProps {
+  label: string;
+  placeholder: string;
+  options: { value: string; label: string }[];
+  value: string | string[];
+  onChange: (val: string | string[]) => void;
+  multi?: boolean;
+  inline?: boolean;
+  isMobile?: boolean;
+}
+
+const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline, isMobile }: DropdownProps) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const selected = multi ? (value as string[]) : value ? [value as string] : [];
+  const displayText = selected.length > 0
+    ? selected.length === 1
+      ? options.find((o) => o.value === selected[0])?.label || selected[0]
+      : `${selected.length} selected`
+    : placeholder;
+
+  // Close on outside click (desktop)
+  useEffect(() => {
+    if (!open || isMobile) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open, isMobile]);
+
+  // Prevent body scroll on mobile sheet
+  useEffect(() => {
+    if (isMobile && open) {
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = ""; };
+    }
+  }, [isMobile, open]);
+
+  const toggleOption = (val: string) => {
+    if (multi) {
+      const arr = value as string[];
+      if (arr.includes(val)) onChange(arr.filter((v) => v !== val));
+      else onChange([...arr, val]);
+    } else {
+      onChange(val === value ? "" : val);
+      setOpen(false);
+    }
+  };
+
+  const clearAll = () => {
+    onChange(multi ? [] : "");
+  };
+
+  const triggerClasses = inline
+    ? "flex items-center justify-between w-full bg-card border border-border text-foreground rounded-lg px-3 py-2.5 text-sm font-body cursor-pointer hover:border-charcoal/30 transition-colors"
+    : "flex items-center justify-between w-full bg-transparent border border-white/20 text-white rounded-lg px-3 py-2.5 text-sm font-body cursor-pointer hover:border-white/40 transition-colors";
+
+  // Desktop dropdown panel
+  const panelContent = (
+    <div className="py-1.5 max-h-[240px] overflow-y-auto">
+      {options.map((opt) => {
+        const isSelected = selected.includes(opt.value);
+        return (
+          <button
+            key={opt.value}
+            onClick={() => toggleOption(opt.value)}
+            className={`w-full text-left px-4 py-2.5 text-sm font-body flex items-center justify-between transition-colors ${
+              isSelected
+                ? inline
+                  ? "bg-charcoal/5 text-foreground font-medium"
+                  : "bg-white/10 text-white font-medium"
+                : inline
+                  ? "text-foreground/80 hover:bg-muted"
+                  : "text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <span>{opt.label}</span>
+            {isSelected && <Check className="w-4 h-4 text-gold flex-shrink-0" />}
+          </button>
+        );
+      })}
+    </div>
+  );
+
+  // Mobile bottom sheet
+  if (isMobile && open) {
+    return (
+      <>
+        <div className="flex flex-col gap-1.5" ref={ref}>
+          <span className={`text-xs font-body ${inline ? "text-muted-foreground" : "text-white/60"}`}>{label}</span>
+          <button onClick={() => setOpen(true)} className={triggerClasses}>
+            <span className={selected.length === 0 ? "opacity-50" : ""}>{displayText}</span>
+            <ChevronDown className="w-4 h-4 flex-shrink-0 opacity-60" />
+          </button>
+        </div>
+
+        {/* Mobile bottom sheet overlay */}
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] bg-black/50"
+            onClick={() => setOpen(false)}
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="absolute bottom-0 left-0 right-0 bg-card rounded-t-2xl max-h-[70vh] flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Handle */}
+              <div className="flex justify-center pt-3 pb-1">
+                <div className="w-10 h-1 rounded-full bg-border" />
+              </div>
+
+              {/* Title + close */}
+              <div className="flex items-center justify-between px-5 py-3 border-b border-border">
+                <h3 className="font-display font-semibold text-foreground text-base">{label}</h3>
+                <button onClick={() => setOpen(false)} className="text-muted-foreground" aria-label="Close">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Options */}
+              <div className="flex-1 overflow-y-auto px-2">
+                {panelContent}
+              </div>
+
+              {/* Bottom actions */}
+              <div className="border-t border-border px-5 py-4 flex gap-3">
+                {selected.length > 0 && (
+                  <button onClick={clearAll} className="text-sm text-muted-foreground font-body hover:text-foreground transition-colors">
+                    Clear
+                  </button>
+                )}
+                <button
+                  onClick={() => setOpen(false)}
+                  className="flex-1 bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
+                >
+                  Apply
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+      </>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-1.5 relative" ref={ref}>
+      <span className={`text-xs font-body ${inline ? "text-muted-foreground" : "text-white/60"}`}>{label}</span>
+      <button onClick={() => setOpen(!open)} className={triggerClasses}>
+        <span className={selected.length === 0 ? "opacity-50" : ""}>{displayText}</span>
+        <ChevronDown className={`w-4 h-4 flex-shrink-0 opacity-60 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {/* Desktop dropdown panel */}
+      <AnimatePresence>
+        {open && !isMobile && (
+          <motion.div
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.15 }}
+            className={`absolute top-full left-0 right-0 mt-1.5 z-50 rounded-xl shadow-xl border overflow-hidden ${
+              inline
+                ? "bg-card border-border"
+                : "bg-charcoal border-white/15"
+            }`}
+            style={{ minWidth: 200 }}
+          >
+            {panelContent}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+/* ─── Main SearchBar ─── */
 const SearchBar = ({
   initialLocation = "",
   initialType = "",
@@ -40,13 +228,16 @@ const SearchBar = ({
   const { lang } = useLanguage();
   const { t } = useSiteContent();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const [locations, setLocations] = useState<Option[]>([]);
   const [propertyTypes, setPropertyTypes] = useState<Option[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 20_000_000]);
   const [dataRange, setDataRange] = useState<[number, number]>([0, 20_000_000]);
 
-  const [selectedLocation, setSelectedLocation] = useState(initialLocation);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>(
+    initialLocation ? initialLocation.split(",") : []
+  );
   const [selectedType, setSelectedType] = useState(initialType);
   const [selectedBeds, setSelectedBeds] = useState(initialBeds);
 
@@ -80,7 +271,7 @@ const SearchBar = ({
 
   const handleSearch = () => {
     const params = new URLSearchParams();
-    if (selectedLocation) params.set("location", selectedLocation);
+    if (selectedLocations.length > 0) params.set("location", selectedLocations.join(","));
     if (selectedType) params.set("type", selectedType);
     if (selectedBeds) params.set("beds", selectedBeds);
     if (priceRange[0] > dataRange[0]) params.set("priceMin", String(priceRange[0]));
@@ -88,12 +279,8 @@ const SearchBar = ({
     navigate(`/${lang}/properties?${params.toString()}`);
   };
 
-  const selectClass =
-    "bg-transparent border border-white/20 text-white rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-1 focus:ring-white/30 appearance-none cursor-pointer min-w-0";
-  const inlineSelectClass =
-    "bg-card border border-border text-foreground rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-1 focus:ring-charcoal/30 appearance-none cursor-pointer min-w-0";
-
-  const sc = inline ? inlineSelectClass : selectClass;
+  const locationOptions = locations.map((l) => ({ value: getName(l), label: getName(l) }));
+  const typeOptions = propertyTypes.map((pt) => ({ value: getName(pt), label: getName(pt) }));
 
   return (
     <div
@@ -104,57 +291,61 @@ const SearchBar = ({
       }
     >
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 items-end">
-        {/* Location */}
-        <div className="flex flex-col gap-1.5">
-          <label className={`text-xs font-body ${inline ? "text-muted-foreground" : "text-white/60"}`}>
-            {t("search.location")}
-          </label>
-          <select value={selectedLocation} onChange={(e) => setSelectedLocation(e.target.value)} className={sc}>
-            <option value="">{t("search.all_locations")}</option>
-            {locations.map((loc) => (
-              <option key={loc.id} value={getName(loc)}>
-                {getName(loc)}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Location (multi-select) */}
+        <Dropdown
+          label={t("search.location")}
+          placeholder={t("search.all_locations")}
+          options={locationOptions}
+          value={selectedLocations}
+          onChange={(val) => setSelectedLocations(val as string[])}
+          multi
+          inline={inline}
+          isMobile={isMobile}
+        />
 
         {/* Property Type */}
-        <div className="flex flex-col gap-1.5">
-          <label className={`text-xs font-body ${inline ? "text-muted-foreground" : "text-white/60"}`}>
-            {t("search.property_type")}
-          </label>
-          <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)} className={sc}>
-            <option value="">{t("search.all_types")}</option>
-            {propertyTypes.map((pt) => (
-              <option key={pt.id} value={getName(pt)}>
-                {getName(pt)}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Dropdown
+          label={t("search.property_type")}
+          placeholder={t("search.all_types")}
+          options={typeOptions}
+          value={selectedType}
+          onChange={(val) => setSelectedType(val as string)}
+          inline={inline}
+          isMobile={isMobile}
+        />
 
-        {/* Bedrooms */}
+        {/* Bedrooms as pills */}
         <div className="flex flex-col gap-1.5">
-          <label className={`text-xs font-body ${inline ? "text-muted-foreground" : "text-white/60"}`}>
+          <span className={`text-xs font-body ${inline ? "text-muted-foreground" : "text-white/60"}`}>
             {t("search.bedrooms")}
-          </label>
-          <select value={selectedBeds} onChange={(e) => setSelectedBeds(e.target.value)} className={sc}>
-            <option value="">{t("search.any")}</option>
+          </span>
+          <div className="flex gap-1 flex-wrap">
             {BEDROOM_OPTIONS.map((b) => (
-              <option key={b} value={b}>
+              <button
+                key={b}
+                onClick={() => setSelectedBeds(selectedBeds === b ? "" : b)}
+                className={`px-2.5 py-2 rounded-lg text-xs font-body font-medium transition-colors ${
+                  selectedBeds === b
+                    ? inline
+                      ? "bg-charcoal text-white"
+                      : "bg-white text-charcoal"
+                    : inline
+                      ? "bg-muted text-foreground/70 hover:bg-muted/80"
+                      : "bg-white/10 text-white/70 hover:bg-white/20"
+                }`}
+              >
                 {b}
-              </option>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
         {/* Price Range */}
         <div className="flex flex-col gap-1.5 col-span-2 md:col-span-1">
-          <label className={`text-xs font-body ${inline ? "text-muted-foreground" : "text-white/60"}`}>
+          <span className={`text-xs font-body ${inline ? "text-muted-foreground" : "text-white/60"}`}>
             {t("search.price_range")}
-          </label>
-          <div className="space-y-2">
+          </span>
+          <div className="space-y-2 pt-1">
             <SliderPrimitive.Root
               value={priceRange}
               onValueChange={(val) => setPriceRange(val as [number, number])}
@@ -168,20 +359,16 @@ const SearchBar = ({
                   inline ? "bg-muted" : "bg-white/20"
                 }`}
               >
-                <SliderPrimitive.Range className={`absolute h-full ${inline ? "bg-charcoal" : "bg-gold"}`} />
+                <SliderPrimitive.Range className="absolute h-full bg-gold" />
               </SliderPrimitive.Track>
               <SliderPrimitive.Thumb
                 className={`block h-4 w-4 rounded-full border-2 shadow-sm focus-visible:outline-none ${
-                  inline
-                    ? "bg-card border-charcoal"
-                    : "bg-white border-white/80"
+                  inline ? "bg-card border-charcoal" : "bg-white border-white/80"
                 }`}
               />
               <SliderPrimitive.Thumb
                 className={`block h-4 w-4 rounded-full border-2 shadow-sm focus-visible:outline-none ${
-                  inline
-                    ? "bg-card border-charcoal"
-                    : "bg-white border-white/80"
+                  inline ? "bg-card border-charcoal" : "bg-white border-white/80"
                 }`}
               />
             </SliderPrimitive.Root>
