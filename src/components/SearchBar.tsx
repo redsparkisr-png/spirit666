@@ -92,7 +92,7 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
 
   // Render options list - context-aware colors
   const renderOptions = (forLightBg: boolean) => (
-    <div className="py-1.5 max-h-[240px] overflow-y-auto">
+    <div className="py-1.5 max-h-[320px] overflow-y-auto">
       {options.map((opt) => {
         const isSelected = selected.includes(opt.value);
         const useLightColors = forLightBg || inline;
@@ -248,8 +248,14 @@ const SearchBar = ({
       supabase.from("search_property_types").select("*").order("display_order"),
       supabase.from("properties_available").select("price_number").not("price_number", "is", null),
     ]).then(([locRes, typeRes, priceRes]) => {
-      if (locRes.data) setLocations(locRes.data);
-      if (typeRes.data) setPropertyTypes(typeRes.data);
+      if (locRes.data) {
+        setLocations(locRes.data);
+        console.log("[SearchBar] Locations loaded:", locRes.data.length);
+      }
+      if (typeRes.data) {
+        setPropertyTypes(typeRes.data);
+        console.log("[SearchBar] Property types loaded:", typeRes.data.length);
+      }
       if (priceRes.data && priceRes.data.length > 0) {
         const prices = priceRes.data.map((p) => Number(p.price_number)).filter((n) => n > 0);
         if (prices.length > 0) {

@@ -107,6 +107,9 @@ const Header = () => {
             src={spiritLogo}
             alt="Spirit Real Estate"
             className="w-[42px] h-[42px] md:w-[58px] md:h-[58px] rounded-lg"
+            width={58}
+            height={58}
+            style={{ imageRendering: "-webkit-optimize-contrast" } as React.CSSProperties}
           />
           <span className="hidden sm:block font-display font-semibold text-white text-base tracking-wide">
             Spirit Real Estate

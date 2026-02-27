@@ -249,6 +249,64 @@ const PropertyDetail = () => {
               </p>
             </div>
 
+            {/* Inline inquiry form (visible on all screens, target for mobile CTA) */}
+            <div id="inquiry-form-mobile" className="bg-card rounded-xl border border-border p-5 md:p-6 space-y-4 shadow-sm lg:hidden">
+              <h3 className="font-display font-semibold text-foreground text-lg">
+                {t("property.detail.inquiry_title")}
+              </h3>
+              <form onSubmit={handleInquiry} className="space-y-3">
+                <input
+                  type="text"
+                  placeholder={t("property.detail.name_placeholder")}
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className={inputClasses}
+                  aria-label={t("property.detail.name_placeholder")}
+                />
+                <input
+                  type="tel"
+                  placeholder={t("property.detail.phone_placeholder")}
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className={inputClasses}
+                  aria-label={t("property.detail.phone_placeholder")}
+                />
+                <input
+                  type="email"
+                  placeholder={t("property.detail.email_placeholder")}
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className={inputClasses}
+                  aria-label={t("property.detail.email_placeholder")}
+                />
+                <textarea
+                  placeholder={t("property.detail.message_placeholder")}
+                  value={formData.message || `Interested in: ${property.title}`}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  rows={2}
+                  className={`${inputClasses} resize-none`}
+                  aria-label={t("property.detail.message_placeholder")}
+                />
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-colors disabled:opacity-60"
+                  >
+                    {submitting ? "..." : t("property.detail.send_inquiry")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={openWhatsApp}
+                    className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    WhatsApp
+                  </button>
+                </div>
+              </form>
+            </div>
+
             {/* Similar Properties */}
             {similar.length > 0 && (
               <div className="pt-4">
@@ -348,7 +406,10 @@ const PropertyDetail = () => {
       </div>
 
       {/* Mobile sticky CTA */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border px-4 py-3 flex gap-3">
+      <div
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border px-4 py-3 flex gap-3"
+        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+      >
         <button
           onClick={openWhatsApp}
           className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
