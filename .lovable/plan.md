@@ -1,68 +1,112 @@
 
+# Critical UX Bug Fixes + Legal Compliance Polish
 
-# Premium Polish + SearchBar Fix
+## Summary
+Six focused fixes: dropdown clipping bug, "Send Inquiry" mobile flow, property page inquiry form, logo sizing, cookie consent restoration, and mobile layout collision prevention. No font changes. No database changes needed.
 
-## Problem
-The mobile bottom sheet renders options with dark-theme text colors (`text-white/70`) on a light `bg-card` (white) background, making them invisible. Desktop dropdowns work but need polish. Header/hero sizing needs minor tweaks. Footer needs nav links added.
+---
 
-## Changes
+## A. Search Bar Dropdown Clipping Fix (CRITICAL)
 
-### 1. Fix SearchBar Dropdown Color Bug (CRITICAL)
+**Root cause**: The hero `<section>` has `overflow-hidden` (line 11 of `HeroSection.tsx`), which clips the absolutely-positioned dropdown panels that extend below the search card.
 
-**File: `src/components/SearchBar.tsx`**
+**Fix 1 -- HeroSection.tsx**: Remove `overflow-hidden` from the hero section className. The `scale-105` on the background image can be contained by adding `overflow-hidden` to the background `<div>` wrapper instead (which already exists at line 19).
 
-The `panelContent` variable always uses dark-theme classes (`text-white/70`, `hover:bg-white/10`) regardless of context. The mobile bottom sheet uses `bg-card` (light), so text is invisible.
+**Fix 2 -- SearchBar.tsx**: Increase `max-h-[240px]` to `max-h-[320px]` on the options container (line 95) to ensure all 5 options are visible without scrolling. Add a `console.log` in the data-fetch `useEffect` to log options count for dev verification.
 
-**Fix:** The `panelContent` must use the `inline` prop (or detect mobile context) to pick correct text colors:
-- Mobile bottom sheet (light bg): use `text-foreground/80`, `hover:bg-muted`, checkmark `text-gold`
-- Desktop hero dropdown (dark bg): keep `text-white/70`, `hover:bg-white/10`
-- Inline (properties page): use foreground colors
+**Fix 3 -- SearchBar.tsx mobile bottom sheet**: The mobile sheet currently works but the `max-h-[70vh]` is fine. Ensure the option list `flex-1 overflow-y-auto` is correct (already is). No further changes needed for mobile.
 
-Split the `panelContent` rendering to be context-aware, using `isMobile` and `inline` to determine color scheme. When rendering inside the mobile bottom sheet, always use light-bg-compatible colors.
+**Files**: `src/components/HeroSection.tsx`, `src/components/SearchBar.tsx`
 
-Also increase z-index on desktop dropdown from `z-50` to `z-[100]` to ensure it renders above hero overlay.
+---
 
-### 2. Header Polish
+## B. "Send Inquiry" Button -- Mobile Fix
 
-**File: `src/components/Header.tsx`**
+**Current state**: PropertyDetail.tsx has a mobile sticky CTA bar with a "Send Inquiry" button that tries to `scrollIntoView` an element with id `inquiry-form-mobile` -- but that element does not exist on mobile. The desktop sidebar form has id `inquiry-form`, and there is no mobile-visible form to scroll to.
 
-Minor tweaks (most already done in previous batches):
-- Ensure "Spirit Real Estate" wordmark is visible on desktop with slightly larger text (`text-base` instead of `text-sm`)
-- Increase header padding from `py-4` to `py-5` for more breathing room
+**Fix**: Add a mobile-visible inquiry form section on PropertyDetail.tsx (placed before "Similar Properties") with `id="inquiry-form-mobile"`. This form will:
+- Pre-fill the message field with `"Interested in: {property.title}"`
+- Submit to the `leads` table with source `property_page:{slug}`
+- Show success toast on submit
+- Include validation (name + phone required)
 
-### 3. Footer Enhancement
+This also addresses **Section C** (compact inquiry form before Similar Properties).
 
-**File: `src/components/TrustSection.tsx`**
+**Files**: `src/components/PropertyDetail.tsx`
 
-Add missing footer elements:
-- Add Spirit Real Estate logo at top of footer
-- Add quick nav links row (Home, Properties, Sell, About, Contact)
-- Add Cookie Policy link next to Privacy, Terms, Accessibility
-- Add WhatsApp/contact line
-- Keep clean, minimal layout
+---
 
-### 4. Skip-to-Content Link
+## C. Property Page Inquiry Form (Before Similar Properties)
 
-**File: `src/pages/Index.tsx`** (and other page files)
+Merged with Section B above. Implementation:
+1. Insert a compact form section between the FOMO line and Similar Properties
+2. Fields: Full Name, Phone, Email, Message (pre-filled with property title + URL)
+3. Primary CTA: "Send Inquiry" (charcoal button)
+4. Secondary CTA: "WhatsApp Us" (green button)
+5. The form uses `id="inquiry-form-mobile"` so the sticky bottom bar's "Send Inquiry" scrolls to it
+6. On desktop, the existing sticky sidebar form remains; this new form is visible on all screen sizes as an additional conversion point
 
-Add a visually hidden skip-to-content link at the top of `<main>` that becomes visible on focus, linking to `#main-content`. Add `id="main-content"` to the first content section after the header.
+**Files**: `src/pages/PropertyDetail.tsx`
 
-### 5. Minor Spacing/Style Tweaks
+---
 
-- **MicroTrustLine**: Slightly increase text size for readability (`text-sm` to `text-[15px]`)
-- **SearchBar hero card**: Ensure frosted glass effect is clearly visible with `backdrop-blur-lg` instead of `backdrop-blur-md`
+## D. Logo Sizing Fix
 
-## Files Modified
-1. `src/components/SearchBar.tsx` -- fix color bug, increase z-index
-2. `src/components/Header.tsx` -- wordmark size, padding
-3. `src/components/TrustSection.tsx` -- full footer with nav links
-4. `src/pages/Index.tsx` -- skip-to-content link
+**Current state**: Header.tsx already has `w-[42px] h-[42px] md:w-[58px] md:h-[58px]`. The logo may appear blurry if the source image is low-res at 2x display.
 
-## What Stays Untouched
-- All database tables, RLS policies, gallery upload logic
-- WhatsApp button, exit popup, cookie consent
-- Admin panel
-- Font families (Playfair Display + DM Sans)
-- Property detail pages
-- All CMS content keys
+**Fix**: 
+- Add `image-rendering: -webkit-optimize-contrast` style for crispness
+- Ensure the img tag specifies proper `width` and `height` attributes to prevent layout shift
+- Keep rounded-lg and existing sizing
 
+**Files**: `src/components/Header.tsx`
+
+---
+
+## E. Cookie Consent + Legal Footer
+
+**Cookie consent**: The `CookieNotice.tsx` component already exists with Accept All / Reject / Manage Preferences functionality. Need to verify it renders on first visit.
+
+**Fix 1**: Check if the cookie notice is being blocked by existing localStorage. The component uses `cookieConsentV1` key. If the user already accepted, it won't show. This is correct behavior. No code change needed unless the banner was removed from the page -- it's currently in `Index.tsx` (line 43). Verify it appears on other pages too by checking if it's in the layout.
+
+**Fix 2 -- Footer "Cookie Preferences" link**: Add a "Cookie Preferences" button/link in `TrustSection.tsx` footer that clears `cookieConsentV1` from localStorage and dispatches a reset event to re-show the banner.
+
+**Fix 3 -- CookieNotice.tsx**: Add a global event listener for `"cookie-reopen"` that re-shows the banner when the footer link is clicked.
+
+**Accessibility Statement**: Already exists at `src/pages/Accessibility.tsx` with CMS-driven bilingual content. Just needs to be linked in footer (already linked).
+
+**Files**: `src/components/TrustSection.tsx`, `src/components/CookieNotice.tsx`
+
+---
+
+## F. Mobile Layout Collisions
+
+**Current state**: FloatingElements.tsx already hides when a modal is open and shifts upward when cookie banner is visible. PropertyDetail.tsx has a fixed bottom CTA bar.
+
+**Fix 1 -- PropertyDetail.tsx**: When the mobile bottom sheet (from search dropdowns) is open, hide the sticky CTA bar. Add a CSS check or state flag.
+
+**Fix 2**: Add `pb-[env(safe-area-inset-bottom)]` to the mobile sticky CTA bar in PropertyDetail.tsx for iPhone safe areas.
+
+**Fix 3**: Ensure the cookie banner's z-index (90) is below the bottom-sheet overlay (200) so they don't fight.
+
+**Files**: `src/pages/PropertyDetail.tsx`, `src/components/FloatingElements.tsx`
+
+---
+
+## Technical Details
+
+### File changes summary:
+1. **HeroSection.tsx**: Move `overflow-hidden` from section to background div only
+2. **SearchBar.tsx**: Increase max-height, add dev console.log for option counts
+3. **PropertyDetail.tsx**: Add inline inquiry form before Similar Properties with id="inquiry-form-mobile", add safe-area padding to sticky CTA
+4. **Header.tsx**: Add image-rendering style for logo crispness
+5. **TrustSection.tsx**: Add "Cookie Preferences" link that reopens cookie banner
+6. **CookieNotice.tsx**: Add listener for cookie-reopen event
+
+### No changes to:
+- Font families (Playfair Display + DM Sans unchanged)
+- Database schema (no migrations)
+- Admin panel functionality
+- Gallery upload logic
+- WhatsApp button logic
+- Color palette
