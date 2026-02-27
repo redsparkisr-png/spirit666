@@ -93,6 +93,9 @@ const ExitIntentPopup = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[100] flex items-center justify-center px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="exit-popup-title"
         >
           <div
             className="absolute inset-0 bg-primary/50 backdrop-blur-sm"
@@ -114,7 +117,7 @@ const ExitIntentPopup = () => {
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="text-2xl font-display font-semibold text-foreground mb-3 text-center">
+            <h3 id="exit-popup-title" className="text-2xl font-display font-semibold text-foreground mb-3 text-center">
               {t("home.exit.headline")}
             </h3>
             <p className="text-muted-foreground font-body text-sm text-center mb-6">
