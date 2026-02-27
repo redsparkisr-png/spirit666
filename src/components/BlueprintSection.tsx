@@ -32,9 +32,15 @@ const BlueprintSection = () => {
     setIsSubmitting(false);
   };
 
+  const inputClasses =
+    "w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-charcoal/20 focus:border-charcoal transition-all";
+
   return (
-    <section id="blueprint" className="py-12 md:py-20 lg:py-24 bg-card">
-      <div className="container px-6">
+    <section id="blueprint" className="py-16 md:py-24 lg:py-28 bg-card relative overflow-hidden">
+      {/* Subtle decorative accent */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-bronze/[0.03] blur-3xl pointer-events-none" />
+
+      <div className="container px-6 relative z-10">
         <div className="max-w-lg mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -43,10 +49,10 @@ const BlueprintSection = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-10"
           >
-            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
-              <FileText className="w-6 h-6 text-primary" />
+            <div className="w-14 h-14 rounded-full bg-charcoal/10 flex items-center justify-center mx-auto mb-5">
+              <FileText className="w-6 h-6 text-charcoal" />
             </div>
-            <h2 className="font-display font-semibold text-foreground mb-4">
+            <h2 className="font-display font-semibold text-foreground mb-4 text-2xl md:text-[34px]">
               {t("home.blueprint.title")}
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
@@ -68,7 +74,7 @@ const BlueprintSection = () => {
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               maxLength={100}
-              className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+              className={inputClasses}
             />
             <input
               type="email"
@@ -76,7 +82,7 @@ const BlueprintSection = () => {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               maxLength={255}
-              className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+              className={inputClasses}
             />
             <input
               type="tel"
@@ -84,13 +90,12 @@ const BlueprintSection = () => {
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               maxLength={20}
-              className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+              className={inputClasses}
             />
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold transition-colors duration-300 disabled:opacity-60"
-              style={{ fontSize: "17px" }}
+              className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-4 rounded-lg font-body font-semibold transition-colors duration-300 disabled:opacity-60 text-[17px]"
             >
               {isSubmitting ? t("home.blueprint.sending") : t("home.blueprint.button")}
             </button>
