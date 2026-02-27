@@ -1,170 +1,201 @@
 
-# Phase 1: Bilingual Infrastructure + CMS Content System
+# Batch 1: Header, Hero, Search Bar, Properties Page
 
 ## Overview
-Build the foundational bilingual system with CMS-driven content, enabling `/en/` and `/he/` routing, RTL support, language detection, and a `site_content` table that stores all text. Existing components will be refactored to pull text from this table instead of hardcoding strings.
-
-**No structural, branding, or database changes to existing tables.** Only additive changes.
+This batch transforms the homepage header and hero into a premium minimal design, adds an advanced search bar with price slider, and creates a new `/properties` results page. Existing data and components are preserved.
 
 ---
 
-## 1. Database: Create `site_content` Table
+## 1. Header Redesign
 
-Create a new table with RLS policies:
+**Current:** Sticky header with logo left, nav links center-right, lang toggle right.
+**New:** Premium charcoal header.
+
+- Background: charcoal (`hsl(0, 0%, 15%)` or similar dark)
+- Left: hamburger menu icon (opens slide-out drawer with nav links)
+- Center: Spirit Real Estate logo (white text or logo image)
+- Right: HE | EN toggle (text only, light color)
+- Mobile: same layout, hamburger opens full-height slide-out
+
+**File:** `src/components/Header.tsx` -- full rewrite of layout/styling. Nav links move into a side drawer (Sheet component from shadcn).
+
+---
+
+## 2. Hero Section Redesign
+
+**Current:** Full-screen hero with pre-title, multi-line headline, subline paragraph, two CTA buttons, trust strip.
+**New:** Minimal and strong.
+
+- Full-screen hero image (keep existing `hero-bg.jpg`)
+- Darker gradient overlay for contrast
+- Small top line: "Spirit Real Estate" (subtle, tracked)
+- Single-line main slogan:
+  - EN: "Zichron Yaakov -- Local Guidance. Smarter Decisions."
+  - HE: "זכרון יעקב -- ליווי מקומי. החלטות חכמות יותר."
+- No paragraph text, no CTA buttons, no trust strip
+- Search bar sits at the bottom of the hero (see section 3)
+
+**CMS keys to update:** `home.hero.pre_title`, `home.hero.headline` (new values). Remove usage of `home.hero.subline`, `home.hero.cta_primary`, `home.hero.cta_secondary`, `home.hero.anchor_text`, `home.hero.trust_*` from the component (CMS rows stay for backward safety).
+
+**File:** `src/components/HeroSection.tsx` -- simplified layout.
+
+---
+
+## 3. Advanced Search Bar (Inside Hero)
+
+New component: `src/components/SearchBar.tsx`
+
+Premium glass-style module positioned at bottom of hero section.
+
+**Fields:**
+1. **Location** -- multi-select dropdown, options from a new `search_locations` table
+2. **Property Type** -- dropdown, options from a new `search_property_types` table
+3. **Bedrooms** -- dropdown: 2+, 3+, 4+, 5+, 6+
+4. **Price Range** -- dual-handle slider (min/max) with live numeric display
+5. **Search Button** -- charcoal, pill/rounded
+
+**Price slider details:**
+- Uses Radix Slider (already installed) with dual thumbs
+- Default currency: ILS (shekel symbol)
+- English mode: optional toggle for USD display (client-side conversion not needed, just display format)
+- Touch-friendly, large thumb targets
+- "Price Upon Request" listings excluded from slider filtering
+- Min/max range derived from actual property data
+
+**Database tables (new):**
 
 ```text
-site_content
-  id         uuid (PK, default gen_random_uuid())
-  key        text NOT NULL
-  value_en   text NOT NULL DEFAULT ''
-  value_he   text NOT NULL DEFAULT ''
-  page       text NOT NULL DEFAULT 'global'
-  section    text NOT NULL DEFAULT 'general'
-  updated_at timestamptz NOT NULL DEFAULT now()
-  UNIQUE(key)
+search_locations
+  id           uuid PK
+  name_en      text NOT NULL
+  name_he      text NOT NULL
+  display_order integer DEFAULT 0
+
+search_property_types
+  id           uuid PK
+  name_en      text NOT NULL
+  name_he      text NOT NULL
+  display_order integer DEFAULT 0
 ```
 
-**RLS Policies:**
-- Anyone can SELECT (public content)
-- Admins can INSERT / UPDATE / DELETE
+Both with public SELECT, admin INSERT/UPDATE/DELETE RLS.
 
-**Seed data:** Prefill ~40-50 rows with all existing hardcoded text from HeroSection, MicroTrustLine, Testimonials, AvailableHomes, SoldHomes, WhyDifferent, LifestyleSection, ContactForm, ExitIntentPopup, CookieNotice, TrustSection, FloatingElements. Each row has both `value_en` and `value_he` translations.
+**Seed data for locations:** Zichron Yaakov, Caesarea, Pardes Hanna-Karkur, Binyamina, Atlit
+**Seed data for property types:** Villa, Apartment, Cottage, Penthouse, Land
 
----
+**Search behavior:**
+- On submit, navigates to `/:lang/properties?location=...&type=...&beds=...&priceMin=...&priceMax=...`
+- Filters encoded in URL query params
 
-## 2. Language Context + Hook
-
-Create `src/lib/i18n.tsx`:
-- React context providing `lang` ('en' | 'he') and `setLang()`
-- On mount: check localStorage `preferred_lang`, then `navigator.language` (starts with "he" -> Hebrew), default English
-- Persist to localStorage on change
-- Export `useLanguage()` hook
-- Export `useContent(key: string)` hook that returns the correct `value_en` or `value_he` from a cached query
-
-Create `src/hooks/useSiteContent.ts`:
-- TanStack Query hook to fetch all `site_content` rows once
-- Cache with long staleTime (5 min)
-- Provides `t(key: string): string` function — returns value for current language, falls back to English if Hebrew missing
-- Logs missing keys to console in development
+**Admin management:** Add "Locations" and "Property Types" tabs to Admin panel for CRUD + reorder.
 
 ---
 
-## 3. Routing: `/en/` and `/he/` Prefixes
+## 4. Properties Results Page
 
-Update `src/App.tsx`:
-- Wrap routes in `LanguageProvider`
-- Add route structure:
-  ```text
-  /         -> redirect to /en/ (or /he/ based on detection)
-  /en/      -> Index
-  /he/      -> Index
-  /en/privacy -> Privacy
-  /he/privacy -> Privacy
-  /en/terms   -> Terms
-  /he/terms   -> Terms
-  /en/accessibility -> Accessibility
-  /he/accessibility -> Accessibility
-  /en/admin -> Admin (admin stays English-only for now)
-  /admin    -> Admin (backward compat)
-  ```
-- Create a `LanguageLayout` wrapper component that:
-  - Reads `:lang` param from URL
-  - Sets language context accordingly
-  - Applies `dir="rtl"` and `lang="he"` to a wrapper div when Hebrew
-  - Adds `<link rel="alternate" hreflang>` tags to `<head>`
+New page: `src/pages/Properties.tsx`
+New route: `/:lang/properties`
 
----
+**Layout:**
+- Header at top
+- Filter bar (same fields as search bar, pre-filled from URL params)
+- Property grid (reuses existing `PropertyCard` component, extracted from `AvailableHomes`)
+- Clicking a card navigates to `/:lang/property/:slug`
+- Sort options: Newest, Price (Low-High, High-Low)
+- Empty state with CTA
 
-## 4. RTL Support
+**Data fetching:**
+- Reads `properties_available` table
+- Applies filters from URL query params
+- Location filter requires a new `location` column on `properties_available` (nullable text, non-breaking)
 
-Add to `src/index.css`:
-- `[dir="rtl"]` scoped styles for text alignment, flex direction reversal where needed
-- Font adjustment: add a Hebrew-friendly font (e.g., "Heebo" or "Assistant") as fallback in `font-body` for RTL
-
-Update `tailwind.config.ts`:
-- Add Hebrew font family to the `body` font stack
+**Database change:**
+- Add `location` column (text, nullable) to `properties_available`
+- Add `property_type` column (text, nullable) to `properties_available`
+- No existing data is modified; admin can populate these fields going forward
 
 ---
 
-## 5. Header with Language Switcher
+## 5. Property Detail Page (Stub)
 
-Create `src/components/Header.tsx`:
-- Sticky minimal header with:
-  - Logo (existing spirit-logo.jpg)
-  - Tagline from CMS: key `header.tagline` ("Zichron Yaakov & Coastal Region")
-  - Navigation links: Home | Properties (scroll anchor) | Privacy | Terms | Accessibility
-  - Language toggle: "HE | EN" text buttons (no flags)
-- On language switch: navigate to equivalent route in other language, update localStorage
+New page: `src/pages/PropertyDetail.tsx`
+New route: `/:lang/property/:slug`
 
----
+This batch creates a basic version:
+- Gallery (reuses existing `ImageGallery` from PropertyModal)
+- Title, location, price
+- Stats grid (beds, sqm, lot)
+- Description
+- Inquiry form (reuses existing form logic)
+- Sticky mobile CTA
+- "Similar properties" placeholder
 
-## 6. Refactor Components to Use CMS Content
-
-Each component will be updated to use `t(key)` instead of hardcoded strings. The layout, styling, and logic remain identical.
-
-**Components to update:**
-- `HeroSection` — headline, subline, CTA labels, trust strip text
-- `MicroTrustLine` — trust line text
-- `Testimonials` (FeaturedTestimonial, BottomTestimonial, main) — section title, subtitle, CTA text, individual testimonial quotes/authors/context
-- `AvailableHomes` — section title, subtitle, empty state text, bottom italic text, button labels
-- `SoldHomes` — section title, subtitle, button label, empty text
-- `WhyDifferent` — title, subtitle, team names/roles, tagline
-- `LifestyleSection` — title, bullet points, bottom line
-- `ContactForm` — title, subtitle, button label, microcopy lines
-- `ExitIntentPopup` — headline, subline, button label
-- `CookieNotice` — description text, button labels
-- `TrustSection` — footer text, nav link labels, copyright
-- `FloatingElements` — tooltip text, button labels
-
-Each key follows the convention: `{page}.{section}.{element}` e.g. `home.hero.headline`, `home.hero.subline`, `home.hero.cta_primary`.
+Full enrichment (description blocks, FOMO line, sticky desktop box) will come in Batch 2.
 
 ---
 
-## 7. Admin CMS: Content Manager Tab
+## 6. Design Token Updates
 
-Add a new "Content" tab to the Admin panel (`src/pages/Admin.tsx`):
-- New component `src/components/admin/ContentManager.tsx`
-- Lists all `site_content` rows grouped by page/section
-- Inline editing of `value_en` and `value_he` for each key
-- Save button per row
-- Search/filter by page or section
-- Does NOT allow adding/deleting keys from UI (keys are managed in code)
+**CSS variables (src/index.css):**
+- Add `--charcoal: 0 0% 15%` for header/button backgrounds
+- Add `--charcoal-hover: 0 0% 20%`
+- Add `--bronze: 30 45% 55%` for subtle accent
 
----
+**Button changes:**
+- Primary CTA buttons switch to charcoal background with white text
+- Gold remains for price labels, accents, secondary highlights
+- Update button classes across components
 
-## 8. SEO: hreflang Tags
-
-In the `LanguageLayout` wrapper:
-- Dynamically inject `<link rel="alternate" hreflang="en" href="/en/...">` and `<link rel="alternate" hreflang="he" href="/he/...">` into the document head
-- Set `<html lang="en">` or `<html lang="he">` based on current route
+**Tailwind config:**
+- Add `charcoal` color to extend colors
 
 ---
 
-## Technical Details
+## 7. Navigation Updates
 
-### Files Created (new):
-- `src/lib/i18n.tsx` — Language context + provider
-- `src/hooks/useSiteContent.ts` — Content fetching + `t()` function
-- `src/components/Header.tsx` — Sticky header with nav + lang switch
-- `src/components/LanguageLayout.tsx` — Route wrapper for lang detection + RTL
-- `src/components/admin/ContentManager.tsx` — CMS content editor
+- Add `/properties` to header nav
+- Add route to `App.tsx`
+- Update `PropertyCard` to support both modal-open and navigate-to-page modes
 
-### Files Modified:
-- `src/App.tsx` — New routing structure with lang prefixes
-- `src/index.css` — RTL styles + Hebrew font import
-- `tailwind.config.ts` — Hebrew font in body stack
-- All 12 landing page components — Replace hardcoded text with `t()` calls
+---
 
-### Database Changes:
-- 1 new table: `site_content` with RLS
-- ~50 seed rows with EN + HE content
-- No changes to existing tables
+## Files Summary
 
-### What Stays Untouched:
-- All existing Supabase tables (leads, properties_available, properties_sold, lifestyle_gallery, user_roles)
-- Property gallery logic, drag-and-drop, image upload
-- Lead capture form logic and sources
-- Authentication and roles
-- WhatsApp sticky, exit intent popup behavior
-- Admin panel existing tabs (Available, Sold, Lifestyle, Leads)
-- Branding colors, typography, logo
+**New files:**
+- `src/components/SearchBar.tsx` -- glass search bar
+- `src/pages/Properties.tsx` -- results grid page
+- `src/pages/PropertyDetail.tsx` -- property detail page
+
+**Modified files:**
+- `src/components/Header.tsx` -- charcoal redesign with drawer
+- `src/components/HeroSection.tsx` -- minimal single-line
+- `src/components/AvailableHomes.tsx` -- extract PropertyCard, update button colors
+- `src/App.tsx` -- add new routes
+- `src/index.css` -- new CSS variables, charcoal tokens
+- `tailwind.config.ts` -- charcoal color
+- `src/pages/Admin.tsx` -- add Location/PropertyType admin tabs
+
+**Database migrations:**
+- Create `search_locations` table + RLS + seed
+- Create `search_property_types` table + RLS + seed
+- Add `location` and `property_type` columns to `properties_available`
+
+**CMS content:**
+- Update hero CMS rows with new copy
+- Add search bar placeholder text keys
+- Add properties page title/subtitle keys
+- Add property detail page keys
+
+---
+
+## What Stays Untouched
+- All existing property data (available + sold)
+- Gallery upload/drag-and-drop/reorder logic
+- Lead capture logic and sources
+- WhatsApp button, exit popup, cookie notice
+- Blueprint section, Market Snapshot
+- Team/firm section
+- Footer (TrustSection)
+- Legal pages (Privacy, Terms, Accessibility)
+- Sell, About, Contact pages
+- Admin existing tabs (Available, Sold, Lifestyle, Leads, Content)
