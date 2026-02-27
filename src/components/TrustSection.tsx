@@ -2,11 +2,26 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
+import spiritLogo from "@/assets/spirit-logo.jpg";
 
 const TrustSection = () => {
   const { t } = useSiteContent();
   const { lang } = useLanguage();
   const prefix = `/${lang}`;
+
+  const navLinks = [
+    { to: prefix + "/", label: t("header.nav.home") },
+    { to: prefix + "/properties", label: t("header.nav.properties") },
+    { to: prefix + "/sell", label: t("header.nav.sell") },
+    { to: prefix + "/about", label: t("header.nav.about") },
+    { to: prefix + "/contact", label: t("header.nav.contact") },
+  ];
+
+  const legalLinks = [
+    { to: `${prefix}/privacy`, label: t("header.nav.privacy") },
+    { to: `${prefix}/terms`, label: t("header.nav.terms") },
+    { to: `${prefix}/accessibility`, label: t("header.nav.accessibility") },
+  ];
 
   return (
     <footer className="py-12 md:py-16 bg-primary">
@@ -18,27 +33,41 @@ const TrustSection = () => {
           transition={{ duration: 0.6 }}
           className="max-w-2xl mx-auto text-center"
         >
-          <div className="w-12 h-px bg-gold mx-auto mb-8" />
+          {/* Logo */}
+          <Link to={prefix + "/"} className="inline-block mb-6">
+            <img
+              src={spiritLogo}
+              alt="Spirit Real Estate"
+              className="w-12 h-12 rounded-lg mx-auto"
+            />
+          </Link>
 
-          <nav className="flex justify-center gap-6 mb-6 flex-wrap">
-            <Link
-              to={`${prefix}/privacy`}
-              className="text-primary-foreground/60 hover:text-primary-foreground/90 font-body text-sm transition-colors"
-            >
-              {t("header.nav.privacy")}
-            </Link>
-            <Link
-              to={`${prefix}/terms`}
-              className="text-primary-foreground/60 hover:text-primary-foreground/90 font-body text-sm transition-colors"
-            >
-              {t("header.nav.terms")}
-            </Link>
-            <Link
-              to={`${prefix}/accessibility`}
-              className="text-primary-foreground/60 hover:text-primary-foreground/90 font-body text-sm transition-colors"
-            >
-              {t("header.nav.accessibility")}
-            </Link>
+          <div className="w-12 h-px bg-gold mx-auto mb-6" />
+
+          {/* Quick nav */}
+          <nav className="flex justify-center gap-5 mb-6 flex-wrap" aria-label="Footer navigation">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-primary-foreground/70 hover:text-primary-foreground font-body text-sm transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Legal links */}
+          <nav className="flex justify-center gap-6 mb-6 flex-wrap" aria-label="Legal links">
+            {legalLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-primary-foreground/50 hover:text-primary-foreground/80 font-body text-xs transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
           <p className="text-primary-foreground/50 font-body text-xs leading-relaxed max-w-lg mx-auto mb-4">
