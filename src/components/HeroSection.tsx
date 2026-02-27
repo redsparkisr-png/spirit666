@@ -21,12 +21,13 @@ const HeroSection = () => {
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover object-[center_35%] scale-105"
-          style={{ filter: "contrast(1.08) saturate(1.12) brightness(0.95)" }}
+          style={{ filter: "contrast(1.08) saturate(1.12) brightness(0.92)" }}
           width={1920}
           height={1080}
           loading="eager"
+          fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/65" />
       </div>
 
       {/* Content */}
@@ -35,7 +36,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-white/60 font-body text-xs tracking-[0.25em] uppercase mb-6"
+          className="text-white/60 font-body text-xs tracking-[0.25em] uppercase mb-8"
         >
           {t("home.hero.pre_title")}
         </motion.p>
