@@ -168,7 +168,7 @@ const SearchBar = ({
                   inline ? "bg-muted" : "bg-white/20"
                 }`}
               >
-                <SliderPrimitive.Range className={`absolute h-full ${inline ? "bg-charcoal" : "bg-white/60"}`} />
+                <SliderPrimitive.Range className={`absolute h-full ${inline ? "bg-charcoal" : "bg-gold"}`} />
               </SliderPrimitive.Track>
               <SliderPrimitive.Thumb
                 className={`block h-4 w-4 rounded-full border-2 shadow-sm focus-visible:outline-none ${
@@ -196,7 +196,8 @@ const SearchBar = ({
         <div className="col-span-2 md:col-span-1 flex items-end">
           <button
             onClick={handleSearch}
-            className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-2.5 rounded-lg font-body font-medium text-sm transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-2.5 rounded-lg font-body font-medium text-sm transition-colors flex items-center justify-center gap-2 border border-gold/30"
+            aria-label={t("search.button")}
           >
             <Search className="w-4 h-4" />
             {t("search.button")}
