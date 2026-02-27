@@ -90,21 +90,22 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
     ? "flex items-center justify-between w-full bg-card border border-border text-foreground rounded-lg px-3 py-2.5 text-sm font-body cursor-pointer hover:border-charcoal/30 transition-colors"
     : "flex items-center justify-between w-full bg-transparent border border-white/20 text-white rounded-lg px-3 py-2.5 text-sm font-body cursor-pointer hover:border-white/40 transition-colors";
 
-  // Desktop dropdown panel
-  const panelContent = (
+  // Render options list - context-aware colors
+  const renderOptions = (forLightBg: boolean) => (
     <div className="py-1.5 max-h-[240px] overflow-y-auto">
       {options.map((opt) => {
         const isSelected = selected.includes(opt.value);
+        const useLightColors = forLightBg || inline;
         return (
           <button
             key={opt.value}
             onClick={() => toggleOption(opt.value)}
             className={`w-full text-left px-4 py-2.5 text-sm font-body flex items-center justify-between transition-colors ${
               isSelected
-                ? inline
+                ? useLightColors
                   ? "bg-charcoal/5 text-foreground font-medium"
                   : "bg-white/10 text-white font-medium"
-                : inline
+                : useLightColors
                   ? "text-foreground/80 hover:bg-muted"
                   : "text-white/70 hover:bg-white/10"
             }`}
@@ -159,9 +160,9 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
                 </button>
               </div>
 
-              {/* Options */}
+              {/* Options - light bg colors for mobile sheet */}
               <div className="flex-1 overflow-y-auto px-2">
-                {panelContent}
+                {renderOptions(true)}
               </div>
 
               {/* Bottom actions */}
@@ -201,14 +202,14 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.15 }}
-            className={`absolute top-full left-0 right-0 mt-1.5 z-50 rounded-xl shadow-xl border overflow-hidden ${
+            className={`absolute top-full left-0 right-0 mt-1.5 z-[100] rounded-xl shadow-xl border overflow-hidden ${
               inline
                 ? "bg-card border-border"
                 : "bg-charcoal border-white/15"
             }`}
             style={{ minWidth: 200 }}
           >
-            {panelContent}
+            {renderOptions(inline)}
           </motion.div>
         )}
       </AnimatePresence>
@@ -287,7 +288,7 @@ const SearchBar = ({
       className={
         inline
           ? "bg-card rounded-xl p-4 md:p-6 border border-border"
-          : "max-w-5xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-6 border border-white/15"
+          : "max-w-5xl mx-auto bg-white/10 backdrop-blur-lg rounded-2xl p-4 md:p-6 border border-white/15"
       }
     >
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 items-end">

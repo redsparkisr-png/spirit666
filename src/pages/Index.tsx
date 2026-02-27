@@ -19,9 +19,13 @@ import SchemaOrg from "@/components/SchemaOrg";
 const Index = () => {
   return (
     <main>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] focus:bg-charcoal focus:text-white focus:px-4 focus:py-2 focus:rounded-lg font-body text-sm">
+        Skip to content
+      </a>
       <SchemaOrg />
       <Header />
       <HeroSection />
+      <div id="main-content" />
       <MicroTrustLine />
       <FeaturedTestimonial />
       <AvailableHomes />

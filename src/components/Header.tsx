@@ -35,7 +35,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-charcoal border-b border-white/10">
-      <div className="container px-6 py-4 flex items-center justify-between">
+      <div className="container px-6 py-5 flex items-center justify-between">
         {/* Left: hamburger */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
@@ -108,7 +108,7 @@ const Header = () => {
             alt="Spirit Real Estate"
             className="w-[42px] h-[42px] md:w-[58px] md:h-[58px] rounded-lg"
           />
-          <span className="hidden sm:block font-display font-semibold text-white text-sm tracking-wide">
+          <span className="hidden sm:block font-display font-semibold text-white text-base tracking-wide">
             Spirit Real Estate
           </span>
         </Link>

@@ -13,7 +13,7 @@ const MicroTrustLine = () => {
       className="py-6 bg-primary"
     >
       <div className="container px-6">
-        <p className="text-center text-sm text-primary-foreground/70 font-body tracking-wide">
+        <p className="text-center text-[15px] text-primary-foreground/70 font-body tracking-wide">
           {t("home.trust_line.text")}
         </p>
       </div>
