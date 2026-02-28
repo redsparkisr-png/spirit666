@@ -82,7 +82,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             {property.built_sqm && (<span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />{property.built_sqm} sqm</span>)}
             {property.bedrooms && (<span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />{property.bedrooms} Bed</span>)}
           </div>
-          <span className="block w-full bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm btn-text text-center">
+          <span className="block w-full bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm btn-text text-center transition-all duration-300 group-hover:bg-charcoal-hover group-hover:shadow-md">
             {detailsLabel}
           </span>
         </div>

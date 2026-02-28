@@ -101,7 +101,7 @@ const BlueprintSection = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-4 rounded-lg font-body font-semibold transition-colors duration-300 disabled:opacity-60 text-[17px]"
+              className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-4 rounded-lg font-body font-semibold transition-all duration-300 disabled:opacity-60 text-[17px] hover:shadow-lg hover:shadow-charcoal/20 hover:-translate-y-0.5 active:scale-[0.98]"
             >
               {isSubmitting ? t("home.blueprint.sending") : t("home.blueprint.button")}
             </button>
