@@ -104,7 +104,7 @@ const PropertyDetail = () => {
       <Header />
 
       {/* Gallery */}
-      <div className="relative w-full aspect-[16/9] md:aspect-[2.4/1] bg-muted overflow-hidden">
+      <div className="relative w-full aspect-[16/10] md:aspect-[2.2/1] bg-muted overflow-hidden">
         {images.length === 0 ? (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground font-body">No images</div>
         ) : (
@@ -131,9 +131,9 @@ const PropertyDetail = () => {
 
       {/* Thumbnail strip */}
       {images.length > 1 && (
-        <div className="container px-6 py-3 flex gap-2 overflow-x-auto scrollbar-hide">
+        <div className="container px-6 py-3 flex gap-2.5 overflow-x-auto scrollbar-hide">
           {images.map((url, idx) => (
-            <button key={idx} onClick={() => setCurrentImg(idx)} className={`flex-shrink-0 w-16 h-12 rounded-md overflow-hidden border-2 transition-colors ${currentImg === idx ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"}`}>
+            <button key={idx} onClick={() => setCurrentImg(idx)} className={`flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${currentImg === idx ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"}`}>
               <img src={url} alt="" className="w-full h-full object-cover" loading="lazy" />
             </button>
           ))}
