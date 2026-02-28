@@ -1,102 +1,144 @@
 import { motion } from "framer-motion";
 import heroBg from "@/assets/hero-bg.jpg";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { useLanguage } from "@/lib/i18n";
 import SearchBar from "./SearchBar";
 
 const HeroSection = () => {
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
+
+  // Premium copy with fallbacks
+  const subline =
+    lang === "he"
+      ? "בוטיק נדל״ן לתושבי חוץ. דיסקרטי, אסטרטגי ומחובר לשטח."
+      : "Boutique representation for international buyers. Discreet, strategic, and locally connected.";
 
   return (
-    <section
-      className="relative flex flex-col items-center justify-center"
-      style={{
-        height: "clamp(54vh, 58vw, 60vh)",
-        paddingTop: "max(72px, env(safe-area-inset-top))",
-        paddingBottom: "max(16px, env(safe-area-inset-bottom))",
-      }}
-    >
-      {/* Background */}
+    <section className="relative flex flex-col items-center overflow-visible">
+      {/* Background image — positioned absolute so it doesn't affect flow */}
       <div className="absolute inset-0 overflow-hidden">
         <img
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
-          className="w-full h-full object-cover scale-105"
-          style={{ objectPosition: "center 75%", filter: "contrast(1.08) saturate(1.12) brightness(0.88)" }}
+          className="w-full h-full object-cover"
+          style={{
+            objectPosition: "center 72%",
+            filter: "contrast(1.06) saturate(1.1) brightness(0.92)",
+          }}
           width={1920}
           height={1080}
           loading="eager"
           fetchPriority="high"
         />
-        {/* Light overall gradient — NOT heavy */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/50" />
+        {/* Subtle gradient overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/55" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 container text-center px-6 flex-1 flex flex-col items-center justify-center"
-        style={{ paddingTop: "clamp(104px, 14vw, 140px)" }}
+      {/* Content — in normal flow, NOT absolute */}
+      <div
+        className="relative z-10 w-full flex flex-col items-center text-center px-5"
+        style={{
+          paddingTop: "clamp(110px, 16vw, 150px)",
+          paddingBottom: "24px",
+        }}
       >
-        {/* Localized scrim behind text group only */}
+        {/* Localized scrim behind text only */}
         <div
-          className="absolute rounded-2xl"
+          className="absolute rounded-3xl pointer-events-none"
           style={{
-            inset: "auto",
-            width: "100%",
-            maxWidth: "56rem",
-            height: "auto",
-            top: "50%",
+            width: "min(90%, 52rem)",
+            top: "clamp(70px, 10vw, 110px)",
             left: "50%",
-            transform: "translate(-50%, -55%)",
-            padding: "48px 32px 56px",
-            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.0) 75%)",
-            pointerEvents: "none",
+            transform: "translateX(-50%)",
+            height: "auto",
+            minHeight: "160px",
+            bottom: "auto",
+            padding: "60px 40px 80px",
+            background:
+              "radial-gradient(ellipse at center top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.0) 72%)",
           }}
         />
 
-        {/* Brand line — always visible */}
+        {/* Brand line */}
         <motion.p
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="relative z-10 font-body"
           style={{
-            fontSize: "clamp(14px, 2vw, 16px)",
+            fontSize: "clamp(12px, 1.8vw, 15px)",
             fontWeight: 600,
-            letterSpacing: "0.18em",
+            letterSpacing: "0.22em",
             textTransform: "uppercase",
             color: "#F3F3F3",
-            textShadow: "0 2px 14px rgba(0,0,0,0.35)",
-            marginBottom: "10px",
+            textShadow: "0 2px 16px rgba(0,0,0,0.5)",
+            marginBottom: "12px",
           }}
-          className="font-body relative z-10"
         >
           SPIRIT REAL ESTATE
         </motion.p>
 
+        {/* Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-white max-w-4xl mx-auto px-4 mb-12 relative z-10"
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="text-white max-w-3xl mx-auto relative z-10 font-display font-semibold"
           style={{
-            fontSize: "clamp(26px, 5vw, 48px)",
-            lineHeight: 1.3,
+            fontSize: "clamp(24px, 4.5vw, 44px)",
+            lineHeight: 1.25,
             letterSpacing: "-0.01em",
-            textShadow: "0 2px 16px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)",
-            textWrap: "balance",
+            textShadow:
+              "0 2px 20px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.35)",
+            textWrap: "balance" as any,
           }}
         >
           {t("home.hero.headline")}
         </motion.h1>
+
+        {/* Supporting line */}
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.55 }}
+          className="relative z-10 font-body max-w-xl mx-auto"
+          style={{
+            fontSize: "clamp(13px, 1.6vw, 16px)",
+            color: "rgba(255,255,255,0.82)",
+            textShadow: "0 1px 10px rgba(0,0,0,0.4)",
+            marginTop: "14px",
+            lineHeight: 1.6,
+          }}
+        >
+          {subline}
+        </motion.p>
       </div>
 
-      {/* Search bar at bottom */}
+      {/* Search bar — in normal document flow, BELOW text content */}
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.7 }}
-        className="relative z-10 w-full px-4 pb-8 md:pb-12"
+        transition={{ duration: 0.55, delay: 0.7 }}
+        className="relative z-10 w-full px-4"
+        style={{
+          paddingBottom: "clamp(28px, 5vw, 48px)",
+          paddingTop: "16px",
+        }}
       >
-        <div className="max-w-4xl mx-auto rounded-2xl p-4 md:p-6 border border-white/[0.18]" style={{ background: "rgba(0,0,0,0.5)", boxShadow: "0 10px 40px rgba(0,0,0,0.35)" }}>
-          <SearchBar />
+        <div
+          className="max-w-4xl mx-auto rounded-2xl border border-white/20"
+          style={{
+            background: "rgba(15,15,15,0.62)",
+            backdropFilter: "blur(12px) saturate(1.3)",
+            WebkitBackdropFilter: "blur(12px) saturate(1.3)",
+            boxShadow:
+              "0 12px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)",
+          }}
+        >
+          <div className="p-4 md:p-6">
+            <SearchBar />
+          </div>
         </div>
       </motion.div>
     </section>
