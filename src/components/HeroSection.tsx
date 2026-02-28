@@ -10,9 +10,9 @@ const HeroSection = () => {
     <section
       className="relative flex flex-col items-center justify-center"
       style={{
-        minHeight: "clamp(55vh, 60vw, 65vh)",
+        height: "clamp(54vh, 58vw, 60vh)",
         paddingTop: "max(72px, env(safe-area-inset-top))",
-        paddingBottom: "max(24px, env(safe-area-inset-bottom))",
+        paddingBottom: "max(16px, env(safe-area-inset-bottom))",
       }}
     >
       {/* Background */}
@@ -21,7 +21,7 @@ const HeroSection = () => {
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover scale-105"
-          style={{ objectPosition: "center 45%", filter: "contrast(1.08) saturate(1.12) brightness(0.88)" }}
+          style={{ objectPosition: "center 75%", filter: "contrast(1.08) saturate(1.12) brightness(0.88)" }}
           width={1920}
           height={1080}
           loading="eager"
@@ -65,7 +65,7 @@ const HeroSection = () => {
         transition={{ duration: 0.6, delay: 0.7 }}
         className="relative z-10 w-full px-4 pb-8 md:pb-12"
       >
-        <div className="max-w-4xl mx-auto bg-black/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 shadow-lg">
+        <div className="max-w-4xl mx-auto rounded-2xl p-4 md:p-6 border border-white/[0.18] shadow-lg" style={{ background: "rgba(0,0,0,0.45)" }}>
           <SearchBar />
         </div>
       </motion.div>

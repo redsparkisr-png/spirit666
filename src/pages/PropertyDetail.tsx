@@ -25,6 +25,9 @@ const PropertyDetail = () => {
 
   useEffect(() => {
     const load = async () => {
+      setLoading(true);
+      setCurrentImg(0);
+      setSubmitted(false);
       let { data } = await supabase.from("properties_available").select("*").eq("slug", slug || "").maybeSingle();
       if (!data) {
         const res = await supabase.from("properties_available").select("*").eq("id", slug || "").maybeSingle();
@@ -36,6 +39,7 @@ const PropertyDetail = () => {
         const { data: sim } = await supabase.from("properties_available").select("*").neq("id", data.id).limit(3);
         if (sim) setSimilar(sim);
       }
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     };
     load();
   }, [slug]);
