@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams, useNavigate, Outlet, useLocation } from "react-router-dom";
 import { useLanguage, type Lang } from "@/lib/i18n";
+import CookieNotice from "@/components/CookieNotice";
 
 const VALID_LANGS = ["en", "he"];
 
@@ -111,7 +112,11 @@ const LanguageLayout = () => {
 
   return (
     <div dir={dir} lang={lang}>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] focus:bg-charcoal focus:text-white focus:px-4 focus:py-2 focus:rounded-lg font-body text-sm">
+        {lang === "he" ? "דלג לתוכן" : "Skip to content"}
+      </a>
       <Outlet />
+      <CookieNotice />
     </div>
   );
 };

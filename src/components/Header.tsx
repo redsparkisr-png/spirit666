@@ -106,9 +106,9 @@ const Header = () => {
           <img
             src={spiritLogo}
             alt="Spirit Real Estate"
-            className="w-[42px] h-[42px] md:w-[58px] md:h-[58px] rounded-lg"
-            width={58}
-            height={58}
+            className="w-10 h-10 md:w-14 md:h-14 rounded-lg"
+            width={56}
+            height={56}
             style={{ imageRendering: "-webkit-optimize-contrast" } as React.CSSProperties}
           />
           <span className="hidden sm:block font-display font-semibold text-white text-base tracking-wide">
