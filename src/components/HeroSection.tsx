@@ -10,7 +10,7 @@ const HeroSection = () => {
     <section
       className="relative flex flex-col items-center justify-center"
       style={{
-        minHeight: "85svh",
+        minHeight: "clamp(55vh, 60vw, 65vh)",
         paddingTop: "max(72px, env(safe-area-inset-top))",
         paddingBottom: "max(24px, env(safe-area-inset-bottom))",
       }}
@@ -20,14 +20,14 @@ const HeroSection = () => {
         <img
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
-          className="w-full h-full object-cover object-[center_35%] scale-105"
-          style={{ filter: "contrast(1.08) saturate(1.12) brightness(0.92)" }}
+          className="w-full h-full object-cover scale-105"
+          style={{ objectPosition: "center 45%", filter: "contrast(1.08) saturate(1.12) brightness(0.88)" }}
           width={1920}
           height={1080}
           loading="eager"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
       </div>
 
       {/* Content */}
@@ -47,10 +47,10 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-white max-w-4xl mx-auto px-4 mb-12"
           style={{
-            fontSize: "clamp(28px, 5.5vw, 52px)",
-            lineHeight: 1.25,
+            fontSize: "clamp(26px, 5vw, 48px)",
+            lineHeight: 1.3,
             letterSpacing: "-0.01em",
-            textShadow: "0 1px 8px rgba(0,0,0,0.3)",
+            textShadow: "0 2px 16px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)",
             textWrap: "balance",
           }}
         >

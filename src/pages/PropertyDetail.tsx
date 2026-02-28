@@ -93,7 +93,7 @@ const PropertyDetail = () => {
   const inputClasses = "w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30";
 
   return (
-    <main className="min-h-screen bg-background pb-20 lg:pb-0">
+    <main className="min-h-screen bg-background pb-24 lg:pb-0">
       <Header />
 
       {/* Gallery */}
@@ -200,17 +200,33 @@ const PropertyDetail = () => {
               <p className="text-sm text-bronze font-body italic">{t("property.detail.fomo_line")}</p>
             </div>
 
-            {/* Compact CTA block before Similar Properties */}
-            <div id="inquiry-form-mobile" className="bg-card rounded-2xl border border-border p-6 flex flex-col sm:flex-row items-center gap-4 shadow-sm">
-              <h3 className="font-display font-semibold text-foreground text-lg flex-1">{t("property.detail.interested_title")}</h3>
-              <div className="flex gap-3 w-full sm:w-auto">
-                <button onClick={openWhatsApp} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 px-5 rounded-lg font-body font-medium text-sm transition-colors">
+            {/* CTA + Inline inquiry form for mobile */}
+            <div id="inquiry-form-mobile" className="bg-card rounded-2xl border border-border p-6 space-y-5 shadow-sm">
+              <h3 className="font-display font-semibold text-foreground text-lg">{t("property.detail.interested_title")}</h3>
+              <div className="flex gap-3">
+                <button onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 px-5 rounded-lg font-body font-medium text-sm transition-colors">
                   <MessageCircle className="w-4 h-4" />
                   WhatsApp
                 </button>
-                <button onClick={() => { const el = document.getElementById("inquiry-form"); if (el) el.scrollIntoView({ behavior: "smooth" }); else openWhatsApp(); }} className="flex-1 sm:flex-none bg-charcoal hover:bg-charcoal-hover text-white py-3 px-5 rounded-lg font-body font-medium text-sm btn-text transition-colors">
-                  {t("property.detail.send_inquiry")}
-                </button>
+              </div>
+              {/* Mobile inline form */}
+              <div className="lg:hidden">
+                {submitted ? (
+                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center py-6 gap-3">
+                    <CheckCircle className="w-10 h-10 text-green-600" />
+                    <p className="font-body text-foreground font-medium text-sm">{t("property.detail.inquiry_success")}</p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleInquiry} className="space-y-3">
+                    <input type="text" placeholder={t("property.detail.name_placeholder")} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClasses} aria-label={t("property.detail.name_placeholder")} />
+                    <input type="tel" placeholder={t("property.detail.phone_placeholder")} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className={inputClasses} aria-label={t("property.detail.phone_placeholder")} />
+                    <input type="email" placeholder={t("property.detail.email_placeholder")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputClasses} aria-label={t("property.detail.email_placeholder")} />
+                    <textarea placeholder={t("property.detail.message_placeholder")} value={formData.message || `${lang === "he" ? "מעוניין ב:" : "Interested in:"} ${property.title}`} onChange={(e) => setFormData({ ...formData, message: e.target.value })} rows={2} className={`${inputClasses} resize-none`} aria-label={t("property.detail.message_placeholder")} />
+                    <button type="submit" disabled={submitting} className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
+                      {submitting ? "..." : t("property.detail.send_inquiry")}
+                    </button>
+                  </form>
+                )}
               </div>
             </div>
 
@@ -220,7 +236,7 @@ const PropertyDetail = () => {
                 <h2 className="text-xl font-display font-semibold text-foreground mb-6">{t("property.detail.similar_title")}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {similar.map((sp) => (
-                    <Link key={sp.id} to={`/${lang}/property/${sp.slug || sp.id}`} className="group rounded-2xl overflow-hidden bg-card border border-border md:hover:shadow-lg transition-shadow">
+                    <Link key={sp.id} to={`/${lang}/property/${sp.slug || sp.id}`} className="group cursor-pointer rounded-2xl overflow-hidden bg-card border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                       <div className="aspect-[4/3] bg-muted overflow-hidden">
                         {sp.images?.[0] ? (
                           <img src={sp.images[0]} alt={sp.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />

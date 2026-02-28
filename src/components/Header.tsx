@@ -106,9 +106,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
           <img
             src={spiritLogo}
             alt="Spirit Real Estate"
-            className="w-10 h-10 md:w-14 md:h-14 rounded-lg"
-            width={56}
-            height={56}
+            className="h-8 md:h-[46px] w-auto rounded-lg"
             style={{ imageRendering: "-webkit-optimize-contrast" } as React.CSSProperties}
           />
           <span className="hidden sm:block font-display font-semibold text-white text-base tracking-wide">
