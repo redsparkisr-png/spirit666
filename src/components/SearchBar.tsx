@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { Search, ChevronDown, X, Check, SlidersHorizontal } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -127,66 +128,6 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
     </div>
   );
 
-  // Mobile bottom sheet
-  if (isMobile && open) {
-    return (
-      <>
-        <div className="flex flex-col gap-1" ref={ref}>
-      <span className={`text-[11px] font-body font-semibold tracking-wide uppercase ${inline ? "text-muted-foreground" : "text-white/80"}`}>{label}</span>
-          <button onClick={() => setOpen(true)} className={triggerClasses}>
-            <span className={selected.length === 0 ? "opacity-50" : ""}>{displayText}</span>
-            <ChevronDown className="w-4 h-4 flex-shrink-0 opacity-60" />
-          </button>
-        </div>
-
-        <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-black/50"
-            onClick={() => setOpen(false)}
-          >
-            <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="absolute bottom-0 left-0 right-0 bg-card rounded-t-2xl max-h-[70vh] flex flex-col"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex justify-center pt-3 pb-1">
-                <div className="w-10 h-1 rounded-full bg-border" />
-              </div>
-              <div className="flex items-center justify-between px-5 py-3 border-b border-border">
-                <h3 className="font-display font-semibold text-foreground text-base">{label}</h3>
-                  <button onClick={() => setOpen(false)} className="text-muted-foreground" aria-label="Close">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-                <div className="flex-1 overflow-y-auto px-2">
-                  {renderOptions(true)}
-                </div>
-                <div className="border-t border-border px-5 py-4 flex gap-3">
-                  {selected.length > 0 && (
-                    <button onClick={clearAll} className="text-sm text-muted-foreground font-body hover:text-foreground transition-colors">
-                      {lang === "he" ? "נקה" : "Clear"}
-                    </button>
-                  )}
-                  <button
-                    onClick={() => setOpen(false)}
-                    className="flex-1 bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
-                  >
-                    {lang === "he" ? "החל" : "Apply"}
-                  </button>
-                </div>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      </>
-    );
-  }
-
   return (
     <div className="flex flex-col gap-1 relative" ref={ref}>
       <span className={`text-[11px] font-body font-semibold tracking-wide uppercase ${inline ? "text-muted-foreground" : "text-white/80"}`}>{label}</span>
@@ -195,6 +136,7 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
         <ChevronDown className={`w-4 h-4 flex-shrink-0 opacity-60 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
 
+      {/* Desktop: inline dropdown */}
       <AnimatePresence>
         {open && !isMobile && (
           <motion.div
@@ -213,6 +155,52 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Mobile: true bottom sheet via portal */}
+      {isMobile && open && createPortal(
+        <>
+          <div
+            className="fixed inset-0 z-[200] bg-black/50"
+            onClick={() => setOpen(false)}
+          />
+          <motion.div
+            initial={{ transform: "translateY(100%)" }}
+            animate={{ transform: "translateY(0%)" }}
+            exit={{ transform: "translateY(100%)" }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="fixed left-0 right-0 bottom-0 z-[201] bg-card flex flex-col"
+            style={{ maxHeight: "70vh", borderRadius: "16px 16px 0 0" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full bg-border" />
+            </div>
+            <div className="flex items-center justify-between px-5 py-3 border-b border-border">
+              <h3 className="font-display font-semibold text-foreground text-base">{label}</h3>
+              <button onClick={() => setOpen(false)} className="text-muted-foreground" aria-label="Close">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-2">
+              {renderOptions(true)}
+            </div>
+            <div className="border-t border-border px-5 py-4 flex gap-3">
+              {selected.length > 0 && (
+                <button onClick={clearAll} className="text-sm text-muted-foreground font-body hover:text-foreground transition-colors">
+                  {lang === "he" ? "נקה" : "Clear"}
+                </button>
+              )}
+              <button
+                onClick={() => setOpen(false)}
+                className="flex-1 bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
+              >
+                {lang === "he" ? "החל" : "Apply"}
+              </button>
+            </div>
+          </motion.div>
+        </>,
+        document.body
+      )}
     </div>
   );
 };
