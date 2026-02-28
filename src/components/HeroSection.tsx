@@ -8,15 +8,14 @@ const HeroSection = () => {
   const { t } = useSiteContent();
   const { lang } = useLanguage();
 
-  // Premium copy with fallbacks
-  const subline =
+  const headline =
     lang === "he"
-      ? "בוטיק נדל״ן לתושבי חוץ. דיסקרטי, אסטרטגי ומחובר לשטח."
-      : "Boutique representation for international buyers. Discreet, strategic, and locally connected.";
+      ? "קנו בזכרון יעקב בביטחון"
+      : "Buy in Zichron Yaakov with Confidence";
 
   return (
     <section className="relative flex flex-col items-center overflow-visible">
-      {/* Background image — positioned absolute so it doesn't affect flow */}
+      {/* Background image */}
       <div className="absolute inset-0 overflow-hidden">
         <img
           src={heroBg}
@@ -31,109 +30,72 @@ const HeroSection = () => {
           loading="eager"
           fetchPriority="high"
         />
-        {/* Subtle gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/55" />
+        {/* Subtle bottom gradient for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
       </div>
 
-      {/* Content — in normal flow, NOT absolute */}
+      {/* Content — in normal flow */}
       <div
         className="relative z-10 w-full flex flex-col items-center text-center px-5"
         style={{
-          paddingTop: "clamp(110px, 16vw, 150px)",
-          paddingBottom: "24px",
+          paddingTop: "clamp(100px, 14vw, 140px)",
+          paddingBottom: "16px",
         }}
       >
         {/* Localized scrim behind text only */}
         <div
           className="absolute rounded-3xl pointer-events-none"
           style={{
-            width: "min(90%, 52rem)",
-            top: "clamp(70px, 10vw, 110px)",
+            width: "min(92%, 54rem)",
+            top: "clamp(60px, 9vw, 100px)",
             left: "50%",
             transform: "translateX(-50%)",
-            height: "auto",
-            minHeight: "160px",
-            bottom: "auto",
-            padding: "60px 40px 80px",
+            minHeight: "120px",
+            padding: "50px 40px 70px",
             background:
-              "radial-gradient(ellipse at center top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.0) 72%)",
+              "radial-gradient(ellipse at center top, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.0) 75%)",
           }}
         />
-
-        {/* Brand line */}
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          className="relative z-10 font-body"
-          style={{
-            fontSize: "clamp(12px, 1.8vw, 15px)",
-            fontWeight: 600,
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: "#F3F3F3",
-            textShadow: "0 2px 16px rgba(0,0,0,0.5)",
-            marginBottom: "12px",
-          }}
-        >
-          SPIRIT REAL ESTATE
-        </motion.p>
 
         {/* Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="text-white max-w-3xl mx-auto relative z-10 font-display font-semibold"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-white max-w-[900px] mx-auto relative z-10 font-display font-semibold"
           style={{
-            fontSize: "clamp(24px, 4.5vw, 44px)",
-            lineHeight: 1.25,
+            fontSize: "clamp(30px, 5vw, 50px)",
+            lineHeight: 1.2,
             letterSpacing: "-0.01em",
             textShadow:
-              "0 2px 20px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.35)",
+              "0 2px 20px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)",
             textWrap: "balance" as any,
           }}
         >
-          {t("home.hero.headline")}
+          {headline}
         </motion.h1>
-
-        {/* Supporting line */}
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.55 }}
-          className="relative z-10 font-body max-w-xl mx-auto"
-          style={{
-            fontSize: "clamp(13px, 1.6vw, 16px)",
-            color: "rgba(255,255,255,0.82)",
-            textShadow: "0 1px 10px rgba(0,0,0,0.4)",
-            marginTop: "14px",
-            lineHeight: 1.6,
-          }}
-        >
-          {subline}
-        </motion.p>
       </div>
 
-      {/* Search bar — in normal document flow, BELOW text content */}
+      {/* Search bar — in normal document flow, BELOW headline */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, delay: 0.7 }}
+        transition={{ duration: 0.55, delay: 0.5 }}
         className="relative z-10 w-full px-4"
         style={{
-          paddingBottom: "clamp(28px, 5vw, 48px)",
-          paddingTop: "16px",
+          paddingTop: "clamp(28px, 4vw, 40px)",
+          paddingBottom: "clamp(80px, 10vw, 120px)",
         }}
       >
         <div
-          className="max-w-4xl mx-auto rounded-2xl border border-white/20"
+          className="max-w-4xl mx-auto rounded-2xl"
           style={{
-            background: "rgba(15,15,15,0.62)",
-            backdropFilter: "blur(12px) saturate(1.3)",
-            WebkitBackdropFilter: "blur(12px) saturate(1.3)",
+            background: "rgba(0,0,0,0.45)",
+            backdropFilter: "blur(6px) saturate(1.2)",
+            WebkitBackdropFilter: "blur(6px) saturate(1.2)",
+            border: "1px solid hsl(39 37% 55% / 0.3)",
             boxShadow:
-              "0 12px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)",
+              "0 12px 48px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
           }}
         >
           <div className="p-4 md:p-6">
