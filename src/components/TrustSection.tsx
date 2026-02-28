@@ -35,7 +35,7 @@ const TrustSection = () => {
         >
           {/* Logo */}
           <Link to={prefix + "/"} className="inline-block mb-10">
-            <img src={spiritLogo} alt="Spirit Real Estate" className="h-14 md:h-[72px] w-auto rounded-lg mx-auto" />
+            <img src={spiritLogo} alt="Spirit Real Estate" className="h-[48px] md:h-[66px] w-auto rounded-lg mx-auto" style={{ objectFit: "contain" }} />
           </Link>
 
           <div className="w-12 h-px bg-gold mx-auto mb-8" />
