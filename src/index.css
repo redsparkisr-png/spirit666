@@ -170,10 +170,10 @@ html {
 
 /* Hero background image responsive positioning */
 .hero-bg-img {
-  object-position: 50% 15%;
+  object-position: 50% 8%;
 }
 @media (min-width: 768px) {
   .hero-bg-img {
-    object-position: 50% 30%;
+    object-position: 50% 35%;
   }
 }

@@ -36,8 +36,8 @@ const HeroSection = () => {
       <div
         className="relative z-10 w-full flex flex-col items-center text-center px-5"
         style={{
-          paddingTop: "clamp(80px, 10vw, 110px)",
-          paddingBottom: "clamp(40px, 5vw, 60px)",
+          paddingTop: "clamp(70px, 9vw, 110px)",
+          paddingBottom: "clamp(28px, 4vw, 60px)",
         }}
       >
         {/* Localized scrim behind text group */}
@@ -108,7 +108,7 @@ const HeroSection = () => {
                 "0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             }}
           >
-            <div className="p-2.5 md:p-4">
+            <div className="p-2 md:p-4">
               <SearchBar />
             </div>
           </div>
