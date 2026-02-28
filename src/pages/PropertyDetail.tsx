@@ -66,7 +66,10 @@ const PropertyDetail = () => {
   };
 
   const openWhatsApp = () => {
-    const text = `Hi, I'm interested in: ${property?.title || "a property"}`;
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    const text = lang === "he"
+      ? `היי, אני מתעניין/ת ב: ${property?.title || "נכס"}\n${url}`
+      : `Hi, I'm interested in: ${property?.title || "a property"}\n${url}`;
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
 

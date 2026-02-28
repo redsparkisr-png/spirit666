@@ -35,7 +35,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
 
   return (
     <header ref={ref} className="sticky top-0 z-50 bg-primary border-b border-white/10">
-      <div className="container px-5 flex items-center justify-between" style={{ minHeight: 68, paddingTop: 10, paddingBottom: 10 }}>
+      <div className="container px-5 flex items-center justify-between" style={{ minHeight: 72, paddingTop: 8, paddingBottom: 8 }}>
         {/* Left: hamburger */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
@@ -101,31 +101,18 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
           </SheetContent>
         </Sheet>
 
-        {/* Center: logo — larger */}
-        <Link to={prefix + "/"} className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2.5">
+        {/* Center: logo */}
+        <Link to={prefix + "/"} className="absolute left-1/2 -translate-x-1/2 flex items-center">
           <img
             src={spiritLogo}
             alt="Spirit Real Estate"
-            className="w-auto rounded-lg"
+            className="w-auto h-[48px] md:h-[66px] rounded-md"
             style={{
-              height: 48,
               imageRendering: "-webkit-optimize-contrast" as any,
               objectFit: "contain",
             }}
           />
-          <span className="hidden md:block font-display font-semibold text-white text-base tracking-wide">
-            Spirit Real Estate
-          </span>
         </Link>
-
-        {/* Desktop logo size override */}
-        <style>{`
-          @media (min-width: 768px) {
-            header img[alt="Spirit Real Estate"] {
-              height: 64px !important;
-            }
-          }
-        `}</style>
 
         {/* Right: language toggle */}
         <div className="flex items-center gap-1">
