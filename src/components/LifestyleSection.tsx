@@ -25,12 +25,12 @@ const LifestyleSection = () => {
   const isEmpty = loaded && items.length === 0;
 
   return (
-    <section className="py-12 md:py-20 lg:py-24 bg-sand-light">
+    <section className="py-20 md:py-28 lg:py-32 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >

@@ -12,19 +12,9 @@ type Property = Tables<"properties_available">;
 const useCarousel = (count: number) => {
   const [current, setCurrent] = useState(0);
   const touchStartX = useRef<number | null>(null);
-  const next = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setCurrent((c) => (c + 1) % count);
-  };
-  const prev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setCurrent((c) => (c - 1 + count) % count);
-  };
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
+  const next = (e: React.MouseEvent) => { e.stopPropagation(); e.preventDefault(); setCurrent((c) => (c + 1) % count); };
+  const prev = (e: React.MouseEvent) => { e.stopPropagation(); e.preventDefault(); setCurrent((c) => (c - 1 + count) % count); };
+  const onTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX; };
   const onTouchEnd = (e: React.TouchEvent) => {
     if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
@@ -62,65 +52,36 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group hover:-translate-y-1"
+      className="bg-card rounded-2xl overflow-hidden shadow-md md:hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
         {images.length === 0 && (
           <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
         )}
         {images.map((url, idx) => (
-          <img
-            key={idx}
-            src={url}
-            alt={`${property.title} – photo ${idx + 1}`}
-            className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-400"
-            style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }}
-            loading="lazy"
-          />
+          <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" />
         ))}
-        {images.length > 1 && (
-          <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />
-        )}
+        {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
         {property.property_status && property.property_status !== "Active" && (
-          <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">
-            {property.property_status}
-          </span>
+          <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">{property.property_status}</span>
         )}
       </div>
       <div className="p-5 md:p-6">
         {property.price_label && (
-          <p className="text-sm font-body font-semibold mb-2 text-gold">{property.price_label}</p>
+          <p className="text-sm font-body font-semibold mb-2 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">{property.price_label}</p>
         )}
         <h3 className="text-lg font-display font-semibold text-foreground mb-1.5 leading-snug">{property.title}</h3>
         {property.short_description && (
           <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{property.short_description}</p>
         )}
         <div className="flex items-center gap-3 text-xs text-muted-foreground font-body mb-4 flex-wrap">
-          {property.lot_sqm && (
-            <span className="flex items-center gap-1.5">
-              <LandPlot className="w-3.5 h-3.5 text-primary" />
-              {property.lot_sqm} sqm
-            </span>
-          )}
-          {property.built_sqm && (
-            <span className="flex items-center gap-1.5">
-              <Ruler className="w-3.5 h-3.5 text-primary" />
-              {property.built_sqm} sqm
-            </span>
-          )}
-          {property.bedrooms && (
-            <span className="flex items-center gap-1.5">
-              <BedDouble className="w-3.5 h-3.5 text-primary" />
-              {property.bedrooms} Bed
-            </span>
-          )}
+          {property.lot_sqm && (<span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />{property.lot_sqm} sqm</span>)}
+          {property.built_sqm && (<span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />{property.built_sqm} sqm</span>)}
+          {property.bedrooms && (<span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />{property.bedrooms} Bed</span>)}
         </div>
-        <Link
-          to={`/${lang}/property/${property.slug || property.id}`}
-          className="block w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-colors duration-300 text-center"
-        >
+        <Link to={`/${lang}/property/${property.slug || property.id}`} className="block w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors duration-300 text-center">
           {detailsLabel}
         </Link>
       </div>
@@ -134,44 +95,34 @@ const AvailableHomes = () => {
   const { t } = useSiteContent();
 
   useEffect(() => {
-    supabase
-      .from("properties_available")
-      .select("*")
-      .order("priority_order", { ascending: true })
-      .then(({ data }) => {
-        if (data) setProperties(data);
-        setLoaded(true);
-      });
+    supabase.from("properties_available").select("*").order("priority_order", { ascending: true }).then(({ data }) => {
+      if (data) setProperties(data);
+      setLoaded(true);
+    });
   }, []);
 
   const isEmpty = loaded && properties.length === 0;
 
   return (
-    <section id="available-homes" className="py-16 md:py-24 lg:py-28 bg-sand-light">
+    <section id="available-homes" className="py-20 md:py-28 lg:py-32 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">
-            {t("home.available.pre_title")}
-          </p>
-          <h2 className="font-display font-semibold text-foreground mb-4">
-            {t("home.available.title")}
-          </h2>
-          <p className="text-muted-foreground font-body max-w-xl mx-auto">
-            {t("home.available.subtitle")}
-          </p>
+          <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">{t("home.available.pre_title")}</p>
+          <h2 className="font-display font-semibold text-foreground mb-4">{t("home.available.title")}</h2>
+          <p className="text-muted-foreground font-body max-w-xl mx-auto">{t("home.available.subtitle")}</p>
         </motion.div>
 
         {isEmpty ? (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-card rounded-xl overflow-hidden shadow-sm">
+                <div key={i} className="bg-card rounded-2xl overflow-hidden shadow-md">
                   <div className="aspect-[4/3] bg-muted/60 animate-pulse" />
                   <div className="p-6 space-y-3">
                     <div className="h-5 bg-muted/60 rounded w-3/4 animate-pulse" />
@@ -181,9 +132,7 @@ const AvailableHomes = () => {
                 </div>
               ))}
             </div>
-            <p className="text-center text-sm text-muted-foreground/60 font-body italic">
-              {t("home.available.empty_text")}
-            </p>
+            <p className="text-center text-sm text-muted-foreground/60 font-body italic">{t("home.available.empty_text")}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

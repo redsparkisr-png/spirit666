@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 11%;
 
-    --primary: 0 0% 11%;
+    --primary: 160 42% 11%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 38 22% 90%;
@@ -32,12 +32,12 @@
 
     --border: 38 15% 85%;
     --input: 38 15% 85%;
-    --ring: 42 54% 53%;
+    --ring: 39 37% 55%;
 
     --radius: 0.5rem;
 
-    --gold: 42 54% 53%;
-    --gold-hover: 41 50% 48%;
+    --gold: 39 37% 55%;
+    --gold-hover: 37 38% 48%;
     --sand: 38 28% 85%;
     --sand-light: 38 27% 95%;
     --teal-deep: 160 62% 14%;
@@ -70,12 +70,12 @@
   h1 {
     @apply font-display font-semibold;
     font-size: clamp(28px, 6vw, 52px);
-    line-height: 1.15;
+    line-height: 1.25;
   }
 
   h2 {
     @apply font-display font-semibold;
-    font-size: 26px;
+    font-size: 28px;
   }
 
   h3, h4, h5, h6 {
@@ -84,7 +84,7 @@
 
   @media (min-width: 768px) {
     h2 {
-      font-size: 34px;
+      font-size: 36px;
     }
   }
 
@@ -107,6 +107,10 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .btn-text {
+    letter-spacing: 0.03em;
   }
 }
 
