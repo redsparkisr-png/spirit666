@@ -1,124 +1,65 @@
 
 
-# Spirit Real Estate — Boutique Polish + Bug Fixes
+# Spirit Real Estate — Targeted Fixes
 
-## Overview
-Targeted fixes and refinements across 6 files. No redesign, no font changes, no CMS/admin changes. Focus on: logo sizing, hero search panel styling, dropdown clipping bug, property card clickability, property detail page CTA cleanup, and minor polish.
-
----
-
-## 1. Header Logo Sizing
-
-**File: `src/components/Header.tsx`**
-
-Current logo is `w-[42px] h-[42px] md:w-[58px] md:h-[58px]`. User wants mobile 38-40px, desktop 52-56px. Adjust to:
-- Mobile: `w-10 h-10` (40px)
-- Desktop: `md:w-14 md:h-14` (56px)
-- Increase header py slightly for breathing room
-- Ensure "Spirit Real Estate" wordmark remains `text-base` and visible on desktop
+## Summary
+The codebase is already in good shape from previous iterations. This pass addresses the remaining console errors and the few gaps between current state and the requirements.
 
 ---
 
-## 2. Hero + Search Panel Refinement
+## 1. Fix Missing i18n Key: `property.detail.interested_title`
 
-**File: `src/components/HeroSection.tsx`**
+**File: `src/hooks/useSiteContent.ts`**
 
-- Reduce hero from `100svh` to `85svh` to show less empty sky and hint at content below
-- Add a subtle dark glass card wrapper around the SearchBar at the bottom (semi-transparent `bg-black/40 backdrop-blur-sm` with rounded corners, subtle border, and soft shadow) to give the search inputs definition against the hero image
-- Keep current gradient overlay (already subtle)
-
-**File: `src/components/SearchBar.tsx`** (hero context only)
-
-- Desktop: Wrap the 5-column grid in a padded container with `bg-black/40 backdrop-blur-sm rounded-2xl p-5 border border-white/10 shadow-lg` for the glass card effect
-- Mobile: Same treatment for the mobile stacked layout
-- This replaces the current fully-transparent underline-only approach which makes inputs hard to read
+The console shows `[i18n] Missing key: "property.detail.interested_title"`. Add this key to the `localFallbacks` object:
+- EN: "Interested in this home?"
+- HE: "מעוניינים בנכס הזה?"
 
 ---
 
-## 3. Search Dropdown Bug Fix (CRITICAL)
-
-**File: `src/components/SearchBar.tsx`**
-
-The console logs confirm 5 locations and 5 types load correctly. The visual bug where "only 2 items show" is likely caused by the dropdown's `max-h-[320px]` being fine but the parent Dropdown component's relative positioning being clipped.
-
-Fixes:
-- Add ESC key handler to close dropdown (missing currently)
-- Add `useEffect` with keydown listener for Escape when dropdown is open
-- Ensure the desktop dropdown `z-[100]` is correct (already set)
-- Verify no parent `overflow-hidden` clips it (HeroSection already fixed in previous iteration -- `overflow-hidden` is only on the background div)
-
-The Dropdown component currently uses a function component without `forwardRef`, causing the React warning in console. Fix by wrapping Dropdown as a proper named component (not critical for UX but cleans up console errors).
-
----
-
-## 4. Property Card Full Clickability
-
-**File: `src/components/AvailableHomes.tsx`**
-
-Current: Only the "View Curated Home" button links to the property page. The image area has swipe handlers but no click-to-navigate.
-
-Fix:
-- Wrap the entire card in a `Link` component to `/${lang}/property/${property.slug || property.id}`
-- Keep carousel prev/next buttons with `e.stopPropagation()` and `e.preventDefault()` so they don't trigger navigation
-- Keep swipe handlers on the image area (they already call `e.stopPropagation`)
-- Add `cursor-pointer` to the card (already implied by Link)
-- The existing "View Curated Home" button can remain as a visual CTA but the whole card is clickable
-
----
-
-## 5. Property Detail Page — Replace Heavy Form with CTA Block
+## 2. Fix forwardRef Console Warnings
 
 **File: `src/pages/PropertyDetail.tsx`**
 
-Current: A full InquiryForm (name, phone, email, message, two buttons) is shown inline before Similar Properties on ALL screen sizes. User says "Do NOT insert heavy form before Similar Properties."
+Two `forwardRef` warnings appear:
+- `InquiryForm` is defined as an inline function component inside `PropertyDetail` and receives an `id` prop but React tries to pass a ref. Fix by converting `InquiryForm` to use `React.forwardRef` or by extracting it outside the render function as a standalone component with proper typing.
 
-Fix:
-- Replace the inline `<InquiryForm id="inquiry-form-mobile" />` (line 232) with a compact CTA block:
-  - Heading: "Interested in this home?" (from CMS key)
-  - Two buttons side-by-side: WhatsApp + Send Inquiry
-  - "Send Inquiry" scrolls to the sidebar form on desktop (`#inquiry-form`) or opens WhatsApp/scrolls to top on mobile
-- Keep the sticky sidebar InquiryForm for desktop (already exists, line 262)
-- Keep mobile sticky bottom CTA bar (already exists, line 270)
-- Update the mobile sticky CTA's "Send Inquiry" to scroll to the sidebar form area or open a simple sheet
+The simplest fix: move `InquiryForm` outside the `PropertyDetail` component and pass `property`, `formData`, etc. as props. This prevents React from trying to assign a ref to an inline component.
+
+**File: `src/components/Header.tsx`**
+
+The Header forwardRef warning comes from it being used somewhere that passes a ref. Since Header doesn't need a ref, wrap it with `React.forwardRef` to silence the warning, or check the call site. The warning points to PropertyDetail's render -- likely the `<Header />` call. This is a React quirk with function components; wrapping Header in `forwardRef` with a no-op ref fixes it cleanly.
 
 ---
 
-## 6. Cookie Consent (Already Exists)
+## 3. Property Detail "Send Inquiry" Mobile Behavior
 
-The CookieNotice component is already in `Index.tsx` (line 43) and works with Accept All / Reject / Manage Preferences. The footer already has "Cookie Preferences" button (TrustSection.tsx line 62-67).
+**File: `src/pages/PropertyDetail.tsx`**
 
-Only needed: Ensure CookieNotice is rendered on ALL pages (not just Index). Currently it's only in Index.tsx.
+Current: The CTA block's "Send Inquiry" button tries `getElementById("inquiry-form")` (desktop sidebar, hidden on mobile) and falls back to `openWhatsApp()`. This is functional but inconsistent with user expectation.
 
-Fix: Move `<CookieNotice />` into `LanguageLayout.tsx` so it appears on every page.
+Fix: On mobile, when `#inquiry-form` is not visible, scroll to `#inquiry-form-mobile` (the CTA block itself) and open WhatsApp as a more explicit action. OR better: make the "Send Inquiry" button in the mobile sticky bar scroll to the CTA block AND show a toast prompting the user to use WhatsApp or call. This keeps the flow consistent.
 
----
-
-## 7. Accessibility (Already Mostly Done)
-
-- Skip-to-content link exists in Index.tsx (line 22-24)
-- Accessibility page exists and is linked in footer
-- aria-labels exist on key elements
-- Focus states exist via Tailwind ring utilities
-
-Only needed: Add skip-to-content to other pages (Properties, About, etc.) or better yet, add it to LanguageLayout.tsx so it appears everywhere.
+Actually, the simplest robust fix: change the CTA block's "Send Inquiry" to always open WhatsApp with a pre-filled message (since there's no standalone form on mobile). The desktop sidebar form handles desktop users.
 
 ---
 
-## Files Modified Summary
+## 4. Verify All Existing Features Are Working
 
-1. **`src/components/Header.tsx`** — Logo size adjustment (40px mobile, 56px desktop)
-2. **`src/components/HeroSection.tsx`** — Reduce hero to 85svh, add glass card wrapper around search
-3. **`src/components/SearchBar.tsx`** — Add ESC handler, add glass card styling in hero context, fix forwardRef warning
-4. **`src/components/AvailableHomes.tsx`** — Make entire property card clickable via Link wrapper
-5. **`src/pages/PropertyDetail.tsx`** — Replace inline form with compact CTA block before Similar Properties
-6. **`src/components/LanguageLayout.tsx`** — Add CookieNotice + skip-to-content link globally
+Already confirmed working:
+- Header: logo centered, sizes correct (40px mobile, 56px desktop)
+- Hero: 85svh, dark glass card wrapper around search
+- Search: ESC handler, click-outside close, z-[100] dropdowns, mobile bottom sheets
+- Property cards: fully wrapped in `Link`, clickable everywhere
+- Cookie consent: global in `LanguageLayout`, reopen from footer
+- Accessibility: skip-to-content in `LanguageLayout`, accessibility page linked in footer
+- Footer: gold divider, cookie preferences button, legal links
 
-## What Stays Untouched
-- All fonts (Playfair Display, DM Sans, Heebo)
-- Database schema, RLS policies
-- Admin panel, CMS content keys
-- Color palette (already refined to deep green + gold)
-- Footer structure (already polished)
-- WhatsApp button logic
-- Property detail gallery
+---
+
+## Files Modified
+
+1. **`src/hooks/useSiteContent.ts`** -- Add `property.detail.interested_title` fallback (EN/HE)
+2. **`src/pages/PropertyDetail.tsx`** -- Extract InquiryForm to fix forwardRef warning, improve Send Inquiry mobile fallback
+3. **`src/components/Header.tsx`** -- Wrap in forwardRef to fix console warning
 
