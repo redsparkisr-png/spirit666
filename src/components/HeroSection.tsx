@@ -22,7 +22,7 @@ const HeroSection = () => {
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
           className="w-full h-full object-cover"
           style={{
-            objectPosition: "center 62%",
+            objectPosition: "center 55%",
             filter: "contrast(1.06) saturate(1.1) brightness(0.92)",
           }}
           width={1920}
