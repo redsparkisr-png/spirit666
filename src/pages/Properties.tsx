@@ -39,27 +39,14 @@ const PropertyCard = ({ property }: { property: Property }) => {
   return (
     <Link
       to={`/${lang}/property/${property.slug || property.id}`}
-      className="block bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group hover:-translate-y-1"
+      className="block bg-card rounded-2xl overflow-hidden shadow-md md:hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
     >
-      <div
-        className="relative aspect-[4/3] overflow-hidden bg-muted"
-        onTouchStart={carousel.onTouchStart}
-        onTouchEnd={carousel.onTouchEnd}
-      >
+      <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
         {images.length === 0 && (
-          <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">
-            No image
-          </div>
+          <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
         )}
         {images.map((url, idx) => (
-          <img
-            key={idx}
-            src={url}
-            alt={`${property.title} – photo ${idx + 1}`}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400"
-            style={{ opacity: carousel.current === idx ? 1 : 0 }}
-            loading="lazy"
-          />
+          <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading="lazy" />
         ))}
         {images.length > 1 && (
           <>
@@ -72,35 +59,21 @@ const PropertyCard = ({ property }: { property: Property }) => {
           </>
         )}
         {property.property_status && property.property_status !== "Active" && (
-          <span className="absolute top-3 left-3 bg-charcoal text-white text-xs font-body font-medium px-2.5 py-1 rounded-full">
-            {property.property_status}
-          </span>
+          <span className="absolute top-3 left-3 bg-charcoal text-white text-xs font-body font-medium px-2.5 py-1 rounded-full">{property.property_status}</span>
         )}
       </div>
       <div className="p-5">
         {property.price_label && (
-          <p className="text-sm font-body font-semibold text-gold mb-1.5">{property.price_label}</p>
+          <p className="text-sm font-body font-semibold mb-1.5 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">{property.price_label}</p>
         )}
         <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">{property.title}</h3>
         {property.short_description && (
           <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{property.short_description}</p>
         )}
         <div className="flex items-center gap-3 text-xs text-muted-foreground font-body flex-wrap">
-          {property.bedrooms && (
-            <span className="flex items-center gap-1">
-              <BedDouble className="w-3.5 h-3.5" /> {property.bedrooms} {t("search.beds_label")}
-            </span>
-          )}
-          {property.built_sqm && (
-            <span className="flex items-center gap-1">
-              <Ruler className="w-3.5 h-3.5" /> {property.built_sqm} sqm
-            </span>
-          )}
-          {property.lot_sqm && (
-            <span className="flex items-center gap-1">
-              <LandPlot className="w-3.5 h-3.5" /> {property.lot_sqm} sqm
-            </span>
-          )}
+          {property.bedrooms && (<span className="flex items-center gap-1"><BedDouble className="w-3.5 h-3.5" /> {property.bedrooms} {t("search.beds_label")}</span>)}
+          {property.built_sqm && (<span className="flex items-center gap-1"><Ruler className="w-3.5 h-3.5" /> {property.built_sqm} sqm</span>)}
+          {property.lot_sqm && (<span className="flex items-center gap-1"><LandPlot className="w-3.5 h-3.5" /> {property.lot_sqm} sqm</span>)}
         </div>
       </div>
     </Link>
@@ -124,7 +97,6 @@ const Properties = () => {
     const fetchProperties = async () => {
       setLoading(true);
       let query = supabase.from("properties_available").select("*");
-
       if (locFilter) {
         const locs = locFilter.split(",").filter(Boolean);
         if (locs.length === 1) query = query.eq("location", locs[0]);
@@ -153,37 +125,19 @@ const Properties = () => {
     <main className="min-h-screen bg-background">
       <Header />
       <div className="container px-6 py-8 md:py-12">
-        {/* Inline search filters */}
-        <SearchBar
-          inline
-          initialLocation={locFilter}
-          initialType={typeFilter}
-          initialBeds={bedsFilter}
-          initialPriceMin={priceMinFilter}
-          initialPriceMax={priceMaxFilter}
-        />
-
-        {/* Sort + count */}
+        <SearchBar inline initialLocation={locFilter} initialType={typeFilter} initialBeds={bedsFilter} initialPriceMin={priceMinFilter} initialPriceMax={priceMaxFilter} />
         <div className="flex items-center justify-between mt-8 mb-6">
-          <p className="text-sm text-muted-foreground font-body">
-            {loading ? "..." : `${properties.length} ${t("properties.results_count")}`}
-          </p>
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="text-sm font-body border border-border rounded-lg px-3 py-1.5 bg-card text-foreground focus:outline-none"
-          >
+          <p className="text-sm text-muted-foreground font-body">{loading ? "..." : `${properties.length} ${t("properties.results_count")}`}</p>
+          <select value={sort} onChange={(e) => setSort(e.target.value)} className="text-sm font-body border border-border rounded-lg px-3 py-1.5 bg-card text-foreground focus:outline-none">
             <option value="newest">{t("properties.sort_newest")}</option>
             <option value="price_asc">{t("properties.sort_price_low")}</option>
             <option value="price_desc">{t("properties.sort_price_high")}</option>
           </select>
         </div>
-
-        {/* Grid */}
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-card rounded-xl overflow-hidden shadow-sm">
+              <div key={i} className="bg-card rounded-2xl overflow-hidden shadow-md">
                 <div className="aspect-[4/3] bg-muted animate-pulse" />
                 <div className="p-5 space-y-3">
                   <div className="h-5 bg-muted rounded w-3/4 animate-pulse" />
@@ -198,9 +152,7 @@ const Properties = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {properties.map((p) => (
-              <PropertyCard key={p.id} property={p} />
-            ))}
+            {properties.map((p) => (<PropertyCard key={p.id} property={p} />))}
           </div>
         )}
       </div>

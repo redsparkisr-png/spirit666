@@ -34,7 +34,7 @@ const Header = () => {
   const isActive = (to: string) => currentPath === to || (to !== prefix + "/" && currentPath.startsWith(to));
 
   return (
-    <header className="sticky top-0 z-50 bg-charcoal border-b border-white/10">
+    <header className="sticky top-0 z-50 bg-primary border-b border-white/10">
       <div className="container px-6 py-5 flex items-center justify-between">
         {/* Left: hamburger */}
         <Sheet open={open} onOpenChange={setOpen}>
@@ -48,7 +48,7 @@ const Header = () => {
           </SheetTrigger>
           <SheetContent
             side={lang === "he" ? "right" : "left"}
-            className="bg-charcoal border-white/10 w-[85%] max-w-sm p-0"
+            className="bg-primary border-white/10 w-[85%] max-w-sm p-0"
           >
             <div className="flex flex-col h-full pt-16 px-8">
               <nav className="flex flex-col gap-1" role="navigation" aria-label="Main navigation">

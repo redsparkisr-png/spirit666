@@ -29,17 +29,24 @@ export function useSiteContent() {
     staleTime: 5 * 60 * 1000,
   });
 
+  // Local fallbacks for keys not yet in CMS
+  const localFallbacks: Record<string, Record<string, string>> = {
+    "search.more_filters": { en: "More Filters", he: "סינון נוסף" },
+    "search.beds_label": { en: "Beds", he: "חדרים" },
+  };
+
   const t = useCallback(
     (key: string): string => {
       const row = rows.find((r) => r.key === key);
       if (!row) {
+        const fb = localFallbacks[key];
+        if (fb) return lang === "he" ? fb.he : fb.en;
         if (import.meta.env.DEV) {
           console.warn(`[i18n] Missing key: "${key}"`);
         }
         return key;
       }
       const val = lang === "he" ? row.value_he : row.value_en;
-      // Fallback to English if Hebrew is empty
       if (!val && lang === "he") return row.value_en || key;
       return val || key;
     },

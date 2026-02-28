@@ -33,12 +33,12 @@ const SoldHomes = () => {
   const isEmpty = loaded && items.length === 0;
 
   return (
-    <section className="py-16 md:py-24 lg:py-28 bg-secondary">
+    <section className="py-20 md:py-28 lg:py-32 bg-secondary">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >

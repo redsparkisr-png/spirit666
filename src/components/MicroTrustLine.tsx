@@ -10,7 +10,7 @@ const MicroTrustLine = () => {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className="py-6 bg-primary"
+      className="py-8 bg-primary"
     >
       <div className="container px-6">
         <p className="text-center text-[15px] text-primary-foreground/70 font-body tracking-wide">

@@ -27,13 +27,13 @@ const HeroSection = () => {
           loading="eager"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/65" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 container text-center px-6 flex-1 flex flex-col items-center justify-center">
         <motion.p
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-white/60 font-body text-xs tracking-[0.25em] uppercase mb-8"
@@ -42,15 +42,15 @@ const HeroSection = () => {
         </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-white max-w-4xl mx-auto px-4"
+          className="text-white max-w-4xl mx-auto px-4 mb-12"
           style={{
             fontSize: "clamp(28px, 5.5vw, 52px)",
-            lineHeight: 1.15,
+            lineHeight: 1.25,
             letterSpacing: "-0.01em",
-            textShadow: "0 2px 30px rgba(0,0,0,0.5)",
+            textShadow: "0 1px 8px rgba(0,0,0,0.3)",
             textWrap: "balance",
           }}
         >
@@ -60,7 +60,7 @@ const HeroSection = () => {
 
       {/* Search bar at bottom */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.7 }}
         className="relative z-10 w-full px-4 pb-8 md:pb-12"
