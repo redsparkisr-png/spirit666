@@ -516,66 +516,66 @@ const SearchBar = ({
           </button>
         </div>
       ) : (
-        /* Desktop: all 5 fields in a row, underline-style */
-        <div className="grid grid-cols-5 gap-5 items-end">
-          <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocations} onChange={(val) => setSelectedLocations(val as string[])} multi isMobile={false} />
-          <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} isMobile={false} />
-
-          {/* Bedrooms pills */}
-          <div className="flex flex-col gap-1">
-            <span className="text-[11px] font-body text-white/50">{t("search.bedrooms")}</span>
-            <div className="flex gap-1 flex-wrap pb-0.5">
-              {BEDROOM_OPTIONS.map((b) => (
-                <button
-                  key={b}
-                  onClick={() => setSelectedBeds(selectedBeds === b ? "" : b)}
-                  className={`px-2.5 py-1.5 rounded-md text-xs font-body font-medium transition-colors ${
-                    selectedBeds === b
-                      ? "bg-white text-charcoal"
-                      : "bg-white/10 text-white/60 hover:bg-white/20"
-                  }`}
-                >
-                  {b}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Price Range */}
-          <div className="flex flex-col gap-1">
-            <span className="text-[11px] font-body text-white/50">{t("search.price_range")}</span>
-            <div className="space-y-1.5 pt-0.5">
-              <SliderPrimitive.Root
-                value={priceRange}
-                onValueChange={(val) => setPriceRange(val as [number, number])}
-                min={dataRange[0]}
-                max={dataRange[1]}
-                step={50000}
-                className="relative flex w-full touch-none select-none items-center h-5"
-              >
-                <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-white/20">
-                  <SliderPrimitive.Range className="absolute h-full bg-gold" />
-                </SliderPrimitive.Track>
-                <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
-                <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
-              </SliderPrimitive.Root>
-              <div className="flex justify-between text-[10px] font-body text-white/40">
-                <span>{formatPrice(priceRange[0])}</span>
-                <span>{formatPrice(priceRange[1])}</span>
+        /* Desktop: 2-row layout for breathing room */
+        <div className="space-y-4">
+          {/* Row 1: Location, Property Type, Bedrooms */}
+          <div className="grid grid-cols-3 gap-5 items-end">
+            <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocations} onChange={(val) => setSelectedLocations(val as string[])} multi isMobile={false} />
+            <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} isMobile={false} />
+            <div className="flex flex-col gap-1">
+              <span className="text-[11px] font-body text-white/50">{t("search.bedrooms")}</span>
+              <div className="flex gap-1.5">
+                {BEDROOM_OPTIONS.map((b) => (
+                  <button
+                    key={b}
+                    onClick={() => setSelectedBeds(selectedBeds === b ? "" : b)}
+                    className={`px-3 py-1.5 rounded-md text-xs font-body font-medium transition-colors ${
+                      selectedBeds === b
+                        ? "bg-white text-charcoal"
+                        : "bg-white/10 text-white/60 hover:bg-white/20"
+                    }`}
+                  >
+                    {b}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
-
-          {/* CTA */}
-          <div className="flex items-end">
-            <button
-              onClick={handleSearch}
-              className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-2.5 rounded-lg font-body font-medium text-sm btn-text transition-colors flex items-center justify-center gap-2 border border-gold/30"
-              aria-label={t("search.button")}
-            >
-              <Search className="w-4 h-4" />
-              {t("search.button")}
-            </button>
+          {/* Row 2: Price Range + Search CTA */}
+          <div className="grid grid-cols-3 gap-5 items-end">
+            <div className="col-span-2 flex flex-col gap-1">
+              <span className="text-[11px] font-body text-white/50">{t("search.price_range")}</span>
+              <div className="space-y-1.5 pt-0.5">
+                <SliderPrimitive.Root
+                  value={priceRange}
+                  onValueChange={(val) => setPriceRange(val as [number, number])}
+                  min={dataRange[0]}
+                  max={dataRange[1]}
+                  step={50000}
+                  className="relative flex w-full touch-none select-none items-center h-5"
+                >
+                  <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-white/20">
+                    <SliderPrimitive.Range className="absolute h-full bg-gold" />
+                  </SliderPrimitive.Track>
+                  <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
+                  <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
+                </SliderPrimitive.Root>
+                <div className="flex justify-between text-[10px] font-body text-white/40">
+                  <span>{formatPrice(priceRange[0])}</span>
+                  <span>{formatPrice(priceRange[1])}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-end">
+              <button
+                onClick={handleSearch}
+                className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-2.5 rounded-lg font-body font-medium text-sm btn-text transition-colors flex items-center justify-center gap-2 border border-gold/30"
+                aria-label={t("search.button")}
+              >
+                <Search className="w-4 h-4" />
+                {t("search.button")}
+              </button>
+            </div>
           </div>
         </div>
       )}

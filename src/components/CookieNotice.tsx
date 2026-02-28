@@ -38,7 +38,10 @@ const CookieNotice = () => {
   useEffect(() => {
     const stored = getStoredPreferences();
     if (!stored) {
-      const timer = setTimeout(() => setVisible(true), 1500);
+      const timer = setTimeout(() => {
+        setVisible(true);
+        window.dispatchEvent(new CustomEvent("cookie-banner", { detail: "visible" }));
+      }, 1500);
       return () => clearTimeout(timer);
     } else {
       emitConsentEvent(stored);
@@ -53,6 +56,7 @@ const CookieNotice = () => {
       setAnalytics(false);
       setMarketing(false);
       setVisible(true);
+      window.dispatchEvent(new CustomEvent("cookie-banner", { detail: "visible" }));
     };
     window.addEventListener("cookie-reopen", handleReopen);
     return () => window.removeEventListener("cookie-reopen", handleReopen);
@@ -62,6 +66,7 @@ const CookieNotice = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
     emitConsentEvent(prefs);
     setVisible(false);
+    window.dispatchEvent(new CustomEvent("cookie-banner", { detail: "hidden" }));
   };
 
   const acceptAll = () => saveAndClose({ analytics: true, marketing: true, ts: Date.now() });

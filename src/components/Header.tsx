@@ -35,7 +35,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
 
   return (
     <header ref={ref} className="sticky top-0 z-50 bg-primary border-b border-white/10">
-      <div className="container px-6 py-5 flex items-center justify-between">
+      <div className="container px-6 py-4 md:py-5 flex items-center justify-between">
         {/* Left: hamburger */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
@@ -106,7 +106,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
           <img
             src={spiritLogo}
             alt="Spirit Real Estate"
-            className="h-10 md:h-[56px] w-auto rounded-lg"
+            className="h-12 md:h-[60px] w-auto rounded-lg"
             style={{ imageRendering: "-webkit-optimize-contrast" } as React.CSSProperties}
           />
           <span className="hidden sm:block font-display font-semibold text-white text-base tracking-wide">

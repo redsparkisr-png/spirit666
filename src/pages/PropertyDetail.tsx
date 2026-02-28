@@ -213,8 +213,8 @@ const PropertyDetail = () => {
                   WhatsApp
                 </button>
               </div>
-              {/* Mobile inline form */}
-              <div className="lg:hidden">
+              {/* Inline inquiry form — visible on all screens */}
+              <div>
                 {submitted ? (
                   <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center py-6 gap-3">
                     <CheckCircle className="w-10 h-10 text-green-600" />
