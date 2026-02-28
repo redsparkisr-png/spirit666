@@ -43,7 +43,7 @@ const FloatingElements = () => {
   return (
     <>
       <AnimatePresence>
-        <div className={`fixed ${bottomOffset} right-6 z-50 transition-all duration-300 rtl:right-auto rtl:left-6`}>
+        <div className={`fixed ${bottomOffset} right-6 z-40 transition-all duration-300 rtl:right-auto rtl:left-6`}>
           {showTooltip && (
             <motion.div
               initial={{ opacity: 0, x: 10 }}
@@ -73,7 +73,7 @@ const FloatingElements = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 0.4 }}
-        className={`fixed ${bottomOffset} left-6 z-50 transition-all duration-300 rtl:left-auto rtl:right-6`}
+        className={`fixed ${bottomOffset} left-6 z-40 transition-all duration-300 rtl:left-auto rtl:right-6`}
       >
         <button
           onClick={scrollToHomes}

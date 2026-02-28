@@ -33,7 +33,7 @@ export function useSiteContent() {
   const localFallbacks: Record<string, Record<string, string>> = {
     "search.more_filters": { en: "More Filters", he: "סינון נוסף" },
     "search.beds_label": { en: "Beds", he: "חדרים" },
-    "property.detail.interested_title": { en: "Interested in this home?", he: "מעוניינים בנכס הזה?" },
+    "property.detail.interested_title": { en: "Interested in this home?", he: "מתעניינים בנכס הזה?" },
   };
 
   const t = useCallback(
