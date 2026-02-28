@@ -40,7 +40,7 @@ const Index = () => {
       <TrustSection />
       <FloatingElements />
       <ExitIntentPopup />
-      <CookieNotice />
+      {/* CookieNotice moved to LanguageLayout */}
     </main>
   );
 };

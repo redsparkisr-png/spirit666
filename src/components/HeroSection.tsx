@@ -10,7 +10,7 @@ const HeroSection = () => {
     <section
       className="relative flex flex-col items-center justify-center"
       style={{
-        minHeight: "100svh",
+        minHeight: "85svh",
         paddingTop: "max(72px, env(safe-area-inset-top))",
         paddingBottom: "max(24px, env(safe-area-inset-bottom))",
       }}
@@ -65,7 +65,9 @@ const HeroSection = () => {
         transition={{ duration: 0.6, delay: 0.7 }}
         className="relative z-10 w-full px-4 pb-8 md:pb-12"
       >
-        <SearchBar />
+        <div className="max-w-4xl mx-auto bg-black/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 shadow-lg">
+          <SearchBar />
+        </div>
       </motion.div>
     </section>
   );

@@ -228,8 +228,19 @@ const PropertyDetail = () => {
               <p className="text-sm text-bronze font-body italic">{t("property.detail.fomo_line")}</p>
             </div>
 
-            {/* Inline inquiry form — visible on all screens */}
-            <InquiryForm id="inquiry-form-mobile" />
+            {/* Compact CTA block before Similar Properties */}
+            <div id="inquiry-form-mobile" className="bg-card rounded-2xl border border-border p-6 flex flex-col sm:flex-row items-center gap-4 shadow-sm">
+              <h3 className="font-display font-semibold text-foreground text-lg flex-1">{t("property.detail.interested_title")}</h3>
+              <div className="flex gap-3 w-full sm:w-auto">
+                <button onClick={openWhatsApp} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 px-5 rounded-lg font-body font-medium text-sm transition-colors">
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp
+                </button>
+                <button onClick={() => { const el = document.getElementById("inquiry-form"); if (el) el.scrollIntoView({ behavior: "smooth" }); else openWhatsApp(); }} className="flex-1 sm:flex-none bg-charcoal hover:bg-charcoal-hover text-white py-3 px-5 rounded-lg font-body font-medium text-sm btn-text transition-colors">
+                  {t("property.detail.send_inquiry")}
+                </button>
+              </div>
+            </div>
 
             {/* Similar Properties */}
             {similar.length > 0 && (

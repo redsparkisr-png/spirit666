@@ -49,43 +49,45 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
   const { lang } = useLanguage();
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="bg-card rounded-2xl overflow-hidden shadow-md md:hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
-    >
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
-        {images.length === 0 && (
-          <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
-        )}
-        {images.map((url, idx) => (
-          <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" />
-        ))}
-        {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
-        {property.property_status && property.property_status !== "Active" && (
-          <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">{property.property_status}</span>
-        )}
-      </div>
-      <div className="p-5 md:p-6">
-        {property.price_label && (
-          <p className="text-sm font-body font-semibold mb-2 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">{property.price_label}</p>
-        )}
-        <h3 className="text-lg font-display font-semibold text-foreground mb-1.5 leading-snug">{property.title}</h3>
-        {property.short_description && (
-          <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{property.short_description}</p>
-        )}
-        <div className="flex items-center gap-3 text-xs text-muted-foreground font-body mb-4 flex-wrap">
-          {property.lot_sqm && (<span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />{property.lot_sqm} sqm</span>)}
-          {property.built_sqm && (<span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />{property.built_sqm} sqm</span>)}
-          {property.bedrooms && (<span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />{property.bedrooms} Bed</span>)}
+    <Link to={`/${lang}/property/${property.slug || property.id}`} className="block cursor-pointer">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.4, delay: index * 0.1 }}
+        className="bg-card rounded-2xl overflow-hidden shadow-md md:hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
+      >
+        <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
+          {images.length === 0 && (
+            <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
+          )}
+          {images.map((url, idx) => (
+            <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" />
+          ))}
+          {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
+          {property.property_status && property.property_status !== "Active" && (
+            <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">{property.property_status}</span>
+          )}
         </div>
-        <Link to={`/${lang}/property/${property.slug || property.id}`} className="block w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors duration-300 text-center">
-          {detailsLabel}
-        </Link>
-      </div>
-    </motion.div>
+        <div className="p-5 md:p-6">
+          {property.price_label && (
+            <p className="text-sm font-body font-semibold mb-2 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">{property.price_label}</p>
+          )}
+          <h3 className="text-lg font-display font-semibold text-foreground mb-1.5 leading-snug">{property.title}</h3>
+          {property.short_description && (
+            <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{property.short_description}</p>
+          )}
+          <div className="flex items-center gap-3 text-xs text-muted-foreground font-body mb-4 flex-wrap">
+            {property.lot_sqm && (<span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />{property.lot_sqm} sqm</span>)}
+            {property.built_sqm && (<span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />{property.built_sqm} sqm</span>)}
+            {property.bedrooms && (<span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />{property.bedrooms} Bed</span>)}
+          </div>
+          <span className="block w-full bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm btn-text text-center">
+            {detailsLabel}
+          </span>
+        </div>
+      </motion.div>
+    </Link>
   );
 };
 

@@ -47,6 +47,16 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const selected = multi ? (value as string[]) : value ? [value as string] : [];
+
+  // ESC key handler
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [open]);
   const displayText = selected.length > 0
     ? selected.length === 1
       ? options.find((o) => o.value === selected[0])?.label || selected[0]
