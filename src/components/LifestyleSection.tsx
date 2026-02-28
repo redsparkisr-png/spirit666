@@ -64,18 +64,20 @@ const LifestyleSection = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.08 }}
-                className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-default"
+                className="relative overflow-hidden rounded-xl aspect-[4/3] group cursor-pointer"
               >
                 <img
                   src={item.image_url}
                   alt={(item as any).caption || `Lifestyle in Zichron Yaakov ${idx + 1}`}
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-110"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500" />
+                {/* Hover overlay with gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/0 to-foreground/0 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                {/* Caption overlay */}
                 {(item as any).caption && (
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-foreground/50 to-transparent p-3">
-                    <p className="text-primary-foreground font-body text-xs">{(item as any).caption}</p>
+                  <div className="absolute bottom-0 inset-x-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                    <p className="text-primary-foreground font-body text-sm font-medium drop-shadow-lg">{(item as any).caption}</p>
                   </div>
                 )}
               </motion.div>

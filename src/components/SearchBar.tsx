@@ -457,10 +457,10 @@ const SearchBar = ({
                   <button
                     key={b}
                     onClick={() => setSelectedBeds(selectedBeds === b ? "" : b)}
-                    className={`flex-shrink-0 px-2.5 py-1 rounded-md text-[11px] font-body font-medium transition-colors ${
+                    className={`flex-shrink-0 px-2.5 py-1 rounded-md text-[11px] font-body font-medium transition-all duration-200 ${
                       selectedBeds === b
-                        ? "bg-white text-charcoal"
-                        : "bg-white/10 text-white/60 hover:bg-white/20"
+                        ? "bg-white text-charcoal scale-105 shadow-sm"
+                        : "bg-white/10 text-white/60 hover:bg-white/20 hover:scale-105"
                     }`}
                   >
                     {b}
@@ -519,10 +519,10 @@ const SearchBar = ({
                   <button
                     key={b}
                     onClick={() => setSelectedBeds(selectedBeds === b ? "" : b)}
-                    className={`px-3 py-1.5 rounded-md text-xs font-body font-medium transition-colors ${
+                    className={`px-3 py-1.5 rounded-md text-xs font-body font-medium transition-all duration-200 ${
                       selectedBeds === b
-                        ? "bg-white text-charcoal"
-                        : "bg-white/10 text-white/60 hover:bg-white/20"
+                        ? "bg-white text-charcoal scale-105 shadow-sm"
+                        : "bg-white/10 text-white/60 hover:bg-white/20 hover:scale-105"
                     }`}
                   >
                     {b}

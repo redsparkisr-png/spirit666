@@ -139,7 +139,7 @@ const SoldHomes = () => {
           </p>
           <button
             onClick={openWhatsApp}
-            className="bg-charcoal hover:bg-charcoal-hover text-white px-8 py-3.5 rounded-lg font-body font-medium text-sm transition-colors duration-300"
+            className="inline-flex items-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white px-8 py-3.5 rounded-lg font-body font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-charcoal/20 hover:-translate-y-0.5 active:scale-[0.98]"
           >
             {t("home.sold.cta_button")}
           </button>

@@ -132,7 +132,10 @@ const Testimonials = () => {
           </p>
           <button
             onClick={scrollToForm}
-            className="bg-gold hover:bg-gold-hover text-primary-foreground px-8 py-3.5 rounded-lg font-body font-medium text-sm transition-all duration-300 hover:shadow-md active:scale-95"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-body font-medium text-sm text-primary-foreground transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 hover:-translate-y-0.5 active:scale-[0.98]"
+            style={{
+              background: 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-hover)) 100%)',
+            }}
           >
             {t("home.testimonials.cta_button")}
           </button>
