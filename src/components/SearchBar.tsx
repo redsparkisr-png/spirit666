@@ -97,7 +97,7 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
   // Underline-style for hero, boxed for inline
   const triggerClasses = inline
     ? "flex items-center justify-between w-full bg-card border border-border text-foreground rounded-lg px-3 py-2.5 text-sm font-body cursor-pointer hover:border-charcoal/30 transition-colors"
-    : "flex items-center justify-between w-full bg-transparent border-b border-white/30 text-white px-1 pb-2 text-sm font-body cursor-pointer hover:border-white/50 transition-colors";
+    : "flex items-center justify-between w-full bg-transparent border-b border-white/40 text-white px-1 pb-2 text-sm font-body font-medium cursor-pointer hover:border-white/60 transition-colors";
 
   const renderOptions = (forLightBg: boolean) => (
     <div className="py-1.5 max-h-[320px] overflow-y-auto">
@@ -131,7 +131,7 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
     return (
       <>
         <div className="flex flex-col gap-1" ref={ref}>
-          <span className={`text-[11px] font-body ${inline ? "text-muted-foreground" : "text-white/50"}`}>{label}</span>
+          <span className={`text-[11px] font-body ${inline ? "text-muted-foreground" : "text-white/70"}`}>{label}</span>
           <button onClick={() => setOpen(true)} className={triggerClasses}>
             <span className={selected.length === 0 ? "opacity-50" : ""}>{displayText}</span>
             <ChevronDown className="w-4 h-4 flex-shrink-0 opacity-60" />
@@ -188,7 +188,7 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
 
   return (
     <div className="flex flex-col gap-1 relative" ref={ref}>
-      <span className={`text-[11px] font-body ${inline ? "text-muted-foreground" : "text-white/50"}`}>{label}</span>
+      <span className={`text-[11px] font-body ${inline ? "text-muted-foreground" : "text-white/70"}`}>{label}</span>
       <button onClick={() => setOpen(!open)} className={triggerClasses}>
         <span className={selected.length === 0 ? "opacity-50" : ""}>{displayText}</span>
         <ChevronDown className={`w-4 h-4 flex-shrink-0 opacity-60 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -461,7 +461,7 @@ const SearchBar = ({
           <div className="space-y-2.5">
             {/* Bedrooms */}
             <div>
-              <span className="text-[11px] font-body text-white/50 mb-1 block">{t("search.bedrooms")}</span>
+              <span className="text-[11px] font-body text-white/70 font-medium mb-1 block">{t("search.bedrooms")}</span>
               <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
                 {BEDROOM_OPTIONS.map((b) => (
                   <button
@@ -481,7 +481,7 @@ const SearchBar = ({
 
             {/* Price Range inline */}
             <div>
-              <span className="text-[11px] font-body text-white/50 mb-1 block">{t("search.price_range")}</span>
+              <span className="text-[11px] font-body text-white/70 font-medium mb-1 block">{t("search.price_range")}</span>
               <div className="space-y-1 pt-0.5">
                 <SliderPrimitive.Root
                   value={priceRange}
@@ -497,7 +497,7 @@ const SearchBar = ({
                   <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
                   <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
                 </SliderPrimitive.Root>
-                <div className="flex justify-between text-[10px] font-body text-white/50">
+                <div className="flex justify-between text-[11px] font-body text-white/80 font-medium">
                   <span>{formatPrice(priceRange[0])}</span>
                   <span>{formatPrice(priceRange[1])}</span>
                 </div>
@@ -523,7 +523,7 @@ const SearchBar = ({
             <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocations} onChange={(val) => setSelectedLocations(val as string[])} multi isMobile={false} />
             <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} isMobile={false} />
             <div className="flex flex-col gap-1">
-              <span className="text-[11px] font-body text-white/50">{t("search.bedrooms")}</span>
+              <span className="text-[11px] font-body text-white/70 font-medium">{t("search.bedrooms")}</span>
               <div className="flex gap-1.5">
                 {BEDROOM_OPTIONS.map((b) => (
                   <button
@@ -544,7 +544,7 @@ const SearchBar = ({
           {/* Row 2: Price Range + Search CTA */}
           <div className="grid grid-cols-3 gap-5 items-end">
             <div className="col-span-2 flex flex-col gap-1">
-              <span className="text-[11px] font-body text-white/50">{t("search.price_range")}</span>
+              <span className="text-[11px] font-body text-white/70 font-medium">{t("search.price_range")}</span>
               <div className="space-y-1.5 pt-0.5">
                 <SliderPrimitive.Root
                   value={priceRange}
@@ -560,7 +560,7 @@ const SearchBar = ({
                   <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
                   <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
                 </SliderPrimitive.Root>
-                <div className="flex justify-between text-[10px] font-body text-white/40">
+                <div className="flex justify-between text-[11px] font-body text-white/80 font-medium">
                   <span>{formatPrice(priceRange[0])}</span>
                   <span>{formatPrice(priceRange[1])}</span>
                 </div>
