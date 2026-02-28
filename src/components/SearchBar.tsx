@@ -44,6 +44,7 @@ interface DropdownProps {
 }
 
 const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline, isMobile }: DropdownProps) => {
+  const { lang } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const selected = multi ? (value as string[]) : value ? [value as string] : [];
@@ -159,26 +160,26 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
               </div>
               <div className="flex items-center justify-between px-5 py-3 border-b border-border">
                 <h3 className="font-display font-semibold text-foreground text-base">{label}</h3>
-                <button onClick={() => setOpen(false)} className="text-muted-foreground" aria-label="Close">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="flex-1 overflow-y-auto px-2">
-                {renderOptions(true)}
-              </div>
-              <div className="border-t border-border px-5 py-4 flex gap-3">
-                {selected.length > 0 && (
-                  <button onClick={clearAll} className="text-sm text-muted-foreground font-body hover:text-foreground transition-colors">
-                    Clear
+                  <button onClick={() => setOpen(false)} className="text-muted-foreground" aria-label="Close">
+                    <X className="w-5 h-5" />
                   </button>
-                )}
-                <button
-                  onClick={() => setOpen(false)}
-                  className="flex-1 bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
-                >
-                  Apply
-                </button>
-              </div>
+                </div>
+                <div className="flex-1 overflow-y-auto px-2">
+                  {renderOptions(true)}
+                </div>
+                <div className="border-t border-border px-5 py-4 flex gap-3">
+                  {selected.length > 0 && (
+                    <button onClick={clearAll} className="text-sm text-muted-foreground font-body hover:text-foreground transition-colors">
+                      {lang === "he" ? "נקה" : "Clear"}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="flex-1 bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm transition-colors"
+                  >
+                    {lang === "he" ? "החל" : "Apply"}
+                  </button>
+                </div>
             </motion.div>
           </motion.div>
         </AnimatePresence>
@@ -228,6 +229,7 @@ interface MoreFiltersSheetProps {
 
 const MoreFiltersSheet = ({ beds, onBedsChange, priceRange, onPriceChange, dataRange, onClose }: MoreFiltersSheetProps) => {
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -312,13 +314,13 @@ const MoreFiltersSheet = ({ beds, onBedsChange, priceRange, onPriceChange, dataR
             onClick={() => { onBedsChange(""); onPriceChange(dataRange); }}
             className="text-sm text-muted-foreground font-body hover:text-foreground transition-colors"
           >
-            Clear
+            {t("search.clear") || "Clear"}
           </button>
           <button
             onClick={onClose}
             className="flex-1 bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors"
           >
-            Apply
+            {t("search.apply") || (lang === "he" ? "החל" : "Apply")}
           </button>
         </div>
       </motion.div>
@@ -448,9 +450,9 @@ const SearchBar = ({
   // ─── HERO (transparent, underline-style) ───
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Mobile: ALL fields visible, 3 rows */}
+      {/* Mobile: ALL fields visible, compact */}
       {isMobile ? (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {/* Row 1: Location + Property Type */}
           <div className="grid grid-cols-2 gap-3">
             <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocations} onChange={(val) => setSelectedLocations(val as string[])} multi isMobile={isMobile} />
@@ -458,7 +460,7 @@ const SearchBar = ({
           </div>
 
           {/* Row 2: Bedrooms pills + Price Range */}
-          <div className="space-y-2.5">
+          <div className="space-y-1.5">
             {/* Bedrooms */}
             <div>
               <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase mb-1 block">{t("search.bedrooms")}</span>

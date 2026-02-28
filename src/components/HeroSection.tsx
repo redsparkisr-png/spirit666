@@ -20,9 +20,8 @@ const HeroSection = () => {
         <img
           src={heroBg}
           alt="Zichron Yaakov village overlooking the Mediterranean Sea"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover hero-bg-img"
           style={{
-            objectPosition: "center 55%",
             filter: "contrast(1.06) saturate(1.1) brightness(0.92)",
           }}
           width={1920}
@@ -37,8 +36,8 @@ const HeroSection = () => {
       <div
         className="relative z-10 w-full flex flex-col items-center text-center px-5"
         style={{
-          paddingTop: "clamp(104px, 14vw, 140px)",
-          paddingBottom: "clamp(80px, 10vw, 120px)",
+          paddingTop: "clamp(90px, 12vw, 120px)",
+          paddingBottom: "clamp(60px, 8vw, 90px)",
         }}
       >
         {/* Localized scrim behind text group */}
@@ -109,7 +108,7 @@ const HeroSection = () => {
                 "0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             }}
           >
-            <div className="p-4 md:p-6">
+            <div className="p-3 md:p-5">
               <SearchBar />
             </div>
           </div>
