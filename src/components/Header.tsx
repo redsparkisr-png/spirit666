@@ -2,11 +2,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import spiritLogo from "@/assets/spirit-logo.jpg";
-import { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-const Header = () => {
+const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
   const { lang, setLang } = useLanguage();
   const { t } = useSiteContent();
   const location = useLocation();
@@ -34,7 +34,7 @@ const Header = () => {
   const isActive = (to: string) => currentPath === to || (to !== prefix + "/" && currentPath.startsWith(to));
 
   return (
-    <header className="sticky top-0 z-50 bg-primary border-b border-white/10">
+    <header ref={ref} className="sticky top-0 z-50 bg-primary border-b border-white/10">
       <div className="container px-6 py-5 flex items-center justify-between">
         {/* Left: hamburger */}
         <Sheet open={open} onOpenChange={setOpen}>
@@ -139,6 +139,8 @@ const Header = () => {
       </div>
     </header>
   );
-};
+});
+
+Header.displayName = "Header";
 
 export default Header;

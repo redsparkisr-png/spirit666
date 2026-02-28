@@ -92,34 +92,6 @@ const PropertyDetail = () => {
   const images = property.images || [];
   const inputClasses = "w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30";
 
-  const InquiryForm = ({ id, className }: { id?: string; className?: string }) => (
-    <div id={id} className={`bg-card rounded-2xl border border-border p-5 md:p-6 space-y-4 shadow-sm ${className || ""}`}>
-      <h3 className="font-display font-semibold text-foreground text-lg">{t("property.detail.inquiry_title")}</h3>
-      {submitted ? (
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center py-8 gap-3">
-          <CheckCircle className="w-12 h-12 text-green-600" />
-          <p className="font-body text-foreground font-medium">{t("property.detail.inquiry_success")}</p>
-        </motion.div>
-      ) : (
-        <form onSubmit={handleInquiry} className="space-y-3">
-          <input type="text" placeholder={t("property.detail.name_placeholder")} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClasses} aria-label={t("property.detail.name_placeholder")} />
-          <input type="tel" placeholder={t("property.detail.phone_placeholder")} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className={inputClasses} aria-label={t("property.detail.phone_placeholder")} />
-          <input type="email" placeholder={t("property.detail.email_placeholder")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputClasses} aria-label={t("property.detail.email_placeholder")} />
-          <textarea placeholder={t("property.detail.message_placeholder")} value={formData.message || `Interested in: ${property.title}`} onChange={(e) => setFormData({ ...formData, message: e.target.value })} rows={2} className={`${inputClasses} resize-none`} aria-label={t("property.detail.message_placeholder")} />
-          <div className="flex gap-3">
-            <button type="submit" disabled={submitting} className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
-              {submitting ? "..." : t("property.detail.send_inquiry")}
-            </button>
-            <button type="button" onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
-              <MessageCircle className="w-4 h-4" />
-              WhatsApp
-            </button>
-          </div>
-        </form>
-      )}
-    </div>
-  );
-
   return (
     <main className="min-h-screen bg-background pb-20 lg:pb-0">
       <Header />
@@ -270,7 +242,31 @@ const PropertyDetail = () => {
           {/* Sticky sidebar inquiry form */}
           <div className="lg:col-span-1 hidden lg:block">
             <div className="sticky top-20 space-y-4">
-              <InquiryForm id="inquiry-form" />
+              <div id="inquiry-form" className="bg-card rounded-2xl border border-border p-5 md:p-6 space-y-4 shadow-sm">
+                <h3 className="font-display font-semibold text-foreground text-lg">{t("property.detail.inquiry_title")}</h3>
+                {submitted ? (
+                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center py-8 gap-3">
+                    <CheckCircle className="w-12 h-12 text-green-600" />
+                    <p className="font-body text-foreground font-medium">{t("property.detail.inquiry_success")}</p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleInquiry} className="space-y-3">
+                    <input type="text" placeholder={t("property.detail.name_placeholder")} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClasses} aria-label={t("property.detail.name_placeholder")} />
+                    <input type="tel" placeholder={t("property.detail.phone_placeholder")} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className={inputClasses} aria-label={t("property.detail.phone_placeholder")} />
+                    <input type="email" placeholder={t("property.detail.email_placeholder")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputClasses} aria-label={t("property.detail.email_placeholder")} />
+                    <textarea placeholder={t("property.detail.message_placeholder")} value={formData.message || `Interested in: ${property.title}`} onChange={(e) => setFormData({ ...formData, message: e.target.value })} rows={2} className={`${inputClasses} resize-none`} aria-label={t("property.detail.message_placeholder")} />
+                    <div className="flex gap-3">
+                      <button type="submit" disabled={submitting} className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
+                        {submitting ? "..." : t("property.detail.send_inquiry")}
+                      </button>
+                      <button type="button" onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
+                        <MessageCircle className="w-4 h-4" />
+                        WhatsApp
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
               <p className="text-[11px] text-muted-foreground/60 font-body text-center">{t("property.detail.privacy_note")}</p>
             </div>
           </div>
