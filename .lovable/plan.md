@@ -1,112 +1,155 @@
 
-# Critical UX Bug Fixes + Legal Compliance Polish
+# Complete Boutique Upgrade — Spirit Real Estate
 
-## Summary
-Six focused fixes: dropdown clipping bug, "Send Inquiry" mobile flow, property page inquiry form, logo sizing, cookie consent restoration, and mobile layout collision prevention. No font changes. No database changes needed.
-
----
-
-## A. Search Bar Dropdown Clipping Fix (CRITICAL)
-
-**Root cause**: The hero `<section>` has `overflow-hidden` (line 11 of `HeroSection.tsx`), which clips the absolutely-positioned dropdown panels that extend below the search card.
-
-**Fix 1 -- HeroSection.tsx**: Remove `overflow-hidden` from the hero section className. The `scale-105` on the background image can be contained by adding `overflow-hidden` to the background `<div>` wrapper instead (which already exists at line 19).
-
-**Fix 2 -- SearchBar.tsx**: Increase `max-h-[240px]` to `max-h-[320px]` on the options container (line 95) to ensure all 5 options are visible without scrolling. Add a `console.log` in the data-fetch `useEffect` to log options count for dev verification.
-
-**Fix 3 -- SearchBar.tsx mobile bottom sheet**: The mobile sheet currently works but the `max-h-[70vh]` is fine. Ensure the option list `flex-1 overflow-y-auto` is correct (already is). No further changes needed for mobile.
-
-**Files**: `src/components/HeroSection.tsx`, `src/components/SearchBar.tsx`
+## Overview
+Transform the site into a premium image-first boutique experience with a redesigned hero, compact mobile search with "More Filters" bottom sheet, refined color palette, boutique copy, and polished property cards. No font changes. No database changes. No breaking existing functionality.
 
 ---
 
-## B. "Send Inquiry" Button -- Mobile Fix
+## 1. Hero Section — Image-First Refinement
 
-**Current state**: PropertyDetail.tsx has a mobile sticky CTA bar with a "Send Inquiry" button that tries to `scrollIntoView` an element with id `inquiry-form-mobile` -- but that element does not exist on mobile. The desktop sidebar form has id `inquiry-form`, and there is no mobile-visible form to scroll to.
+**File: `src/components/HeroSection.tsx`**
 
-**Fix**: Add a mobile-visible inquiry form section on PropertyDetail.tsx (placed before "Similar Properties") with `id="inquiry-form-mobile"`. This form will:
-- Pre-fill the message field with `"Interested in: {property.title}"`
-- Submit to the `leads` table with source `property_page:{slug}`
-- Show success toast on submit
-- Include validation (name + phone required)
+- Replace heavy gradient overlay (`from-black/50 via-black/35 to-black/65`) with a subtle bottom-only gradient (`from-transparent via-transparent to-black/50`) so the image dominates (~70% visible)
+- Remove heavy `textShadow` from H1; use a subtle `0 1px 8px rgba(0,0,0,0.3)` instead
+- Increase H1 `line-height` from `1.15` to `1.25` for an airier feel
+- Increase whitespace: add `mb-12` between H1 and search area
+- Reduce motion intensity: change `y: 25` to `y: 10` for gentler fade-in
+- Remove the glassmorphism card wrapper from SearchBar (handled in SearchBar itself)
 
-This also addresses **Section C** (compact inquiry form before Similar Properties).
+## 2. Search Experience Redesign
 
-**Files**: `src/components/PropertyDetail.tsx`
+**File: `src/components/SearchBar.tsx`** — Major rewrite
+
+### Mobile (hero context, `inline=false`):
+- Show only 3 fields in a compact row: **Location**, **Property Type**, **CTA button**
+- Add a "More Filters" text button that opens a bottom sheet containing:
+  - Bedrooms (pill buttons)
+  - Price range slider
+  - Apply / Clear buttons
+- Replace bordered input triggers with **underline-style** inputs (transparent bg, bottom border only) for a minimal look
+- Remove the heavy `bg-white/10 backdrop-blur-lg rounded-2xl p-4 border` card wrapper; use transparent layout on hero
+- Reduce vertical padding significantly
+
+### Desktop (hero context):
+- Show all 5 fields in a single clean row (Location, Type, Beds pills, Price, CTA)
+- Use transparent underline-style fields (no boxed card)
+- Desktop dropdowns: ensure `z-[100]`, `max-h-[320px]`, proper `overflow-y-auto`
+- Dropdown panel: `bg-charcoal border-white/15` with smooth animation
+
+### Inline context (Properties page):
+- Keep current boxed card style with light bg
+- Show all fields
+
+### Boutique copy:
+- CTA button text: use CMS key `search.button` — will update to "Explore Select Homes" / Hebrew equivalent via CMS (no hardcoded change needed, but update the default fallback)
+
+## 3. Color Palette Refinement
+
+**File: `src/index.css`**
+
+Update CSS variables:
+- `--primary`: change from `0 0% 11%` (pure charcoal) to `160 42% 11%` (deep green #0F2E26) for header/footer/primary
+- `--gold`: change from `42 54% 53%` to `39 37% 55%` (refined gold #C8A96A, less yellow)
+- `--gold-hover`: adjust to `37 38% 48%` (#A8894F)
+- Keep `--charcoal: 0 0% 11%` for buttons (separate from primary)
+- Keep `--background`, `--foreground`, `--card` unchanged
+
+This shifts the header, footer, and primary elements from pure black to the brand deep green while keeping charcoal for CTAs.
+
+## 4. Typography & Spacing Polish
+
+**File: `src/index.css`**
+
+- H1: increase `line-height` from `1.15` to `1.25`
+- H2: increase from `26px`/`34px` to `28px`/`36px`
+- Body: already at `17px/1.6` — keep
+- Add button letter-spacing utility: `.btn-text { letter-spacing: 0.03em }`
+
+**Multiple section files**: Increase section vertical padding from `py-16 md:py-24` to `py-20 md:py-28` for breathing room:
+- `src/components/AvailableHomes.tsx`
+- `src/components/SoldHomes.tsx`
+- `src/components/WhyDifferent.tsx`
+- `src/components/LifestyleSection.tsx`
+- `src/components/ContactForm.tsx`
+- `src/components/BlueprintSection.tsx`
+
+## 5. Property Cards — Hover Polish
+
+**File: `src/components/AvailableHomes.tsx`** and **`src/pages/Properties.tsx`**
+
+- Add subtle `shadow-md hover:shadow-xl` transition (desktop only via `md:hover:shadow-xl`)
+- Keep existing `hover:-translate-y-1`
+- Add `rounded-2xl` instead of `rounded-xl` for softer corners
+- Style price label with gold gradient text (CSS `background-clip: text` using `from-[#C8A96A] to-[#A8894F]`)
+
+## 6. Property Detail — Inquiry Form Refinement
+
+**File: `src/pages/PropertyDetail.tsx`**
+
+- Change mobile inquiry form CTA from "Send Inquiry" to CMS key mapped to "Request Private Details"
+- Make form visible on ALL screen sizes (remove `lg:hidden`), positioned before Similar Properties
+- Keep desktop sticky sidebar form as well (dual placement = more conversion)
+- Add success animation on form submit (brief checkmark icon)
+
+## 7. Boutique Copy Updates (CMS Fallbacks)
+
+**File: `src/hooks/useSiteContent.ts`** — Update default fallback strings:
+
+| Key | Old English | New English |
+|-----|------------|-------------|
+| `search.button` | "Search" | "Explore Select Homes" |
+| `home.available.details_button` | "View Details" | "View Curated Home" |
+| `property.detail.send_inquiry` | "Send Inquiry" | "Request Private Details" |
+| `header.nav.contact` | "Contact" | "Start a Conversation" |
+
+Hebrew equivalents will also be updated.
+
+## 8. Footer Cleanup
+
+**File: `src/components/TrustSection.tsx`**
+
+- Increase spacing between sections (`gap-8` instead of `gap-6`)
+- Add subtle gold divider line between nav and legal links
+- Reduce density: use `text-[13px]` for legal links
+
+## 9. Micro Interactions
+
+**File: `src/components/SearchBar.tsx`** — Already has `rotate-180` on chevron. Ensure smooth `duration-200`.
+
+**Multiple files**: Use `whileInView` with `margin: "-50px"` consistently for earlier trigger of fade-in animations.
+
+## 10. Bug Fixes
+
+### Dropdown clipping (already partially fixed):
+- Confirm `HeroSection.tsx` has no `overflow-hidden` on section (already removed in previous iteration)
+- SearchBar desktop dropdown `z-[100]` already set
+
+### Send Inquiry button:
+- Already working via `scrollIntoView` to `#inquiry-form-mobile` (added in previous iteration)
+- Make form visible on all screens (remove `lg:hidden`) so desktop users also see it
+
+### Sticky button overlaps:
+- Add `z-30` to sticky CTA bar (below dropdown `z-[100]` and bottom-sheet `z-[200]`)
 
 ---
 
-## C. Property Page Inquiry Form (Before Similar Properties)
+## Files Modified Summary
 
-Merged with Section B above. Implementation:
-1. Insert a compact form section between the FOMO line and Similar Properties
-2. Fields: Full Name, Phone, Email, Message (pre-filled with property title + URL)
-3. Primary CTA: "Send Inquiry" (charcoal button)
-4. Secondary CTA: "WhatsApp Us" (green button)
-5. The form uses `id="inquiry-form-mobile"` so the sticky bottom bar's "Send Inquiry" scrolls to it
-6. On desktop, the existing sticky sidebar form remains; this new form is visible on all screen sizes as an additional conversion point
+1. `src/components/HeroSection.tsx` — lighter gradient, airier spacing, gentler animation
+2. `src/components/SearchBar.tsx` — mobile "More Filters" pattern, underline inputs, transparent hero layout
+3. `src/index.css` — deep green primary, refined gold, typography spacing
+4. `src/components/AvailableHomes.tsx` — card polish, increased section spacing
+5. `src/pages/Properties.tsx` — card hover polish
+6. `src/pages/PropertyDetail.tsx` — form visible all screens, boutique CTA copy
+7. `src/hooks/useSiteContent.ts` — boutique copy fallbacks
+8. `src/components/TrustSection.tsx` — footer spacing
+9. `src/components/MicroTrustLine.tsx` — minor spacing tweak
 
-**Files**: `src/pages/PropertyDetail.tsx`
-
----
-
-## D. Logo Sizing Fix
-
-**Current state**: Header.tsx already has `w-[42px] h-[42px] md:w-[58px] md:h-[58px]`. The logo may appear blurry if the source image is low-res at 2x display.
-
-**Fix**: 
-- Add `image-rendering: -webkit-optimize-contrast` style for crispness
-- Ensure the img tag specifies proper `width` and `height` attributes to prevent layout shift
-- Keep rounded-lg and existing sizing
-
-**Files**: `src/components/Header.tsx`
-
----
-
-## E. Cookie Consent + Legal Footer
-
-**Cookie consent**: The `CookieNotice.tsx` component already exists with Accept All / Reject / Manage Preferences functionality. Need to verify it renders on first visit.
-
-**Fix 1**: Check if the cookie notice is being blocked by existing localStorage. The component uses `cookieConsentV1` key. If the user already accepted, it won't show. This is correct behavior. No code change needed unless the banner was removed from the page -- it's currently in `Index.tsx` (line 43). Verify it appears on other pages too by checking if it's in the layout.
-
-**Fix 2 -- Footer "Cookie Preferences" link**: Add a "Cookie Preferences" button/link in `TrustSection.tsx` footer that clears `cookieConsentV1` from localStorage and dispatches a reset event to re-show the banner.
-
-**Fix 3 -- CookieNotice.tsx**: Add a global event listener for `"cookie-reopen"` that re-shows the banner when the footer link is clicked.
-
-**Accessibility Statement**: Already exists at `src/pages/Accessibility.tsx` with CMS-driven bilingual content. Just needs to be linked in footer (already linked).
-
-**Files**: `src/components/TrustSection.tsx`, `src/components/CookieNotice.tsx`
-
----
-
-## F. Mobile Layout Collisions
-
-**Current state**: FloatingElements.tsx already hides when a modal is open and shifts upward when cookie banner is visible. PropertyDetail.tsx has a fixed bottom CTA bar.
-
-**Fix 1 -- PropertyDetail.tsx**: When the mobile bottom sheet (from search dropdowns) is open, hide the sticky CTA bar. Add a CSS check or state flag.
-
-**Fix 2**: Add `pb-[env(safe-area-inset-bottom)]` to the mobile sticky CTA bar in PropertyDetail.tsx for iPhone safe areas.
-
-**Fix 3**: Ensure the cookie banner's z-index (90) is below the bottom-sheet overlay (200) so they don't fight.
-
-**Files**: `src/pages/PropertyDetail.tsx`, `src/components/FloatingElements.tsx`
-
----
-
-## Technical Details
-
-### File changes summary:
-1. **HeroSection.tsx**: Move `overflow-hidden` from section to background div only
-2. **SearchBar.tsx**: Increase max-height, add dev console.log for option counts
-3. **PropertyDetail.tsx**: Add inline inquiry form before Similar Properties with id="inquiry-form-mobile", add safe-area padding to sticky CTA
-4. **Header.tsx**: Add image-rendering style for logo crispness
-5. **TrustSection.tsx**: Add "Cookie Preferences" link that reopens cookie banner
-6. **CookieNotice.tsx**: Add listener for cookie-reopen event
-
-### No changes to:
-- Font families (Playfair Display + DM Sans unchanged)
-- Database schema (no migrations)
-- Admin panel functionality
-- Gallery upload logic
-- WhatsApp button logic
-- Color palette
+## What Stays Untouched
+- All fonts (Playfair Display, DM Sans, Heebo)
+- Database schema, RLS policies, migrations
+- Admin panel and gallery upload UX
+- WhatsApp button, exit popup, cookie consent
+- Header structure and logo sizing
+- Property detail page gallery
