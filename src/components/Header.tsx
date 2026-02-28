@@ -3,7 +3,7 @@ import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import spiritLogo from "@/assets/spirit-logo.jpg";
 import React, { useState, forwardRef } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
@@ -35,7 +35,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
 
   return (
     <header ref={ref} className="sticky top-0 z-50 bg-primary border-b border-white/10">
-      <div className="container px-6 py-3 md:py-4 flex items-center justify-between" style={{ minHeight: 60 }}>
+      <div className="container px-5 flex items-center justify-between" style={{ minHeight: 68, paddingTop: 10, paddingBottom: 10 }}>
         {/* Left: hamburger */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
@@ -101,24 +101,37 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
           </SheetContent>
         </Sheet>
 
-        {/* Center: logo */}
+        {/* Center: logo — larger */}
         <Link to={prefix + "/"} className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2.5">
           <img
             src={spiritLogo}
             alt="Spirit Real Estate"
-            className="h-[44px] md:h-[60px] w-auto rounded-lg"
-            style={{ imageRendering: "-webkit-optimize-contrast", objectFit: "contain" } as React.CSSProperties}
+            className="w-auto rounded-lg"
+            style={{
+              height: 48,
+              imageRendering: "-webkit-optimize-contrast" as any,
+              objectFit: "contain",
+            }}
           />
-          <span className="hidden sm:block font-display font-semibold text-white text-base tracking-wide">
+          <span className="hidden md:block font-display font-semibold text-white text-base tracking-wide">
             Spirit Real Estate
           </span>
         </Link>
+
+        {/* Desktop logo size override */}
+        <style>{`
+          @media (min-width: 768px) {
+            header img[alt="Spirit Real Estate"] {
+              height: 64px !important;
+            }
+          }
+        `}</style>
 
         {/* Right: language toggle */}
         <div className="flex items-center gap-1">
           <button
             onClick={() => switchLang("he")}
-            className={`text-xs font-body font-medium px-2 py-1 rounded transition-colors ${
+            className={`text-xs font-body font-medium px-2.5 py-1.5 rounded transition-colors ${
               lang === "he" ? "bg-white/15 text-white" : "text-white/40 hover:text-white"
             }`}
           >
@@ -127,7 +140,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
           <span className="text-white/20 text-xs">|</span>
           <button
             onClick={() => switchLang("en")}
-            className={`text-xs font-body font-medium px-2 py-1 rounded transition-colors ${
+            className={`text-xs font-body font-medium px-2.5 py-1.5 rounded transition-colors ${
               lang === "en" ? "bg-white/15 text-white" : "text-white/40 hover:text-white"
             }`}
           >
