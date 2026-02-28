@@ -440,24 +440,24 @@ const SearchBar = ({
     <div className="max-w-4xl mx-auto">
       {/* Mobile: ALL fields visible, compact */}
       {isMobile ? (
-        <div className="space-y-2">
+        <div className="space-y-1">
           {/* Row 1: Location + Property Type */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocations} onChange={(val) => setSelectedLocations(val as string[])} multi isMobile={isMobile} />
             <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} isMobile={isMobile} />
           </div>
 
           {/* Row 2: Bedrooms pills + Price Range */}
-          <div className="space-y-1.5">
+          <div className="space-y-0.5">
             {/* Bedrooms */}
             <div>
-              <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase mb-1 block">{t("search.bedrooms")}</span>
-              <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
+              <span className="text-[10px] font-body text-white/80 font-semibold tracking-wide uppercase mb-0.5 block">{t("search.bedrooms")}</span>
+              <div className="flex gap-1 overflow-x-auto scrollbar-hide">
                 {BEDROOM_OPTIONS.map((b) => (
                   <button
                     key={b}
                     onClick={() => setSelectedBeds(selectedBeds === b ? "" : b)}
-                    className={`flex-shrink-0 px-3 py-1.5 rounded-md text-xs font-body font-medium transition-colors ${
+                    className={`flex-shrink-0 px-2.5 py-1 rounded-md text-[11px] font-body font-medium transition-colors ${
                       selectedBeds === b
                         ? "bg-white text-charcoal"
                         : "bg-white/10 text-white/60 hover:bg-white/20"
@@ -471,23 +471,23 @@ const SearchBar = ({
 
             {/* Price Range inline */}
             <div>
-              <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase mb-1 block">{t("search.price_range")}</span>
-              <div className="space-y-1 pt-0.5">
+              <span className="text-[10px] font-body text-white/80 font-semibold tracking-wide uppercase mb-0.5 block">{t("search.price_range")}</span>
+              <div className="space-y-0.5">
                 <SliderPrimitive.Root
                   value={priceRange}
                   onValueChange={(val) => setPriceRange(val as [number, number])}
                   min={dataRange[0]}
                   max={dataRange[1]}
                   step={50000}
-                  className="relative flex w-full touch-none select-none items-center h-5"
+                  className="relative flex w-full touch-none select-none items-center h-4"
                 >
-                  <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-white/20">
+                  <SliderPrimitive.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-white/20">
                     <SliderPrimitive.Range className="absolute h-full bg-gold" />
                   </SliderPrimitive.Track>
-                  <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
-                  <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
+                  <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
+                  <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
                 </SliderPrimitive.Root>
-                <div className="flex justify-between text-[11px] font-body text-white/90 font-semibold">
+                <div className="flex justify-between text-[10px] font-body text-white/90 font-semibold">
                   <span>{formatPrice(priceRange[0])}</span>
                   <span>{formatPrice(priceRange[1])}</span>
                 </div>
@@ -498,7 +498,7 @@ const SearchBar = ({
           {/* Row 3: Search CTA */}
           <button
             onClick={handleSearch}
-            className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors flex items-center justify-center gap-2 border border-gold/30"
+            className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-2.5 rounded-lg font-body font-medium text-sm btn-text transition-colors flex items-center justify-center gap-2 border border-gold/30"
             aria-label={t("search.button")}
           >
             <Search className="w-4 h-4" />
