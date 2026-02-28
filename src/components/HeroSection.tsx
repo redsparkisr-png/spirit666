@@ -36,8 +36,8 @@ const HeroSection = () => {
       <div
         className="relative z-10 w-full flex flex-col items-center text-center px-5"
         style={{
-          paddingTop: "clamp(90px, 12vw, 120px)",
-          paddingBottom: "clamp(60px, 8vw, 90px)",
+          paddingTop: "clamp(80px, 10vw, 110px)",
+          paddingBottom: "clamp(40px, 5vw, 60px)",
         }}
       >
         {/* Localized scrim behind text group */}
@@ -95,7 +95,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.5 }}
-          className="w-full mt-8 md:mt-10"
+          className="w-full mt-5 md:mt-8"
         >
           <div
             className="max-w-4xl mx-auto rounded-2xl"
@@ -108,7 +108,7 @@ const HeroSection = () => {
                 "0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             }}
           >
-            <div className="p-3 md:p-5">
+            <div className="p-2.5 md:p-4">
               <SearchBar />
             </div>
           </div>
