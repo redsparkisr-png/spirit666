@@ -201,12 +201,12 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.15 }}
-            className={`absolute top-full left-0 right-0 mt-1.5 z-[100] rounded-xl shadow-xl border overflow-hidden ${
+            className={`absolute top-full left-0 right-0 mt-1.5 z-[200] rounded-xl shadow-xl border ${
               inline
                 ? "bg-card border-border"
                 : "bg-charcoal border-white/15"
             }`}
-            style={{ minWidth: 200 }}
+            style={{ minWidth: 200, maxHeight: 420, overflowY: "auto" }}
           >
             {renderOptions(inline)}
           </motion.div>
@@ -448,45 +448,72 @@ const SearchBar = ({
   // ─── HERO (transparent, underline-style) ───
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Mobile: Location + Type + More Filters + CTA */}
+      {/* Mobile: ALL fields visible, 3 rows */}
       {isMobile ? (
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-3">
+          {/* Row 1: Location + Property Type */}
+          <div className="grid grid-cols-2 gap-3">
             <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocations} onChange={(val) => setSelectedLocations(val as string[])} multi isMobile={isMobile} />
             <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} isMobile={isMobile} />
           </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setMoreFiltersOpen(true)}
-              className="flex items-center gap-1.5 text-white/60 hover:text-white/80 text-sm font-body transition-colors"
-            >
-              <SlidersHorizontal className="w-3.5 h-3.5" />
-              {t("search.more_filters")}
-              {activeFilterCount > 0 && (
-                <span className="w-5 h-5 rounded-full bg-gold text-xs font-bold flex items-center justify-center text-white">{activeFilterCount}</span>
-              )}
-            </button>
-            <button
-              onClick={handleSearch}
-              className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors flex items-center justify-center gap-2 border border-gold/30"
-              aria-label={t("search.button")}
-            >
-              <Search className="w-4 h-4" />
-              {t("search.button")}
-            </button>
+
+          {/* Row 2: Bedrooms pills + Price Range */}
+          <div className="space-y-2.5">
+            {/* Bedrooms */}
+            <div>
+              <span className="text-[11px] font-body text-white/50 mb-1 block">{t("search.bedrooms")}</span>
+              <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
+                {BEDROOM_OPTIONS.map((b) => (
+                  <button
+                    key={b}
+                    onClick={() => setSelectedBeds(selectedBeds === b ? "" : b)}
+                    className={`flex-shrink-0 px-3 py-1.5 rounded-md text-xs font-body font-medium transition-colors ${
+                      selectedBeds === b
+                        ? "bg-white text-charcoal"
+                        : "bg-white/10 text-white/60 hover:bg-white/20"
+                    }`}
+                  >
+                    {b}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Price Range inline */}
+            <div>
+              <span className="text-[11px] font-body text-white/50 mb-1 block">{t("search.price_range")}</span>
+              <div className="space-y-1 pt-0.5">
+                <SliderPrimitive.Root
+                  value={priceRange}
+                  onValueChange={(val) => setPriceRange(val as [number, number])}
+                  min={dataRange[0]}
+                  max={dataRange[1]}
+                  step={50000}
+                  className="relative flex w-full touch-none select-none items-center h-5"
+                >
+                  <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-white/20">
+                    <SliderPrimitive.Range className="absolute h-full bg-gold" />
+                  </SliderPrimitive.Track>
+                  <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
+                  <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
+                </SliderPrimitive.Root>
+                <div className="flex justify-between text-[10px] font-body text-white/50">
+                  <span>{formatPrice(priceRange[0])}</span>
+                  <span>{formatPrice(priceRange[1])}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <AnimatePresence>
-            {moreFiltersOpen && (
-              <MoreFiltersSheet
-                beds={selectedBeds}
-                onBedsChange={setSelectedBeds}
-                priceRange={priceRange}
-                onPriceChange={setPriceRange}
-                dataRange={dataRange}
-                onClose={() => setMoreFiltersOpen(false)}
-              />
-            )}
-          </AnimatePresence>
+
+          {/* Row 3: Search CTA */}
+          <button
+            onClick={handleSearch}
+            className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors flex items-center justify-center gap-2 border border-gold/30"
+            aria-label={t("search.button")}
+          >
+            <Search className="w-4 h-4" />
+            {t("search.button")}
+          </button>
         </div>
       ) : (
         /* Desktop: all 5 fields in a row, underline-style */
