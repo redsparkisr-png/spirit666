@@ -8,6 +8,7 @@ import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
+import BreadcrumbNav from "@/components/BreadcrumbNav";
 import { useRef } from "react";
 
 type Property = Tables<"properties_available">;
@@ -125,6 +126,7 @@ const Properties = () => {
     <main className="min-h-screen bg-background">
       <Header />
       <div className="container px-6 py-8 md:py-12">
+        <BreadcrumbNav items={[{ label: t("header.nav.properties") }]} />
         <SearchBar inline initialLocation={locFilter} initialType={typeFilter} initialBeds={bedsFilter} initialPriceMin={priceMinFilter} initialPriceMax={priceMaxFilter} />
         <div className="flex items-center justify-between mt-8 mb-6">
           <p className="text-sm text-muted-foreground font-body">{loading ? "..." : `${properties.length} ${t("properties.results_count")}`}</p>
