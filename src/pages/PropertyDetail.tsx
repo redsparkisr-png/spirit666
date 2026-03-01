@@ -8,6 +8,7 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 
 type Property = Tables<"properties_available">;
 
@@ -20,6 +21,7 @@ const PropertyDetail = () => {
   const [loading, setLoading] = useState(true);
   const [currentImg, setCurrentImg] = useState(0);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
+  const [privacyConsent, setPrivacyConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -50,6 +52,10 @@ const PropertyDetail = () => {
       toast.error(t("property.detail.validation_error"));
       return;
     }
+    if (!privacyConsent) {
+      toast.error(t("form.privacy_consent_required"));
+      return;
+    }
     setSubmitting(true);
     await supabase.from("leads").insert({
       full_name: formData.name.trim(),
@@ -60,6 +66,7 @@ const PropertyDetail = () => {
     });
     toast.success(t("property.detail.inquiry_success"));
     setFormData({ name: "", phone: "", email: "", message: "" });
+    setPrivacyConsent(false);
     setSubmitting(false);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
@@ -99,6 +106,42 @@ const PropertyDetail = () => {
   const images = property.images || [];
   const inputClasses = "w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30";
 
+  const inquiryForm = (idSuffix: string) => (
+    submitted ? (
+      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center py-6 gap-3">
+        <CheckCircle className="w-10 h-10 text-green-600" />
+        <p className="font-body text-foreground font-medium text-sm">{t("property.detail.inquiry_success")}</p>
+      </motion.div>
+    ) : (
+      <form onSubmit={handleInquiry} className="space-y-3">
+        <input type="text" placeholder={t("property.detail.name_placeholder")} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClasses} aria-label={t("property.detail.name_placeholder")} />
+        <input type="tel" placeholder={t("property.detail.phone_placeholder")} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className={inputClasses} aria-label={t("property.detail.phone_placeholder")} />
+        <input type="email" placeholder={t("property.detail.email_placeholder")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputClasses} aria-label={t("property.detail.email_placeholder")} />
+        <textarea placeholder={t("property.detail.message_placeholder")} value={formData.message || `${lang === "he" ? "מעוניין ב:" : "Interested in:"} ${property.title}`} onChange={(e) => setFormData({ ...formData, message: e.target.value })} rows={2} className={`${inputClasses} resize-none`} aria-label={t("property.detail.message_placeholder")} />
+        <PrivacyConsentCheckbox
+          checked={privacyConsent}
+          onCheckedChange={setPrivacyConsent}
+          id={`property-privacy-consent-${idSuffix}`}
+        />
+        {idSuffix === "sidebar" ? (
+          <div className="flex gap-3">
+            <button type="submit" disabled={submitting} className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
+              {submitting ? "..." : t("property.detail.send_inquiry")}
+            </button>
+            <button type="button" onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
+              <MessageCircle className="w-4 h-4" />
+              WhatsApp
+            </button>
+          </div>
+        ) : (
+          <button type="submit" disabled={submitting} className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
+            {submitting ? "..." : t("property.detail.send_inquiry")}
+          </button>
+        )}
+      </form>
+    )
+  );
+
   return (
     <main className="min-h-screen bg-background pb-24 lg:pb-0">
       <Header />
@@ -114,10 +157,10 @@ const PropertyDetail = () => {
             ))}
             {images.length > 1 && (
               <>
-                <button onClick={() => setCurrentImg((c) => (c - 1 + images.length) % images.length)} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/50 transition-colors">
+                <button onClick={() => setCurrentImg((c) => (c - 1 + images.length) % images.length)} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/50 transition-colors" aria-label="Previous image">
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                <button onClick={() => setCurrentImg((c) => (c + 1) % images.length)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/50 transition-colors">
+                <button onClick={() => setCurrentImg((c) => (c + 1) % images.length)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/50 transition-colors" aria-label="Next image">
                   <ChevronRight className="w-5 h-5" />
                 </button>
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/40 backdrop-blur-sm text-white text-xs font-body px-3 py-1 rounded-full">
@@ -133,7 +176,7 @@ const PropertyDetail = () => {
       {images.length > 1 && (
         <div className="container px-6 py-3 flex gap-2.5 overflow-x-auto scrollbar-hide">
           {images.map((url, idx) => (
-            <button key={idx} onClick={() => setCurrentImg(idx)} className={`flex-shrink-0 w-[88px] h-[60px] rounded-lg overflow-hidden border-2 transition-colors ${currentImg === idx ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"}`}>
+            <button key={idx} onClick={() => setCurrentImg(idx)} className={`flex-shrink-0 w-[88px] h-[60px] rounded-lg overflow-hidden border-2 transition-colors ${currentImg === idx ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"}`} aria-label={`View image ${idx + 1}`}>
               <img src={url} alt="" className="w-full h-full object-cover" loading="lazy" />
             </button>
           ))}
@@ -216,25 +259,7 @@ const PropertyDetail = () => {
                   WhatsApp
                 </button>
               </div>
-              {/* Inline inquiry form — visible on all screens */}
-              <div>
-                {submitted ? (
-                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center py-6 gap-3">
-                    <CheckCircle className="w-10 h-10 text-green-600" />
-                    <p className="font-body text-foreground font-medium text-sm">{t("property.detail.inquiry_success")}</p>
-                  </motion.div>
-                ) : (
-                  <form onSubmit={handleInquiry} className="space-y-3">
-                    <input type="text" placeholder={t("property.detail.name_placeholder")} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClasses} aria-label={t("property.detail.name_placeholder")} />
-                    <input type="tel" placeholder={t("property.detail.phone_placeholder")} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className={inputClasses} aria-label={t("property.detail.phone_placeholder")} />
-                    <input type="email" placeholder={t("property.detail.email_placeholder")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputClasses} aria-label={t("property.detail.email_placeholder")} />
-                    <textarea placeholder={t("property.detail.message_placeholder")} value={formData.message || `${lang === "he" ? "מעוניין ב:" : "Interested in:"} ${property.title}`} onChange={(e) => setFormData({ ...formData, message: e.target.value })} rows={2} className={`${inputClasses} resize-none`} aria-label={t("property.detail.message_placeholder")} />
-                    <button type="submit" disabled={submitting} className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
-                      {submitting ? "..." : t("property.detail.send_inquiry")}
-                    </button>
-                  </form>
-                )}
-              </div>
+              <div>{inquiryForm("mobile")}</div>
             </div>
 
             {/* Similar Properties */}
@@ -267,28 +292,7 @@ const PropertyDetail = () => {
             <div className="sticky top-20 space-y-4">
               <div id="inquiry-form" className="bg-card rounded-2xl border border-border p-5 md:p-6 space-y-4 shadow-sm">
                 <h3 className="font-display font-semibold text-foreground text-lg">{t("property.detail.inquiry_title")}</h3>
-                {submitted ? (
-                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center py-8 gap-3">
-                    <CheckCircle className="w-12 h-12 text-green-600" />
-                    <p className="font-body text-foreground font-medium">{t("property.detail.inquiry_success")}</p>
-                  </motion.div>
-                ) : (
-                  <form onSubmit={handleInquiry} className="space-y-3">
-                    <input type="text" placeholder={t("property.detail.name_placeholder")} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClasses} aria-label={t("property.detail.name_placeholder")} />
-                    <input type="tel" placeholder={t("property.detail.phone_placeholder")} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className={inputClasses} aria-label={t("property.detail.phone_placeholder")} />
-                    <input type="email" placeholder={t("property.detail.email_placeholder")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputClasses} aria-label={t("property.detail.email_placeholder")} />
-                    <textarea placeholder={t("property.detail.message_placeholder")} value={formData.message || `Interested in: ${property.title}`} onChange={(e) => setFormData({ ...formData, message: e.target.value })} rows={2} className={`${inputClasses} resize-none`} aria-label={t("property.detail.message_placeholder")} />
-                    <div className="flex gap-3">
-                      <button type="submit" disabled={submitting} className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
-                        {submitting ? "..." : t("property.detail.send_inquiry")}
-                      </button>
-                      <button type="button" onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
-                        <MessageCircle className="w-4 h-4" />
-                        WhatsApp
-                      </button>
-                    </div>
-                  </form>
-                )}
+                {inquiryForm("sidebar")}
               </div>
               <p className="text-[11px] text-muted-foreground/60 font-body text-center">{t("property.detail.privacy_note")}</p>
             </div>

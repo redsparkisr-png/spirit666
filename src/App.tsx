@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Accessibility from "./pages/Accessibility";
+import CookiePolicy from "./pages/CookiePolicy";
 import Sell from "./pages/Sell";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="privacy" element={<Privacy />} />
               <Route path="terms" element={<Terms />} />
               <Route path="accessibility" element={<Accessibility />} />
+              <Route path="cookies" element={<CookiePolicy />} />
               <Route path="sell" element={<Sell />} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />

@@ -91,6 +91,12 @@ const CookieNotice = () => {
               <p className="text-white/80 font-body text-xs leading-snug mb-4">
                 {t("home.cookie.text")}{" "}
                 <Link
+                  to={`/${lang}/cookies`}
+                  className="text-gold underline underline-offset-2 hover:text-gold-hover"
+                >
+                  {t("header.nav.cookies")}
+                </Link>{" | "}
+                <Link
                   to={`/${lang}/privacy`}
                   className="text-gold underline underline-offset-2 hover:text-gold-hover"
                 >

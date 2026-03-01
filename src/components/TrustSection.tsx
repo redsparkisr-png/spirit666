@@ -21,6 +21,7 @@ const TrustSection = () => {
     { to: `${prefix}/privacy`, label: t("header.nav.privacy") },
     { to: `${prefix}/terms`, label: t("header.nav.terms") },
     { to: `${prefix}/accessibility`, label: t("header.nav.accessibility") },
+    { to: `${prefix}/cookies`, label: t("header.nav.cookies") },
   ];
 
   return (
