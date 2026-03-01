@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
+import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
+  const [privacyConsent, setPrivacyConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useSiteContent();
   const { lang } = useLanguage();
@@ -16,6 +18,10 @@ const ContactForm = () => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
       toast.error(t("home.contact.validation_error"));
+      return;
+    }
+    if (!privacyConsent) {
+      toast.error(t("form.privacy_consent_required"));
       return;
     }
     setIsSubmitting(true);
@@ -30,6 +36,7 @@ const ContactForm = () => {
     } else {
       toast.success(t("home.contact.success"));
       setFormData({ name: "", phone: "", email: "" });
+      setPrivacyConsent(false);
     }
     setIsSubmitting(false);
   };
@@ -91,6 +98,12 @@ const ContactForm = () => {
               maxLength={255}
               className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
             />
+
+            <PrivacyConsentCheckbox
+              checked={privacyConsent}
+              onCheckedChange={setPrivacyConsent}
+              id="contact-privacy-consent"
+            />
             
             <button
               type="submit"
@@ -117,12 +130,6 @@ const ContactForm = () => {
             </p>
             <p className="text-xs text-muted-foreground/50 font-body italic">
               {t("home.contact.trust_text")}
-            </p>
-            <p className="text-[11px] text-muted-foreground/60 font-body max-w-sm mx-auto leading-relaxed pt-2">
-              {t("home.contact.privacy_text")}{" "}
-              <Link to={`/${lang}/privacy`} className="underline hover:text-foreground transition-colors">
-                {t("header.nav.privacy")}
-              </Link>.
             </p>
           </motion.div>
         </div>

@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useIsMobile } from "@/hooks/use-mobile";
+import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 
 const COOLDOWN_KEY = "exit_popup_last_shown";
 const COOLDOWN_DAYS = 7;
@@ -12,6 +13,7 @@ const COOLDOWN_DAYS = 7;
 const ExitIntentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
+  const [privacyConsent, setPrivacyConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasFired, setHasFired] = useState(false);
   const { t } = useSiteContent();
@@ -68,6 +70,10 @@ const ExitIntentPopup = () => {
       toast.error(t("home.contact.validation_error"));
       return;
     }
+    if (!privacyConsent) {
+      toast.error(t("form.privacy_consent_required"));
+      return;
+    }
     setIsSubmitting(true);
     const { error } = await supabase.from("leads").insert({
       full_name: formData.name.trim(),
@@ -80,6 +86,7 @@ const ExitIntentPopup = () => {
     } else {
       toast.success(t("home.contact.success"));
       setFormData({ name: "", phone: "", email: "" });
+      setPrivacyConsent(false);
       setIsVisible(false);
     }
     setIsSubmitting(false);
@@ -148,6 +155,11 @@ const ExitIntentPopup = () => {
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 maxLength={255}
                 className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
+              />
+              <PrivacyConsentCheckbox
+                checked={privacyConsent}
+                onCheckedChange={setPrivacyConsent}
+                id="exit-privacy-consent"
               />
               <button
                 type="submit"

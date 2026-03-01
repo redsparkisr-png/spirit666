@@ -7,16 +7,22 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Phone, Mail, MapPin } from "lucide-react";
+import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 
 const Contact = () => {
   const { t } = useSiteContent();
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
+  const [privacyConsent, setPrivacyConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
       toast.error(t("home.contact.validation_error"));
+      return;
+    }
+    if (!privacyConsent) {
+      toast.error(t("form.privacy_consent_required"));
       return;
     }
     setIsSubmitting(true);
@@ -32,6 +38,7 @@ const Contact = () => {
     } else {
       toast.success(t("contact.form.success"));
       setFormData({ name: "", phone: "", email: "", message: "" });
+      setPrivacyConsent(false);
     }
     setIsSubmitting(false);
   };
@@ -104,6 +111,11 @@ const Contact = () => {
                   maxLength={1000}
                   rows={4}
                   className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"
+                />
+                <PrivacyConsentCheckbox
+                  checked={privacyConsent}
+                  onCheckedChange={setPrivacyConsent}
+                  id="contact-page-privacy-consent"
                 />
                 <button
                   type="submit"
