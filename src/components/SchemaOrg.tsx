@@ -1,12 +1,16 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
+const SITE_URL = "https://spirit-homes-guide.lovable.app";
+
 const ORGANIZATION_SCHEMA = {
   "@context": "https://schema.org",
-  "@type": "RealEstateAgent",
+  "@type": ["RealEstateAgent", "LocalBusiness"],
   name: "Spirit Real Estate",
   description: "Boutique real estate firm in Zichron Yaakov, Israel — strategic advisory, local expertise, and personal representation.",
-  url: "https://spirit-homes-guide.lovable.app",
+  url: SITE_URL,
+  telephone: "+972-52-282-0632",
+  email: "info@spiritrealestate.co.il",
   areaServed: {
     "@type": "Place",
     name: "Zichron Yaakov, Israel",
@@ -14,8 +18,22 @@ const ORGANIZATION_SCHEMA = {
   address: {
     "@type": "PostalAddress",
     addressLocality: "Zichron Yaakov",
+    addressRegion: "Haifa District",
     addressCountry: "IL",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 32.5714,
+    longitude: 34.9533,
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+    opens: "09:00",
+    closes: "18:00",
+  },
+  priceRange: "$$$$",
+  image: `${SITE_URL}/favicon.ico`,
 };
 
 const BREADCRUMB_BASE = {
@@ -23,15 +41,87 @@ const BREADCRUMB_BASE = {
   "@type": "BreadcrumbList",
 };
 
-const ROUTE_NAMES: Record<string, string> = {
-  "": "Home",
-  properties: "Properties",
-  sell: "Sell",
-  about: "About",
-  contact: "Contact",
-  privacy: "Privacy Policy",
-  terms: "Terms of Use",
-  accessibility: "Accessibility",
+const ROUTE_NAMES: Record<string, { en: string; he: string }> = {
+  "": { en: "Home", he: "דף הבית" },
+  properties: { en: "Properties", he: "נכסים" },
+  sell: { en: "Sell", he: "מכירה" },
+  about: { en: "About", he: "אודות" },
+  contact: { en: "Contact", he: "צור קשר" },
+  privacy: { en: "Privacy Policy", he: "מדיניות פרטיות" },
+  terms: { en: "Terms of Use", he: "תנאי שימוש" },
+  accessibility: { en: "Accessibility", he: "נגישות" },
+  cookies: { en: "Cookie Policy", he: "מדיניות עוגיות" },
+};
+
+interface PropertySchemaProps {
+  title?: string;
+  description?: string;
+  price?: number;
+  currency?: string;
+  images?: string[];
+  location?: string;
+  bedrooms?: number;
+  builtSqm?: number;
+  lotSqm?: number;
+  slug?: string;
+}
+
+export const injectPropertySchema = (property: PropertySchemaProps) => {
+  // Remove old property schema
+  document.querySelectorAll('script[data-schema-org="property"]').forEach((el) => el.remove());
+
+  const schema: Record<string, any> = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: property.title,
+    description: property.description || property.title,
+    url: `${SITE_URL}/en/property/${property.slug}`,
+    datePosted: new Date().toISOString().split("T")[0],
+  };
+
+  if (property.images?.length) {
+    schema.image = property.images;
+  }
+
+  if (property.price && property.currency) {
+    schema.offers = {
+      "@type": "Offer",
+      price: property.price,
+      priceCurrency: property.currency,
+      availability: "https://schema.org/InStock",
+    };
+  }
+
+  if (property.location) {
+    schema.contentLocation = {
+      "@type": "Place",
+      name: property.location,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: property.location,
+        addressRegion: "Haifa District",
+        addressCountry: "IL",
+      },
+    };
+  }
+
+  const floorSize: Record<string, any>[] = [];
+  if (property.builtSqm) {
+    floorSize.push({ "@type": "QuantitativeValue", value: property.builtSqm, unitCode: "MTK", name: "Built area" });
+  }
+  if (property.lotSqm) {
+    floorSize.push({ "@type": "QuantitativeValue", value: property.lotSqm, unitCode: "MTK", name: "Lot area" });
+  }
+
+  if (property.bedrooms) {
+    schema.numberOfRooms = property.bedrooms;
+  }
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.setAttribute("data-schema-org", "property");
+  script.textContent = JSON.stringify(schema);
+  document.head.appendChild(script);
 };
 
 const SchemaOrg = () => {
@@ -53,17 +143,28 @@ const SchemaOrg = () => {
     const lang = pathSegments[0] || "en";
     const page = pathSegments[1] || "";
 
+    const routeInfo = ROUTE_NAMES[page];
+    const pageName = routeInfo ? (lang === "he" ? routeInfo.he : routeInfo.en) : page;
+
     const breadcrumbItems = [
-      { "@type": "ListItem", position: 1, name: "Home", item: `https://spirit-homes-guide.lovable.app/${lang}/` },
+      { "@type": "ListItem", position: 1, name: lang === "he" ? "דף הבית" : "Home", item: `${SITE_URL}/${lang}/` },
     ];
 
-    if (page && ROUTE_NAMES[page]) {
+    if (page && routeInfo) {
       breadcrumbItems.push({
         "@type": "ListItem",
         position: 2,
-        name: ROUTE_NAMES[page],
-        item: `https://spirit-homes-guide.lovable.app/${lang}/${page}`,
+        name: pageName,
+        item: `${SITE_URL}/${lang}/${page}`,
       });
+    }
+
+    // Handle property detail breadcrumbs
+    if (pathSegments[1] === "property" && pathSegments[2]) {
+      breadcrumbItems.push(
+        { "@type": "ListItem", position: 2, name: lang === "he" ? "נכסים" : "Properties", item: `${SITE_URL}/${lang}/properties` },
+        { "@type": "ListItem", position: 3, name: pathSegments[2].replace(/-/g, " "), item: `${SITE_URL}${location.pathname}` },
+      );
     }
 
     const breadcrumbScript = document.createElement("script");

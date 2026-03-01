@@ -9,6 +9,8 @@ import Header from "@/components/Header";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
+import { injectPropertySchema } from "@/components/SchemaOrg";
+import BreadcrumbNav from "@/components/BreadcrumbNav";
 
 type Property = Tables<"properties_available">;
 
@@ -38,13 +40,59 @@ const PropertyDetail = () => {
       setProperty(data);
       setLoading(false);
       if (data) {
+        // Inject property-level structured data + meta
+        injectPropertySchema({
+          title: data.title,
+          description: data.short_description || data.title,
+          price: data.price_number || undefined,
+          currency: data.currency || "ILS",
+          images: data.images || [],
+          location: data.location || undefined,
+          bedrooms: data.bedrooms || undefined,
+          builtSqm: data.built_sqm || undefined,
+          lotSqm: data.lot_sqm || undefined,
+          slug: data.slug || data.id,
+        });
+
+        // Dynamic meta for property page
+        document.title = data.meta_title || `${data.title} | Spirit Real Estate`;
+        const descContent = data.meta_description || data.short_description || data.title;
+        let descTag = document.querySelector('meta[name="description"]');
+        if (!descTag) {
+          descTag = document.createElement("meta");
+          descTag.setAttribute("name", "description");
+          document.head.appendChild(descTag);
+        }
+        descTag.setAttribute("content", descContent);
+
+        // Canonical for property
+        let canonicalTag = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+        if (!canonicalTag) {
+          canonicalTag = document.createElement("link");
+          canonicalTag.rel = "canonical";
+          document.head.appendChild(canonicalTag);
+        }
+        canonicalTag.href = `https://spirit-homes-guide.lovable.app/${lang}/property/${data.slug || data.id}`;
+
+        // OG image
+        if (data.og_image || data.images?.[0]) {
+          const ogImg = data.og_image || data.images![0];
+          let ogImgTag = document.querySelector('meta[property="og:image"]');
+          if (!ogImgTag) {
+            ogImgTag = document.createElement("meta");
+            ogImgTag.setAttribute("property", "og:image");
+            document.head.appendChild(ogImgTag);
+          }
+          ogImgTag.setAttribute("content", ogImg);
+        }
+
         const { data: sim } = await supabase.from("properties_available").select("*").neq("id", data.id).limit(3);
         if (sim) setSimilar(sim);
       }
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     };
     load();
-  }, [slug]);
+  }, [slug, lang]);
 
   const handleInquiry = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -188,9 +236,10 @@ const PropertyDetail = () => {
           {/* Main content */}
           <div className="lg:col-span-2 space-y-8">
             <div>
-              <Link to={`/${lang}/properties`} className="text-sm text-muted-foreground font-body hover:text-foreground transition-colors mb-4 inline-block">
-                ← {t("property.detail.back_to_listings")}
-              </Link>
+              <BreadcrumbNav items={[
+                { label: t("header.nav.properties"), to: `/${lang}/properties` },
+                { label: property.title },
+              ]} />
               <h1 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-2">{property.title}</h1>
               {property.neighborhood_note && (<p className="text-muted-foreground font-body">{property.neighborhood_note}</p>)}
             </div>

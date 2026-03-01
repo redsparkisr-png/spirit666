@@ -48,7 +48,7 @@ const LanguageLayout = () => {
     }
   }, [urlLang, setLang]);
 
-  // Dynamic meta tags
+  // Dynamic meta tags + canonical
   useEffect(() => {
     const pathSegments = location.pathname.split("/").filter(Boolean);
     const page = pathSegments[1] || "";
@@ -64,12 +64,22 @@ const LanguageLayout = () => {
       }
       descTag.setAttribute("content", meta.desc);
 
+      // Canonical tag
+      const canonicalUrl = `https://spirit-homes-guide.lovable.app${location.pathname}`;
+      let canonicalTag = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+      if (!canonicalTag) {
+        canonicalTag = document.createElement("link");
+        canonicalTag.rel = "canonical";
+        document.head.appendChild(canonicalTag);
+      }
+      canonicalTag.href = canonicalUrl;
+
       // Open Graph
       const ogTags: Record<string, string> = {
         "og:title": meta.title,
         "og:description": meta.desc,
         "og:type": "website",
-        "og:url": window.location.href,
+        "og:url": canonicalUrl,
         "og:locale": lang === "he" ? "he_IL" : "en_US",
       };
       Object.entries(ogTags).forEach(([property, content]) => {
