@@ -49,7 +49,7 @@ export const BottomTestimonial = () => {
           "{t("home.testimonials.quote_5")}"
         </p>
         <div className="flex items-center justify-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center border border-gold/30">
             <span className="text-xs font-body font-bold text-primary">YM</span>
           </div>
           <div className="text-start">
