@@ -80,7 +80,9 @@ const Contact = () => {
                 {t("contact.form.title")}
               </h2>
               <form onSubmit={handleSubmit} className="space-y-4">
+                <label htmlFor="contact-page-name" className="sr-only">{t("contact.form.placeholder_name")}</label>
                 <input
+                  id="contact-page-name"
                   type="text"
                   placeholder={t("contact.form.placeholder_name")}
                   value={formData.name}
@@ -88,7 +90,9 @@ const Contact = () => {
                   maxLength={100}
                   className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
                 />
+                <label htmlFor="contact-page-phone" className="sr-only">{t("contact.form.placeholder_phone")}</label>
                 <input
+                  id="contact-page-phone"
                   type="tel"
                   placeholder={t("contact.form.placeholder_phone")}
                   value={formData.phone}
@@ -96,7 +100,9 @@ const Contact = () => {
                   maxLength={20}
                   className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
                 />
+                <label htmlFor="contact-page-email" className="sr-only">{t("contact.form.placeholder_email")}</label>
                 <input
+                  id="contact-page-email"
                   type="email"
                   placeholder={t("contact.form.placeholder_email")}
                   value={formData.email}
@@ -104,7 +110,9 @@ const Contact = () => {
                   maxLength={255}
                   className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
                 />
+                <label htmlFor="contact-page-message" className="sr-only">{t("contact.form.placeholder_message")}</label>
                 <textarea
+                  id="contact-page-message"
                   placeholder={t("contact.form.placeholder_message")}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}

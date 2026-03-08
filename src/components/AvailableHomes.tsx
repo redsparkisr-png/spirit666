@@ -103,9 +103,9 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
 
           {/* Stats row */}
           <div className="flex items-center gap-3 text-xs text-muted-foreground font-body mb-3 flex-wrap">
-            {property.bedrooms && (<span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />{property.bedrooms} Bed</span>)}
-            {property.built_sqm && (<span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />{property.built_sqm} sqm</span>)}
-            {property.lot_sqm && (<span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />{property.lot_sqm} sqm</span>)}
+            {property.bedrooms && (<span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />{property.bedrooms} {lang === "he" ? "חד׳" : "Bed"}</span>)}
+            {property.built_sqm && (<span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />{property.built_sqm} {lang === "he" ? 'מ"ר' : "sqm"}</span>)}
+            {property.lot_sqm && (<span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />{property.lot_sqm} {lang === "he" ? 'מ"ר' : "sqm"}</span>)}
           </div>
 
           {/* Tags */}

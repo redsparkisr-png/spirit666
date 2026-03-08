@@ -350,11 +350,9 @@ const SearchBar = ({
     ]).then(([locRes, typeRes, priceRes]) => {
       if (locRes.data) {
         setLocations(locRes.data);
-        console.log("[SearchBar] Locations loaded:", locRes.data.length);
       }
       if (typeRes.data) {
         setPropertyTypes(typeRes.data);
-        console.log("[SearchBar] Property types loaded:", typeRes.data.length);
       }
       if (priceRes.data && priceRes.data.length > 0) {
         const prices = priceRes.data.map((p) => Number(p.price_number)).filter((n) => n > 0);

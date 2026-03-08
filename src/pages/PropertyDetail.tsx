@@ -421,7 +421,7 @@ const PropertyDetail = () => {
           <Calendar className="w-4 h-4" />
           {isHe ? "סיור" : "Schedule Viewing"}
         </button>
-        <button onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
+        <button onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
           <MessageCircle className="w-4 h-4" />
           {t("property.detail.whatsapp_cta")}
         </button>
