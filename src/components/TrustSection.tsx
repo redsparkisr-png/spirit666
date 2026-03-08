@@ -125,7 +125,7 @@ const TrustSection = () => {
           </p>
 
           <p className="text-primary-foreground/30 font-body text-[13px]">
-            {t("home.footer.copyright").replace("{year}", new Date().getFullYear().toString())}
+            © {new Date().getFullYear()} Spirit Real Estate. {isHe ? "כל הזכויות שמורות." : "All rights reserved."}
           </p>
         </motion.div>
       </div>
