@@ -13,6 +13,7 @@ import { useLanguage } from "@/lib/i18n";
 
 const Sell = () => {
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
