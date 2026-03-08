@@ -16,6 +16,11 @@ import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
+import BuyingProperty from "./pages/BuyingProperty";
+import HomesForSale from "./pages/HomesForSale";
+import LivingInZichron from "./pages/LivingInZichron";
+import MovingToZichron from "./pages/MovingToZichron";
+import BlueprintDownload from "./pages/BlueprintDownload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
