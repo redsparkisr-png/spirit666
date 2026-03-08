@@ -334,8 +334,8 @@ const SearchBar = ({
 
   const [locations, setLocations] = useState<Option[]>([]);
   const [propertyTypes, setPropertyTypes] = useState<Option[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 20_000_000]);
-  const [dataRange, setDataRange] = useState<[number, number]>([0, 20_000_000]);
+  const [maxPrice, setMaxPrice] = useState<number>(20_000_000);
+  const [dataMax, setDataMax] = useState<number>(20_000_000);
 
   const [selectedLocations, setSelectedLocations] = useState<string[]>(
     initialLocation ? initialLocation.split(",") : []
