@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Download, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.webp";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -15,6 +15,36 @@ const HeroSection = () => {
     ? "קנו בזכרון יעקב בביטחון"
     : "Buy in Zichron Yaakov with Confidence";
 
+  const supportingLine = isHe
+    ? "עם מומחים מקומיים מהשטח"
+    : "With Trusted Local Experts on the Ground";
+
+  const subheadline = isHe
+    ? "נכסים נבחרים, מומחיות מקומית וליווי מלא לרוכשים מחו״ל."
+    : "Curated homes, local expertise and full guidance for overseas buyers.";
+
+  const guideCta = isHe
+    ? "הורידו את המדריך החינמי לרכישה בזכרון יעקב"
+    : "Get the Free Zichron Yaakov Home Buying Guide";
+
+  const guideMicro = isHe
+    ? "מדריך מעשי לשכונות, מחירים ותהליך הרכישה."
+    : "A practical guide to neighborhoods, prices and the buying process.";
+
+  const trustSignals = isHe
+    ? [
+        "מעל 70 משפחות בינלאומיות סומכות עלינו",
+        "סוכני נדל\"ן מורשים",
+        "מומחים מקומיים בזכרון יעקב",
+      ]
+    : [
+        "Trusted by 70+ international families",
+        "Licensed real estate professionals",
+        "Local Zichron Yaakov experts",
+      ];
+
+  const searchLabel = isHe ? "חיפוש נכסים זמינים" : "Search Available Homes";
+
   return (
     <section className="relative flex flex-col items-center overflow-hidden">
       {/* Background image with subtle cinematic zoom */}
@@ -26,7 +56,7 @@ const HeroSection = () => {
       >
         <img
           src={heroBg}
-          alt="Aerial view of Zichron Yaakov red-roofed homes overlooking the Mediterranean Sea"
+          alt="Aerial view of Zichron Yaakov with Mediterranean Sea views"
           className="w-full h-full object-cover"
           style={{
             objectPosition: "50% 30%",
@@ -39,13 +69,21 @@ const HeroSection = () => {
         />
       </motion.div>
 
-      {/* Left-side gradient overlay for text readability */}
+      {/* Directional gradient overlay for text readability */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: isHe
             ? "linear-gradient(270deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.0) 100%)"
             : "linear-gradient(90deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.0) 100%)",
+        }}
+      />
+
+      {/* Additional top-to-bottom gradient for overall readability */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.20) 100%)",
         }}
       />
 
@@ -95,37 +133,102 @@ const HeroSection = () => {
             {headline}
           </motion.h1>
 
+          {/* Supporting line */}
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.35 }}
+            className="text-white/90 font-display font-medium mt-1"
+            style={{
+              fontSize: "clamp(18px, 2.5vw, 24px)",
+              lineHeight: 1.3,
+              textShadow: "0 2px 12px rgba(0,0,0,0.4)",
+            }}
+          >
+            {supportingLine}
+          </motion.p>
+
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.42 }}
+            className="text-white/75 font-body mt-3"
+            style={{
+              fontSize: "clamp(14px, 1.6vw, 17px)",
+              lineHeight: 1.5,
+              textShadow: "0 1px 8px rgba(0,0,0,0.3)",
+              maxWidth: "520px",
+            }}
+          >
+            {subheadline}
+          </motion.p>
+
           {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.45 }}
-            className={`flex flex-col sm:flex-row items-start gap-3 sm:gap-4 mt-6 md:mt-8 ${isHe ? "sm:flex-row-reverse" : ""}`}
+            transition={{ duration: 0.55, delay: 0.5 }}
+            className={`flex flex-col gap-4 sm:gap-5 mt-7 md:mt-9 ${isHe ? "items-end" : "items-start"}`}
           >
-            <Link
-              to={`/${lang}/properties`}
-              className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
-              style={{ fontSize: "16px" }}
-            >
-              {isHe ? "צפו בנכסים זמינים" : "See Available Homes"}
-            </Link>
-            <a
-              href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI would love to receive the guide about buying property in Zichron Yaakov.")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+            {/* Primary CTA row */}
+            <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${isHe ? "sm:flex-row-reverse" : ""}`}>
+              <Link
+                to={`/${lang}/properties`}
+                className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
+                style={{ fontSize: "16px" }}
+              >
+                {isHe ? "צפו בנכסים זמינים" : "See Available Homes"}
+              </Link>
+              <a
+                href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI would love to receive the guide about buying property in Zichron Yaakov.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
+                style={{
+                  fontSize: "15px",
+                  background: "rgba(255,255,255,0.15)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255,255,255,0.3)",
+                  color: "#fff",
+                }}
+              >
+                <Download className="w-4 h-4 flex-shrink-0" />
+                {guideCta}
+              </a>
+            </div>
+
+            {/* Micro description under guide CTA */}
+            <p
+              className="text-white/55 font-body"
               style={{
-                fontSize: "16px",
-                background: "rgba(255,255,255,0.15)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                border: "1px solid rgba(255,255,255,0.3)",
-                color: "#fff",
+                fontSize: "clamp(11px, 1.2vw, 13px)",
+                lineHeight: 1.4,
+                marginTop: "-4px",
               }}
             >
-              <MessageCircle className="w-4 h-4" />
-              {isHe ? "קבלו את מדריך הרכישה" : "Get the Buying Guide"}
-            </a>
+              {guideMicro}
+            </p>
+          </motion.div>
+
+          {/* Trust signals */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+            className={`flex flex-col sm:flex-row flex-wrap gap-x-5 gap-y-1.5 mt-5 ${isHe ? "sm:flex-row-reverse" : ""}`}
+          >
+            {trustSignals.map((signal, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center gap-1.5 text-white/70 font-body"
+                style={{ fontSize: "clamp(11px, 1.1vw, 13px)" }}
+              >
+                <CheckCircle className="w-3.5 h-3.5 text-gold flex-shrink-0" />
+                {signal}
+              </span>
+            ))}
           </motion.div>
         </div>
 
@@ -133,8 +236,8 @@ const HeroSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.6 }}
-          className="w-full mt-5 md:mt-8"
+          transition={{ duration: 0.55, delay: 0.8 }}
+          className="w-full mt-6 md:mt-10"
         >
           <div
             className="max-w-4xl mx-auto rounded-2xl"
@@ -147,7 +250,14 @@ const HeroSection = () => {
                 "0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             }}
           >
-            <div className="p-2 md:p-4">
+            {/* Search label */}
+            <p
+              className="text-white/70 font-body font-medium px-4 md:px-6 pt-3 pb-0"
+              style={{ fontSize: "clamp(11px, 1.2vw, 13px)", letterSpacing: "0.04em" }}
+            >
+              {searchLabel}
+            </p>
+            <div className="p-2 md:p-4 pt-1 md:pt-2">
               <SearchBar />
             </div>
           </div>
