@@ -48,7 +48,7 @@ const ClosingCTA = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to={`/${lang}/properties`}
-              className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] text-primary-foreground"
+              className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] text-primary-foreground"
               style={{
                 background:
                   "linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-hover)) 100%)",
