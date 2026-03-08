@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Clock, Lock } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
+import heroBg from "@/assets/hero-bg.webp";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 
 const ContactForm = () => {
