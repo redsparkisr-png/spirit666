@@ -9,6 +9,7 @@ import { FileText } from "lucide-react";
 
 const BlueprintSection = () => {
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
