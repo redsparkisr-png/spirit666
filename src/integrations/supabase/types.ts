@@ -53,6 +53,287 @@ export type Database = {
         }
         Relationships: []
       }
+      crm_activities: {
+        Row: {
+          action_type: string
+          created_at: string
+          description: string | null
+          id: string
+          lead_id: string
+          metadata: Json | null
+          performed_by: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          lead_id: string
+          metadata?: Json | null
+          performed_by?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          lead_id?: string
+          metadata?: Json | null
+          performed_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_leads: {
+        Row: {
+          ad_content: string | null
+          assigned_to: string | null
+          budget_currency: string | null
+          budget_max: number | null
+          budget_min: number | null
+          buyer_type: string | null
+          campaign: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          email: string | null
+          entry_point: string | null
+          financing_needed: boolean | null
+          first_page_visited: string | null
+          full_name: string
+          guide_requested: boolean | null
+          id: string
+          landing_page: string | null
+          language: string | null
+          last_contacted_at: string | null
+          lead_score: number | null
+          medium: string | null
+          motivation_notes: string | null
+          must_have_features: string[] | null
+          next_action: string | null
+          next_followup_date: string | null
+          next_followup_type: string | null
+          original_message: string | null
+          phone: string | null
+          pipeline_stage: string
+          preferred_neighborhoods: string[] | null
+          priority: string | null
+          property_type_preference: string | null
+          public_lead_id: string | null
+          related_property: string | null
+          source: string
+          status: string
+          temperature: string | null
+          timeline_to_buy: string | null
+          timezone: string | null
+          updated_at: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          ad_content?: string | null
+          assigned_to?: string | null
+          budget_currency?: string | null
+          budget_max?: number | null
+          budget_min?: number | null
+          buyer_type?: string | null
+          campaign?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string | null
+          entry_point?: string | null
+          financing_needed?: boolean | null
+          first_page_visited?: string | null
+          full_name: string
+          guide_requested?: boolean | null
+          id?: string
+          landing_page?: string | null
+          language?: string | null
+          last_contacted_at?: string | null
+          lead_score?: number | null
+          medium?: string | null
+          motivation_notes?: string | null
+          must_have_features?: string[] | null
+          next_action?: string | null
+          next_followup_date?: string | null
+          next_followup_type?: string | null
+          original_message?: string | null
+          phone?: string | null
+          pipeline_stage?: string
+          preferred_neighborhoods?: string[] | null
+          priority?: string | null
+          property_type_preference?: string | null
+          public_lead_id?: string | null
+          related_property?: string | null
+          source?: string
+          status?: string
+          temperature?: string | null
+          timeline_to_buy?: string | null
+          timezone?: string | null
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          ad_content?: string | null
+          assigned_to?: string | null
+          budget_currency?: string | null
+          budget_max?: number | null
+          budget_min?: number | null
+          buyer_type?: string | null
+          campaign?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string | null
+          entry_point?: string | null
+          financing_needed?: boolean | null
+          first_page_visited?: string | null
+          full_name?: string
+          guide_requested?: boolean | null
+          id?: string
+          landing_page?: string | null
+          language?: string | null
+          last_contacted_at?: string | null
+          lead_score?: number | null
+          medium?: string | null
+          motivation_notes?: string | null
+          must_have_features?: string[] | null
+          next_action?: string | null
+          next_followup_date?: string | null
+          next_followup_type?: string | null
+          original_message?: string | null
+          phone?: string | null
+          pipeline_stage?: string
+          preferred_neighborhoods?: string[] | null
+          priority?: string | null
+          property_type_preference?: string | null
+          public_lead_id?: string | null
+          related_property?: string | null
+          source?: string
+          status?: string
+          temperature?: string | null
+          timeline_to_buy?: string | null
+          timezone?: string | null
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_leads_public_lead_id_fkey"
+            columns: ["public_lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_notes: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string
+          id: string
+          is_pinned: boolean | null
+          lead_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by: string
+          id?: string
+          is_pinned?: boolean | null
+          lead_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          is_pinned?: boolean | null
+          lead_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_notes_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_tasks: {
+        Row: {
+          action_type: string
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          due_date: string
+          due_time: string | null
+          id: string
+          lead_id: string | null
+          notes: string | null
+          status: string
+        }
+        Insert: {
+          action_type?: string
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          due_date: string
+          due_time?: string | null
+          id?: string
+          lead_id?: string | null
+          notes?: string | null
+          status?: string
+        }
+        Update: {
+          action_type?: string
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          due_date?: string
+          due_time?: string | null
+          id?: string
+          lead_id?: string | null
+          notes?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_tasks_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           created_at: string
@@ -412,6 +693,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_crm_access: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
