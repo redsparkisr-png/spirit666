@@ -52,7 +52,7 @@ const ContactForm = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-10"
           >
-            <h2 id="contact-heading" className="font-display font-semibold text-foreground mb-4">
+            <h2 id="contact-heading" className="font-display font-semibold text-foreground mb-4 text-[22px] md:text-[28px] lg:text-[36px]">
               {t("home.contact.title")}
             </h2>
             <p className="text-muted-foreground font-body max-w-md mx-auto">
