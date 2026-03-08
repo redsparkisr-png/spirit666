@@ -136,19 +136,24 @@ export type Database = {
       }
       properties_available: {
         Row: {
+          bathrooms: number | null
           bedrooms: number | null
           built_sqm: number | null
           created_at: string
           currency: string
           featured: boolean
+          full_description: string | null
+          google_maps_url: string | null
           id: string
           images: string[] | null
           location: string | null
           lot_sqm: number | null
+          mamad: boolean | null
           meta_description: string | null
           meta_title: string | null
           neighborhood_note: string | null
           og_image: string | null
+          parking: string | null
           price_label: string | null
           price_number: number | null
           price_status: string
@@ -157,22 +162,29 @@ export type Database = {
           property_type: string | null
           short_description: string | null
           slug: string | null
+          storage: boolean | null
+          tags: string[] | null
           title: string
         }
         Insert: {
+          bathrooms?: number | null
           bedrooms?: number | null
           built_sqm?: number | null
           created_at?: string
           currency?: string
           featured?: boolean
+          full_description?: string | null
+          google_maps_url?: string | null
           id?: string
           images?: string[] | null
           location?: string | null
           lot_sqm?: number | null
+          mamad?: boolean | null
           meta_description?: string | null
           meta_title?: string | null
           neighborhood_note?: string | null
           og_image?: string | null
+          parking?: string | null
           price_label?: string | null
           price_number?: number | null
           price_status?: string
@@ -181,22 +193,29 @@ export type Database = {
           property_type?: string | null
           short_description?: string | null
           slug?: string | null
+          storage?: boolean | null
+          tags?: string[] | null
           title: string
         }
         Update: {
+          bathrooms?: number | null
           bedrooms?: number | null
           built_sqm?: number | null
           created_at?: string
           currency?: string
           featured?: boolean
+          full_description?: string | null
+          google_maps_url?: string | null
           id?: string
           images?: string[] | null
           location?: string | null
           lot_sqm?: number | null
+          mamad?: boolean | null
           meta_description?: string | null
           meta_title?: string | null
           neighborhood_note?: string | null
           og_image?: string | null
+          parking?: string | null
           price_label?: string | null
           price_number?: number | null
           price_status?: string
@@ -205,6 +224,8 @@ export type Database = {
           property_type?: string | null
           short_description?: string | null
           slug?: string | null
+          storage?: boolean | null
+          tags?: string[] | null
           title?: string
         }
         Relationships: []
@@ -326,6 +347,45 @@ export type Database = {
           updated_at?: string
           value_en?: string
           value_he?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          country: string | null
+          created_at: string
+          display_order: number
+          id: string
+          initials: string | null
+          is_featured: boolean | null
+          name: string
+          photo_url: string | null
+          quote_en: string
+          quote_he: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          initials?: string | null
+          is_featured?: boolean | null
+          name?: string
+          photo_url?: string | null
+          quote_en?: string
+          quote_he?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          initials?: string | null
+          is_featured?: boolean | null
+          name?: string
+          photo_url?: string | null
+          quote_en?: string
+          quote_he?: string | null
         }
         Relationships: []
       }
