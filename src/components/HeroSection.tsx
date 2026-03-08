@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg.webp";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
 import SearchBar from "./SearchBar";
@@ -9,123 +9,127 @@ import SearchBar from "./SearchBar";
 const HeroSection = () => {
   const { t } = useSiteContent();
   const { lang } = useLanguage();
+  const isHe = lang === "he";
 
-  const headline =
-    lang === "he"
-      ? "קנו בזכרון יעקב בביטחון"
-      : "Buy in Zichron Yaakov with Confidence";
+  const headline = isHe
+    ? "קנו בזכרון יעקב בביטחון"
+    : "Buy in Zichron Yaakov with Confidence";
 
   return (
-    <section className="relative flex flex-col items-center overflow-visible">
-      {/* Background image */}
-      <div className="absolute inset-0 overflow-hidden">
+    <section className="relative flex flex-col items-center overflow-hidden">
+      {/* Background image with subtle cinematic zoom */}
+      <motion.div
+        className="absolute inset-0"
+        initial={{ scale: 1.02 }}
+        animate={{ scale: 1.05 }}
+        transition={{ duration: 10, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+      >
         <img
           src={heroBg}
-          alt="Zichron Yaakov village overlooking the Mediterranean Sea"
-          className="w-full h-full object-cover hero-bg-img"
+          alt="Aerial view of Zichron Yaakov red-roofed homes overlooking the Mediterranean Sea"
+          className="w-full h-full object-cover"
           style={{
-            filter: "contrast(1.06) saturate(1.1) brightness(0.92)",
+            objectPosition: "50% 30%",
+            filter: "contrast(1.06) saturate(1.08) brightness(0.95)",
           }}
-          width={1920}
-          height={1080}
+          width={2000}
+          height={1125}
           loading="eager"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/30" />
-      </div>
+      </motion.div>
 
-      {/* Content — normal flow */}
+      {/* Left-side gradient overlay for text readability */}
       <div
-        className="relative z-10 w-full flex flex-col items-center text-center px-5"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          paddingTop: "clamp(70px, 9vw, 110px)",
+          background: isHe
+            ? "linear-gradient(270deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.0) 100%)"
+            : "linear-gradient(90deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.0) 100%)",
+        }}
+      />
+
+      {/* Content — left-aligned text */}
+      <div
+        className="relative z-10 w-full flex flex-col px-5"
+        style={{
+          paddingTop: "clamp(80px, 10vw, 130px)",
           paddingBottom: "clamp(28px, 4vw, 60px)",
         }}
       >
-        {/* Localized scrim behind text group */}
         <div
-          className="absolute rounded-3xl pointer-events-none"
-          style={{
-            width: "min(92%, 54rem)",
-            top: "clamp(70px, 9vw, 110px)",
-            left: "50%",
-            transform: "translateX(-50%)",
-            minHeight: "140px",
-            padding: "50px 40px 80px",
-            background:
-              "radial-gradient(ellipse at center top, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.0) 75%)",
-          }}
-        />
-
-        {/* Brand label */}
-        <motion.p
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="relative z-10 text-[#F3F3F3] uppercase text-center mb-3"
-          style={{
-            fontSize: "clamp(12px, 1.4vw, 15px)",
-            fontWeight: 450,
-            letterSpacing: "0.18em",
-            opacity: 0.82,
-            textShadow: "0 2px 14px rgba(0,0,0,0.35)",
-          }}
+          className={`max-w-[700px] flex flex-col ${isHe ? "items-end text-right mr-auto md:mr-0 md:ml-auto md:pr-[6%]" : "items-start text-left ml-auto md:ml-0 md:pl-[6%]"}`}
         >
-          SPIRIT REAL ESTATE
-        </motion.p>
-
-        {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="text-white max-w-[900px] mx-auto relative z-10 font-display font-semibold"
-          style={{
-            fontSize: "clamp(30px, 5vw, 50px)",
-            lineHeight: 1.2,
-            letterSpacing: "-0.01em",
-            textShadow:
-              "0 2px 20px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)",
-            textWrap: "balance" as any,
-          }}
-        >
-          {headline}
-        </motion.h1>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.45 }}
-          className="relative z-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-6 md:mt-8"
-        >
-          <Link
-            to={`/${lang}/properties`}
-            className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
-            style={{ fontSize: "16px" }}
-          >
-            {lang === "he" ? "צפו בנכסים זמינים" : "See Available Homes"}
-          </Link>
-          <a
-            href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI would love to receive the guide about buying property in Zichron Yaakov.")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+          {/* Brand label */}
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-[#F3F3F3] uppercase mb-3"
             style={{
-              fontSize: "16px",
-              background: "rgba(255,255,255,0.15)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
-              border: "1px solid rgba(255,255,255,0.3)",
-              color: "#fff",
+              fontSize: "clamp(12px, 1.4vw, 15px)",
+              fontWeight: 450,
+              letterSpacing: "0.18em",
+              opacity: 0.82,
+              textShadow: "0 2px 14px rgba(0,0,0,0.35)",
             }}
           >
-            <MessageCircle className="w-4 h-4" />
-            {lang === "he" ? "קבלו את מדריך הרכישה" : "Get the Buying Guide"}
-          </a>
-        </motion.div>
+            SPIRIT REAL ESTATE
+          </motion.p>
 
-        {/* Search bar */}
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="text-white font-display font-semibold"
+            style={{
+              fontSize: "clamp(30px, 5vw, 50px)",
+              lineHeight: 1.2,
+              letterSpacing: "-0.01em",
+              textShadow:
+                "0 2px 20px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)",
+              textWrap: "balance" as any,
+            }}
+          >
+            {headline}
+          </motion.h1>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.45 }}
+            className={`flex flex-col sm:flex-row items-start gap-3 sm:gap-4 mt-6 md:mt-8 ${isHe ? "sm:flex-row-reverse" : ""}`}
+          >
+            <Link
+              to={`/${lang}/properties`}
+              className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+              style={{ fontSize: "16px" }}
+            >
+              {isHe ? "צפו בנכסים זמינים" : "See Available Homes"}
+            </Link>
+            <a
+              href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI would love to receive the guide about buying property in Zichron Yaakov.")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+              style={{
+                fontSize: "16px",
+                background: "rgba(255,255,255,0.15)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.3)",
+                color: "#fff",
+              }}
+            >
+              <MessageCircle className="w-4 h-4" />
+              {isHe ? "קבלו את מדריך הרכישה" : "Get the Buying Guide"}
+            </a>
+          </motion.div>
+        </div>
+
+        {/* Search bar — centered */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
