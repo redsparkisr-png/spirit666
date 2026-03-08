@@ -85,7 +85,7 @@ const BuyerBlueprintBlock = () => {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white py-4 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-charcoal/20 hover:-translate-y-0.5 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-charcoal/20 hover:-translate-y-0.5 active:scale-[0.98]"
               style={{ fontSize: "17px" }}
             >
               <MessageCircle className="w-5 h-5" />

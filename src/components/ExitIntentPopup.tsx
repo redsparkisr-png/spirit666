@@ -164,7 +164,7 @@ const ExitIntentPopup = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3.5 rounded-lg font-body font-semibold text-sm transition-colors duration-300 disabled:opacity-60"
+                className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-3.5 rounded-full font-body font-semibold text-sm transition-colors duration-300 disabled:opacity-60"
               >
                 {isSubmitting ? t("home.contact.sending") : t("home.exit.button")}
               </button>

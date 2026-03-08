@@ -135,7 +135,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             </div>
           )}
 
-          <span className="block w-full bg-charcoal text-white py-3 rounded-lg font-body font-medium text-sm btn-text text-center transition-all duration-300 group-hover:bg-charcoal-hover group-hover:shadow-md">
+          <span className="block w-full bg-charcoal text-white py-3 rounded-full font-body font-medium text-sm btn-text text-center transition-all duration-300 group-hover:bg-charcoal-hover group-hover:shadow-md">
             {detailsLabel}
           </span>
         </div>

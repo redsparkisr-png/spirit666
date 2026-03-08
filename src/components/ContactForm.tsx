@@ -122,7 +122,7 @@ const ContactForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 rounded-lg font-body font-semibold transition-all duration-300 disabled:opacity-60 hover:shadow-lg hover:shadow-gold/20 hover:-translate-y-0.5 active:scale-[0.98] text-primary-foreground"
+              className="w-full py-4 rounded-full font-body font-semibold transition-all duration-300 disabled:opacity-60 hover:shadow-lg hover:shadow-gold/20 hover:-translate-y-0.5 active:scale-[0.98] text-primary-foreground"
               style={{
                 fontSize: '17px',
                 background: 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-hover)) 100%)',

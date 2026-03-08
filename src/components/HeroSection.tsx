@@ -169,7 +169,7 @@ const HeroSection = () => {
                 href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI would love to receive the guide about buying property in Zichron Yaakov.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
+                className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
                 style={{
                   fontSize: "15px",
                   background: "rgba(255,255,255,0.15)",
