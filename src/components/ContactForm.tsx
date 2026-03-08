@@ -43,7 +43,7 @@ const ContactForm = () => {
   };
 
   return (
-    <section id="contact-form" className="py-20 md:py-28 lg:py-32 bg-background" aria-labelledby="contact-heading">
+    <section id="contact-form" className="py-16 md:py-24 bg-background" aria-labelledby="contact-heading">
       <div className="container px-6">
         <div className="max-w-lg mx-auto">
           <motion.div
