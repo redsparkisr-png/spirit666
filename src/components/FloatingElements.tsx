@@ -29,7 +29,7 @@ const FloatingElements = () => {
   }, []);
 
   const openWhatsApp = () => {
-    window.open("https://wa.me/972522820632?text=Hi, I'm interested in homes for sale in Zichron Yaakov", "_blank");
+    window.open("https://wa.me/972522820632?text=" + encodeURIComponent("Hi Hagit,\nI'm looking at homes in Zichron Yaakov and would love to learn more.\nCould you also send me the buying guide?"), "_blank");
   };
 
   const scrollToHomes = () => {

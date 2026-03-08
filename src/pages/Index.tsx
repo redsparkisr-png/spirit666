@@ -13,10 +13,10 @@ import Testimonials from "@/components/Testimonials";
 import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
-import BlueprintSection from "@/components/BlueprintSection";
 import MarketSnapshot from "@/components/MarketSnapshot";
 import SchemaOrg from "@/components/SchemaOrg";
 import GuidePromoSection from "@/components/GuidePromoSection";
+import ClosingCTA from "@/components/ClosingCTA";
 
 const Index = () => {
   const { lang } = useLanguage();
@@ -39,11 +39,11 @@ const Index = () => {
       <ContactForm />
       <SoldHomes />
       <WhyDifferent />
-      <BlueprintSection />
       <LifestyleSection />
       <Testimonials />
       <GuidePromoSection />
       <BottomTestimonial />
+      <ClosingCTA />
 
       {/* SEO internal links */}
       <section className="py-12 bg-card">
