@@ -119,6 +119,15 @@ const BlueprintSection = () => {
           >
             {t("home.blueprint.trust_text")}
           </motion.p>
+
+          <div className="mt-6 text-center">
+            <Link
+              to={`/${lang}/buying-property-zichron-yaakov`}
+              className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors"
+            >
+              {lang === "he" ? "קראו את מדריך הרכישה המלא" : "Read the full Buying Guide"}
+            </Link>
+          </div>
         </div>
       </div>
     </section>
