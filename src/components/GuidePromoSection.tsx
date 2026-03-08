@@ -13,7 +13,7 @@ const GuidePromoSection = () => {
   const isHe = lang === "he";
 
   return (
-    <section className="py-20 md:py-28 bg-background" aria-labelledby="guide-promo-heading">
+    <section className="py-16 md:py-24 bg-background" aria-labelledby="guide-promo-heading">
       <div className="container px-6">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
           {/* Left — Image */}
