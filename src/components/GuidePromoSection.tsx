@@ -61,7 +61,7 @@ const GuidePromoSection = () => {
             </p>
             <h2
               id="guide-promo-heading"
-              className="font-display font-semibold text-foreground mb-3 text-2xl md:text-[34px] leading-tight"
+              className="font-display font-semibold text-foreground mb-3 text-2xl md:text-[30px] leading-tight"
             >
               {isHe ? "מדריך חינמי לרוכשים מחו\"ל" : "Free Guide for Overseas Buyers"}
             </h2>
