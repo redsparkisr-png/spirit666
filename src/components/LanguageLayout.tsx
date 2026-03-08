@@ -34,6 +34,22 @@ const ROUTE_META: Record<string, { en: { title: string; desc: string }; he: { ti
     en: { title: "Accessibility — Spirit Real Estate", desc: "Our commitment to digital accessibility." },
     he: { title: "הצהרת נגישות — ספיריט נדל\"ן", desc: "המחויבות שלנו לנגישות דיגיטלית." },
   },
+  "buying-property-zichron-yaakov": {
+    en: { title: "Buying Property in Zichron Yaakov — Spirit Real Estate", desc: "Expert guide to buying property in Zichron Yaakov. Local market overview, property types, negotiation tips, and common mistakes to avoid." },
+    he: { title: "רכישת נכס בזכרון יעקב — ספיריט נדל\"ן", desc: "מדריך מקיף לרכישת נכס בזכרון יעקב. סקירת שוק, סוגי נכסים, טיפים למשא ומתן וטעויות שכדאי להימנע מהן." },
+  },
+  "homes-for-sale-zichron-yaakov": {
+    en: { title: "Homes for Sale in Zichron Yaakov — Spirit Real Estate", desc: "Browse homes for sale in Zichron Yaakov. Explore neighborhoods, property types, and available listings in one of Israel's most beautiful towns." },
+    he: { title: "בתים למכירה בזכרון יעקב — ספיריט נדל\"ן", desc: "גלו בתים למכירה בזכרון יעקב. שכונות, סוגי נכסים ומגוון הצעות באחת הערים היפות בישראל." },
+  },
+  "living-in-zichron-yaakov": {
+    en: { title: "Living in Zichron Yaakov — Spirit Real Estate", desc: "Discover what it's like to live in Zichron Yaakov — lifestyle, community, families, and accessibility to Tel Aviv and Haifa." },
+    he: { title: "חיים בזכרון יעקב — ספיריט נדל\"ן", desc: "גלו איך זה לחיות בזכרון יעקב — אורח חיים, קהילה, משפחות ונגישות לתל אביב ולחיפה." },
+  },
+  "moving-to-zichron-yaakov": {
+    en: { title: "Moving to Zichron Yaakov — Spirit Real Estate", desc: "Planning to move to Zichron Yaakov? Everything you need to know about relocating, the housing market, and how we help buyers settle in." },
+    he: { title: "מעבר לזכרון יעקב — ספיריט נדל\"ן", desc: "מתכננים לעבור לזכרון יעקב? כל מה שצריך לדעת על המעבר, שוק הדיור ואיך אנחנו עוזרים לקונים להתאקלם." },
+  },
 };
 
 const LanguageLayout = () => {

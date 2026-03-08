@@ -84,6 +84,24 @@ const TrustSection = () => {
             ))}
           </nav>
 
+          {/* Guides section */}
+          <div className="mb-8">
+            <p className="text-primary-foreground/50 font-body text-xs uppercase tracking-widest mb-4">
+              {lang === "he" ? "מדריכי זכרון יעקב" : "Zichron Yaakov Guides"}
+            </p>
+            <nav className="flex justify-center gap-x-6 gap-y-2 flex-wrap" aria-label="Guide links">
+              {guideLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="text-primary-foreground/50 hover:text-primary-foreground/80 font-body text-[13px] transition-colors duration-300"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
           {/* Thin separator */}
           <div className="w-32 h-px bg-primary-foreground/10 mx-auto mb-10" />
 
