@@ -530,13 +530,15 @@ const SearchBar = ({
           {/* Row 2: Price Range + Search CTA */}
           <div className="grid grid-cols-3 gap-5 items-end">
             <div className="col-span-2 flex flex-col gap-1">
-              <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase">{t("search.price_range")}</span>
+              <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase">
+                {lang === "he" ? "עד" : "Up to"} {formatPrice(maxPrice)}
+              </span>
               <div className="space-y-1.5 pt-0.5">
                 <SliderPrimitive.Root
-                  value={priceRange}
-                  onValueChange={(val) => setPriceRange(val as [number, number])}
-                  min={dataRange[0]}
-                  max={dataRange[1]}
+                  value={[maxPrice]}
+                  onValueChange={(val) => setMaxPrice(val[0])}
+                  min={0}
+                  max={dataMax}
                   step={50000}
                   className="relative flex w-full touch-none select-none items-center h-5"
                 >
@@ -544,11 +546,10 @@ const SearchBar = ({
                     <SliderPrimitive.Range className="absolute h-full bg-gold" />
                   </SliderPrimitive.Track>
                   <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
-                  <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
                 </SliderPrimitive.Root>
                 <div className="flex justify-between text-[11px] font-body text-white/90 font-semibold">
-                  <span>{formatPrice(priceRange[0])}</span>
-                  <span>{formatPrice(priceRange[1])}</span>
+                  <span>₪0</span>
+                  <span>{formatPrice(dataMax)}</span>
                 </div>
               </div>
             </div>
