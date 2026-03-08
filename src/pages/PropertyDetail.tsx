@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { BedDouble, Ruler, LandPlot, ChevronLeft, ChevronRight, MessageCircle, CheckCircle } from "lucide-react";
+import { BedDouble, Ruler, LandPlot, ChevronLeft, ChevronRight, MessageCircle, CheckCircle, Bath, Car, Shield, Trees, MapPin, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { useLanguage } from "@/lib/i18n";
@@ -14,10 +14,23 @@ import BreadcrumbNav from "@/components/BreadcrumbNav";
 
 type Property = Tables<"properties_available">;
 
+const TAG_STYLES: Record<string, string> = {
+  "Sea View": "bg-sky-100 text-sky-700 border-sky-200",
+  "Garden": "bg-emerald-100 text-emerald-700 border-emerald-200",
+  "Renovated": "bg-amber-100 text-amber-700 border-amber-200",
+  "New Listing": "bg-rose-100 text-rose-700 border-rose-200",
+  "Exclusive Listing": "bg-violet-100 text-violet-700 border-violet-200",
+  "Balcony": "bg-blue-100 text-blue-700 border-blue-200",
+  "Pool": "bg-cyan-100 text-cyan-700 border-cyan-200",
+  "Parking": "bg-slate-100 text-slate-700 border-slate-200",
+};
+const getTagStyle = (tag: string) => TAG_STYLES[tag] || "bg-muted text-muted-foreground border-border";
+
 const PropertyDetail = () => {
   const { slug } = useParams();
   const { lang } = useLanguage();
   const { t } = useSiteContent();
+  const isHe = lang === "he";
   const [property, setProperty] = useState<Property | null>(null);
   const [similar, setSimilar] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,7 +53,6 @@ const PropertyDetail = () => {
       setProperty(data);
       setLoading(false);
       if (data) {
-        // Inject property-level structured data + meta
         injectPropertySchema({
           title: data.title,
           description: data.short_description || data.title,
@@ -54,7 +66,6 @@ const PropertyDetail = () => {
           slug: data.slug || data.id,
         });
 
-        // Dynamic meta for property page
         document.title = data.meta_title || `${data.title} | Spirit Real Estate`;
         const descContent = data.meta_description || data.short_description || data.title;
         let descTag = document.querySelector('meta[name="description"]');
@@ -65,7 +76,6 @@ const PropertyDetail = () => {
         }
         descTag.setAttribute("content", descContent);
 
-        // Canonical for property
         let canonicalTag = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
         if (!canonicalTag) {
           canonicalTag = document.createElement("link");
@@ -74,7 +84,6 @@ const PropertyDetail = () => {
         }
         canonicalTag.href = `https://spirit-homes-guide.lovable.app/${lang}/property/${data.slug || data.id}`;
 
-        // OG image
         if (data.og_image || data.images?.[0]) {
           const ogImg = data.og_image || data.images![0];
           let ogImgTag = document.querySelector('meta[property="og:image"]');
@@ -122,9 +131,17 @@ const PropertyDetail = () => {
 
   const openWhatsApp = () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
-    const text = lang === "he"
+    const text = isHe
       ? `היי, אני מתעניין/ת ב: ${property?.title || "נכס"}\n${url}`
       : `Hi, I'm interested in: ${property?.title || "a property"}\n${url}`;
+    window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
+  };
+
+  const scheduleViewing = () => {
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    const text = isHe
+      ? `היי חגית, אשמח לתאם סיור בנכס: ${property?.title || "נכס"}\n${url}`
+      : `Hi Hagit, I'd like to schedule a viewing for: ${property?.title || "a property"}\n${url}`;
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
 
@@ -152,6 +169,7 @@ const PropertyDetail = () => {
   }
 
   const images = property.images || [];
+  const tags = property.tags || [];
   const inputClasses = "w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30";
 
   const inquiryForm = (idSuffix: string) => (
@@ -165,20 +183,26 @@ const PropertyDetail = () => {
         <input type="text" placeholder={t("property.detail.name_placeholder")} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClasses} aria-label={t("property.detail.name_placeholder")} />
         <input type="tel" placeholder={t("property.detail.phone_placeholder")} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className={inputClasses} aria-label={t("property.detail.phone_placeholder")} />
         <input type="email" placeholder={t("property.detail.email_placeholder")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputClasses} aria-label={t("property.detail.email_placeholder")} />
-        <textarea placeholder={t("property.detail.message_placeholder")} value={formData.message || `${lang === "he" ? "מעוניין ב:" : "Interested in:"} ${property.title}`} onChange={(e) => setFormData({ ...formData, message: e.target.value })} rows={2} className={`${inputClasses} resize-none`} aria-label={t("property.detail.message_placeholder")} />
+        <textarea placeholder={t("property.detail.message_placeholder")} value={formData.message || `${isHe ? "מעוניין ב:" : "Interested in:"} ${property.title}`} onChange={(e) => setFormData({ ...formData, message: e.target.value })} rows={2} className={`${inputClasses} resize-none`} aria-label={t("property.detail.message_placeholder")} />
         <PrivacyConsentCheckbox
           checked={privacyConsent}
           onCheckedChange={setPrivacyConsent}
           id={`property-privacy-consent-${idSuffix}`}
         />
         {idSuffix === "sidebar" ? (
-          <div className="flex gap-3">
-            <button type="submit" disabled={submitting} className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
-              {submitting ? "..." : t("property.detail.send_inquiry")}
-            </button>
-            <button type="button" onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
-              <MessageCircle className="w-4 h-4" />
-              WhatsApp
+          <div className="space-y-2">
+            <div className="flex gap-3">
+              <button type="submit" disabled={submitting} className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
+                {submitting ? "..." : t("property.detail.send_inquiry")}
+              </button>
+              <button type="button" onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp
+              </button>
+            </div>
+            <button type="button" onClick={scheduleViewing} className="w-full flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-all duration-300 hover:shadow-md">
+              <Calendar className="w-4 h-4" />
+              {isHe ? "תאמו סיור בנכס" : "Schedule a Viewing"}
             </button>
           </div>
         ) : (
@@ -189,6 +213,16 @@ const PropertyDetail = () => {
       </form>
     )
   );
+
+  // Build detail stats
+  const detailStats = [
+    property.bedrooms ? { icon: BedDouble, value: property.bedrooms, label: isHe ? "חדרי שינה" : "Bedrooms" } : null,
+    property.bathrooms ? { icon: Bath, value: property.bathrooms, label: isHe ? "חדרי רחצה" : "Bathrooms" } : null,
+    property.built_sqm ? { icon: Ruler, value: `${property.built_sqm} m²`, label: isHe ? 'מ"ר בנוי' : "Built" } : null,
+    property.lot_sqm ? { icon: LandPlot, value: `${property.lot_sqm} m²`, label: isHe ? 'מ"ר מגרש' : "Lot" } : null,
+    property.parking ? { icon: Car, value: property.parking, label: isHe ? "חניה" : "Parking" } : null,
+    property.mamad ? { icon: Shield, value: isHe ? "כן" : "Yes", label: isHe ? "ממ\"ד" : "Mamad" } : null,
+  ].filter(Boolean) as { icon: any; value: any; label: string }[];
 
   return (
     <main className="min-h-screen bg-background pb-24 lg:pb-0">
@@ -241,8 +275,25 @@ const PropertyDetail = () => {
                 { label: property.title },
               ]} />
               <h1 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-2">{property.title}</h1>
-              {property.neighborhood_note && (<p className="text-muted-foreground font-body">{property.neighborhood_note}</p>)}
+              {property.location && (
+                <p className="flex items-center gap-1.5 text-muted-foreground font-body text-sm">
+                  <MapPin className="w-4 h-4 text-gold" />
+                  {property.location}
+                  {property.neighborhood_note ? ` — ${property.neighborhood_note}` : ""}
+                </p>
+              )}
             </div>
+
+            {/* Tags */}
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span key={tag} className={`text-xs font-body font-semibold px-3 py-1 rounded-full border ${getTagStyle(tag)}`}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
 
             {/* Price */}
             <div>
@@ -253,29 +304,15 @@ const PropertyDetail = () => {
               )}
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4">
-              {property.bedrooms && (
-                <div className="bg-card rounded-xl p-4 text-center border border-border">
-                  <BedDouble className="w-5 h-5 mx-auto mb-2 text-charcoal" />
-                  <p className="font-display font-semibold text-foreground">{property.bedrooms}</p>
-                  <p className="text-xs text-muted-foreground font-body">{t("property.detail.bedrooms")}</p>
+            {/* Stats grid — expanded */}
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+              {detailStats.map((stat, idx) => (
+                <div key={idx} className="bg-card rounded-xl p-3 md:p-4 text-center border border-border">
+                  <stat.icon className="w-5 h-5 mx-auto mb-1.5 text-charcoal" />
+                  <p className="font-display font-semibold text-foreground text-sm">{stat.value}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">{stat.label}</p>
                 </div>
-              )}
-              {property.built_sqm && (
-                <div className="bg-card rounded-xl p-4 text-center border border-border">
-                  <Ruler className="w-5 h-5 mx-auto mb-2 text-charcoal" />
-                  <p className="font-display font-semibold text-foreground">{property.built_sqm}</p>
-                  <p className="text-xs text-muted-foreground font-body">{t("property.detail.built_sqm")}</p>
-                </div>
-              )}
-              {property.lot_sqm && (
-                <div className="bg-card rounded-xl p-4 text-center border border-border">
-                  <LandPlot className="w-5 h-5 mx-auto mb-2 text-charcoal" />
-                  <p className="font-display font-semibold text-foreground">{property.lot_sqm}</p>
-                  <p className="text-xs text-muted-foreground font-body">{t("property.detail.lot_sqm")}</p>
-                </div>
-              )}
+              ))}
             </div>
 
             {property.short_description && (
@@ -285,12 +322,34 @@ const PropertyDetail = () => {
               </div>
             )}
 
-            {property.location && (
+            {property.full_description && (
               <div>
-                <h2 className="text-xl font-display font-semibold text-foreground mb-3">{t("property.detail.location_title")}</h2>
+                <h2 className="text-xl font-display font-semibold text-foreground mb-3">
+                  {isHe ? "תיאור מלא" : "Full Description"}
+                </h2>
+                <div className="text-muted-foreground font-body leading-relaxed whitespace-pre-line">{property.full_description}</div>
+              </div>
+            )}
+
+            {/* About the Neighborhood */}
+            {(property.location || property.neighborhood_note) && (
+              <div className="bg-card rounded-xl border border-border p-6">
+                <h2 className="text-xl font-display font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-gold" />
+                  {isHe ? "על השכונה" : "About the Neighborhood"}
+                </h2>
                 <p className="text-muted-foreground font-body leading-relaxed">
-                  {property.location}{property.neighborhood_note ? ` — ${property.neighborhood_note}` : ""}
+                  {property.neighborhood_note || (isHe
+                    ? `${property.location} הוא אזור מבוקש בזכרון יעקב עם קהילה חמה ונגישות מצוינת.`
+                    : `${property.location} is a sought-after area in Zichron Yaakov with a warm community and excellent accessibility.`
+                  )}
                 </p>
+                {property.google_maps_url && (
+                  <a href={property.google_maps_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-gold hover:text-gold-hover font-body text-sm mt-3 transition-colors">
+                    <MapPin className="w-3.5 h-3.5" />
+                    {isHe ? "הצג במפה" : "View on Map"}
+                  </a>
+                )}
               </div>
             )}
 
@@ -303,6 +362,10 @@ const PropertyDetail = () => {
             <div id="inquiry-form-mobile" className="bg-card rounded-2xl border border-border p-6 space-y-5 shadow-sm">
               <h3 className="font-display font-semibold text-foreground text-lg">{t("property.detail.interested_title")}</h3>
               <div className="flex gap-3">
+                <button onClick={scheduleViewing} className="flex-1 flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3 px-5 rounded-lg font-body font-medium text-sm transition-all duration-300">
+                  <Calendar className="w-4 h-4" />
+                  {isHe ? "תאמו סיור" : "Schedule a Viewing"}
+                </button>
                 <button onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 px-5 rounded-lg font-body font-medium text-sm transition-colors">
                   <MessageCircle className="w-4 h-4" />
                   WhatsApp
@@ -354,12 +417,13 @@ const PropertyDetail = () => {
         className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-card border-t border-border px-4 py-3 flex gap-3"
         style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
       >
+        <button onClick={scheduleViewing} className="flex-1 flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-all duration-300">
+          <Calendar className="w-4 h-4" />
+          {isHe ? "סיור" : "Schedule Viewing"}
+        </button>
         <button onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
           <MessageCircle className="w-4 h-4" />
           {t("property.detail.whatsapp_cta")}
-        </button>
-        <button onClick={() => document.getElementById("inquiry-form-mobile")?.scrollIntoView({ behavior: "smooth" })} className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors">
-          {t("property.detail.send_inquiry")}
         </button>
       </div>
     </main>
