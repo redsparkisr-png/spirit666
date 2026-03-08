@@ -150,6 +150,7 @@ html {
 
 [dir="rtl"] .font-display {
   font-family: "Frank Ruhl Libre", "Heebo", "Playfair Display", Georgia, serif;
+  line-height: 1.35;
 }
 
 [dir="rtl"] .font-body {
