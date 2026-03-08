@@ -195,7 +195,7 @@ const PropertyDetail = () => {
               <button type="submit" disabled={submitting} className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
                 {submitting ? "..." : t("property.detail.send_inquiry")}
               </button>
-              <button type="button" onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
+              <button type="button" onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp
               </button>
