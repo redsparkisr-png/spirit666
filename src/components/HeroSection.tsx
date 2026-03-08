@@ -188,16 +188,16 @@ const HeroSection = () => {
             </div>
 
             {/* Micro description under guide CTA */}
-            <p
-              className="text-white/80 font-body"
-              style={{
-                fontSize: "clamp(11px, 1.2vw, 13px)",
-                lineHeight: 1.4,
-                marginTop: "-4px",
-              }}
-            >
-              {guideMicro}
-            </p>
+             <p
+               className="text-white/95 font-body"
+               style={{
+                 fontSize: "clamp(11px, 1.2vw, 13px)",
+                 lineHeight: 1.4,
+                 marginTop: "-4px",
+               }}
+             >
+               {guideMicro}
+             </p>
           </motion.div>
 
 
