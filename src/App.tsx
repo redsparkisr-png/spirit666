@@ -27,6 +27,16 @@ const BlueprintDownload = lazy(() => import("./pages/BlueprintDownload"));
 const BuyerGuide2026 = lazy(() => import("./pages/BuyerGuide2026"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+// CRM pages — fully isolated
+const CrmLayout = lazy(() => import("./crm/components/CrmLayout"));
+const CrmDashboard = lazy(() => import("./crm/pages/CrmDashboard"));
+const CrmLeadsList = lazy(() => import("./crm/pages/CrmLeadsList"));
+const CrmLeadDetail = lazy(() => import("./crm/pages/CrmLeadDetail"));
+const CrmQuickAdd = lazy(() => import("./crm/pages/CrmQuickAdd"));
+const CrmTasks = lazy(() => import("./crm/pages/CrmTasks"));
+const CrmPipeline = lazy(() => import("./crm/pages/CrmPipeline"));
+const CrmReports = lazy(() => import("./crm/pages/CrmReports"));
+
 const queryClient = new QueryClient();
 
 function detectLang(): "en" | "he" {
@@ -41,6 +51,12 @@ const RootRedirect = () => <Navigate to={`/${detectLang()}/`} replace />;
 const PageLoader = () => (
   <div className="min-h-screen bg-background flex items-center justify-center">
     <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
+
+const CrmLoader = () => (
+  <div className="min-h-screen bg-[#0f1117] flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
   </div>
 );
 
@@ -75,6 +91,18 @@ const App = () => (
               </Route>
               {/* Backward compat for /admin */}
               <Route path="/admin" element={<Admin />} />
+
+              {/* CRM — fully isolated from public site */}
+              <Route path="/crm" element={<Suspense fallback={<CrmLoader />}><CrmLayout /></Suspense>}>
+                <Route index element={<CrmDashboard />} />
+                <Route path="leads" element={<CrmLeadsList />} />
+                <Route path="leads/new" element={<CrmQuickAdd />} />
+                <Route path="leads/:id" element={<CrmLeadDetail />} />
+                <Route path="tasks" element={<CrmTasks />} />
+                <Route path="pipeline" element={<CrmPipeline />} />
+                <Route path="reports" element={<CrmReports />} />
+              </Route>
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
