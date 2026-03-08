@@ -12,6 +12,7 @@ const SoldHomes = () => {
   const [items, setItems] = useState<SoldProp[]>([]);
   const [loaded, setLoaded] = useState(false);
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
 
   useEffect(() => {
     supabase
