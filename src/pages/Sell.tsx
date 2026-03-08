@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Home, Target, Users } from "lucide-react";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
+import { useLanguage } from "@/lib/i18n";
 
 const Sell = () => {
   const { t } = useSiteContent();
