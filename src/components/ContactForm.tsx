@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { Clock, Lock } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";

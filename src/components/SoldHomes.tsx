@@ -108,13 +108,13 @@ const SoldHomes = () => {
                     {p.bedrooms && (
                       <span className="flex items-center gap-1">
                         <BedDouble className="w-3.5 h-3.5" />
-                        {p.bedrooms}
+                        {p.bedrooms} {lang === "he" ? "חד׳" : "Bed"}
                       </span>
                     )}
                     {p.built_sqm && (
                       <span className="flex items-center gap-1">
                         <Ruler className="w-3.5 h-3.5" />
-                        {p.built_sqm} sqm
+                        {p.built_sqm} {lang === "he" ? 'מ"ר' : "sqm"}
                       </span>
                     )}
                     {p.sold_date && (

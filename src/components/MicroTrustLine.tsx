@@ -32,7 +32,7 @@ const MicroTrustLine = () => {
               className="flex items-center gap-2"
             >
               <item.icon className="w-4 h-4 text-gold/70 flex-shrink-0" />
-              <span className="text-[13px] md:text-[14px] text-primary-foreground/70 font-body tracking-wide whitespace-nowrap">
+              <span className="text-[12px] sm:text-[13px] md:text-[14px] text-primary-foreground/70 font-body tracking-wide">
                 {t(item.key)}
               </span>
             </motion.div>
