@@ -2,12 +2,19 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
-import { GripVertical, Trash2, Upload, Star } from "lucide-react";
-import type { Tables } from "@/integrations/supabase/types";
+import { GripVertical, Trash2, Upload } from "lucide-react";
 
-type GalleryItem = Tables<"lifestyle_gallery">;
-
-const CATEGORIES = ["Nature", "Community", "Cafes", "Beach", "Pedestrian Street", "Wine", "Architecture", "Other"] as const;
+interface GalleryItem {
+  id: string;
+  image_url: string;
+  display_order: number;
+  title_en: string;
+  title_he: string;
+  description_en: string;
+  description_he: string;
+  alt_en: string;
+  alt_he: string;
+}
 
 const LifestyleManager = () => {
   const [items, setItems] = useState<GalleryItem[]>([]);
@@ -15,7 +22,19 @@ const LifestyleManager = () => {
 
   const load = async () => {
     const { data } = await supabase.from("lifestyle_gallery").select("*").order("display_order");
-    if (data) setItems(data);
+    if (data) {
+      setItems(data.map((d: any) => ({
+        id: d.id,
+        image_url: d.image_url,
+        display_order: d.display_order,
+        title_en: d.title_en || "",
+        title_he: d.title_he || "",
+        description_en: d.description_en || "",
+        description_he: d.description_he || "",
+        alt_en: d.alt_en || "",
+        alt_he: d.alt_he || "",
+      })));
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -33,7 +52,7 @@ const LifestyleManager = () => {
       await supabase.from("lifestyle_gallery").insert({
         image_url: data.publicUrl,
         display_order: items.length,
-      });
+      } as any);
     }
     setUploading(false);
     e.target.value = "";
@@ -47,19 +66,8 @@ const LifestyleManager = () => {
     load();
   };
 
-  const toggleHero = async (item: GalleryItem) => {
-    const isHero = (item as any).is_hero;
-    // If setting as hero, unset all others first
-    if (!isHero) {
-      await supabase.from("lifestyle_gallery").update({ is_hero: false } as any).neq("id", item.id);
-    }
-    await supabase.from("lifestyle_gallery").update({ is_hero: !isHero } as any).eq("id", item.id);
-    load();
-  };
-
   const updateField = async (id: string, field: string, value: string) => {
     await supabase.from("lifestyle_gallery").update({ [field]: value } as any).eq("id", id);
-    load();
   };
 
   const onDragEnd = async (result: DropResult) => {
@@ -69,10 +77,7 @@ const LifestyleManager = () => {
     reordered.splice(result.destination.index, 0, moved);
     setItems(reordered);
     for (let i = 0; i < reordered.length; i++) {
-      await supabase
-        .from("lifestyle_gallery")
-        .update({ display_order: i })
-        .eq("id", reordered[i].id);
+      await supabase.from("lifestyle_gallery").update({ display_order: i }).eq("id", reordered[i].id);
     }
   };
 
@@ -86,62 +91,99 @@ const LifestyleManager = () => {
           <input type="file" accept="image/*" multiple onChange={upload} className="hidden" disabled={uploading} />
         </label>
       </div>
+
+      <p className="text-muted-foreground text-xs font-body">
+        Each image has editable Title, Description and Alt text in English + Hebrew. These appear on the gallery overlay.
+      </p>
+
       {items.length === 0 ? (
-        <p className="text-muted-foreground text-sm font-body">No lifestyle images yet.</p>
+        <p className="text-muted-foreground text-sm font-body">No lifestyle images yet. Fallback images will show on the site.</p>
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="lifestyle" direction="horizontal">
+          <Droppable droppableId="lifestyle">
             {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              <div ref={provided.innerRef} {...provided.droppableProps} className="space-y-3">
                 {items.map((item, idx) => (
                   <Draggable key={item.id} draggableId={item.id} index={idx}>
                     {(prov) => (
                       <div
                         ref={prov.innerRef}
                         {...prov.draggableProps}
-                        className="relative group rounded-lg overflow-hidden border border-border"
+                        className="flex gap-3 border border-border rounded-lg p-3 bg-card"
                       >
-                        <div className="aspect-[4/3]">
-                          <img src={item.image_url} alt="" className="w-full h-full object-cover object-center" />
-                        </div>
-                        {/* Drag handle */}
-                        <div {...prov.dragHandleProps} className="absolute top-1 left-1 p-1 bg-card/80 rounded cursor-grab opacity-0 group-hover:opacity-100 transition-opacity">
-                          <GripVertical className="w-3.5 h-3.5 text-muted-foreground" />
-                        </div>
-                        {/* Hero badge */}
-                        {(item as any).is_hero && (
-                          <div className="absolute top-1 left-8 bg-gold text-primary-foreground text-[10px] px-1.5 py-0.5 rounded font-body font-semibold">
-                            Hero
+                        {/* Drag + Image */}
+                        <div className="flex flex-col items-center gap-2 shrink-0">
+                          <div {...prov.dragHandleProps} className="p-1 cursor-grab">
+                            <GripVertical className="w-4 h-4 text-muted-foreground" />
                           </div>
-                        )}
-                        {/* Actions */}
-                        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-colors flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100">
-                          <button onClick={() => toggleHero(item)} className="p-1 bg-card rounded" title="Toggle hero">
-                            <Star className={`w-3.5 h-3.5 ${(item as any).is_hero ? "text-gold fill-gold" : "text-muted-foreground"}`} />
+                          <div className="w-24 h-18 rounded-md overflow-hidden">
+                            <img src={item.image_url} alt="" className="w-full h-full object-cover" />
+                          </div>
+                          <button onClick={() => remove(item.id)} className="p-1 text-destructive hover:bg-destructive/10 rounded" title="Delete">
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
-                          <button onClick={() => remove(item.id)} className="p-1 bg-destructive/90 rounded">
-                            <Trash2 className="w-3.5 h-3.5 text-destructive-foreground" />
-                          </button>
+                          <span className="text-[10px] text-muted-foreground font-body">#{idx + 1}</span>
                         </div>
-                        {/* Category & caption below image */}
-                        <div className="p-2 bg-card space-y-1">
-                          <select
-                            value={(item as any).category || ""}
-                            onChange={(e) => updateField(item.id, "category", e.target.value)}
-                            className="w-full text-[11px] px-1 py-0.5 border border-border rounded bg-card text-foreground font-body"
-                          >
-                            <option value="">No category</option>
-                            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                          </select>
-                          <input
-                            placeholder="Caption (optional)"
-                            defaultValue={(item as any).caption || ""}
-                            onBlur={(e) => updateField(item.id, "caption", e.target.value)}
-                            className="w-full text-[11px] px-1 py-0.5 border border-border rounded bg-card text-foreground font-body"
-                          />
-                        </div>
-                        <div className="absolute bottom-[52px] right-1 bg-foreground/60 text-primary-foreground text-[10px] px-1.5 py-0.5 rounded font-body">
-                          #{idx + 1}
+
+                        {/* Fields */}
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] text-muted-foreground font-body uppercase tracking-wide">Title (EN)</label>
+                            <input
+                              defaultValue={item.title_en}
+                              onBlur={(e) => updateField(item.id, "title_en", e.target.value)}
+                              placeholder="e.g. Mediterranean Sea Views"
+                              className="w-full text-xs px-2 py-1 border border-border rounded bg-background text-foreground font-body"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-muted-foreground font-body uppercase tracking-wide">Title (HE)</label>
+                            <input
+                              defaultValue={item.title_he}
+                              onBlur={(e) => updateField(item.id, "title_he", e.target.value)}
+                              placeholder="כותרת בעברית"
+                              dir="rtl"
+                              className="w-full text-xs px-2 py-1 border border-border rounded bg-background text-foreground font-body"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-muted-foreground font-body uppercase tracking-wide">Description (EN)</label>
+                            <input
+                              defaultValue={item.description_en}
+                              onBlur={(e) => updateField(item.id, "description_en", e.target.value)}
+                              placeholder="Short description (7-8 words)"
+                              className="w-full text-xs px-2 py-1 border border-border rounded bg-background text-foreground font-body"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-muted-foreground font-body uppercase tracking-wide">Description (HE)</label>
+                            <input
+                              defaultValue={item.description_he}
+                              onBlur={(e) => updateField(item.id, "description_he", e.target.value)}
+                              placeholder="תיאור קצר בעברית"
+                              dir="rtl"
+                              className="w-full text-xs px-2 py-1 border border-border rounded bg-background text-foreground font-body"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-muted-foreground font-body uppercase tracking-wide">Alt Text (EN)</label>
+                            <input
+                              defaultValue={item.alt_en}
+                              onBlur={(e) => updateField(item.id, "alt_en", e.target.value)}
+                              placeholder="Accessibility alt text"
+                              className="w-full text-xs px-2 py-1 border border-border rounded bg-background text-foreground font-body"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-muted-foreground font-body uppercase tracking-wide">Alt Text (HE)</label>
+                            <input
+                              defaultValue={item.alt_he}
+                              onBlur={(e) => updateField(item.id, "alt_he", e.target.value)}
+                              placeholder="טקסט נגישות בעברית"
+                              dir="rtl"
+                              className="w-full text-xs px-2 py-1 border border-border rounded bg-background text-foreground font-body"
+                            />
+                          </div>
                         </div>
                       </div>
                     )}

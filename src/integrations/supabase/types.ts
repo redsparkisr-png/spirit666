@@ -91,28 +91,46 @@ export type Database = {
       }
       lifestyle_gallery: {
         Row: {
+          alt_en: string | null
+          alt_he: string | null
           caption: string | null
           category: string | null
+          description_en: string | null
+          description_he: string | null
           display_order: number
           id: string
           image_url: string
           is_hero: boolean
+          title_en: string | null
+          title_he: string | null
         }
         Insert: {
+          alt_en?: string | null
+          alt_he?: string | null
           caption?: string | null
           category?: string | null
+          description_en?: string | null
+          description_he?: string | null
           display_order?: number
           id?: string
           image_url: string
           is_hero?: boolean
+          title_en?: string | null
+          title_he?: string | null
         }
         Update: {
+          alt_en?: string | null
+          alt_he?: string | null
           caption?: string | null
           category?: string | null
+          description_en?: string | null
+          description_he?: string | null
           display_order?: number
           id?: string
           image_url?: string
           is_hero?: boolean
+          title_en?: string | null
+          title_he?: string | null
         }
         Relationships: []
       }
