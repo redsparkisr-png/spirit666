@@ -403,18 +403,19 @@ const SearchBar = ({
             </div>
           </div>
           <div className="flex flex-col gap-1.5 col-span-2 md:col-span-1">
-            <span className="text-xs font-body text-muted-foreground">{t("search.price_range")}</span>
+            <span className="text-xs font-body text-muted-foreground">
+              {lang === "he" ? "עד" : "Up to"} {formatPrice(maxPrice)}
+            </span>
             <div className="space-y-2 pt-1">
-              <SliderPrimitive.Root value={priceRange} onValueChange={(val) => setPriceRange(val as [number, number])} min={dataRange[0]} max={dataRange[1]} step={50000} className="relative flex w-full touch-none select-none items-center h-5">
+              <SliderPrimitive.Root value={[maxPrice]} onValueChange={(val) => setMaxPrice(val[0])} min={0} max={dataMax} step={50000} className="relative flex w-full touch-none select-none items-center h-5">
                 <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-muted">
                   <SliderPrimitive.Range className="absolute h-full bg-gold" />
                 </SliderPrimitive.Track>
                 <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 shadow-sm focus-visible:outline-none bg-card border-charcoal" />
-                <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 shadow-sm focus-visible:outline-none bg-card border-charcoal" />
               </SliderPrimitive.Root>
               <div className="flex justify-between text-[11px] font-body text-muted-foreground">
-                <span>{formatPrice(priceRange[0])}</span>
-                <span>{formatPrice(priceRange[1])}</span>
+                <span>₪0</span>
+                <span>{formatPrice(dataMax)}</span>
               </div>
             </div>
           </div>
