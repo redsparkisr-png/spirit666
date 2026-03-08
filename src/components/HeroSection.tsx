@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MessageCircle, Download, CheckCircle } from "lucide-react";
+import { MessageCircle, Download, CheckCircle, ShieldCheck, Users, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.webp";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -33,14 +33,14 @@ const HeroSection = () => {
 
   const trustSignals = isHe
     ? [
-        "מעל 70 משפחות בינלאומיות סומכות עלינו",
-        "סוכני נדל\"ן מורשים",
-        "מומחים מקומיים בזכרון יעקב",
+        { icon: Users, text: "מעל 70 משפחות בינלאומיות סומכות עלינו" },
+        { icon: ShieldCheck, text: "סוכני נדל\"ן מורשים" },
+        { icon: MapPin, text: "מומחים מקומיים בזכרון יעקב" },
       ]
     : [
-        "Trusted by 70+ international families",
-        "Licensed real estate professionals",
-        "Local Zichron Yaakov experts",
+        { icon: Users, text: "Trusted by 70+ international families" },
+        { icon: ShieldCheck, text: "Licensed real estate professionals" },
+        { icon: MapPin, text: "Local Zichron Yaakov experts" },
       ];
 
   const searchLabel = isHe ? "חיפוש נכסים זמינים" : "Search Available Homes";
@@ -74,8 +74,8 @@ const HeroSection = () => {
         className="absolute inset-0 pointer-events-none"
         style={{
           background: isHe
-            ? "linear-gradient(270deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.0) 100%)"
-            : "linear-gradient(90deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.0) 100%)",
+            ? "linear-gradient(270deg, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.10) 65%, rgba(0,0,0,0.0) 100%)"
+            : "linear-gradient(90deg, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.10) 65%, rgba(0,0,0,0.0) 100%)",
         }}
       />
 
@@ -83,7 +83,7 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.20) 100%)",
+          background: "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.25) 100%)",
         }}
       />
 
@@ -148,9 +148,20 @@ const HeroSection = () => {
             {supportingLine}
           </motion.p>
 
-          {/* Subheadline - removed */}
-
-
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.42 }}
+            className="text-white/85 font-body mt-2"
+            style={{
+              fontSize: "clamp(14px, 1.6vw, 17px)",
+              lineHeight: 1.5,
+              textShadow: "0 1px 10px rgba(0,0,0,0.4)",
+            }}
+          >
+            {subheadline}
+          </motion.p>
 
           {/* CTA Buttons */}
           <motion.div
@@ -188,20 +199,40 @@ const HeroSection = () => {
             </div>
 
             {/* Micro description under guide CTA */}
-             <p
-               className="text-white/95 font-body"
-               style={{
-                 fontSize: "clamp(11px, 1.2vw, 13px)",
-                 lineHeight: 1.4,
-                 marginTop: "-4px",
-               }}
-             >
-               {guideMicro}
-             </p>
+            <p
+              className="text-white font-body"
+              style={{
+                fontSize: "clamp(11px, 1.2vw, 13px)",
+                lineHeight: 1.4,
+                marginTop: "-4px",
+                textShadow: "0 1px 8px rgba(0,0,0,0.5)",
+              }}
+            >
+              {guideMicro}
+            </p>
           </motion.div>
 
-
-
+          {/* Trust signals */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.65 }}
+            className={`flex flex-wrap gap-x-5 gap-y-2 mt-6 ${isHe ? "justify-end" : "justify-start"}`}
+          >
+            {trustSignals.map((item, idx) => (
+              <span
+                key={idx}
+                className="flex items-center gap-1.5 text-white/80 font-body"
+                style={{
+                  fontSize: "clamp(11px, 1.1vw, 13px)",
+                  textShadow: "0 1px 6px rgba(0,0,0,0.4)",
+                }}
+              >
+                <item.icon className="w-3.5 h-3.5 text-gold flex-shrink-0" />
+                {item.text}
+              </span>
+            ))}
+          </motion.div>
         </div>
 
         {/* Search bar — centered */}
@@ -222,7 +253,10 @@ const HeroSection = () => {
                 "0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             }}
           >
-             <div className="p-2 md:p-4 pt-1 md:pt-2">
+            <p className="text-white/90 font-body text-xs font-semibold tracking-wide uppercase px-4 md:px-6 pt-3 pb-0">
+              {searchLabel}
+            </p>
+            <div className="p-2 md:p-4 pt-1 md:pt-2">
               <SearchBar />
             </div>
           </div>
