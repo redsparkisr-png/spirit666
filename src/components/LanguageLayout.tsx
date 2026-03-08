@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams, useNavigate, Outlet, useLocation } from "react-router-dom";
 import { useLanguage, type Lang } from "@/lib/i18n";
 import CookieNotice from "@/components/CookieNotice";
+import AccessibilityWidget from "@/components/AccessibilityWidget";
 
 const VALID_LANGS = ["en", "he"];
 
