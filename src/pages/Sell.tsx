@@ -162,6 +162,20 @@ const Sell = () => {
         </div>
       </section>
 
+      {/* Internal links */}
+      <section className="py-10 bg-card">
+        <div className="container px-6">
+          <div className="max-w-2xl mx-auto flex flex-wrap justify-center gap-4">
+            <Link to={`/${lang}/buying-property-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "מדריך רכישה" : "Buying Guide"}
+            </Link>
+            <Link to={`/${lang}/homes-for-sale-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "בתים למכירה" : "Homes for Sale"}
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <TrustSection />
       <FloatingElements />
     </main>
