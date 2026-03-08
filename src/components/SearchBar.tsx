@@ -132,7 +132,7 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
     <div className="flex flex-col gap-1 relative" ref={ref}>
       <span className={`text-[11px] font-body font-semibold tracking-wide uppercase ${inline ? "text-muted-foreground" : "text-white/80"}`}>{label}</span>
       <button onClick={() => setOpen(!open)} className={triggerClasses}>
-        <span className={selected.length === 0 ? "opacity-50" : ""}>{displayText}</span>
+        <span className={selected.length === 0 ? "opacity-70" : ""}>{displayText}</span>
         <ChevronDown className={`w-4 h-4 flex-shrink-0 opacity-60 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
 
