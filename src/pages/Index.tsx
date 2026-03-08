@@ -39,7 +39,6 @@ const Index = () => {
       <ContactForm />
       <SoldHomes />
       <WhyDifferent />
-      <BlueprintSection />
       <LifestyleSection />
       <Testimonials />
       <GuidePromoSection />
