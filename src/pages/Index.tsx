@@ -43,6 +43,7 @@ const Index = () => {
       <Testimonials />
       <GuidePromoSection />
       <BottomTestimonial />
+      <ClosingCTA />
 
       {/* SEO internal links */}
       <section className="py-12 bg-card">
