@@ -1,12 +1,15 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { useLanguage } from "@/lib/i18n";
 import { FileText } from "lucide-react";
 
 const BlueprintSection = () => {
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -116,6 +119,15 @@ const BlueprintSection = () => {
           >
             {t("home.blueprint.trust_text")}
           </motion.p>
+
+          <div className="mt-6 text-center">
+            <Link
+              to={`/${lang}/buying-property-zichron-yaakov`}
+              className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors"
+            >
+              {lang === "he" ? "קראו את מדריך הרכישה המלא" : "Read the full Buying Guide"}
+            </Link>
+          </div>
         </div>
       </div>
     </section>

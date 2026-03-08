@@ -16,6 +16,11 @@ import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
+import BuyingProperty from "./pages/BuyingProperty";
+import HomesForSale from "./pages/HomesForSale";
+import LivingInZichron from "./pages/LivingInZichron";
+import MovingToZichron from "./pages/MovingToZichron";
+import BlueprintDownload from "./pages/BlueprintDownload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +54,11 @@ const App = () => (
               <Route path="contact" element={<Contact />} />
               <Route path="properties" element={<Properties />} />
               <Route path="property/:slug" element={<PropertyDetail />} />
+              <Route path="buying-property-zichron-yaakov" element={<BuyingProperty />} />
+              <Route path="homes-for-sale-zichron-yaakov" element={<HomesForSale />} />
+              <Route path="living-in-zichron-yaakov" element={<LivingInZichron />} />
+              <Route path="moving-to-zichron-yaakov" element={<MovingToZichron />} />
+              <Route path="blueprint-download" element={<BlueprintDownload />} />
               <Route path="admin" element={<Admin />} />
             </Route>
             {/* Backward compat for /admin */}

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
@@ -8,9 +9,11 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Home, Target, Users } from "lucide-react";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
+import { useLanguage } from "@/lib/i18n";
 
 const Sell = () => {
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -158,6 +161,20 @@ const Sell = () => {
                 {isSubmitting ? t("contact.form.sending") : t("sell.cta.button")}
               </button>
             </form>
+          </div>
+        </div>
+      </section>
+
+      {/* Internal links */}
+      <section className="py-10 bg-card">
+        <div className="container px-6">
+          <div className="max-w-2xl mx-auto flex flex-wrap justify-center gap-4">
+            <Link to={`/${lang}/buying-property-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "מדריך רכישה" : "Buying Guide"}
+            </Link>
+            <Link to={`/${lang}/homes-for-sale-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "בתים למכירה" : "Homes for Sale"}
+            </Link>
           </div>
         </div>
       </section>

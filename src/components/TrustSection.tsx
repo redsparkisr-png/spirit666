@@ -24,6 +24,13 @@ const TrustSection = () => {
     { to: `${prefix}/cookies`, label: t("header.nav.cookies") },
   ];
 
+  const guideLinks = [
+    { to: `${prefix}/buying-property-zichron-yaakov`, label: lang === "he" ? "רכישת נכס בזכרון יעקב" : "Buying Property in Zichron Yaakov" },
+    { to: `${prefix}/homes-for-sale-zichron-yaakov`, label: lang === "he" ? "בתים למכירה בזכרון יעקב" : "Homes for Sale in Zichron Yaakov" },
+    { to: `${prefix}/living-in-zichron-yaakov`, label: lang === "he" ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov" },
+    { to: `${prefix}/moving-to-zichron-yaakov`, label: lang === "he" ? "מעבר לזכרון יעקב" : "Moving to Zichron Yaakov" },
+  ];
+
   return (
     <footer
       className="py-16 md:py-24 relative overflow-hidden"
@@ -76,6 +83,24 @@ const TrustSection = () => {
               </Link>
             ))}
           </nav>
+
+          {/* Guides section */}
+          <div className="mb-8">
+            <p className="text-primary-foreground/50 font-body text-xs uppercase tracking-widest mb-4">
+              {lang === "he" ? "מדריכי זכרון יעקב" : "Zichron Yaakov Guides"}
+            </p>
+            <nav className="flex justify-center gap-x-6 gap-y-2 flex-wrap" aria-label="Guide links">
+              {guideLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="text-primary-foreground/50 hover:text-primary-foreground/80 font-body text-[13px] transition-colors duration-300"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
 
           {/* Thin separator */}
           <div className="w-32 h-px bg-primary-foreground/10 mx-auto mb-10" />
