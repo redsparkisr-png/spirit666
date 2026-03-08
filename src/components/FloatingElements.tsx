@@ -74,6 +74,7 @@ const FloatingElements = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 0.4 }}
         className={`fixed ${bottomOffset} left-6 z-40 transition-all duration-300 rtl:left-auto rtl:right-6`}
+        style={{ bottom: cookieBannerVisible ? 144 : 72 }}
       >
         <button
           onClick={scrollToHomes}
