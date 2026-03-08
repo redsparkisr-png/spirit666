@@ -72,6 +72,62 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/buying-property-zichron-yaakov</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/buying-property-zichron-yaakov" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/buying-property-zichron-yaakov" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/buying-property-zichron-yaakov</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/buying-property-zichron-yaakov" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/buying-property-zichron-yaakov" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/homes-for-sale-zichron-yaakov</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/homes-for-sale-zichron-yaakov" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/homes-for-sale-zichron-yaakov" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/homes-for-sale-zichron-yaakov</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/homes-for-sale-zichron-yaakov" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/homes-for-sale-zichron-yaakov" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/living-in-zichron-yaakov</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/living-in-zichron-yaakov" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/living-in-zichron-yaakov" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/living-in-zichron-yaakov</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/living-in-zichron-yaakov" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/living-in-zichron-yaakov" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/en/moving-to-zichron-yaakov</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/moving-to-zichron-yaakov" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/moving-to-zichron-yaakov" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit-homes-guide.lovable.app/he/moving-to-zichron-yaakov</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit-homes-guide.lovable.app/en/moving-to-zichron-yaakov" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit-homes-guide.lovable.app/he/moving-to-zichron-yaakov" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://spirit-homes-guide.lovable.app/en/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
