@@ -358,13 +358,9 @@ const SearchBar = ({
       if (priceRes.data && priceRes.data.length > 0) {
         const prices = priceRes.data.map((p) => Number(p.price_number)).filter((n) => n > 0);
         if (prices.length > 0) {
-          const min = Math.min(...prices);
           const max = Math.max(...prices);
-          setDataRange([min, max]);
-          setPriceRange([
-            initialPriceMin ? Number(initialPriceMin) : min,
-            initialPriceMax ? Number(initialPriceMax) : max,
-          ]);
+          setDataMax(max);
+          setMaxPrice(initialPriceMax ? Number(initialPriceMax) : max);
         }
       }
     });
