@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { useLanguage } from "@/lib/i18n";
 import { BedDouble, Ruler } from "lucide-react";
 
 type SoldProp = Tables<"properties_sold">;
