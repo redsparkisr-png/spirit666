@@ -11,17 +11,17 @@ import lifestyle1 from "@/assets/guide-img-8.jpg";
 import lifestyle2 from "@/assets/guide-img-1.jpg";
 import lifestyle3 from "@/assets/guide-img-5.jpg";
 import lifestyle4 from "@/assets/guide-img-6.jpg";
-import lifestyle5 from "@/assets/guide-img-4.jpg";
+import lifestyle5 from "@/assets/guide-img-7.jpg";
 import lifestyle6 from "@/assets/guide-img-3.jpg";
-import property1 from "@/assets/guide-img-10.jpg";
+import property1 from "@/assets/guide-img-13.jpg";
 import property2 from "@/assets/guide-img-2.jpg";
 import property3 from "@/assets/guide-img-4.jpg";
 import property4 from "@/assets/guide-img-5.jpg";
-import property5 from "@/assets/guide-img-9.jpg";
+import property5 from "@/assets/guide-img-10.jpg";
 import sold1 from "@/assets/guide-img-10.jpg";
 import sold2 from "@/assets/guide-img-9.jpg";
-import sold3 from "@/assets/guide-img-7.jpg";
-import sold4 from "@/assets/guide-img-8.jpg";
+import sold3 from "@/assets/guide-img-14.jpg";
+import sold4 from "@/assets/guide-img-19.jpg";
 
 /* ─── tiny helpers ─── */
 const Divider = () => (
