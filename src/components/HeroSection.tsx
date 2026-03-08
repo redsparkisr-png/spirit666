@@ -188,16 +188,16 @@ const HeroSection = () => {
             </div>
 
             {/* Micro description under guide CTA */}
-            <p
-              className="text-white/80 font-body"
-              style={{
-                fontSize: "clamp(11px, 1.2vw, 13px)",
-                lineHeight: 1.4,
-                marginTop: "-4px",
-              }}
-            >
-              {guideMicro}
-            </p>
+             <p
+               className="text-white/95 font-body"
+               style={{
+                 fontSize: "clamp(11px, 1.2vw, 13px)",
+                 lineHeight: 1.4,
+                 marginTop: "-4px",
+               }}
+             >
+               {guideMicro}
+             </p>
           </motion.div>
 
 
@@ -222,14 +222,7 @@ const HeroSection = () => {
                 "0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             }}
           >
-            {/* Search label */}
-            <p
-              className="text-white/70 font-body font-medium px-4 md:px-6 pt-3 pb-0"
-              style={{ fontSize: "clamp(11px, 1.2vw, 13px)", letterSpacing: "0.04em" }}
-            >
-              {searchLabel}
-            </p>
-            <div className="p-2 md:p-4 pt-1 md:pt-2">
+             <div className="p-2 md:p-4 pt-1 md:pt-2">
               <SearchBar />
             </div>
           </div>
