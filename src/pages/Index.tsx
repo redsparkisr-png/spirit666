@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import MicroTrustLine from "@/components/MicroTrustLine";
@@ -11,7 +13,6 @@ import Testimonials from "@/components/Testimonials";
 import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
-import CookieNotice from "@/components/CookieNotice";
 import BlueprintSection from "@/components/BlueprintSection";
 import MarketSnapshot from "@/components/MarketSnapshot";
 import SchemaOrg from "@/components/SchemaOrg";
