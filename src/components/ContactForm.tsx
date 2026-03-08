@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Clock, Lock } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
+import heroBg from "@/assets/hero-bg.webp";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 
 const ContactForm = () => {
@@ -43,9 +44,21 @@ const ContactForm = () => {
   };
 
   return (
-    <section id="contact-form" className="py-16 md:py-24 bg-background" aria-labelledby="contact-heading">
-      <div className="container px-6">
-        <div className="max-w-lg mx-auto">
+    <section id="contact-form" className="py-16 md:py-24 relative overflow-hidden" aria-labelledby="contact-heading">
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img
+          src={heroBg}
+          alt=""
+          className="w-full h-full object-cover"
+          style={{ filter: "brightness(0.3) saturate(0.8)" }}
+          loading="lazy"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, hsl(var(--primary) / 0.85) 0%, hsl(var(--primary) / 0.92) 100%)" }} />
+      </div>
+      <div className="container px-6 relative z-10">
+        <div className="max-w-lg mx-auto backdrop-blur-md bg-card/80 rounded-2xl p-8 md:p-10 shadow-2xl border border-border/30">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -109,7 +122,7 @@ const ContactForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 rounded-lg font-body font-semibold transition-all duration-300 disabled:opacity-60 hover:shadow-lg hover:shadow-gold/20 hover:-translate-y-0.5 active:scale-[0.98] text-primary-foreground"
+              className="w-full py-4 rounded-full font-body font-semibold transition-all duration-300 disabled:opacity-60 hover:shadow-lg hover:shadow-gold/20 hover:-translate-y-0.5 active:scale-[0.98] text-primary-foreground"
               style={{
                 fontSize: '17px',
                 background: 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-hover)) 100%)',

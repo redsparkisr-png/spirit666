@@ -48,7 +48,7 @@ const ClosingCTA = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to={`/${lang}/properties`}
-              className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] text-primary-foreground"
+              className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] text-primary-foreground"
               style={{
                 background:
                   "linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-hover)) 100%)",
@@ -60,7 +60,7 @@ const ClosingCTA = () => {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+              className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
             >
               <MessageCircle className="w-4 h-4" />
               {isHe ? "שוחחו עם חגית" : "Chat with Hagit"}

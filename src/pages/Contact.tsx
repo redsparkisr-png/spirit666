@@ -128,7 +128,7 @@ const Contact = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-lg font-body font-semibold transition-colors duration-300 disabled:opacity-60"
+                  className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-full font-body font-semibold transition-colors duration-300 disabled:opacity-60"
                   style={{ fontSize: "17px" }}
                 >
                   {isSubmitting ? t("contact.form.sending") : t("contact.form.button")}
