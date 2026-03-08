@@ -60,6 +60,7 @@ const App = () => (
               <Route path="living-in-zichron-yaakov" element={<LivingInZichron />} />
               <Route path="moving-to-zichron-yaakov" element={<MovingToZichron />} />
               <Route path="blueprint-download" element={<BlueprintDownload />} />
+              <Route path="buyer-guide-2026" element={<BuyerGuide2026 />} />
               <Route path="admin" element={<Admin />} />
             </Route>
             {/* Backward compat for /admin */}
