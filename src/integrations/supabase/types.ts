@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      buyer_guide_sections: {
+        Row: {
+          body: string
+          id: string
+          image_captions: string[] | null
+          images: string[] | null
+          quote_source: string | null
+          quote_text: string | null
+          section_number: number
+          subtitle: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          id?: string
+          image_captions?: string[] | null
+          images?: string[] | null
+          quote_source?: string | null
+          quote_text?: string | null
+          section_number: number
+          subtitle?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          id?: string
+          image_captions?: string[] | null
+          images?: string[] | null
+          quote_source?: string | null
+          quote_text?: string | null
+          section_number?: number
+          subtitle?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           created_at: string
