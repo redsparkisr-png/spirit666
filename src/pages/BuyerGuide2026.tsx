@@ -6,6 +6,22 @@ import spiritLogo from "@/assets/spirit-logo.jpg";
 import hagitImg from "@/assets/hagit-cohen-morgan.png";
 import aviImg from "@/assets/avi-suliman.png";
 import eliranImg from "@/assets/eliran-amsalem.jpg";
+import heroBg from "@/assets/hero-bg.jpg";
+import lifestyle1 from "@/assets/lifestyle-1.jpg";
+import lifestyle2 from "@/assets/lifestyle-2.jpg";
+import lifestyle3 from "@/assets/lifestyle-3.jpg";
+import lifestyle4 from "@/assets/lifestyle-4.jpg";
+import lifestyle5 from "@/assets/lifestyle-5.jpg";
+import lifestyle6 from "@/assets/lifestyle-6.jpg";
+import property1 from "@/assets/property-1.jpg";
+import property2 from "@/assets/property-2.jpg";
+import property3 from "@/assets/property-3.jpg";
+import property4 from "@/assets/property-4.jpg";
+import property5 from "@/assets/property-5.jpg";
+import sold1 from "@/assets/sold-1.jpg";
+import sold2 from "@/assets/sold-2.jpg";
+import sold3 from "@/assets/sold-3.jpg";
+import sold4 from "@/assets/sold-4.jpg";
 
 /* ─── tiny helpers ─── */
 const Divider = () => (
@@ -14,12 +30,6 @@ const Divider = () => (
     <span className="w-2 h-2 rotate-45 border border-gold bg-transparent" />
     <span className="flex-1 h-px bg-border" />
   </div>
-);
-
-const PageNumber = ({ n }: { n: number }) => (
-  <p className="text-xs text-muted-foreground/50 font-body tracking-widest text-center mt-16 select-none">
-    Page {n}
-  </p>
 );
 
 const SectionBadge = ({ n, label }: { n: string; label: string }) => (
@@ -31,24 +41,22 @@ const SectionBadge = ({ n, label }: { n: string; label: string }) => (
   </div>
 );
 
-const ImagePlaceholder = ({ caption, aspect = "16/9" }: { caption: string; aspect?: string }) => (
+const GuideImage = ({ src, caption, aspect = "16/9" }: { src: string; caption: string; aspect?: string }) => (
   <figure className="my-8">
     <div
-      className="w-full bg-sand rounded-lg border border-border flex items-center justify-center"
+      className="w-full rounded-lg overflow-hidden border border-border"
       style={{ aspectRatio: aspect }}
     >
-      <span className="text-muted-foreground/60 font-body text-sm italic text-center px-4">
-        [ Image: {caption} ]
-      </span>
+      <img src={src} alt={caption} className="w-full h-full object-cover" loading="lazy" />
     </div>
     <figcaption className="text-xs text-muted-foreground/70 font-body italic mt-2 text-center">{caption}</figcaption>
   </figure>
 );
 
-const StatCard = ({ value, label }: { value: string; label: string }) => (
+const StatCard = ({ value, label, light = false }: { value: string; label: string; light?: boolean }) => (
   <div className="text-center p-4">
-    <p className="font-display text-2xl md:text-3xl font-semibold text-foreground">{value}</p>
-    <p className="text-xs font-body text-muted-foreground mt-1 leading-snug">{label}</p>
+    <p className={`font-display text-2xl md:text-3xl font-semibold ${light ? "text-primary-foreground" : "text-foreground"}`}>{value}</p>
+    <p className={`text-xs font-body mt-1 leading-snug ${light ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{label}</p>
   </div>
 );
 
@@ -88,7 +96,6 @@ const BuyerGuide2026 = () => {
     document.title = "Zichron Yaakov Buyer Blueprint 2026 — Spirit Real Estate";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", "The definitive guide for English-speaking Olim buying real estate in Zichron Yaakov, Israel. Market data, neighborhood profiles, tax benefits & buying roadmap.");
-    // noindex for guide page (it's a lead-magnet asset)
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement("meta"); robots.setAttribute("name", "robots"); document.head.appendChild(robots); }
     robots.setAttribute("content", "noindex, nofollow");
@@ -102,13 +109,17 @@ const BuyerGuide2026 = () => {
       {/* ═══════════════════════════════════════════
           COVER PAGE
       ═══════════════════════════════════════════ */}
-      <section className="relative bg-primary text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-charcoal opacity-95" />
+      <section className="relative overflow-hidden">
+        {/* Background image with overlay */}
+        <div className="absolute inset-0">
+          <img src={heroBg} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/90 to-charcoal/95" />
+        </div>
         <div className="relative z-10 container px-6 py-24 md:py-36 flex flex-col items-center text-center">
           <p className="text-xs tracking-[0.35em] uppercase font-body text-gold mb-6">
             Spirit Real Estate · Boutique Property · Zichron Yaakov
           </p>
-          <h1 className="font-display font-bold text-4xl md:text-6xl lg:text-7xl leading-[1.1] mb-4">
+          <h1 className="font-display font-bold text-4xl md:text-6xl lg:text-7xl leading-[1.1] text-primary-foreground mb-4">
             Zichron Yaakov<br />
             <span className="text-gold">Buyer Blueprint</span>
           </h1>
@@ -117,12 +128,12 @@ const BuyerGuide2026 = () => {
             Buying Real Estate in Israel's Most Coveted Moshava
           </p>
 
-          {/* Hero stats */}
+          {/* Hero stats — light variant for readability on dark bg */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 border border-primary-foreground/20 rounded-xl p-6 md:p-8 bg-primary-foreground/5 backdrop-blur-sm max-w-3xl w-full">
-            <StatCard value="₪27,400" label="Avg ₪/m² — Q1 2025" />
-            <StatCard value="+13.5%" label="Year-on-Year Growth" />
-            <StatCard value="22%" label="Foreign Buyers" />
-            <StatCard value="15–20%" label="English Speakers" />
+            <StatCard value="₪27,400" label="Avg ₪/m² — Q1 2025" light />
+            <StatCard value="+13.5%" label="Year-on-Year Growth" light />
+            <StatCard value="22%" label="Foreign Buyers" light />
+            <StatCard value="15–20%" label="English Speakers" light />
           </div>
 
           <div className="mt-12 flex flex-col items-center gap-3">
@@ -173,7 +184,7 @@ const BuyerGuide2026 = () => {
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">Why Zichron Yaakov</h2>
           <p className="font-display italic text-lg text-muted-foreground mb-8">The Investment Case for Israel's Most Coveted Moshava</p>
 
-          <ImagePlaceholder caption="The iconic wine-barrel welcome sign at the entrance to Zichron Yaakov" />
+          <GuideImage src={lifestyle1} caption="The iconic wine-barrel welcome sign at the entrance to Zichron Yaakov" />
 
           <div className="font-body text-foreground space-y-5 leading-relaxed">
             <p>When people picture buying property in Israel, Tel Aviv and Jerusalem dominate the conversation. But for those who dream of a quieter life — where Mediterranean views replace skyscrapers, where vineyards line the hillsides and history breathes through every cobblestone — there is another option. And it is quickly becoming the preferred destination for discerning buyers from North America, Canada, and the UK.</p>
@@ -220,8 +231,8 @@ const BuyerGuide2026 = () => {
           <p className="font-display italic text-lg text-muted-foreground mb-8">Your Soft Landing on the Carmel</p>
 
           <div className="grid md:grid-cols-2 gap-4 my-8">
-            <ImagePlaceholder caption="Signpost pointing to Ramat HaNadiv and the promenade" aspect="4/3" />
-            <ImagePlaceholder caption="The historic Sha'ar Yishai gate — entrance to the Moshava" aspect="4/3" />
+            <GuideImage src={lifestyle2} caption="Signpost pointing to Ramat HaNadiv and the promenade" aspect="4/3" />
+            <GuideImage src={lifestyle3} caption="The historic Sha'ar Yishai gate — entrance to the Moshava" aspect="4/3" />
           </div>
 
           <div className="font-body text-foreground space-y-5 leading-relaxed">
@@ -261,14 +272,14 @@ const BuyerGuide2026 = () => {
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">The Lifestyle</h2>
           <p className="font-display italic text-lg text-muted-foreground mb-8">Promenade, Wine & Boutique Culture</p>
 
-          <ImagePlaceholder caption="HaMeyasdim Street (The Founders' Promenade) — the heart of the Moshava" />
+          <GuideImage src={lifestyle4} caption="HaMeyasdim Street (The Founders' Promenade) — the heart of the Moshava" />
 
           <div className="font-body text-foreground space-y-5 leading-relaxed">
             <p>Most people discover Zichron as tourists and never quite recover from it. The cobblestone Midrachov runs through the historic center like a stage set from a Provence village — gallery windows catching afternoon light, the smell of fresh espresso, the sound of a violin from inside a courtyard. For residents, this is simply Tuesday.</p>
 
             <div className="grid md:grid-cols-2 gap-4 my-8">
-              <ImagePlaceholder caption="Carmel Winery, established 1882 — one of Israel's oldest" aspect="4/3" />
-              <ImagePlaceholder caption="Hotel Syr — boutique hospitality on the Midrachov" aspect="4/3" />
+              <GuideImage src={lifestyle5} caption="Carmel Winery, established 1882 — one of Israel's oldest" aspect="4/3" />
+              <GuideImage src={lifestyle6} caption="Hotel Syr — boutique hospitality on the Midrachov" aspect="4/3" />
             </div>
 
             <h3 className="font-display text-xl font-semibold text-foreground mt-8 mb-4">The Wine Route & Wineries</h3>
@@ -303,7 +314,7 @@ const BuyerGuide2026 = () => {
                   <tr key={i} className={i % 2 === 0 ? "bg-card" : "bg-sand-light"}>
                     <td className="p-3 font-semibold">{a}</td>
                     <td className="p-3 text-muted-foreground">{d}</td>
-                    <td className="p-3 text-muted-foreground">{dist}</td>
+                    <td className="p-3">{dist}</td>
                   </tr>
                 ))}
               </tbody>
@@ -319,11 +330,11 @@ const BuyerGuide2026 = () => {
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">Ramat HaNadiv</h2>
           <p className="font-display italic text-lg text-muted-foreground mb-8">A World-Class Nature Reserve</p>
 
-          <ImagePlaceholder caption="View of Zichron Yaakov from the surrounding Carmel hills — a town wrapped in green" />
+          <GuideImage src={property1} caption="View of Zichron Yaakov from the surrounding Carmel hills — a town wrapped in green" />
 
           <div className="font-body text-foreground space-y-5 leading-relaxed">
             <p>Directly adjacent to Zichron's southern edge lies Ramat HaNadiv — a 450-acre memorial park and nature reserve established by the Rothschild family. It is the resting place of Baron Edmond and his wife Adelaide, and for Zichron residents, it is their backyard.</p>
-            <ul className="space-y-2 mt-4">
+            <ul className="space-y-2">
               {[
                 "Fragrance Garden: Designed for the visually impaired, with labeled aromatic plants in Hebrew, Arabic and Braille",
                 "Waterfall Garden: Cascading terraces and reflection pools",
@@ -354,8 +365,8 @@ const BuyerGuide2026 = () => {
           <p className="font-display italic text-lg text-muted-foreground mb-8">Schools, Youth Programs & Learning Options</p>
 
           <div className="grid md:grid-cols-2 gap-4 my-8">
-            <ImagePlaceholder caption="The First Aliyah Museum — world-class heritage, English-language tours" aspect="4/3" />
-            <ImagePlaceholder caption="Historic mural in the town center depicting Baron de Rothschild" aspect="4/3" />
+            <GuideImage src={property2} caption="The First Aliyah Museum — world-class heritage, English-language tours" aspect="4/3" />
+            <GuideImage src={property3} caption="Historic mural in the town center depicting Baron de Rothschild" aspect="4/3" />
           </div>
 
           <p className="font-body text-foreground leading-relaxed mb-8">Zichron Yaakov ranks 8 out of 10 on Israel's national socio-economic index, and its schools reflect that standing. The town offers a genuine spectrum of educational philosophies, ensuring virtually every family finds the right fit.</p>
@@ -380,7 +391,7 @@ const BuyerGuide2026 = () => {
                   <tr key={i} className={i % 2 === 0 ? "bg-card" : "bg-sand-light"}>
                     <td className="p-3 font-semibold">{s}</td>
                     <td className="p-3 text-muted-foreground">{c}</td>
-                    <td className="p-3 text-muted-foreground">{n}</td>
+                    <td className="p-3">{n}</td>
                   </tr>
                 ))}
               </tbody>
@@ -404,7 +415,7 @@ const BuyerGuide2026 = () => {
 
         {/* ── 06: NEIGHBORHOOD DEEP DIVE ── */}
         <section>
-          <SectionBadge n="06" label="Neighborhood Profiles" />
+          <SectionBadge n="06" label="Neighborhoods & Prices" />
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">Neighborhood Deep Dive</h2>
           <p className="font-display italic text-lg text-muted-foreground mb-8">Profiles, Character & Price Data</p>
 
@@ -421,7 +432,7 @@ const BuyerGuide2026 = () => {
               <div><p className="text-xs text-muted-foreground font-body">Price per m²</p><p className="font-display font-semibold text-foreground">₪32,000–₪45,000</p></div>
               <div><p className="text-xs text-muted-foreground font-body">Total range</p><p className="font-display font-semibold text-foreground">₪5.3M–₪14M</p></div>
             </div>
-            <ImagePlaceholder caption="The historic gate leading into the Moshava's main street" aspect="16/9" />
+            <GuideImage src={property4} caption="The historic gate leading into the Moshava's main street" aspect="16/9" />
             <p className="font-body text-foreground leading-relaxed mb-4">The irreplaceable heart of Zichron. Stone farmhouses from the 1880s, authentic courtyards, and full walkability to the Midrachov. Conservation laws make this effectively impossible to replicate. Properties sell in an average of 65 days — down from 90 two years ago.</p>
             <ProConList
               pros={["Maximum capital appreciation and strongest scarcity premium", "Fully walkable to all services, cafes, galleries, and restaurants", "Heritage architecture with genuine investment-grade value", "Strongest short-term rental (Airbnb) performance"]}
@@ -460,7 +471,7 @@ const BuyerGuide2026 = () => {
               <div><p className="text-xs text-muted-foreground font-body">Price per m²</p><p className="font-display font-semibold text-foreground">₪26,000–₪35,000</p></div>
               <div><p className="text-xs text-muted-foreground font-body">Total range</p><p className="font-display font-semibold text-foreground">₪4.5M–₪9M</p></div>
             </div>
-            <ImagePlaceholder caption="Typical HaShmura street with Mediterranean views at the end" aspect="16/9" />
+            <GuideImage src={property5} caption="Typical HaShmura street with Mediterranean views at the end" aspect="16/9" />
             <p className="font-body text-foreground leading-relaxed mb-4">Perched on the natural escarpment overlooking the coastal plain, HaShmura offers some of Zichron's most dramatic sea views. Underground utilities, manicured streets, a local commercial center with café and gym, and a socially active, affluent community.</p>
             <ProConList
               pros={["Exceptional 180° Mediterranean sea views", "Underground infrastructure — no overhead wires", "Active community with commercial amenities on-site"]}
@@ -573,7 +584,7 @@ const BuyerGuide2026 = () => {
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">Market Data</h2>
           <p className="font-display italic text-lg text-muted-foreground mb-8">Prices, Trends & Real Transactions 2025–2026</p>
 
-          <ImagePlaceholder caption="Hillside residential panorama — villas and homes cascading down the Carmel slopes" />
+          <GuideImage src={sold1} caption="Hillside residential panorama — villas and homes cascading down the Carmel slopes" />
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-card rounded-xl border border-border p-6 my-10">
             <StatCard value="₪3.67M" label="Average property price" />
@@ -693,8 +704,8 @@ const BuyerGuide2026 = () => {
           <p className="font-display italic text-lg text-muted-foreground mb-8">Airbnb, Rental Yields & Capital Growth</p>
 
           <div className="grid md:grid-cols-2 gap-4 my-8">
-            <ImagePlaceholder caption="Luxury hotel complex on the Zichron ridge — a major tourism anchor" aspect="4/3" />
-            <ImagePlaceholder caption="Premium coastal resort near Dor-Habonim, 10 minutes from Zichron" aspect="4/3" />
+            <GuideImage src={sold2} caption="Luxury hotel complex on the Zichron ridge — a major tourism anchor" aspect="4/3" />
+            <GuideImage src={sold3} caption="Premium coastal resort near Dor-Habonim, 10 minutes from Zichron" aspect="4/3" />
           </div>
 
           <p className="font-body text-foreground leading-relaxed mb-8">Zichron Yaakov is not merely a lifestyle purchase. For investors, it presents a compelling combination of scarcity-driven capital appreciation, a growing short-term rental market, and structural demand drivers that are unlikely to reverse.</p>
@@ -808,7 +819,7 @@ const BuyerGuide2026 = () => {
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">Conservation & Future Growth</h2>
           <p className="font-display italic text-lg text-muted-foreground mb-8">Planning Rules, Restrictions & the 2040 Vision</p>
 
-          <ImagePlaceholder caption="New boutique villa in traditional Zichron stone style — conservation-compliant construction" />
+          <GuideImage src={sold4} caption="New boutique villa in traditional Zichron stone style — conservation-compliant construction" />
 
           <h3 className="font-display text-xl font-semibold text-foreground mt-8 mb-5">Conservation: Why It Protects Your Investment</h3>
           <p className="font-body text-foreground leading-relaxed mb-8">Zichron's conservation regime is often framed as a constraint. In reality, it is the primary reason the market outperforms. Strict architectural guidelines ensure the town cannot be cheapened by speculative development. What you buy today will still be surrounded by beauty in 30 years.</p>
@@ -930,7 +941,7 @@ const BuyerGuide2026 = () => {
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">Why Spirit Real Estate</h2>
           <p className="font-display italic text-lg text-muted-foreground mb-8">Your Boutique Partner in Zichron Yaakov</p>
 
-          <ImagePlaceholder caption="The Mediterranean coastal plain as seen from Zichron Yaakov — the view residents wake up to" />
+          <GuideImage src={heroBg} caption="The Mediterranean coastal plain as seen from Zichron Yaakov — the view residents wake up to" />
 
           <p className="font-body text-foreground leading-relaxed mb-8">Spirit Real Estate is Zichron Ya'akov's boutique property firm, dedicated exclusively to this market. We do not operate across Israel. We do not juggle dozens of cities. We know every street, every courtyard, and every neighborhood in the Moshava with a depth that generalist agencies simply cannot match.</p>
 
