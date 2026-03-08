@@ -42,6 +42,7 @@ const Index = () => {
       <BlueprintSection />
       <LifestyleSection />
       <Testimonials />
+      <GuidePromoSection />
       <BottomTestimonial />
 
       {/* SEO internal links */}
