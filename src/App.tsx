@@ -21,6 +21,7 @@ import HomesForSale from "./pages/HomesForSale";
 import LivingInZichron from "./pages/LivingInZichron";
 import MovingToZichron from "./pages/MovingToZichron";
 import BlueprintDownload from "./pages/BlueprintDownload";
+import BuyerGuide2026 from "./pages/BuyerGuide2026";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
