@@ -300,7 +300,7 @@ const MoreFiltersSheet = ({ beds, onBedsChange, maxPrice, onMaxPriceChange, data
 
         <div className="border-t border-border px-5 py-4 flex gap-3">
           <button
-            onClick={() => { onBedsChange(""); onPriceChange(dataRange); }}
+            onClick={() => { onBedsChange(""); onMaxPriceChange(dataMax); }}
             className="text-sm text-muted-foreground font-body hover:text-foreground transition-colors"
           >
             {t("search.clear") || "Clear"}
