@@ -125,10 +125,12 @@ const ContactForm = () => {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="text-center mt-5 space-y-2"
           >
-            <p className="text-xs text-muted-foreground/70 font-body">
+            <p className="text-xs text-muted-foreground/70 font-body flex items-center justify-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-gold/60" />
               {t("home.contact.response_time")}
             </p>
-            <p className="text-xs text-muted-foreground/50 font-body italic">
+            <p className="text-xs text-muted-foreground/50 font-body italic flex items-center justify-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-gold/60" />
               {t("home.contact.trust_text")}
             </p>
           </motion.div>
