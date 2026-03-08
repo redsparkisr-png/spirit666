@@ -218,9 +218,7 @@ const HeroSection = () => {
                 "0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             }}
           >
-            <p className="text-white/90 font-body text-xs font-semibold tracking-wide uppercase px-4 md:px-6 pt-3 pb-0">
-              {searchLabel}
-            </p>
+            <div className="pt-2" />
             <div className="p-2 md:p-4 pt-1 md:pt-2">
               <SearchBar />
             </div>
