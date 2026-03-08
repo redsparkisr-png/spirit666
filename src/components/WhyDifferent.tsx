@@ -53,7 +53,7 @@ const WhyDifferent = () => {
         </motion.div>
 
         {/* Trust points grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto mb-10 md:mb-14">
           {trustPoints.map((point, idx) => (
             <motion.div
               key={idx}

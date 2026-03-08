@@ -146,18 +146,18 @@ const AvailableHomes = () => {
   const isEmpty = loaded && properties.length === 0;
 
   return (
-    <section id="available-homes" className="py-20 md:py-28 lg:py-32 bg-sand-light">
+    <section id="available-homes" className="py-16 md:py-24 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14"
+          className="text-center mb-8 md:mb-12"
         >
           <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">{t("home.available.pre_title")}</p>
-          <h2 className="font-display font-semibold text-foreground mb-4">{t("home.available.title")}</h2>
-          <p className="text-muted-foreground font-body max-w-xl mx-auto">{t("home.available.subtitle")}</p>
+          <h2 className="font-display font-semibold text-foreground mb-3">{t("home.available.title")}</h2>
+          <p className="text-muted-foreground font-body max-w-xl mx-auto text-sm md:text-base">{t("home.available.subtitle")}</p>
         </motion.div>
 
         {isEmpty ? (

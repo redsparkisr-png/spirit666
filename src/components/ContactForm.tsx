@@ -51,12 +51,12 @@ const ContactForm = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-10"
+            className="text-center mb-8"
           >
-            <h2 id="contact-heading" className="font-display font-semibold text-foreground mb-4 text-[22px] md:text-[28px] lg:text-[36px]">
+            <h2 id="contact-heading" className="font-display font-semibold text-foreground mb-3 text-[22px] md:text-[26px] lg:text-[30px]">
               {t("home.contact.title")}
             </h2>
-            <p className="text-muted-foreground font-body max-w-md mx-auto">
+            <p className="text-muted-foreground font-body max-w-md mx-auto text-sm md:text-base">
               {t("home.contact.subtitle")}
             </p>
           </motion.div>

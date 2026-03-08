@@ -70,7 +70,7 @@ const GuidePromoSection = () => {
                 ? "איך משפחות מחו\"ל רוכשות נדל\"ן בזכרון יעקב"
                 : "How Overseas Families Buy Property in Zichron Yaakov"}
             </p>
-            <p className="font-body text-muted-foreground leading-relaxed mb-8">
+            <p className="font-body text-muted-foreground leading-relaxed mb-6 text-sm md:text-base">
               {isHe
                 ? "למדו את תהליך הרכישה, מחירים מקובלים, השכונות הטובות ביותר והטעויות הנפוצות שרוכשים מחו\"ל עושים."
                 : "Learn the buying process, typical prices, the best neighborhoods and common mistakes overseas buyers make."}

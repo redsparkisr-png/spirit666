@@ -35,19 +35,19 @@ const SoldHomes = () => {
   const isEmpty = loaded && items.length === 0;
 
   return (
-    <section className="py-20 md:py-28 lg:py-32 bg-secondary">
+    <section className="py-16 md:py-24 bg-secondary">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14"
+          className="text-center mb-8 md:mb-12"
         >
           <p className="text-bronze font-body text-sm tracking-widest uppercase mb-3">
             {t("home.sold.pre_title")}
           </p>
-          <h2 className="text-3xl md:text-[34px] font-display font-semibold text-foreground mb-4">
+          <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
             {t("home.sold.title")}
           </h2>
         </motion.div>
