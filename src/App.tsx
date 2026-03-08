@@ -38,6 +38,12 @@ function detectLang(): "en" | "he" {
 
 const RootRedirect = () => <Navigate to={`/${detectLang()}/`} replace />;
 
+const PageLoader = () => (
+  <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -45,32 +51,34 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <LanguageProvider>
-          <Routes>
-            <Route path="/" element={<RootRedirect />} />
-            <Route path="/:lang" element={<LanguageLayout />}>
-              <Route index element={<Index />} />
-              <Route path="privacy" element={<Privacy />} />
-              <Route path="terms" element={<Terms />} />
-              <Route path="accessibility" element={<Accessibility />} />
-              <Route path="cookies" element={<CookiePolicy />} />
-              <Route path="sell" element={<Sell />} />
-              <Route path="about" element={<About />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="properties" element={<Properties />} />
-              <Route path="property/:slug" element={<PropertyDetail />} />
-              <Route path="buying-property-zichron-yaakov" element={<BuyingProperty />} />
-              <Route path="homes-for-sale-zichron-yaakov" element={<HomesForSale />} />
-              <Route path="living-in-zichron-yaakov" element={<LivingInZichron />} />
-              <Route path="moving-to-zichron-yaakov" element={<MovingToZichron />} />
-              <Route path="blueprint-download" element={<BlueprintDownload />} />
-              <Route path="buyer-guide-2026" element={<BuyerGuide2026 />} />
-              <Route path="admin" element={<Admin />} />
-            </Route>
-            {/* Backward compat for /admin */}
-            <Route path="/admin" element={<Admin />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<RootRedirect />} />
+              <Route path="/:lang" element={<LanguageLayout />}>
+                <Route index element={<Index />} />
+                <Route path="privacy" element={<Privacy />} />
+                <Route path="terms" element={<Terms />} />
+                <Route path="accessibility" element={<Accessibility />} />
+                <Route path="cookies" element={<CookiePolicy />} />
+                <Route path="sell" element={<Sell />} />
+                <Route path="about" element={<About />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="properties" element={<Properties />} />
+                <Route path="property/:slug" element={<PropertyDetail />} />
+                <Route path="buying-property-zichron-yaakov" element={<BuyingProperty />} />
+                <Route path="homes-for-sale-zichron-yaakov" element={<HomesForSale />} />
+                <Route path="living-in-zichron-yaakov" element={<LivingInZichron />} />
+                <Route path="moving-to-zichron-yaakov" element={<MovingToZichron />} />
+                <Route path="blueprint-download" element={<BlueprintDownload />} />
+                <Route path="buyer-guide-2026" element={<BuyerGuide2026 />} />
+                <Route path="admin" element={<Admin />} />
+              </Route>
+              {/* Backward compat for /admin */}
+              <Route path="/admin" element={<Admin />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </LanguageProvider>
       </BrowserRouter>
     </TooltipProvider>
