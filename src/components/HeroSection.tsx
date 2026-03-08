@@ -46,10 +46,10 @@ const HeroSection = () => {
   const searchLabel = isHe ? "חיפוש נכסים זמינים" : "Search Available Homes";
 
   return (
-    <section className="relative flex flex-col items-center overflow-hidden">
+    <section className="relative flex flex-col items-center">
       {/* Background image with subtle cinematic zoom */}
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-0 overflow-hidden"
         initial={{ scale: 1.02 }}
         animate={{ scale: 1.05 }}
         transition={{ duration: 10, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
