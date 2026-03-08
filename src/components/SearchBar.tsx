@@ -273,13 +273,15 @@ const MoreFiltersSheet = ({ beds, onBedsChange, maxPrice, onMaxPriceChange, data
 
           {/* Price Range */}
           <div>
-            <p className="text-sm font-body font-medium text-foreground mb-3">{t("search.price_range")}</p>
+            <p className="text-sm font-body font-medium text-foreground mb-1">
+              {lang === "he" ? "עד" : "Up to"} {formatPrice(maxPrice)}
+            </p>
             <div className="space-y-3 pt-1">
               <SliderPrimitive.Root
-                value={priceRange}
-                onValueChange={(val) => onPriceChange(val as [number, number])}
-                min={dataRange[0]}
-                max={dataRange[1]}
+                value={[maxPrice]}
+                onValueChange={(val) => onMaxPriceChange(val[0])}
+                min={0}
+                max={dataMax}
                 step={50000}
                 className="relative flex w-full touch-none select-none items-center h-5"
               >
@@ -287,11 +289,10 @@ const MoreFiltersSheet = ({ beds, onBedsChange, maxPrice, onMaxPriceChange, data
                   <SliderPrimitive.Range className="absolute h-full bg-gold" />
                 </SliderPrimitive.Track>
                 <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-card border-charcoal shadow-sm focus-visible:outline-none" />
-                <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-card border-charcoal shadow-sm focus-visible:outline-none" />
               </SliderPrimitive.Root>
               <div className="flex justify-between text-xs text-muted-foreground font-body">
-                <span>{formatPrice(priceRange[0])}</span>
-                <span>{formatPrice(priceRange[1])}</span>
+                <span>₪0</span>
+                <span>{formatPrice(dataMax)}</span>
               </div>
             </div>
           </div>
