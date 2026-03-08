@@ -189,7 +189,7 @@ const HeroSection = () => {
 
             {/* Micro description under guide CTA */}
             <p
-              className="text-white/55 font-body"
+              className="text-white/80 font-body"
               style={{
                 fontSize: "clamp(11px, 1.2vw, 13px)",
                 lineHeight: 1.4,
