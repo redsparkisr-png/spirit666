@@ -148,21 +148,9 @@ const HeroSection = () => {
             {supportingLine}
           </motion.p>
 
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.42 }}
-            className="text-white/75 font-body mt-3"
-            style={{
-              fontSize: "clamp(14px, 1.6vw, 17px)",
-              lineHeight: 1.5,
-              textShadow: "0 1px 8px rgba(0,0,0,0.3)",
-              maxWidth: "520px",
-            }}
-          >
-            {subheadline}
-          </motion.p>
+          {/* Subheadline - removed */}
+
+
 
           {/* CTA Buttons */}
           <motion.div
@@ -212,24 +200,8 @@ const HeroSection = () => {
             </p>
           </motion.div>
 
-          {/* Trust signals */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className={`flex flex-col sm:flex-row flex-wrap gap-x-5 gap-y-1.5 mt-5 ${isHe ? "sm:flex-row-reverse" : ""}`}
-          >
-            {trustSignals.map((signal, i) => (
-              <span
-                key={i}
-                className="inline-flex items-center gap-1.5 text-white/70 font-body"
-                style={{ fontSize: "clamp(11px, 1.1vw, 13px)" }}
-              >
-                <CheckCircle className="w-3.5 h-3.5 text-gold flex-shrink-0" />
-                {signal}
-              </span>
-            ))}
-          </motion.div>
+
+
         </div>
 
         {/* Search bar — centered */}
