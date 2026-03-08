@@ -198,27 +198,6 @@ const HeroSection = () => {
             </p>
           </motion.div>
 
-          {/* Trust signals */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.65 }}
-            className={`flex flex-wrap gap-x-5 gap-y-2 mt-6 ${isHe ? "justify-end" : "justify-start"}`}
-          >
-            {trustSignals.map((item, idx) => (
-              <span
-                key={idx}
-                className="flex items-center gap-1.5 text-white/80 font-body"
-                style={{
-                  fontSize: "clamp(11px, 1.1vw, 13px)",
-                  textShadow: "0 1px 6px rgba(0,0,0,0.4)",
-                }}
-              >
-                <item.icon className="w-3.5 h-3.5 text-gold flex-shrink-0" />
-                {item.text}
-              </span>
-            ))}
-          </motion.div>
         </div>
 
         {/* Search bar — centered */}
