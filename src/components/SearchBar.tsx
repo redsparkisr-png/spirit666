@@ -209,9 +209,9 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
 interface MoreFiltersSheetProps {
   beds: string;
   onBedsChange: (val: string) => void;
-  priceRange: [number, number];
-  onPriceChange: (val: [number, number]) => void;
-  dataRange: [number, number];
+  maxPrice: number;
+  onMaxPriceChange: (val: number) => void;
+  dataMax: number;
   onClose: () => void;
 }
 
