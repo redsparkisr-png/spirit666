@@ -383,7 +383,7 @@ const SearchBar = ({
   const locationOptions = locations.map((l) => ({ value: getName(l), label: getName(l) }));
   const typeOptions = propertyTypes.map((pt) => ({ value: getName(pt), label: getName(pt) }));
 
-  const activeFilterCount = (selectedBeds ? 1 : 0) + (priceRange[0] > dataRange[0] || priceRange[1] < dataRange[1] ? 1 : 0);
+  const activeFilterCount = (selectedBeds ? 1 : 0) + (maxPrice < dataMax ? 1 : 0);
 
   // ─── INLINE (Properties page) ───
   if (inline) {
