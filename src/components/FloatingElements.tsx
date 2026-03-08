@@ -61,7 +61,7 @@ const FloatingElements = () => {
             onClick={openWhatsApp}
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
-            className="w-14 h-14 bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,35%)] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
+            className="w-14 h-14 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
             aria-label="Contact us on WhatsApp"
           >
             <MessageCircle className="w-6 h-6 text-primary-foreground" />

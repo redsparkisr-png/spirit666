@@ -21,12 +21,15 @@ export const useAuth = () => {
     }
     setUser(u);
     try {
-      const { data, error: rpcError } = await supabase.rpc("has_role", {
-        _user_id: u.id,
-        _role: "admin",
-      });
-      if (rpcError) throw rpcError;
-      setIsAdmin(!!data);
+      // Check for admin OR super_admin role
+      const results = await Promise.all([
+        supabase.rpc("has_role", { _user_id: u.id, _role: "admin" }),
+        supabase.rpc("has_role", { _user_id: u.id, _role: "super_admin" }),
+      ]);
+      const hasAdmin = results.some(r => !!r.data);
+      const hasError = results.find(r => r.error);
+      if (hasError?.error) throw hasError.error;
+      setIsAdmin(hasAdmin);
     } catch (e: any) {
       if (isDev) console.warn("Role check failed:", e?.message);
       setIsAdmin(false);

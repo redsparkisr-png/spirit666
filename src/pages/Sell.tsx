@@ -123,7 +123,9 @@ const Sell = () => {
               </p>
             </motion.div>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <label htmlFor="sell-name" className="sr-only">{t("sell.cta.placeholder_name")}</label>
               <input
+                id="sell-name"
                 type="text"
                 placeholder={t("sell.cta.placeholder_name")}
                 value={formData.name}
@@ -131,7 +133,9 @@ const Sell = () => {
                 maxLength={100}
                 className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               />
+              <label htmlFor="sell-phone" className="sr-only">{t("sell.cta.placeholder_phone")}</label>
               <input
+                id="sell-phone"
                 type="tel"
                 placeholder={t("sell.cta.placeholder_phone")}
                 value={formData.phone}
@@ -139,7 +143,9 @@ const Sell = () => {
                 maxLength={20}
                 className="w-full px-5 py-4 rounded-lg border border-border bg-card text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               />
+              <label htmlFor="sell-email" className="sr-only">{t("sell.cta.placeholder_email")}</label>
               <input
+                id="sell-email"
                 type="email"
                 placeholder={t("sell.cta.placeholder_email")}
                 value={formData.email}
