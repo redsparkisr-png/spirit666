@@ -65,7 +65,7 @@ const GuidePromoSection = () => {
             >
               {isHe ? "מדריך חינמי לרוכשים מחו\"ל" : "Free Guide for Overseas Buyers"}
             </h2>
-            <p className="font-display italic text-lg text-muted-foreground mb-5">
+            <p className="font-display italic text-base md:text-lg text-muted-foreground mb-4">
               {isHe
                 ? "איך משפחות מחו\"ל רוכשות נדל\"ן בזכרון יעקב"
                 : "How Overseas Families Buy Property in Zichron Yaakov"}
