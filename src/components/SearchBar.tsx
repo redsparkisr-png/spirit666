@@ -215,7 +215,7 @@ interface MoreFiltersSheetProps {
   onClose: () => void;
 }
 
-const MoreFiltersSheet = ({ beds, onBedsChange, priceRange, onPriceChange, dataRange, onClose }: MoreFiltersSheetProps) => {
+const MoreFiltersSheet = ({ beds, onBedsChange, maxPrice, onMaxPriceChange, dataMax, onClose }: MoreFiltersSheetProps) => {
   const { t } = useSiteContent();
   const { lang } = useLanguage();
 
