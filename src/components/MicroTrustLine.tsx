@@ -1,17 +1,15 @@
 import { motion } from "framer-motion";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { Shield, Users, Handshake, MapPin } from "lucide-react";
-import { useLanguage } from "@/lib/i18n";
 
 const MicroTrustLine = () => {
   const { t } = useSiteContent();
-  const { lang } = useLanguage();
 
   const items = [
-    { icon: Shield, labelEn: "Licensed Professionals", labelHe: "מתווכים מורשים" },
-    { icon: Users, labelEn: "70+ Families", labelHe: "70+ משפחות" },
-    { icon: Handshake, labelEn: "Strategic Negotiation", labelHe: "משא ומתן אסטרטגי" },
-    { icon: MapPin, labelEn: "Local Specialists", labelHe: "מומחים מקומיים" },
+    { icon: Shield, key: "home.trust_line.item_1" },
+    { icon: Users, key: "home.trust_line.item_2" },
+    { icon: Handshake, key: "home.trust_line.item_3" },
+    { icon: MapPin, key: "home.trust_line.item_4" },
   ];
 
   return (
@@ -35,7 +33,7 @@ const MicroTrustLine = () => {
             >
               <item.icon className="w-4 h-4 text-gold/70 flex-shrink-0" />
               <span className="text-[13px] md:text-[14px] text-primary-foreground/70 font-body tracking-wide whitespace-nowrap">
-                {lang === "he" ? item.labelHe : item.labelEn}
+                {t(item.key)}
               </span>
             </motion.div>
           ))}
