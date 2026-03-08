@@ -164,7 +164,7 @@ const BuyerGuide2026 = () => {
               : "This guide is available exclusively to our clients. Contact us via WhatsApp to receive your personal access link."}
           </p>
           <a
-            href={`https://wa.me/972544976268?text=${whatsappMsg}`}
+            href={`https://wa.me/972522820632?text=${whatsappMsg}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white py-4 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"

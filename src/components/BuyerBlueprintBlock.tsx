@@ -35,7 +35,7 @@ const BuyerBlueprintBlock = () => {
       ? "שלום, אשמח לקבל את מדריך הקונה לזכרון יעקב."
       : "Hello, I would like to receive the Zichron Yaakov Buyer Blueprint."
   );
-  const whatsappUrl = `https://wa.me/972544976268?text=${whatsappMessage}`;
+  const whatsappUrl = `https://wa.me/972522820632?text=${whatsappMessage}`;
 
   return (
     <section className="py-20 md:py-28 bg-card relative overflow-hidden" aria-labelledby="buyer-blueprint-heading">
