@@ -209,13 +209,13 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
 interface MoreFiltersSheetProps {
   beds: string;
   onBedsChange: (val: string) => void;
-  priceRange: [number, number];
-  onPriceChange: (val: [number, number]) => void;
-  dataRange: [number, number];
+  maxPrice: number;
+  onMaxPriceChange: (val: number) => void;
+  dataMax: number;
   onClose: () => void;
 }
 
-const MoreFiltersSheet = ({ beds, onBedsChange, priceRange, onPriceChange, dataRange, onClose }: MoreFiltersSheetProps) => {
+const MoreFiltersSheet = ({ beds, onBedsChange, maxPrice, onMaxPriceChange, dataMax, onClose }: MoreFiltersSheetProps) => {
   const { t } = useSiteContent();
   const { lang } = useLanguage();
 
@@ -273,13 +273,15 @@ const MoreFiltersSheet = ({ beds, onBedsChange, priceRange, onPriceChange, dataR
 
           {/* Price Range */}
           <div>
-            <p className="text-sm font-body font-medium text-foreground mb-3">{t("search.price_range")}</p>
+            <p className="text-sm font-body font-medium text-foreground mb-1">
+              {lang === "he" ? "עד" : "Up to"} {formatPrice(maxPrice)}
+            </p>
             <div className="space-y-3 pt-1">
               <SliderPrimitive.Root
-                value={priceRange}
-                onValueChange={(val) => onPriceChange(val as [number, number])}
-                min={dataRange[0]}
-                max={dataRange[1]}
+                value={[maxPrice]}
+                onValueChange={(val) => onMaxPriceChange(val[0])}
+                min={0}
+                max={dataMax}
                 step={50000}
                 className="relative flex w-full touch-none select-none items-center h-5"
               >
@@ -287,11 +289,10 @@ const MoreFiltersSheet = ({ beds, onBedsChange, priceRange, onPriceChange, dataR
                   <SliderPrimitive.Range className="absolute h-full bg-gold" />
                 </SliderPrimitive.Track>
                 <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-card border-charcoal shadow-sm focus-visible:outline-none" />
-                <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-card border-charcoal shadow-sm focus-visible:outline-none" />
               </SliderPrimitive.Root>
               <div className="flex justify-between text-xs text-muted-foreground font-body">
-                <span>{formatPrice(priceRange[0])}</span>
-                <span>{formatPrice(priceRange[1])}</span>
+                <span>₪0</span>
+                <span>{formatPrice(dataMax)}</span>
               </div>
             </div>
           </div>
@@ -299,7 +300,7 @@ const MoreFiltersSheet = ({ beds, onBedsChange, priceRange, onPriceChange, dataR
 
         <div className="border-t border-border px-5 py-4 flex gap-3">
           <button
-            onClick={() => { onBedsChange(""); onPriceChange(dataRange); }}
+            onClick={() => { onBedsChange(""); onMaxPriceChange(dataMax); }}
             className="text-sm text-muted-foreground font-body hover:text-foreground transition-colors"
           >
             {t("search.clear") || "Clear"}
@@ -333,8 +334,8 @@ const SearchBar = ({
 
   const [locations, setLocations] = useState<Option[]>([]);
   const [propertyTypes, setPropertyTypes] = useState<Option[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 20_000_000]);
-  const [dataRange, setDataRange] = useState<[number, number]>([0, 20_000_000]);
+  const [maxPrice, setMaxPrice] = useState<number>(20_000_000);
+  const [dataMax, setDataMax] = useState<number>(20_000_000);
 
   const [selectedLocations, setSelectedLocations] = useState<string[]>(
     initialLocation ? initialLocation.split(",") : []
@@ -357,13 +358,9 @@ const SearchBar = ({
       if (priceRes.data && priceRes.data.length > 0) {
         const prices = priceRes.data.map((p) => Number(p.price_number)).filter((n) => n > 0);
         if (prices.length > 0) {
-          const min = Math.min(...prices);
           const max = Math.max(...prices);
-          setDataRange([min, max]);
-          setPriceRange([
-            initialPriceMin ? Number(initialPriceMin) : min,
-            initialPriceMax ? Number(initialPriceMax) : max,
-          ]);
+          setDataMax(max);
+          setMaxPrice(initialPriceMax ? Number(initialPriceMax) : max);
         }
       }
     });
@@ -379,15 +376,14 @@ const SearchBar = ({
     if (selectedLocations.length > 0) params.set("location", selectedLocations.join(","));
     if (selectedType) params.set("type", selectedType);
     if (selectedBeds) params.set("beds", selectedBeds);
-    if (priceRange[0] > dataRange[0]) params.set("priceMin", String(priceRange[0]));
-    if (priceRange[1] < dataRange[1]) params.set("priceMax", String(priceRange[1]));
+    if (maxPrice < dataMax) params.set("priceMax", String(maxPrice));
     navigate(`/${lang}/properties?${params.toString()}`);
   };
 
   const locationOptions = locations.map((l) => ({ value: getName(l), label: getName(l) }));
   const typeOptions = propertyTypes.map((pt) => ({ value: getName(pt), label: getName(pt) }));
 
-  const activeFilterCount = (selectedBeds ? 1 : 0) + (priceRange[0] > dataRange[0] || priceRange[1] < dataRange[1] ? 1 : 0);
+  const activeFilterCount = (selectedBeds ? 1 : 0) + (maxPrice < dataMax ? 1 : 0);
 
   // ─── INLINE (Properties page) ───
   if (inline) {
@@ -407,18 +403,19 @@ const SearchBar = ({
             </div>
           </div>
           <div className="flex flex-col gap-1.5 col-span-2 md:col-span-1">
-            <span className="text-xs font-body text-muted-foreground">{t("search.price_range")}</span>
+            <span className="text-xs font-body text-muted-foreground">
+              {lang === "he" ? "עד" : "Up to"} {formatPrice(maxPrice)}
+            </span>
             <div className="space-y-2 pt-1">
-              <SliderPrimitive.Root value={priceRange} onValueChange={(val) => setPriceRange(val as [number, number])} min={dataRange[0]} max={dataRange[1]} step={50000} className="relative flex w-full touch-none select-none items-center h-5">
+              <SliderPrimitive.Root value={[maxPrice]} onValueChange={(val) => setMaxPrice(val[0])} min={0} max={dataMax} step={50000} className="relative flex w-full touch-none select-none items-center h-5">
                 <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-muted">
                   <SliderPrimitive.Range className="absolute h-full bg-gold" />
                 </SliderPrimitive.Track>
                 <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 shadow-sm focus-visible:outline-none bg-card border-charcoal" />
-                <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 shadow-sm focus-visible:outline-none bg-card border-charcoal" />
               </SliderPrimitive.Root>
               <div className="flex justify-between text-[11px] font-body text-muted-foreground">
-                <span>{formatPrice(priceRange[0])}</span>
-                <span>{formatPrice(priceRange[1])}</span>
+                <span>₪0</span>
+                <span>{formatPrice(dataMax)}</span>
               </div>
             </div>
           </div>
@@ -467,15 +464,17 @@ const SearchBar = ({
               </div>
             </div>
 
-            {/* Price Range inline */}
+            {/* Price — single thumb "Up to" */}
             <div>
-              <span className="text-[10px] font-body text-white/80 font-semibold tracking-wide uppercase mb-0.5 block">{t("search.price_range")}</span>
+              <span className="text-[10px] font-body text-white/80 font-semibold tracking-wide uppercase mb-0.5 block">
+                {lang === "he" ? "עד" : "Up to"} {formatPrice(maxPrice)}
+              </span>
               <div className="space-y-0.5">
                 <SliderPrimitive.Root
-                  value={priceRange}
-                  onValueChange={(val) => setPriceRange(val as [number, number])}
-                  min={dataRange[0]}
-                  max={dataRange[1]}
+                  value={[maxPrice]}
+                  onValueChange={(val) => setMaxPrice(val[0])}
+                  min={0}
+                  max={dataMax}
                   step={50000}
                   className="relative flex w-full touch-none select-none items-center h-4"
                 >
@@ -483,11 +482,10 @@ const SearchBar = ({
                     <SliderPrimitive.Range className="absolute h-full bg-gold" />
                   </SliderPrimitive.Track>
                   <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
-                  <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
                 </SliderPrimitive.Root>
                 <div className="flex justify-between text-[10px] font-body text-white/90 font-semibold">
-                  <span>{formatPrice(priceRange[0])}</span>
-                  <span>{formatPrice(priceRange[1])}</span>
+                  <span>₪0</span>
+                  <span>{formatPrice(dataMax)}</span>
                 </div>
               </div>
             </div>
@@ -532,13 +530,15 @@ const SearchBar = ({
           {/* Row 2: Price Range + Search CTA */}
           <div className="grid grid-cols-3 gap-5 items-end">
             <div className="col-span-2 flex flex-col gap-1">
-              <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase">{t("search.price_range")}</span>
+              <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase">
+                {lang === "he" ? "עד" : "Up to"} {formatPrice(maxPrice)}
+              </span>
               <div className="space-y-1.5 pt-0.5">
                 <SliderPrimitive.Root
-                  value={priceRange}
-                  onValueChange={(val) => setPriceRange(val as [number, number])}
-                  min={dataRange[0]}
-                  max={dataRange[1]}
+                  value={[maxPrice]}
+                  onValueChange={(val) => setMaxPrice(val[0])}
+                  min={0}
+                  max={dataMax}
                   step={50000}
                   className="relative flex w-full touch-none select-none items-center h-5"
                 >
@@ -546,11 +546,10 @@ const SearchBar = ({
                     <SliderPrimitive.Range className="absolute h-full bg-gold" />
                   </SliderPrimitive.Track>
                   <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
-                  <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 bg-white border-white/80 shadow-sm focus-visible:outline-none" />
                 </SliderPrimitive.Root>
                 <div className="flex justify-between text-[11px] font-body text-white/90 font-semibold">
-                  <span>{formatPrice(priceRange[0])}</span>
-                  <span>{formatPrice(priceRange[1])}</span>
+                  <span>₪0</span>
+                  <span>{formatPrice(dataMax)}</span>
                 </div>
               </div>
             </div>
