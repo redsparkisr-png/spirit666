@@ -144,6 +144,7 @@ const LanguageLayout = () => {
       </a>
       <Outlet />
       <CookieNotice />
+      <AccessibilityWidget />
     </div>
   );
 };
