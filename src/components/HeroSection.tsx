@@ -148,21 +148,9 @@ const HeroSection = () => {
             {supportingLine}
           </motion.p>
 
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.42 }}
-            className="text-white/75 font-body mt-3"
-            style={{
-              fontSize: "clamp(14px, 1.6vw, 17px)",
-              lineHeight: 1.5,
-              textShadow: "0 1px 8px rgba(0,0,0,0.3)",
-              maxWidth: "520px",
-            }}
-          >
-            {subheadline}
-          </motion.p>
+          {/* Subheadline - removed */}
+
+
 
           {/* CTA Buttons */}
           <motion.div
