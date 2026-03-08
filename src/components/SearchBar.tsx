@@ -99,7 +99,7 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
   // Underline-style for hero, boxed for inline
    const triggerClasses = inline
     ? "flex items-center justify-between w-full bg-card border border-border text-foreground rounded-lg px-3 py-2.5 text-sm font-body cursor-pointer hover:border-charcoal/30 transition-colors"
-    : "flex items-center justify-between w-full bg-white/[0.06] border border-white/25 text-white rounded-lg px-3 py-2.5 text-sm font-body font-medium cursor-pointer hover:border-white/40 transition-colors";
+    : "flex items-center justify-between w-full bg-white/[0.10] border border-white/30 text-white rounded-lg px-3 py-2.5 text-sm font-body font-medium cursor-pointer hover:border-white/50 transition-colors";
 
   const renderOptions = (forLightBg: boolean) => (
     <div className="py-1.5 max-h-[320px] overflow-y-auto">
