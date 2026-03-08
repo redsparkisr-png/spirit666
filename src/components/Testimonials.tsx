@@ -19,7 +19,7 @@ export const FeaturedTestimonial = () => {
           "{t("home.testimonials.quote_1")}"
         </p>
         <div className="flex items-center justify-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center border border-gold/30">
             <span className="text-xs font-body font-bold text-primary">DS</span>
           </div>
           <div className="text-start">
@@ -49,7 +49,7 @@ export const BottomTestimonial = () => {
           "{t("home.testimonials.quote_5")}"
         </p>
         <div className="flex items-center justify-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center border border-gold/30">
             <span className="text-xs font-body font-bold text-primary">YM</span>
           </div>
           <div className="text-start">
@@ -105,7 +105,7 @@ const Testimonials = () => {
             >
               <Quote className="w-7 h-7 text-gold/5 absolute top-5 right-6 group-hover:text-gold/10 transition-colors rtl:right-auto rtl:left-6" />
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-gold/30">
                   <span className="text-xs font-body font-bold text-primary">{item.initials}</span>
                 </div>
                 <div className="min-w-0">

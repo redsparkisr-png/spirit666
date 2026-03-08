@@ -180,7 +180,8 @@ const HeroSection = () => {
                 }}
               >
                 <Download className="w-4 h-4 flex-shrink-0" />
-                {guideCta}
+                <span className="hidden sm:inline">{guideCta}</span>
+                <span className="sm:hidden">{isHe ? "המדריך החינמי" : "Free Buying Guide"}</span>
               </a>
             </div>
 
