@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
