@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,23 +7,25 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "@/lib/i18n";
 import LanguageLayout from "@/components/LanguageLayout";
 import Index from "./pages/Index";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import Accessibility from "./pages/Accessibility";
-import CookiePolicy from "./pages/CookiePolicy";
-import Sell from "./pages/Sell";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Admin from "./pages/Admin";
-import Properties from "./pages/Properties";
-import PropertyDetail from "./pages/PropertyDetail";
-import BuyingProperty from "./pages/BuyingProperty";
-import HomesForSale from "./pages/HomesForSale";
-import LivingInZichron from "./pages/LivingInZichron";
-import MovingToZichron from "./pages/MovingToZichron";
-import BlueprintDownload from "./pages/BlueprintDownload";
-import BuyerGuide2026 from "./pages/BuyerGuide2026";
-import NotFound from "./pages/NotFound";
+
+// Lazy-load non-critical pages for code splitting
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Accessibility = lazy(() => import("./pages/Accessibility"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const Sell = lazy(() => import("./pages/Sell"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Admin = lazy(() => import("./pages/Admin"));
+const Properties = lazy(() => import("./pages/Properties"));
+const PropertyDetail = lazy(() => import("./pages/PropertyDetail"));
+const BuyingProperty = lazy(() => import("./pages/BuyingProperty"));
+const HomesForSale = lazy(() => import("./pages/HomesForSale"));
+const LivingInZichron = lazy(() => import("./pages/LivingInZichron"));
+const MovingToZichron = lazy(() => import("./pages/MovingToZichron"));
+const BlueprintDownload = lazy(() => import("./pages/BlueprintDownload"));
+const BuyerGuide2026 = lazy(() => import("./pages/BuyerGuide2026"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
