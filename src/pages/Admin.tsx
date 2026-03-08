@@ -7,10 +7,11 @@ import LeadsList from "@/components/admin/LeadsList";
 import ContentManager from "@/components/admin/ContentManager";
 import LocationsManager from "@/components/admin/LocationsManager";
 import PropertyTypesManager from "@/components/admin/PropertyTypesManager";
+import GuideManager from "@/components/admin/GuideManager";
 import { useState } from "react";
 import { LogOut } from "lucide-react";
 
-const tabs = ["Available", "Sold", "Lifestyle", "Leads", "Content", "Locations", "Property Types"] as const;
+const tabs = ["Available", "Sold", "Lifestyle", "Leads", "Content", "Locations", "Property Types", "Guide"] as const;
 
 const Admin = () => {
   const { user, isAdmin, loading, error, signOut, retry } = useAuth();
