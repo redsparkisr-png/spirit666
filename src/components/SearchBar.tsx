@@ -376,8 +376,7 @@ const SearchBar = ({
     if (selectedLocations.length > 0) params.set("location", selectedLocations.join(","));
     if (selectedType) params.set("type", selectedType);
     if (selectedBeds) params.set("beds", selectedBeds);
-    if (priceRange[0] > dataRange[0]) params.set("priceMin", String(priceRange[0]));
-    if (priceRange[1] < dataRange[1]) params.set("priceMax", String(priceRange[1]));
+    if (maxPrice < dataMax) params.set("priceMax", String(maxPrice));
     navigate(`/${lang}/properties?${params.toString()}`);
   };
 
