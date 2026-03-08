@@ -56,11 +56,19 @@ const TAG_STYLES: Record<string, string> = {
 
 const getTagStyle = (tag: string) => TAG_STYLES[tag] || "bg-muted text-muted-foreground border-border";
 
+const isNewListing = (createdAt: string) => {
+  const created = new Date(createdAt);
+  const now = new Date();
+  const diffDays = (now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24);
+  return diffDays <= 14;
+};
+
 const PropertyCard = ({ property, index, detailsLabel }: { property: Property; index: number; detailsLabel: string }) => {
   const images = property.images || [];
   const carousel = useCarousel(Math.max(images.length, 1));
   const { lang } = useLanguage();
   const tags = property.tags || [];
+  const isNew = isNewListing(property.created_at);
 
   return (
     <Link to={`/${lang}/property/${property.slug || property.id}`} className="block cursor-pointer">
@@ -79,6 +87,11 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" />
           ))}
           {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
+          {isNew && (
+            <span className="absolute top-3 right-3 rtl:right-auto rtl:left-3 bg-gold text-primary-foreground text-[11px] font-body font-semibold tracking-wider uppercase px-3 py-1 rounded-full shadow-md">
+              {lang === "he" ? "חדש" : "New"}
+            </span>
+          )}
           {property.property_status && property.property_status !== "Active" && (
             <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">{property.property_status}</span>
           )}
