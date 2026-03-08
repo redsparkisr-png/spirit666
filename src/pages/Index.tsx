@@ -16,6 +16,7 @@ import ExitIntentPopup from "@/components/ExitIntentPopup";
 import BlueprintSection from "@/components/BlueprintSection";
 import MarketSnapshot from "@/components/MarketSnapshot";
 import SchemaOrg from "@/components/SchemaOrg";
+import GuidePromoSection from "@/components/GuidePromoSection";
 
 const Index = () => {
   const { lang } = useLanguage();
@@ -41,6 +42,7 @@ const Index = () => {
       <BlueprintSection />
       <LifestyleSection />
       <Testimonials />
+      <GuidePromoSection />
       <BottomTestimonial />
 
       {/* SEO internal links */}

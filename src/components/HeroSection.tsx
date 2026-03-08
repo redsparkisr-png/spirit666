@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
@@ -90,11 +92,44 @@ const HeroSection = () => {
           {headline}
         </motion.h1>
 
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.45 }}
+          className="relative z-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-6 md:mt-8"
+        >
+          <Link
+            to={`/${lang}/properties`}
+            className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+            style={{ fontSize: "16px" }}
+          >
+            {lang === "he" ? "צפו בנכסים זמינים" : "See Available Homes"}
+          </Link>
+          <a
+            href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI would love to receive the guide about buying property in Zichron Yaakov.")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+            style={{
+              fontSize: "16px",
+              background: "rgba(255,255,255,0.15)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              border: "1px solid rgba(255,255,255,0.3)",
+              color: "#fff",
+            }}
+          >
+            <MessageCircle className="w-4 h-4" />
+            {lang === "he" ? "קבלו את מדריך הרכישה" : "Get the Buying Guide"}
+          </a>
+        </motion.div>
+
         {/* Search bar */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.5 }}
+          transition={{ duration: 0.55, delay: 0.6 }}
           className="w-full mt-5 md:mt-8"
         >
           <div
