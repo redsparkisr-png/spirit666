@@ -13,7 +13,7 @@ const GuidePromoSection = () => {
   const isHe = lang === "he";
 
   return (
-    <section className="py-20 md:py-28 bg-background" aria-labelledby="guide-promo-heading">
+    <section className="py-16 md:py-24 bg-background" aria-labelledby="guide-promo-heading">
       <div className="container px-6">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
           {/* Left — Image */}
@@ -61,16 +61,16 @@ const GuidePromoSection = () => {
             </p>
             <h2
               id="guide-promo-heading"
-              className="font-display font-semibold text-foreground mb-3 text-2xl md:text-[34px] leading-tight"
+              className="font-display font-semibold text-foreground mb-3 text-2xl md:text-[30px] leading-tight"
             >
               {isHe ? "מדריך חינמי לרוכשים מחו\"ל" : "Free Guide for Overseas Buyers"}
             </h2>
-            <p className="font-display italic text-lg text-muted-foreground mb-5">
+            <p className="font-display italic text-base md:text-lg text-muted-foreground mb-4">
               {isHe
                 ? "איך משפחות מחו\"ל רוכשות נדל\"ן בזכרון יעקב"
                 : "How Overseas Families Buy Property in Zichron Yaakov"}
             </p>
-            <p className="font-body text-muted-foreground leading-relaxed mb-8">
+            <p className="font-body text-muted-foreground leading-relaxed mb-6 text-sm md:text-base">
               {isHe
                 ? "למדו את תהליך הרכישה, מחירים מקובלים, השכונות הטובות ביותר והטעויות הנפוצות שרוכשים מחו\"ל עושים."
                 : "Learn the buying process, typical prices, the best neighborhoods and common mistakes overseas buyers make."}

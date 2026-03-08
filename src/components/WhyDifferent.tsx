@@ -32,28 +32,28 @@ const WhyDifferent = () => {
       ];
 
   return (
-    <section className="py-20 md:py-28 lg:py-32 bg-background">
+    <section className="py-16 md:py-24 bg-background">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-12"
+          className="text-center max-w-2xl mx-auto mb-8 md:mb-12"
         >
           <p className="text-bronze font-body text-sm tracking-widest uppercase mb-3">
             {t("home.team.pre_title")}
           </p>
-          <h2 className="text-3xl md:text-[34px] font-display font-semibold text-foreground mb-3">
+          <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
             {t("home.team.title")}
           </h2>
-          <p className="text-muted-foreground font-body text-base md:text-lg">
+          <p className="text-muted-foreground font-body text-sm md:text-base">
             {t("home.team.subtitle")}
           </p>
         </motion.div>
 
         {/* Trust points grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto mb-10 md:mb-14">
           {trustPoints.map((point, idx) => (
             <motion.div
               key={idx}

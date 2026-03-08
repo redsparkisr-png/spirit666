@@ -63,19 +63,19 @@ const LifestyleSection = () => {
   const display = items.length > 0 ? items : FALLBACK_ITEMS;
 
   return (
-    <section className="py-20 md:py-28 lg:py-32 bg-sand-light">
+    <section className="py-16 md:py-24 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14"
+          className="text-center mb-8 md:mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
+          <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
             {t("home.lifestyle.title")}
           </h2>
-          <div className="text-muted-foreground font-body max-w-lg mx-auto text-base md:text-lg space-y-2">
+          <div className="text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base space-y-2">
             <p>{t("home.lifestyle.bullet_1")}</p>
             <p>{t("home.lifestyle.bullet_2")}</p>
             <p>{t("home.lifestyle.bullet_3")}</p>

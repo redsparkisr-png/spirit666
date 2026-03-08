@@ -18,7 +18,7 @@ const ClosingCTA = () => {
   const isHe = lang === "he";
 
   return (
-    <section className="py-20 md:py-28 bg-primary relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-primary relative overflow-hidden">
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] pointer-events-none"
         style={{
@@ -34,12 +34,12 @@ const ClosingCTA = () => {
           transition={{ duration: 0.6 }}
           className="max-w-xl mx-auto text-center"
         >
-          <h2 className="font-display font-semibold text-primary-foreground text-2xl md:text-[34px] leading-tight mb-4">
+          <h2 className="font-display font-semibold text-primary-foreground text-2xl md:text-[30px] leading-tight mb-3">
             {isHe
               ? "מחפשים בית בזכרון יעקב?"
               : "Looking for a Home in Zichron Yaakov?"}
           </h2>
-          <p className="font-body text-primary-foreground/70 mb-10 text-base">
+          <p className="font-body text-primary-foreground/70 mb-8 text-sm md:text-base">
             {isHe
               ? "צפו בנכסים הזמינים שלנו או שוחחו ישירות עם חגית."
               : "Browse our available properties or chat directly with Hagit."}

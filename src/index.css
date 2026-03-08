@@ -75,7 +75,7 @@
 
   h2 {
     @apply font-display font-semibold;
-    font-size: 28px;
+    font-size: 24px;
   }
 
   h3, h4, h5, h6 {
@@ -84,7 +84,7 @@
 
   @media (min-width: 768px) {
     h2 {
-      font-size: 36px;
+      font-size: 30px;
     }
   }
 
@@ -150,6 +150,7 @@ html {
 
 [dir="rtl"] .font-display {
   font-family: "Frank Ruhl Libre", "Heebo", "Playfair Display", Georgia, serif;
+  line-height: 1.35;
 }
 
 [dir="rtl"] .font-body {
