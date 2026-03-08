@@ -103,6 +103,7 @@ const Admin = () => {
         {tab === "Content" && <ContentManager />}
         {tab === "Locations" && <LocationsManager />}
         {tab === "Property Types" && <PropertyTypesManager />}
+        {tab === "Guide" && <GuideManager />}
       </div>
     </div>
   );

@@ -93,8 +93,38 @@ const FooterLine = () => (
 /* ─── MAIN PAGE ─── */
 const BuyerGuide2026 = () => {
   const { lang } = useLanguage();
+  const [searchParams] = useSearchParams();
+  const [accessStatus, setAccessStatus] = useState<"loading" | "granted" | "denied">("loading");
 
   useEffect(() => {
+    const checkAccess = async () => {
+      if (sessionStorage.getItem("buyer_guide_access") === "granted") {
+        setAccessStatus("granted");
+        return;
+      }
+      const urlToken = searchParams.get("token");
+      if (!urlToken) {
+        setAccessStatus("denied");
+        return;
+      }
+      const { data } = await supabase
+        .from("site_content")
+        .select("value_en")
+        .eq("key", "access_token")
+        .eq("page", "buyer_guide")
+        .single();
+      if (data && data.value_en === urlToken) {
+        sessionStorage.setItem("buyer_guide_access", "granted");
+        setAccessStatus("granted");
+      } else {
+        setAccessStatus("denied");
+      }
+    };
+    checkAccess();
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (accessStatus !== "granted") return;
     document.title = "Zichron Yaakov Buyer Blueprint 2026 — Spirit Real Estate";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", "The definitive guide for English-speaking Olim buying real estate in Zichron Yaakov, Israel. Market data, neighborhood profiles, tax benefits & buying roadmap.");
@@ -102,7 +132,50 @@ const BuyerGuide2026 = () => {
     if (!robots) { robots = document.createElement("meta"); robots.setAttribute("name", "robots"); document.head.appendChild(robots); }
     robots.setAttribute("content", "noindex, nofollow");
     return () => { robots?.setAttribute("content", "index, follow"); };
-  }, []);
+  }, [accessStatus]);
+
+  if (accessStatus === "loading") {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (accessStatus === "denied") {
+    const whatsappMsg = encodeURIComponent(
+      lang === "he"
+        ? "שלום, אשמח לקבל גישה למדריך הקונה לזכרון יעקב 2026."
+        : "Hello, I would like to receive access to the Zichron Yaakov Buyer Blueprint 2026."
+    );
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex flex-col items-center justify-center py-32 px-6 text-center">
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+            <FileText className="w-8 h-8 text-primary" />
+          </div>
+          <h1 className="font-display text-3xl font-bold text-foreground mb-4">
+            {lang === "he" ? "תוכן בלעדי" : "Exclusive Content"}
+          </h1>
+          <p className="font-body text-muted-foreground max-w-md mb-8">
+            {lang === "he"
+              ? "מדריך זה זמין באופן בלעדי ללקוחותינו. צרו קשר בוואטסאפ לקבלת קישור גישה אישי."
+              : "This guide is available exclusively to our clients. Contact us via WhatsApp to receive your personal access link."}
+          </p>
+          <a
+            href={`https://wa.me/972544976268?text=${whatsappMsg}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white py-4 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+          >
+            <MessageCircle className="w-5 h-5" />
+            {lang === "he" ? "בקשו גישה בוואטסאפ" : "Request Access via WhatsApp"}
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
