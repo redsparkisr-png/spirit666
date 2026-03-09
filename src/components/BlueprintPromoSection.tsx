@@ -90,11 +90,11 @@ const BlueprintPromoSection = () => {
               style={{ fontSize: "16px" }}
             >
               <MessageCircle className="w-5 h-5" />
-              {isHe ? "קבלו את מדריך הקונה לזכרון" : "Get the Zichron Buyer Blueprint"}
+              {isHe ? "קבלו את מדריך הקונה לזכרון" : "Get the Zichron�" : "Get the Zichron Buyer Blueprint"}
             </a>
 
             <p className="mt-3 text-xs text-muted-foreground/70 font-body">
-              {isHe ? "גישה מיידית דרך וואטסאפ." : "Instant access via WhatsApp."}
+   �שלח מיידית בוואטסאפ." : "Sent instantly�." : "Instant access via WhatsApp."}
             </p>
           </motion.div>
         </div>

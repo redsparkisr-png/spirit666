@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import TrustBar from "@/components/TrustBar";
+import ShortTestimonial from "@/components/ShortTestimonial";
 import AvailableHomes from "@/components/AvailableHomes";
 import LifestyleSection from "@/components/LifestyleSection";
 import GoldenConversionPoint from "@/components/GoldenConversionPoint";
@@ -25,25 +27,35 @@ const Index = () => {
       </a>
       <SchemaOrg />
       <Header />
+
+      {/* 1. Hero */}
       <HeroSection />
       <div id="main-content" />
 
-      {/* 3. Featured Homes (limited to 6) */}
+      {/* 2. Search bar is inside HeroSection */}
+
+      {/* 3. Trust Bar */}
+      <TrustBar />
+
+      {/* 4. Short Testimonial */}
+      <ShortTestimonial />
+
+      {/* 5. Featured Homes */}
       <AvailableHomes limit={6} />
 
-      {/* 4. Lifestyle */}
+      {/* 6. Lifestyle */}
       <LifestyleSection />
 
-      {/* 5. Golden Conversion Point */}
+      {/* 7. Guide CTA Block */}
       <GoldenConversionPoint />
 
-      {/* 6. Buyer Blueprint Promotion */}
+      {/* 8. Buyer Blueprint Section */}
       <BlueprintPromoSection />
 
-      {/* 7. Testimonials */}
+      {/* 9. Testimonials */}
       <Testimonials />
 
-      {/* 8. Closing CTA */}
+      {/* 10. Closing CTA */}
       <ClosingCTA />
 
       {/* SEO internal links */}
