@@ -29,7 +29,7 @@ const Index = () => {
       <div id="main-content" />
 
       {/* 3. Featured Homes (limited to 6) */}
-      <AvailableHomes />
+      <AvailableHomes limit={6} />
 
       {/* 4. Lifestyle */}
       <LifestyleSection />

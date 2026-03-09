@@ -181,6 +181,16 @@ const BuyerGuide2026 = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
+      {/* Private Guide Header */}
+      <div className="bg-primary py-6">
+        <div className="container px-6 text-center">
+          <p className="text-xs tracking-[0.25em] uppercase font-body text-gold mb-2">Private Buyer Guide</p>
+          <p className="font-body text-primary-foreground/70 text-sm max-w-lg mx-auto">
+            This guide is shared privately with buyers researching property in Zichron Yaakov.
+          </p>
+        </div>
+      </div>
+
       {/* ═══════════════════════════════════════════
           COVER PAGE
       ═══════════════════════════════════════════ */}
