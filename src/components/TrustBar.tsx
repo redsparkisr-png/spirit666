@@ -19,10 +19,10 @@ const TrustBar = () => {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className="py-4 md:py-6 bg-primary overflow-x-auto"
+      className="py-4 md:py-6 bg-primary"
     >
       <div className="container px-6">
-        <div className="flex items-center justify-start md:justify-center gap-6 md:gap-10 min-w-max md:min-w-0">
+        <div className="grid grid-cols-2 md:flex md:items-center md:justify-center gap-x-6 gap-y-3 md:gap-10">
           {items.map((item, idx) => (
             <motion.div
               key={idx}
