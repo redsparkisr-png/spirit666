@@ -9,11 +9,11 @@ const BLUEPRINT_MSG = encodeURIComponent(
 const BLUEPRINT_URL = `https://wa.me/972522820632?text=${BLUEPRINT_MSG}`;
 
 const highlights = [
-  { en: "Real neighborhood price data", he: "נתוני מחירים אמיתיים לפי שכונות" },
-  { en: "Verified market transactions", he: "עסקאות שוק מאומתות" },
-  { en: "Investment insights", he: "תובנות השקעה" },
-  { en: "Olim tax advantages", he: "הטבות מס לעולים" },
-  { en: "Step-by-step buying roadmap", he: "מפת דרכים לתהליך הרכישה" },
+  { en: "Real neighborhood price data", he: "מחירי שכונות" },
+  { en: "Verified market transactions", he: "עסקאות שבוצעו לאחרונה" },
+  { en: "Investment insights", he: "הבדלים בין אזורי המושבה" },
+  { en: "Olim tax advantages", he: "איך לזהות הזדמנות טובה" },
+  { en: "Step-by-step buying roadmap", he: "טעויות שקונים עושים" },
 ];
 
 const BlueprintPromoSection = () => {
