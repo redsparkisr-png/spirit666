@@ -51,7 +51,9 @@ const FloatingElements = () => {
               exit={{ opacity: 0, x: 10 }}
               className="absolute bottom-full right-0 rtl:right-auto rtl:left-0 mb-2 bg-card border border-border rounded-lg shadow-lg px-3 py-2 whitespace-nowrap"
             >
-              <p className="text-xs font-body text-foreground">{t("home.floating.tooltip")}</p>
+              <p className="text-xs font-body text-foreground">
+                {t("home.floating.tooltip") || "Questions? Chat with us on WhatsApp."}
+              </p>
             </motion.div>
           )}
           <motion.button
