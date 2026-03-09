@@ -23,7 +23,7 @@ const HeroSection = () => {
     : "Trusted Local Experts on the Ground.";
 
   const supportingLine = isHe
-    ? "אנחנו עובדים בתוך השוק המקומי ומקבלים גישה לבתים, פנטהאוזים ודירות מיוחדות במושבה — לעיתים עוד לפני הפרסום."
+    ? "אנחנו עובדים בתוך השוק המקומי ומקבלים גישה לבתים, פנטהאוזים ודירות מיוחדות בזכרון יעקב — לעיתים עוד לפני הפרסום."
     : "Exclusive access to premium homes and trusted guidance through the Israeli buying process.";
 
   const guideCta = isHe

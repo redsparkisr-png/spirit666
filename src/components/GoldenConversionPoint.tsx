@@ -30,10 +30,15 @@ const GoldenConversionPoint = () => {
           <h2 className="font-display font-semibold text-primary-foreground text-2xl md:text-[34px] leading-tight mb-4">
             {isHe ? "שוקלים לקנות בית בזכרון יעקב?" : "Planning to Buy in Zichron Yaakov?"}
           </h2>
-          <p className="font-body text-primary-foreground/75 text-sm md:text-base leading-relaxed mb-8 max-w-xl mx-auto">
+          <p className="font-body text-primary-foreground/85 text-sm md:text-base leading-relaxed mb-4 max-w-xl mx-auto">
             {isHe
-              ? "לפני שמתחילים לחפש נכס, כדאי להבין איך באמת עובד השוק המקומי."
+              ? "רוב האנשים שמגיעים לחפש בית בזכרון יעקב לא מכירים את ההבדלים האמיתיים בין השכונות — וזה יכול לעלות מאות אלפי שקלים."
               : "Start with the Zichron Yaakov Buyer Blueprint \u2014 a practical guide created for English-speaking buyers researching property in the Moshava."}
+          </p>
+          <p className="font-body text-primary-foreground/70 text-sm leading-relaxed mb-8 max-w-xl mx-auto">
+            {isHe
+              ? "לכן יצרנו את המדריך לרוכשי בתים בזכרון יעקב."
+              : "A practical guide to help you navigate the local market with confidence."}
           </p>
           <a
             href={BLUEPRINT_URL}
