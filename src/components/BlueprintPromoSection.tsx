@@ -9,11 +9,14 @@ const BLUEPRINT_MSG = encodeURIComponent(
 const BLUEPRINT_URL = `https://wa.me/972522820632?text=${BLUEPRINT_MSG}`;
 
 const highlights = [
-  { en: "Real neighborhood price data", he: "מחירי שכונות" },
-  { en: "Verified market transactions", he: "עסקאות שבוצעו לאחרונה" },
-  { en: "Investment insights", he: "הבדלים בין אזורי המושבה" },
-  { en: "Olim tax advantages", he: "איך לזהות הזדמנות טובה" },
-  { en: "Step-by-step buying roadmap", he: "טעויות שקונים עושים" },
+  { en: "Real neighborhood price data", he: "מחירי בתים אמיתיים לפי שכונות בזכרון יעקב" },
+  { en: "Verified market transactions", he: "עסקאות שבוצעו בפועל ומה באמת משלמים היום" },
+  { en: "Investment insights", he: "איפה מתרכזת האוכלוסייה החזקה במושבה" },
+  { en: "Neighborhood comparison", he: "הבדלים בין השכונות ומה מתאים למשפחות" },
+  { en: "Fast-selling homes", he: "מה גורם לבתים טובים להימכר מהר" },
+  { en: "Off-market opportunities", he: "איך לזהות הזדמנות לפני שהיא מגיעה ללוחות" },
+  { en: "Common buyer mistakes", he: "טעויות שקונים עושים בשוק המקומי" },
+  { en: "Step-by-step buying roadmap", he: "ניתוח שוק מקומי שלא תמצאו ביד2" },
 ];
 
 const BlueprintPromoSection = () => {
@@ -57,7 +60,7 @@ const BlueprintPromoSection = () => {
               id="blueprint-promo-heading"
               className="font-display font-semibold text-foreground mb-2 text-2xl md:text-[30px] leading-tight"
             >
-              {isHe ? "מדריך קניית הבית בזכרון יעקב" : "Zichron Yaakov Buyer Blueprint 2026"}
+              {isHe ? "המדריך לרוכשי בתים בזכרון יעקב" : "Zichron Yaakov Buyer Blueprint 2026"}
             </h2>
             <p className="font-display italic text-base md:text-lg text-muted-foreground mb-6">
               {isHe
@@ -78,7 +81,7 @@ const BlueprintPromoSection = () => {
             {/* Private positioning line */}
             <p className="font-body text-xs text-muted-foreground/70 italic mb-4">
               {isHe
-                ? "מדריך זה משותף באופן פרטי עם רוכשים רציניים החוקרים נדל\"ן בזכרון יעקב."
+                ? "המדריך נשלח באופן פרטי למי שבוחן קנייה בזכרון יעקב."
                 : "This guide is shared privately with serious buyers exploring property in Zichron Yaakov."}
             </p>
 
@@ -90,7 +93,7 @@ const BlueprintPromoSection = () => {
               style={{ fontSize: "16px" }}
             >
               <MessageCircle className="w-5 h-5" />
-              {isHe ? "שלחו לי את המדריך" : "Get the Zichron Buyer Blueprint"}
+              {isHe ? "שלחו לי את המדריך בוואטסאפ" : "Get the Zichron Buyer Blueprint"}
             </a>
 
             <p className="mt-3 text-xs text-muted-foreground/70 font-body">

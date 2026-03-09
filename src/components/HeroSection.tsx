@@ -19,7 +19,7 @@ const HeroSection = () => {
     : "The Smart Way to Buy in Zichron Yaakov";
 
   const subtitle = isHe
-    ? "יש בתים שמגיעים ליד2 ויש כאלה שנמכרים עוד לפני שהם מופיעים שם."
+    ? "יש בתים שמגיעים ליד2 — ויש כאלה שנמכרים עוד לפני שהם מופיעים שם."
     : "Trusted Local Experts on the Ground.";
 
   const supportingLine = isHe

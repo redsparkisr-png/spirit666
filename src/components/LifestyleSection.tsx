@@ -73,35 +73,43 @@ const LifestyleSection = () => {
           className="text-center mb-8 md:mb-12"
         >
           <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
-            {isHe ? "למה משפחות מחו״ל בוחרות בזכרון יעקב" : "Why Overseas Families Choose Zichron Yaakov"}
+            {isHe ? "למה כל כך הרבה אנשים מגיעים לזכרון יעקב — ובסוף מחליטים להישאר" : "Why Overseas Families Choose Zichron Yaakov"}
           </h2>
-          <p className="text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5">
-            {isHe
-              ? "זכרון יעקב מציעה שילוב נדיר של נוף ים-תיכוני, טבע, קהילה חמה ואיכות חיים גבוהה — עם נגישות מלאה לתל אביב ולחיפה."
-              : "A rare blend of Mediterranean lifestyle, strong community and long-term value."}
-          </p>
-          <ul className={`max-w-xl mx-auto text-muted-foreground font-body text-sm space-y-2 ${isHe ? "text-right" : "text-left"}`}>
+          <div className={`text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5 space-y-2 ${isHe ? "text-right" : "text-left"}`}>
+            {isHe ? (
+              <>
+                <p>יש מקומות שנוח לגור בהם.</p>
+                <p>ויש מקומות שמרגישים כמו בית מהרגע הראשון.</p>
+                <p>זכרון יעקב היא בדיוק כזה מקום.</p>
+                <p>מושבה היסטורית על רכס הכרמל עם נוף פתוח לים, אוכלוסייה חזקה, קהילה איכותית ואיכות חיים שקשה למצוא במקומות אחרים בארץ.</p>
+              </>
+            ) : (
+              <p className="text-center">A rare blend of Mediterranean lifestyle, strong community and long-term value.</p>
+            )}
+          </div>
+          <ul className={`max-w-xl mx-auto text-muted-foreground font-body text-sm space-y-3 ${isHe ? "text-right" : "text-left"}`}>
             {(isHe
               ? [
-                  "נוף לים התיכון ושקיעות מרהיבות מעל הכרמל",
-                  "מדרחוב היסטורי עם בוטיקים, מסעדות ובתי קפה",
-                  "בתי ספר מצוינים, טבע ואווירה משפחתית בטוחה",
-                  "קהילה חזקה ומגוונת עם תחושת שייכות אמיתית",
-                  "כרמים, שבילי הליכה ומרחבים ירוקים",
-                  "נגישות קלה לתל אביב (60 דק׳) ולחיפה (20 דק׳)",
+                  { title: "נוף פתוח לים התיכון", desc: "זכרון יושבת על רכס הכרמל ומהרבה בתים במושבה ניתן לראות את האופק הכחול עד קו החוף." },
+                  { title: "טבע ושמורות טבע", desc: "חורשות, שבילי הליכה ושמורות טבע נמצאים דקות מהבית וגם חופי ים מהיפים בארץ נמצאים מתחת לגבעה." },
+                  { title: "חינוך איכותי וסביבה משפחתית", desc: "משפחות רבות בוחרות לעבור לזכרון יעקב בזכות מערכת החינוך החזקה והקהילה המקומית." },
+                  { title: "המדרחוב ההיסטורי", desc: "בתי האבן, היקבים, הגלריות והמסעדות לאורך המדרחוב יוצרים מרכז חיים ייחודי." },
+                  { title: "קהילה חזקה ואוכלוסייה איכותית", desc: "זכרון מושכת אליה משפחות שמחפשות איכות חיים וסביבה מצוינת לגדל בה ילדים." },
+                  { title: "קרבה למרכז", desc: "כשעה מתל אביב וכחצי שעה מחיפה — אבל האווירה כאן שונה לחלוטין." },
+                  { title: "ביקוש גבוה לנכסים", desc: "זכרון יעקב נשארת אחת המושבות המבוקשות בישראל ושומרת על ערך הנדל״ן לאורך שנים." },
                 ]
               : [
-                  "Coastal Mediterranean lifestyle just 60 minutes from Tel Aviv",
-                  "Strong English-speaking and international community",
-                  "Excellent schools, nature and family-friendly atmosphere",
-                  "Limited housing supply supporting long-term value",
-                  "Historic charm, vineyards and a uniquely walkable town center",
-                  "Easy access to both Tel Aviv and Haifa",
+                  { title: "Coastal Mediterranean lifestyle", desc: "Just 60 minutes from Tel Aviv" },
+                  { title: "Strong English-speaking community", desc: "International and welcoming" },
+                  { title: "Excellent schools and nature", desc: "Family-friendly atmosphere" },
+                  { title: "Limited housing supply", desc: "Supporting long-term value" },
+                  { title: "Historic charm and vineyards", desc: "Uniquely walkable town center" },
+                  { title: "Easy access", desc: "To both Tel Aviv and Haifa" },
                 ]
             ).map((item, i) => (
               <li key={i} className={`flex items-start gap-2 ${isHe ? "flex-row-reverse" : ""}`}>
-                <span className="text-gold mt-0.5 shrink-0">•</span>
-                <span>{item}</span>
+                <span className="text-gold mt-1 shrink-0">•</span>
+                <span><strong>{item.title}</strong> — {item.desc}</span>
               </li>
             ))}
           </ul>

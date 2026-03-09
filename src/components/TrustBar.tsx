@@ -8,7 +8,7 @@ const TrustBar = () => {
 
   const items = [
     { icon: Users, en: "288+ Families Assisted", he: "מעל 288 משפחות שליווינו ברכישת בית" },
-    { icon: MapPin, en: "Local Market Specialists", he: "התמחות בשוק הנדל״ן של זכרון יעקב" },
+    { icon: MapPin, en: "Local Market Specialists", he: "התמחות מלאה בשוק הנדל״ן של זכרון יעקב" },
     { icon: Shield, en: "Licensed Professionals", he: "גישה לנכסים לפני פרסום בלוחות" },
     { icon: Globe, en: "English-Speaking Guidance", he: "ליווי מקצועי עד חתימה" },
   ];

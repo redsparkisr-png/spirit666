@@ -32,7 +32,7 @@ const GoldenConversionPoint = () => {
           </h2>
           <p className="font-body text-primary-foreground/75 text-sm md:text-base leading-relaxed mb-8 max-w-xl mx-auto">
             {isHe
-              ? "התחילו עם מדריך קניית הבית בזכרון יעקב — מדריך מעשי עם מחירי שכונות, עסקאות אחרונות, וטעויות שקונים עושים."
+              ? "לפני שמתחילים לחפש נכס, כדאי להבין איך באמת עובד השוק המקומי."
               : "Start with the Zichron Yaakov Buyer Blueprint \u2014 a practical guide created for English-speaking buyers researching property in the Moshava."}
           </p>
           <a
