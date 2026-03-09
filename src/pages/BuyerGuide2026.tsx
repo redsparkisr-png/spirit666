@@ -1075,11 +1075,90 @@ const BuyerGuide2026 = () => {
               href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI just read the buyer guide and I'm interested in seeing available homes in Zichron Yaakov.")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 px-10 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
             >
               <MessageCircle className="w-5 h-5" />
               {lang === "he" ? "דברו איתנו ב-WhatsApp" : "Message Us on WhatsApp"}
             </a>
+          </div>
+        </section>
+
+        <Divider />
+
+        {/* ── CASE STUDY SECTION ── */}
+        <section>
+          <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">
+            How International Buyers Successfully Purchase in Zichron Yaakov
+          </h2>
+          <p className="font-display italic text-lg text-muted-foreground mb-10">The typical buyer journey</p>
+
+          <div className="space-y-8">
+            {[
+              { step: "01", title: "They discover the Buyer Blueprint", desc: "A comprehensive guide covering neighborhoods, prices, tax benefits and the full buying process — shared privately via WhatsApp." },
+              { step: "02", title: "They schedule a short strategy call", desc: "A focused 15-minute conversation to understand their goals, budget and timeline." },
+              { step: "03", title: "They visit properties that match their goals", desc: "Curated property viewings — including off-market opportunities — tailored to their specific requirements." },
+              { step: "04", title: "They complete the purchase with expert guidance", desc: "Full support through negotiations, legal review, and closing — with a team that speaks their language." },
+            ].map((item) => (
+              <div key={item.step} className="flex gap-5">
+                <span className="font-display font-semibold text-gold text-lg shrink-0 w-8">{item.step}</span>
+                <div>
+                  <h3 className="font-display font-semibold text-foreground text-lg mb-1">{item.title}</h3>
+                  <p className="font-body text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <Divider />
+
+        {/* ── CONVERSION SECTION ── */}
+        <section>
+          <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">
+            Thinking About Buying in Zichron Yaakov?
+          </h2>
+          <p className="font-body text-muted-foreground leading-relaxed mb-8">
+            Spirit Real Estate helps international buyers with:
+          </p>
+          <ul className="space-y-3 font-body text-foreground mb-10">
+            {[
+              "Off-market homes",
+              "Local neighborhood insight",
+              "Guidance through the Israeli buying process",
+              "Access to properties before they reach the market",
+            ].map((item, i) => (
+              <li key={i} className="flex gap-3"><span className="text-gold shrink-0">▸</span><span>{item}</span></li>
+            ))}
+          </ul>
+
+          {/* Final CTA */}
+          <div className="bg-card border border-border rounded-2xl p-10 md:p-14 text-center">
+            <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-3">
+              Book a 15-Minute Zichron Property Strategy Call
+            </h3>
+            <p className="font-body text-muted-foreground mb-8">
+              Or message us directly on WhatsApp.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI've read the Buyer Blueprint and I'd like to book a 15-minute strategy call about buying property in Zichron Yaakov.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Book a Strategy Call
+              </a>
+              <a
+                href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI just read the Buyer Blueprint. I'd love to chat about available homes in Zichron Yaakov.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-border hover:bg-muted text-foreground py-4 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Message on WhatsApp
+              </a>
+            </div>
           </div>
         </section>
 
