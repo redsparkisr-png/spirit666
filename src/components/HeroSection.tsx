@@ -162,30 +162,40 @@ const HeroSection = () => {
             className={`flex flex-col gap-4 sm:gap-5 mt-7 md:mt-9 ${isHe ? "items-end" : "items-start"}`}
           >
             <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${isHe ? "sm:flex-row-reverse" : ""}`}>
-              <Link
-                to={`/${lang}/properties`}
-                className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
-                style={{ fontSize: "16px" }}
-              >
-                {isHe ? "צפו בנכסים זמינים" : "See Available Homes"}
-              </Link>
-              <a
-                href={BLUEPRINT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
-                style={{
-                  fontSize: "15px",
-                  background: "rgba(255,255,255,0.15)",
-                  backdropFilter: "blur(8px)",
-                  WebkitBackdropFilter: "blur(8px)",
-                  border: "1px solid rgba(255,255,255,0.3)",
-                  color: "#fff",
-                }}
-              >
-                <Download className="w-4 h-4 flex-shrink-0" />
-                {guideCta}
-              </a>
+              <div className="flex flex-col gap-1.5">
+                <span className="text-white/50 text-[11px] font-body tracking-wide" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.4)" }}>
+                  {isHe ? "התחילו לחקור נכסים" : "Start exploring homes"}
+                </span>
+                <Link
+                  to={`/${lang}/properties`}
+                  className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
+                  style={{ fontSize: "16px" }}
+                >
+                  {isHe ? "צפו בנכסים זמינים" : "See Available Homes"}
+                </Link>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <span className="text-white/50 text-[11px] font-body tracking-wide" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.4)" }}>
+                  {isHe ? "חדשים בזכרון יעקב?" : "New to Zichron Yaakov?"}
+                </span>
+                <a
+                  href={BLUEPRINT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
+                  style={{
+                    fontSize: "15px",
+                    background: "rgba(255,255,255,0.15)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: "#fff",
+                  }}
+                >
+                  <Download className="w-4 h-4 flex-shrink-0" />
+                  {guideCta}
+                </a>
+              </div>
             </div>
 
             {/* Helper text under guide button */}

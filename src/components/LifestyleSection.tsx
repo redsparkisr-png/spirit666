@@ -73,13 +73,38 @@ const LifestyleSection = () => {
           className="text-center mb-8 md:mb-12"
         >
           <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
-            {t("home.lifestyle.title")}
+            {isHe ? "למה משפחות מחו״ל בוחרות בזכרון יעקב" : "Why Overseas Families Choose Zichron Yaakov"}
           </h2>
-          <div className="text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base space-y-2">
-            <p>{t("home.lifestyle.bullet_1")}</p>
-            <p>{t("home.lifestyle.bullet_2")}</p>
-            <p>{t("home.lifestyle.bullet_3")}</p>
-          </div>
+          <p className="text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5">
+            {isHe
+              ? "שילוב נדיר של אורח חיים ים-תיכוני, קהילה חזקה וערך לטווח ארוך."
+              : "A rare blend of Mediterranean lifestyle, strong community and long-term value."}
+          </p>
+          <ul className={`max-w-xl mx-auto text-muted-foreground font-body text-sm space-y-2 ${isHe ? "text-right" : "text-left"}`}>
+            {(isHe
+              ? [
+                  "אורח חיים ים-תיכוני במרחק 60 דקות מתל אביב",
+                  "קהילה חזקה של דוברי אנגלית ובינלאומיים",
+                  "בתי ספר מצוינים, טבע ואווירה משפחתית",
+                  "היצע דיור מוגבל התומך בערך לטווח ארוך",
+                  "קסם היסטורי, כרמים ומרכז עיר ייחודי להליכה",
+                  "נגישות קלה לתל אביב וחיפה",
+                ]
+              : [
+                  "Coastal Mediterranean lifestyle just 60 minutes from Tel Aviv",
+                  "Strong English-speaking and international community",
+                  "Excellent schools, nature and family-friendly atmosphere",
+                  "Limited housing supply supporting long-term value",
+                  "Historic charm, vineyards and a uniquely walkable town center",
+                  "Easy access to both Tel Aviv and Haifa",
+                ]
+            ).map((item, i) => (
+              <li key={i} className={`flex items-start gap-2 ${isHe ? "flex-row-reverse" : ""}`}>
+                <span className="text-gold mt-0.5 shrink-0">•</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7 max-w-5xl mx-auto">

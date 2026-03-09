@@ -33,7 +33,7 @@ const GoldenConversionPoint = () => {
           <p className="font-body text-primary-foreground/75 text-sm md:text-base leading-relaxed mb-8 max-w-xl mx-auto">
             {isHe
               ? "התחילו עם מדריך הקונה לזכרון יעקב — מדריך מעשי שנוצר עבור רוכשים דוברי אנגלית החוקרים נדל\"ן במושבה."
-              : "Start with the Zichron Yaakov Buyer Blueprint — a practical guide created for English-speaking buyers researching property in the Moshava."}
+              : "Start with the Zichron Yaakov Buyer Blueprint \u2014 a practical guide created for English-speaking buyers researching property in the Moshava."}
           </p>
           <a
             href={BLUEPRINT_URL}
@@ -43,10 +43,10 @@ const GoldenConversionPoint = () => {
             style={{ fontSize: "16px" }}
           >
             <MessageCircle className="w-5 h-5" />
-            {isHe ? "קבלו את מדריך הקונה" : "Get the Buyer Blueprint"}
+            {isHe ? "קבלו את מדריך הקונה לזכרון" : "Get the Zichron Buyer Blueprint"}
           </a>
           <p className="mt-3 text-xs text-primary-foreground/50 font-body">
-            {isHe ? "גישה מיידית דרך וואטסאפ." : "Instant access via WhatsApp."}
+            {isHe ? "נשלח מיידית בוואטסאפ." : "Sent instantly via WhatsApp."}
           </p>
         </motion.div>
       </div>
