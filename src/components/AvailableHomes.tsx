@@ -219,7 +219,7 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
                   to={`/${lang}/properties`}
                   className="inline-flex items-center justify-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white py-3.5 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
                 >
-                  {isHe ? "צפו בכל הנכסים" : "View All Homes"}
+                  {isHe ? "לכל הנכסים בזכרון יעקב" : "View All Homes"}
                 </Link>
               </motion.div>
             )}

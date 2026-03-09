@@ -163,7 +163,7 @@ const HeroSection = () => {
                 className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
                 style={{ fontSize: "16px" }}
               >
-                {isHe ? "צפו בנכסים זמינים" : "See Available Homes"}
+                {isHe ? "צפו בנכסים בזכרון יעקב" : "See Available Homes"}
               </Link>
               <a
                 href={BLUEPRINT_URL}

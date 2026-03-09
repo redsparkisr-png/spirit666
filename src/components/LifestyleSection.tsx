@@ -77,18 +77,18 @@ const LifestyleSection = () => {
           </h2>
           <p className="text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5">
             {isHe
-              ? "שילוב נדיר של אורח חיים ים-תיכוני, קהילה חזקה וערך לטווח ארוך."
+              ? "זכרון יעקב מציעה שילוב נדיר של נוף ים-תיכוני, טבע, קהילה חמה ואיכות חיים גבוהה — עם נגישות מלאה לתל אביב ולחיפה."
               : "A rare blend of Mediterranean lifestyle, strong community and long-term value."}
           </p>
           <ul className={`max-w-xl mx-auto text-muted-foreground font-body text-sm space-y-2 ${isHe ? "text-right" : "text-left"}`}>
             {(isHe
               ? [
-                  "אורח חיים ים-תיכוני במרחק 60 דקות מתל אביב",
-                  "קהילה חזקה של דוברי אנגלית ובינלאומיים",
-                  "בתי ספר מצוינים, טבע ואווירה משפחתית",
-                  "היצע דיור מוגבל התומך בערך לטווח ארוך",
-                  "קסם היסטורי, כרמים ומרכז עיר ייחודי להליכה",
-                  "נגישות קלה לתל אביב וחיפה",
+                  "נוף לים התיכון ושקיעות מרהיבות מעל הכרמל",
+                  "מדרחוב היסטורי עם בוטיקים, מסעדות ובתי קפה",
+                  "בתי ספר מצוינים, טבע ואווירה משפחתית בטוחה",
+                  "קהילה חזקה ומגוונת עם תחושת שייכות אמיתית",
+                  "כרמים, שבילי הליכה ומרחבים ירוקים",
+                  "נגישות קלה לתל אביב (60 דק׳) ולחיפה (20 דק׳)",
                 ]
               : [
                   "Coastal Mediterranean lifestyle just 60 minutes from Tel Aviv",
