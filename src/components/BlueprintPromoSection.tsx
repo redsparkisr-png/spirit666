@@ -90,7 +90,7 @@ const BlueprintPromoSection = () => {
               style={{ fontSize: "16px" }}
             >
               <MessageCircle className="w-5 h-5" />
-              {isHe ? "קבלו את מדריך הקונה" : "Get the Buyer Blueprint"}
+              {isHe ? "קבלו את מדריך הקונה לזכרון" : "Get the Zichron Buyer Blueprint"}
             </a>
 
             <p className="mt-3 text-xs text-muted-foreground/70 font-body">
