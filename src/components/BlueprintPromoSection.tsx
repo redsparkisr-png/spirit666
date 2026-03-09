@@ -15,7 +15,7 @@ const highlights = [
   { en: "Neighborhood comparison", he: "הבדלים בין השכונות ומה מתאים למשפחות" },
   { en: "Fast-selling homes", he: "מה גורם לבתים טובים להימכר מהר" },
   { en: "Off-market opportunities", he: "איך לזהות הזדמנות לפני שהיא מגיעה ללוחות" },
-  { en: "Common buyer mistakes", he: "טעויות שקונים עושים בשוק המקומי" },
+  { en: "Common buyer mistakes", he: "טעויות נפוצות שקונים עושים בזכרון יעקב ואיך להימנע מהן" },
   { en: "Step-by-step buying roadmap", he: "ניתוח שוק מקומי שלא תמצאו ביד2" },
 ];
 
