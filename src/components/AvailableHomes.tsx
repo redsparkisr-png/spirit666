@@ -226,15 +226,24 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
           </>
         )}
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-center text-sm text-muted-foreground/80 italic font-body mt-10 max-w-lg mx-auto"
+          className="text-center mt-10 max-w-lg mx-auto space-y-2"
         >
-          {t("home.available.bottom_text")}
-        </motion.p>
+          <p className="text-sm text-muted-foreground/80 font-body">
+            {isHe
+              ? "חלק מהבתים הטובים ביותר בזכרון יעקב נמכרים עוד לפני שהם מגיעים ללוחות."
+              : "Some of our best opportunities are sold quietly and never reach public listing sites."}
+          </p>
+          <p className="text-sm text-muted-foreground/80 font-body">
+            {isHe
+              ? "שלחו הודעה ונשלח לכם הזדמנויות חדשות כשמגיעות לשוק."
+              : "Message us to access off-market homes in Zichron Yaakov."}
+          </p>
+        </motion.div>
       </div>
     </section>
   );
