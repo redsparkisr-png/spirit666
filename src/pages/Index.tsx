@@ -2,20 +2,15 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import MicroTrustLine from "@/components/MicroTrustLine";
-import { FeaturedTestimonial, BottomTestimonial } from "@/components/Testimonials";
 import AvailableHomes from "@/components/AvailableHomes";
-import ContactForm from "@/components/ContactForm";
-import SoldHomes from "@/components/SoldHomes";
-import WhyDifferent from "@/components/WhyDifferent";
 import LifestyleSection from "@/components/LifestyleSection";
+import GoldenConversionPoint from "@/components/GoldenConversionPoint";
+import BlueprintPromoSection from "@/components/BlueprintPromoSection";
 import Testimonials from "@/components/Testimonials";
 import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
-import MarketSnapshot from "@/components/MarketSnapshot";
 import SchemaOrg from "@/components/SchemaOrg";
-import GuidePromoSection from "@/components/GuidePromoSection";
 import ClosingCTA from "@/components/ClosingCTA";
 
 const Index = () => {
@@ -32,17 +27,23 @@ const Index = () => {
       <Header />
       <HeroSection />
       <div id="main-content" />
-      <MicroTrustLine />
-      <FeaturedTestimonial />
+
+      {/* 3. Featured Homes (limited to 6) */}
       <AvailableHomes />
-      <MarketSnapshot />
-      <ContactForm />
-      <SoldHomes />
-      <WhyDifferent />
+
+      {/* 4. Lifestyle */}
       <LifestyleSection />
+
+      {/* 5. Golden Conversion Point */}
+      <GoldenConversionPoint />
+
+      {/* 6. Buyer Blueprint Promotion */}
+      <BlueprintPromoSection />
+
+      {/* 7. Testimonials */}
       <Testimonials />
-      <GuidePromoSection />
-      <BottomTestimonial />
+
+      {/* 8. Closing CTA */}
       <ClosingCTA />
 
       {/* SEO internal links */}
@@ -73,7 +74,6 @@ const Index = () => {
       <TrustSection />
       <FloatingElements />
       <ExitIntentPopup />
-      {/* CookieNotice moved to LanguageLayout */}
     </main>
   );
 };

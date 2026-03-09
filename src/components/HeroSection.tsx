@@ -1,49 +1,42 @@
 import { motion } from "framer-motion";
-import { MessageCircle, Download, CheckCircle, ShieldCheck, Users, MapPin } from "lucide-react";
+import { MessageCircle, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.webp";
-import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
 import SearchBar from "./SearchBar";
 
+const BLUEPRINT_MSG = encodeURIComponent(
+  "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint."
+);
+const BLUEPRINT_URL = `https://wa.me/972522820632?text=${BLUEPRINT_MSG}`;
+
 const HeroSection = () => {
-  const { t } = useSiteContent();
   const { lang } = useLanguage();
   const isHe = lang === "he";
 
   const headline = isHe
-    ? "קנו בזכרון יעקב בביטחון"
-    : "Buy in Zichron Yaakov with Confidence";
+    ? "הדרך החכמה לקנות בזכרון יעקב"
+    : "The Smart Way to Buy in Zichron Yaakov";
+
+  const subtitle = isHe
+    ? "מומחים מקומיים מהשטח."
+    : "Trusted Local Experts on the Ground.";
 
   const supportingLine = isHe
-    ? "עם מומחים מקומיים מהשטח"
-    : "With Trusted Local Experts on the Ground";
-
-  const subheadline = isHe
-    ? "נכסים נבחרים, מומחיות מקומית וליווי מלא לרוכשים מחו״ל."
-    : "Curated homes, local expertise and full guidance for overseas buyers.";
+    ? "גישה בלעדית לנכסי פרימיום וליווי מקצועי לאורך תהליך הרכישה בישראל."
+    : "Exclusive access to premium homes and trusted guidance through the Israeli buying process.";
 
   const guideCta = isHe
-    ? "הורידו את המדריך החינמי לרכישה בזכרון יעקב"
-    : "Get the Free Zichron Yaakov Home Buying Guide";
+    ? "קבלו את מדריך הקונה לזכרון"
+    : "Get the Zichron Buyer Blueprint";
 
   const guideMicro = isHe
-    ? "מדריך מעשי לשכונות, מחירים ותהליך הרכישה."
-    : "A practical guide to neighborhoods, prices and the buying process.";
+    ? "מדריך חינמי לשכונות, מחירים ותהליך הרכישה.\nנשלח מיידית בוואטסאפ."
+    : "Free guide covering neighborhoods, prices and the buying process.\nSent instantly via WhatsApp.";
 
-  const trustSignals = isHe
-    ? [
-        { icon: Users, text: "מעל 70 משפחות בינלאומיות סומכות עלינו" },
-        { icon: ShieldCheck, text: "סוכני נדל\"ן מורשים" },
-        { icon: MapPin, text: "מומחים מקומיים בזכרון יעקב" },
-      ]
-    : [
-        { icon: Users, text: "Trusted by 70+ international families" },
-        { icon: ShieldCheck, text: "Licensed real estate professionals" },
-        { icon: MapPin, text: "Local Zichron Yaakov experts" },
-      ];
-
-  const searchLabel = isHe ? "חיפוש נכסים זמינים" : "Search Available Homes";
+  const trustLine = isHe
+    ? "נבחרנו על ידי רוכשים דוברי אנגלית מארה״ב, בריטניה, קנדה ואוסטרליה."
+    : "Trusted by English-speaking buyers from the US, UK, Canada and Australia.";
 
   return (
     <section className="relative flex flex-col items-center">
@@ -69,7 +62,7 @@ const HeroSection = () => {
         />
       </motion.div>
 
-      {/* Directional gradient overlay for text readability */}
+      {/* Directional gradient overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -78,8 +71,6 @@ const HeroSection = () => {
             : "linear-gradient(90deg, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.10) 65%, rgba(0,0,0,0.0) 100%)",
         }}
       />
-
-      {/* Additional top-to-bottom gradient for overall readability */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -87,7 +78,7 @@ const HeroSection = () => {
         }}
       />
 
-      {/* Content — left-aligned text */}
+      {/* Content */}
       <div
         className="relative z-10 w-full flex flex-col px-5"
         style={{
@@ -125,15 +116,14 @@ const HeroSection = () => {
               fontSize: "clamp(30px, 5vw, 50px)",
               lineHeight: 1.2,
               letterSpacing: "-0.01em",
-              textShadow:
-                "0 2px 20px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)",
+              textShadow: "0 2px 20px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)",
               textWrap: "balance" as any,
             }}
           >
             {headline}
           </motion.h1>
 
-          {/* Supporting line */}
+          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -145,9 +135,24 @@ const HeroSection = () => {
               textShadow: "0 2px 12px rgba(0,0,0,0.4)",
             }}
           >
-            {supportingLine}
+            {subtitle}
           </motion.p>
 
+          {/* Supporting line */}
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.42 }}
+            className="text-white/75 font-body mt-3"
+            style={{
+              fontSize: "clamp(14px, 1.6vw, 17px)",
+              lineHeight: 1.5,
+              textShadow: "0 1px 8px rgba(0,0,0,0.4)",
+              maxWidth: "560px",
+            }}
+          >
+            {supportingLine}
+          </motion.p>
 
           {/* CTA Buttons */}
           <motion.div
@@ -156,7 +161,6 @@ const HeroSection = () => {
             transition={{ duration: 0.55, delay: 0.5 }}
             className={`flex flex-col gap-4 sm:gap-5 mt-7 md:mt-9 ${isHe ? "items-end" : "items-start"}`}
           >
-            {/* Primary CTA row */}
             <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${isHe ? "sm:flex-row-reverse" : ""}`}>
               <Link
                 to={`/${lang}/properties`}
@@ -166,7 +170,7 @@ const HeroSection = () => {
                 {isHe ? "צפו בנכסים זמינים" : "See Available Homes"}
               </Link>
               <a
-                href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI would love to receive the guide about buying property in Zichron Yaakov.")}`}
+                href={BLUEPRINT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
@@ -180,28 +184,38 @@ const HeroSection = () => {
                 }}
               >
                 <Download className="w-4 h-4 flex-shrink-0" />
-                <span className="hidden sm:inline">{guideCta}</span>
-                <span className="sm:hidden">{isHe ? "המדריך החינמי" : "Free Buying Guide"}</span>
+                {guideCta}
               </a>
             </div>
 
-            {/* Micro description under guide CTA */}
+            {/* Helper text under guide button */}
             <p
-              className="text-white font-body"
+              className="text-white/70 font-body whitespace-pre-line"
               style={{
                 fontSize: "clamp(11px, 1.2vw, 13px)",
-                lineHeight: 1.4,
+                lineHeight: 1.5,
                 marginTop: "-4px",
                 textShadow: "0 1px 8px rgba(0,0,0,0.5)",
               }}
             >
               {guideMicro}
             </p>
-          </motion.div>
 
+            {/* Trust signal */}
+            <p
+              className="text-white/60 font-body"
+              style={{
+                fontSize: "clamp(11px, 1.1vw, 12px)",
+                letterSpacing: "0.02em",
+                textShadow: "0 1px 6px rgba(0,0,0,0.4)",
+              }}
+            >
+              {trustLine}
+            </p>
+          </motion.div>
         </div>
 
-        {/* Search bar — centered */}
+        {/* Search bar */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -215,8 +229,7 @@ const HeroSection = () => {
               backdropFilter: "blur(4px) saturate(1.15)",
               WebkitBackdropFilter: "blur(4px) saturate(1.15)",
               border: "1px solid hsl(39 37% 55% / 0.3)",
-              boxShadow:
-                "0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
+              boxShadow: "0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             }}
           >
             <div className="pt-2" />
