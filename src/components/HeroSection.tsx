@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MessageCircle, Download } from "lucide-react";
+import { Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.webp";
 import { useLanguage } from "@/lib/i18n";
@@ -31,12 +31,8 @@ const HeroSection = () => {
     : "Get the Zichron Buyer Blueprint";
 
   const guideMicro = isHe
-    ? "מדריך חינמי לשכונות, מחירים ותהליך הרכישה.\nנשלח מיידית בוואטסאפ."
-    : "Free guide covering neighborhoods, prices and the buying process.\nSent instantly via WhatsApp.";
-
-  const trustLine = isHe
-    ? "נבחרנו על ידי רוכשים דוברי אנגלית מארה״ב, בריטניה, קנדה ואוסטרליה."
-    : "Trusted by English-speaking buyers from the US, UK, Canada and Australia.";
+    ? "מדריך חינמי לשכונות, מחירים ותהליך הרכישה."
+    : "Free guide covering neighborhoods, prices and the buying process.";
 
   return (
     <section className="relative flex flex-col items-center">
@@ -52,8 +48,8 @@ const HeroSection = () => {
           alt="Aerial view of Zichron Yaakov with Mediterranean Sea views"
           className="w-full h-full object-cover"
           style={{
-            objectPosition: "50% 30%",
-            filter: "contrast(1.06) saturate(1.08) brightness(0.95)",
+            objectPosition: "50% 35%",
+            filter: "contrast(1.06) saturate(1.08) brightness(0.92)",
           }}
           width={2000}
           height={1125}
@@ -62,19 +58,19 @@ const HeroSection = () => {
         />
       </motion.div>
 
-      {/* Directional gradient overlay */}
+      {/* Top-heavy gradient for text readability */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: isHe
-            ? "linear-gradient(270deg, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.10) 65%, rgba(0,0,0,0.0) 100%)"
-            : "linear-gradient(90deg, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.10) 65%, rgba(0,0,0,0.0) 100%)",
+            ? "linear-gradient(270deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.12) 60%, rgba(0,0,0,0.0) 100%)"
+            : "linear-gradient(90deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.12) 60%, rgba(0,0,0,0.0) 100%)",
         }}
       />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.25) 100%)",
+          background: "linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.20) 100%)",
         }}
       />
 
@@ -87,7 +83,7 @@ const HeroSection = () => {
         }}
       >
         <div
-          className={`max-w-[700px] flex flex-col ${isHe ? "items-end text-right mr-auto md:mr-0 md:ml-auto md:pr-[6%]" : "items-start text-left ml-auto md:ml-0 md:pl-[6%]"}`}
+          className={`max-w-[600px] flex flex-col ${isHe ? "items-end text-right mr-auto md:mr-0 md:ml-auto md:pr-[6%]" : "items-start text-left ml-auto md:ml-0 md:pl-[6%]"}`}
         >
           {/* Brand label */}
           <motion.p
@@ -100,7 +96,7 @@ const HeroSection = () => {
               fontWeight: 450,
               letterSpacing: "0.18em",
               opacity: 0.82,
-              textShadow: "0 2px 14px rgba(0,0,0,0.35)",
+              textShadow: "0 2px 14px rgba(0,0,0,0.5)",
             }}
           >
             SPIRIT REAL ESTATE
@@ -116,7 +112,7 @@ const HeroSection = () => {
               fontSize: "clamp(30px, 5vw, 50px)",
               lineHeight: 1.2,
               letterSpacing: "-0.01em",
-              textShadow: "0 2px 20px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)",
+              textShadow: "0 3px 24px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.4)",
               textWrap: "balance" as any,
             }}
           >
@@ -132,7 +128,7 @@ const HeroSection = () => {
             style={{
               fontSize: "clamp(18px, 2.5vw, 24px)",
               lineHeight: 1.3,
-              textShadow: "0 2px 12px rgba(0,0,0,0.4)",
+              textShadow: "0 2px 16px rgba(0,0,0,0.5)",
             }}
           >
             {subtitle}
@@ -147,8 +143,8 @@ const HeroSection = () => {
             style={{
               fontSize: "clamp(14px, 1.6vw, 17px)",
               lineHeight: 1.5,
-              textShadow: "0 1px 8px rgba(0,0,0,0.4)",
-              maxWidth: "560px",
+              textShadow: "0 1px 10px rgba(0,0,0,0.5)",
+              maxWidth: "520px",
             }}
           >
             {supportingLine}
@@ -159,68 +155,47 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.5 }}
-            className={`flex flex-col gap-4 sm:gap-5 mt-7 md:mt-9 ${isHe ? "items-end" : "items-start"}`}
+            className={`flex flex-col gap-4 mt-8 md:mt-10 ${isHe ? "items-end" : "items-start"}`}
           >
             <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${isHe ? "sm:flex-row-reverse" : ""}`}>
-              <div className="flex flex-col gap-1.5">
-                <span className="text-white/50 text-[11px] font-body tracking-wide" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.4)" }}>
-                  {isHe ? "התחילו לחקור נכסים" : "Start exploring homes"}
-                </span>
-                <Link
-                  to={`/${lang}/properties`}
-                  className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
-                  style={{ fontSize: "16px" }}
-                >
-                  {isHe ? "צפו בנכסים זמינים" : "See Available Homes"}
-                </Link>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <span className="text-white/50 text-[11px] font-body tracking-wide" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.4)" }}>
-                  {isHe ? "חדשים בזכרון יעקב?" : "New to Zichron Yaakov?"}
-                </span>
-                <a
-                  href={BLUEPRINT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
-                  style={{
-                    fontSize: "15px",
-                    background: "rgba(255,255,255,0.15)",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
-                    border: "1px solid rgba(255,255,255,0.3)",
-                    color: "#fff",
-                  }}
-                >
-                  <Download className="w-4 h-4 flex-shrink-0" />
-                  {guideCta}
-                </a>
-              </div>
+              <Link
+                to={`/${lang}/properties`}
+                className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
+                style={{ fontSize: "16px" }}
+              >
+                {isHe ? "צפו בנכסים זמינים" : "See Available Homes"}
+              </Link>
+              <a
+                href={BLUEPRINT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
+                style={{
+                  fontSize: "15px",
+                  background: "rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(12px) saturate(1.2)",
+                  WebkitBackdropFilter: "blur(12px) saturate(1.2)",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  color: "#fff",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1)",
+                }}
+              >
+                <Download className="w-4 h-4 flex-shrink-0" />
+                {guideCta}
+              </a>
             </div>
 
-            {/* Helper text under guide button */}
+            {/* Helper text */}
             <p
-              className="text-white/70 font-body whitespace-pre-line"
+              className="text-white/60 font-body"
               style={{
                 fontSize: "clamp(11px, 1.2vw, 13px)",
                 lineHeight: 1.5,
-                marginTop: "-4px",
+                marginTop: "-2px",
                 textShadow: "0 1px 8px rgba(0,0,0,0.5)",
               }}
             >
               {guideMicro}
-            </p>
-
-            {/* Trust signal */}
-            <p
-              className="text-white/60 font-body"
-              style={{
-                fontSize: "clamp(11px, 1.1vw, 12px)",
-                letterSpacing: "0.02em",
-                textShadow: "0 1px 6px rgba(0,0,0,0.4)",
-              }}
-            >
-              {trustLine}
             </p>
           </motion.div>
         </div>

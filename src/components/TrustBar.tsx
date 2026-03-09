@@ -22,7 +22,7 @@ const TrustBar = () => {
       className="py-5 md:py-6 bg-primary"
     >
       <div className="container px-6">
-        <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-10 justify-items-center">
           {items.map((item, idx) => (
             <motion.div
               key={idx}
