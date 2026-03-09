@@ -9,11 +9,11 @@ const BLUEPRINT_MSG = encodeURIComponent(
 const BLUEPRINT_URL = `https://wa.me/972522820632?text=${BLUEPRINT_MSG}`;
 
 const highlights = [
-  { en: "Real neighborhood price data", he: "נתוני מחירים אמיתיים לפי שכונות" },
-  { en: "Verified market transactions", he: "עסקאות שוק מאומתות" },
-  { en: "Investment insights", he: "תובנות השקעה" },
-  { en: "Olim tax advantages", he: "הטבות מס לעולים" },
-  { en: "Step-by-step buying roadmap", he: "מפת דרכים לתהליך הרכישה" },
+  { en: "Real neighborhood price data", he: "מחירי שכונות" },
+  { en: "Verified market transactions", he: "עסקאות שבוצעו לאחרונה" },
+  { en: "Investment insights", he: "הבדלים בין אזורי המושבה" },
+  { en: "Olim tax advantages", he: "איך לזהות הזדמנות טובה" },
+  { en: "Step-by-step buying roadmap", he: "טעויות שקונים עושים" },
 ];
 
 const BlueprintPromoSection = () => {
@@ -57,7 +57,7 @@ const BlueprintPromoSection = () => {
               id="blueprint-promo-heading"
               className="font-display font-semibold text-foreground mb-2 text-2xl md:text-[30px] leading-tight"
             >
-              {isHe ? "מדריך הקונה לזכרון יעקב 2026" : "Zichron Yaakov Buyer Blueprint 2026"}
+              {isHe ? "מדריך קניית הבית בזכרון יעקב" : "Zichron Yaakov Buyer Blueprint 2026"}
             </h2>
             <p className="font-display italic text-base md:text-lg text-muted-foreground mb-6">
               {isHe
@@ -90,7 +90,7 @@ const BlueprintPromoSection = () => {
               style={{ fontSize: "16px" }}
             >
               <MessageCircle className="w-5 h-5" />
-              {isHe ? "קבלו את מדריך הקונה לזכרון" : "Get the Zichron Buyer Blueprint"}
+              {isHe ? "שלחו לי את המדריך" : "Get the Zichron Buyer Blueprint"}
             </a>
 
             <p className="mt-3 text-xs text-muted-foreground/70 font-body">

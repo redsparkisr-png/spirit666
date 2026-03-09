@@ -28,11 +28,11 @@ const GoldenConversionPoint = () => {
           className="max-w-2xl mx-auto text-center"
         >
           <h2 className="font-display font-semibold text-primary-foreground text-2xl md:text-[34px] leading-tight mb-4">
-            {isHe ? "מתכננים לרכוש בזכרון יעקב?" : "Planning to Buy in Zichron Yaakov?"}
+            {isHe ? "שוקלים לקנות בית בזכרון יעקב?" : "Planning to Buy in Zichron Yaakov?"}
           </h2>
           <p className="font-body text-primary-foreground/75 text-sm md:text-base leading-relaxed mb-8 max-w-xl mx-auto">
             {isHe
-              ? "התחילו עם מדריך הקונה לזכרון יעקב — מדריך מעשי שנוצר עבור רוכשים דוברי אנגלית החוקרים נדל\"ן במושבה."
+              ? "התחילו עם מדריך קניית הבית בזכרון יעקב — מדריך מעשי עם מחירי שכונות, עסקאות אחרונות, וטעויות שקונים עושים."
               : "Start with the Zichron Yaakov Buyer Blueprint \u2014 a practical guide created for English-speaking buyers researching property in the Moshava."}
           </p>
           <a
@@ -43,7 +43,7 @@ const GoldenConversionPoint = () => {
             style={{ fontSize: "16px" }}
           >
             <MessageCircle className="w-5 h-5" />
-            {isHe ? "קבלו את מדריך הקונה לזכרון" : "Get the Zichron Buyer Blueprint"}
+            {isHe ? "שלחו לי את המדריך" : "Get the Zichron Buyer Blueprint"}
           </a>
           <p className="mt-3 text-xs text-primary-foreground/50 font-body">
             {isHe ? "נשלח מיידית בוואטסאפ." : "Sent instantly via WhatsApp."}

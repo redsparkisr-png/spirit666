@@ -41,7 +41,7 @@ const ClosingCTA = () => {
           </h2>
           <p className="font-body text-primary-foreground/70 mb-8 text-sm md:text-base">
             {isHe
-              ? "צפו בנכסים הזמינים שלנו או שוחחו ישירות עם חגית."
+              ? "נשמח להראות לכם נכסים שמתאימים בדיוק למה שאתם מחפשים."
               : "Browse our available properties or chat directly with Hagit."}
           </p>
 
@@ -63,7 +63,7 @@ const ClosingCTA = () => {
               className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
             >
               <MessageCircle className="w-4 h-4" />
-              {isHe ? "שוחחו עם חגית" : "Chat with Hagit"}
+              {isHe ? "דברו איתנו בוואטסאפ" : "Chat with Hagit"}
             </a>
           </div>
 

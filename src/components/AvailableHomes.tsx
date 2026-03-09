@@ -163,10 +163,10 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
   const hasMore = limit && properties.length > limit;
 
   const sectionTitle = limit
-    ? (isHe ? "נכסים מובחרים בזכרון יעקב" : "Featured Homes in Zichron Yaakov")
+    ? (isHe ? "נכסים שמוצעים עכשיו בזכרון יעקב" : "Featured Homes in Zichron Yaakov")
     : t("home.available.title");
   const sectionSubtitle = limit
-    ? (isHe ? "גלו חלק מהנכסים המבוקשים ביותר הזמינים כעת במושבה." : "Explore some of the most desirable homes currently available in the Moshava.")
+    ? (isHe ? "דירות, בתים ופנטהאוזים שנמצאים כרגע בשוק המקומי." : "Explore some of the most desirable homes currently available in the Moshava.")
     : t("home.available.subtitle");
 
   return (
@@ -219,22 +219,31 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
                   to={`/${lang}/properties`}
                   className="inline-flex items-center justify-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white py-3.5 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
                 >
-                  {isHe ? "צפו בכל הנכסים" : "View All Homes"}
+                  {isHe ? "לכל הנכסים בזכרון יעקב" : "View All Homes"}
                 </Link>
               </motion.div>
             )}
           </>
         )}
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-center text-sm text-muted-foreground/80 italic font-body mt-10 max-w-lg mx-auto"
+          className="text-center mt-10 max-w-lg mx-auto space-y-2"
         >
-          {t("home.available.bottom_text")}
-        </motion.p>
+          <p className="text-sm text-muted-foreground/80 font-body">
+            {isHe
+              ? "חלק מהבתים הטובים ביותר בזכרון יעקב נמכרים עוד לפני שהם מגיעים ללוחות."
+              : "Some of our best opportunities are sold quietly and never reach public listing sites."}
+          </p>
+          <p className="text-sm text-muted-foreground/80 font-body">
+            {isHe
+              ? "שלחו הודעה ונשלח לכם הזדמנויות חדשות כשמגיעות לשוק."
+              : "Message us to access off-market homes in Zichron Yaakov."}
+          </p>
+        </motion.div>
       </div>
     </section>
   );

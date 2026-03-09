@@ -7,10 +7,10 @@ const TrustBar = () => {
   const isHe = lang === "he";
 
   const items = [
-    { icon: Shield, en: "Licensed Professionals", he: "אנשי מקצוע מורשים" },
-    { icon: Users, en: "288+ Families Assisted", he: "288+ משפחות שליוינו" },
-    { icon: Globe, en: "English-Speaking Guidance", he: "ליווי בשפה האנגלית" },
-    { icon: MapPin, en: "Local Market Specialists", he: "מומחי שוק מקומיים" },
+    { icon: Users, en: "288+ Families Assisted", he: "מעל 288 משפחות שליווינו ברכישת בית" },
+    { icon: MapPin, en: "Local Market Specialists", he: "התמחות בשוק הנדל״ן של זכרון יעקב" },
+    { icon: Shield, en: "Licensed Professionals", he: "גישה לנכסים לפני פרסום בלוחות" },
+    { icon: Globe, en: "English-Speaking Guidance", he: "ליווי מקצועי עד חתימה" },
   ];
 
   const MobileRow = ({ left, right }: { left: number; right: number }) => {
