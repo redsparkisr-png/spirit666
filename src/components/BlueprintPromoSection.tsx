@@ -9,11 +9,14 @@ const BLUEPRINT_MSG = encodeURIComponent(
 const BLUEPRINT_URL = `https://wa.me/972522820632?text=${BLUEPRINT_MSG}`;
 
 const highlights = [
-  { en: "Real neighborhood price data", he: "מחירי שכונות" },
-  { en: "Verified market transactions", he: "עסקאות שבוצעו לאחרונה" },
-  { en: "Investment insights", he: "הבדלים בין אזורי המושבה" },
-  { en: "Olim tax advantages", he: "איך לזהות הזדמנות טובה" },
-  { en: "Step-by-step buying roadmap", he: "טעויות שקונים עושים" },
+  { en: "Real neighborhood price data", he: "מחירי בתים אמיתיים לפי שכונות בזכרון יעקב" },
+  { en: "Verified market transactions", he: "עסקאות שבוצעו בפועל ומה באמת משלמים היום" },
+  { en: "Investment insights", he: "איפה מתרכזת האוכלוסייה החזקה במושבה" },
+  { en: "Neighborhood comparison", he: "הבדלים בין השכונות ומה מתאים למשפחות" },
+  { en: "Fast-selling homes", he: "מה גורם לבתים טובים להימכר מהר" },
+  { en: "Off-market opportunities", he: "איך לזהות הזדמנות לפני שהיא מגיעה ללוחות" },
+  { en: "Common buyer mistakes", he: "טעויות שקונים עושים בשוק המקומי" },
+  { en: "Step-by-step buying roadmap", he: "ניתוח שוק מקומי שלא תמצאו ביד2" },
 ];
 
 const BlueprintPromoSection = () => {
