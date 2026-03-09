@@ -62,7 +62,7 @@ const BlueprintPromoSection = () => {
             <p className="font-display italic text-base md:text-lg text-muted-foreground mb-6">
               {isHe
                 ? "המדריך המקיף לרוכשים דוברי אנגלית החוקרים נדל\"ן במושבה המבוקשת בישראל."
-                : "The definitive guide for English-speaking buyers exploring property in Israel's most desirable moshava."}
+                : "The definitive guide for English-speaking buyers exploring property in Israel\u2019s most desirable moshava."}
             </p>
 
             {/* Highlights */}
@@ -90,11 +90,11 @@ const BlueprintPromoSection = () => {
               style={{ fontSize: "16px" }}
             >
               <MessageCircle className="w-5 h-5" />
-              {isHe ? "קבלו את מדריך הקונה לזכרון" : "Get the Zichron�" : "Get the Zichron Buyer Blueprint"}
+              {isHe ? "קבלו את מדריך הקונה לזכרון" : "Get the Zichron Buyer Blueprint"}
             </a>
 
             <p className="mt-3 text-xs text-muted-foreground/70 font-body">
-   �שלח מיידית בוואטסאפ." : "Sent instantly�." : "Instant access via WhatsApp."}
+              {isHe ? "נשלח מיידית בוואטסאפ." : "Sent instantly via WhatsApp."}
             </p>
           </motion.div>
         </div>
