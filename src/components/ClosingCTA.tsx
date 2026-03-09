@@ -41,7 +41,7 @@ const ClosingCTA = () => {
           </h2>
           <p className="font-body text-primary-foreground/70 mb-8 text-sm md:text-base">
             {isHe
-              ? "נשמח להראות לכם נכסים שמתאימים בדיוק למה שאתם מחפשים."
+              ? "נשמח להראות לכם נכסים שמתאימים בדיוק למה שאתם מחפשים — כולל כאלה שלא תמיד מגיעים ללוחות הפרסום."
               : "Browse our available properties or chat directly with Hagit."}
           </p>
 

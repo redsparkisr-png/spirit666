@@ -233,6 +233,11 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="text-center mt-10 max-w-lg mx-auto space-y-2"
         >
+          <p className="text-sm font-body font-semibold text-foreground/80 mb-1">
+            {isHe
+              ? "משהו שרוב הקונים לא יודעים:"
+              : "What most buyers don't know:"}
+          </p>
           <p className="text-sm text-muted-foreground/80 font-body">
             {isHe
               ? "חלק מהבתים הטובים ביותר בזכרון יעקב נמכרים עוד לפני שהם מגיעים ללוחות."
@@ -240,7 +245,7 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
           </p>
           <p className="text-sm text-muted-foreground/80 font-body">
             {isHe
-              ? "שלחו הודעה ונשלח לכם הזדמנויות חדשות כשמגיעות לשוק."
+              ? "שלחו הודעה ונשלח לכם הזדמנויות חדשות כשהן מגיעות לשוק."
               : "Message us to access off-market homes in Zichron Yaakov."}
           </p>
         </motion.div>

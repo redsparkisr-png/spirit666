@@ -81,7 +81,7 @@ const BlueprintPromoSection = () => {
             {/* Private positioning line */}
             <p className="font-body text-xs text-muted-foreground/70 italic mb-4">
               {isHe
-                ? "מדריך זה משותף באופן פרטי עם רוכשים רציניים החוקרים נדל\"ן בזכרון יעקב."
+                ? "המדריך נשלח באופן פרטי למי שבוחן קנייה בזכרון יעקב."
                 : "This guide is shared privately with serious buyers exploring property in Zichron Yaakov."}
             </p>
 
@@ -93,7 +93,7 @@ const BlueprintPromoSection = () => {
               style={{ fontSize: "16px" }}
             >
               <MessageCircle className="w-5 h-5" />
-              {isHe ? "שלחו לי את המדריך" : "Get the Zichron Buyer Blueprint"}
+              {isHe ? "שלחו לי את המדריך בוואטסאפ" : "Get the Zichron Buyer Blueprint"}
             </a>
 
             <p className="mt-3 text-xs text-muted-foreground/70 font-body">
