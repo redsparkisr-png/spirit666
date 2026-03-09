@@ -207,7 +207,7 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
                 <PropertyCard key={p.id} property={p} index={idx} detailsLabel={t("home.available.details_button")} />
               ))}
             </div>
-            {hasMore && (
+            {limit && (
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
