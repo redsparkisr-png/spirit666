@@ -144,10 +144,12 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
   );
 };
 
-const AvailableHomes = () => {
+const AvailableHomes = ({ limit }: { limit?: number }) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loaded, setLoaded] = useState(false);
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
+  const isHe = lang === "he";
 
   useEffect(() => {
     supabase.from("properties_available").select("*").order("priority_order", { ascending: true }).then(({ data }) => {
@@ -157,6 +159,15 @@ const AvailableHomes = () => {
   }, []);
 
   const isEmpty = loaded && properties.length === 0;
+  const displayProperties = limit ? properties.slice(0, limit) : properties;
+  const hasMore = limit && properties.length > limit;
+
+  const sectionTitle = limit
+    ? (isHe ? "נכסים מובחרים בזכרון יעקב" : "Featured Homes in Zichron Yaakov")
+    : t("home.available.title");
+  const sectionSubtitle = limit
+    ? (isHe ? "גלו חלק מהנכסים המבוקשים ביותר הזמינים כעת במושבה." : "Explore some of the most desirable homes currently available in the Moshava.")
+    : t("home.available.subtitle");
 
   return (
     <section id="available-homes" className="py-16 md:py-24 bg-sand-light">
@@ -169,8 +180,8 @@ const AvailableHomes = () => {
           className="text-center mb-8 md:mb-12"
         >
           <p className="text-primary font-body text-sm tracking-wide uppercase mb-3">{t("home.available.pre_title")}</p>
-          <h2 className="font-display font-semibold text-foreground mb-3">{t("home.available.title")}</h2>
-          <p className="text-muted-foreground font-body max-w-xl mx-auto text-sm md:text-base">{t("home.available.subtitle")}</p>
+          <h2 className="font-display font-semibold text-foreground mb-3">{sectionTitle}</h2>
+          <p className="text-muted-foreground font-body max-w-xl mx-auto text-sm md:text-base">{sectionSubtitle}</p>
         </motion.div>
 
         {isEmpty ? (
@@ -190,11 +201,29 @@ const AvailableHomes = () => {
             <p className="text-center text-sm text-muted-foreground/60 font-body italic">{t("home.available.empty_text")}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {properties.map((p, idx) => (
-              <PropertyCard key={p.id} property={p} index={idx} detailsLabel={t("home.available.details_button")} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayProperties.map((p, idx) => (
+                <PropertyCard key={p.id} property={p} index={idx} detailsLabel={t("home.available.details_button")} />
+              ))}
+            </div>
+            {hasMore && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="text-center mt-10"
+              >
+                <Link
+                  to={`/${lang}/properties`}
+                  className="inline-flex items-center justify-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white py-3.5 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+                >
+                  {isHe ? "צפו בכל הנכסים" : "View All Homes"}
+                </Link>
+              </motion.div>
+            )}
+          </>
         )}
 
         <motion.p
