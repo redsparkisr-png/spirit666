@@ -15,23 +15,23 @@ const HeroSection = () => {
   const isHe = lang === "he";
 
   const headline = isHe
-    ? "הדרך החכמה לקנות בזכרון יעקב"
+    ? "מחפשים בית בזכרון יעקב?"
     : "The Smart Way to Buy in Zichron Yaakov";
 
   const subtitle = isHe
-    ? "מומחים מקומיים מהשטח."
+    ? "יש בתים שמגיעים ליד2 ויש כאלה שנמכרים עוד לפני שהם מופיעים שם."
     : "Trusted Local Experts on the Ground.";
 
   const supportingLine = isHe
-    ? "גישה בלעדית לנכסי פרימיום וליווי מקצועי לאורך תהליך הרכישה בישראל."
+    ? "אנחנו עובדים בתוך השוק המקומי ומקבלים גישה לבתים, פנטהאוזים ודירות מיוחדות במושבה — לעיתים עוד לפני הפרסום."
     : "Exclusive access to premium homes and trusted guidance through the Israeli buying process.";
 
   const guideCta = isHe
-    ? "קבלו את מדריך הקונה לזכרון"
+    ? "שלחו הודעה בוואטסאפ"
     : "Get the Zichron Buyer Blueprint";
 
   const guideMicro = isHe
-    ? "מדריך חינמי לשכונות, מחירים ותהליך הרכישה."
+    ? "הנכסים כאן מתעדכנים כל הזמן — חלקם נמכרים תוך ימים."
     : "Free guide covering neighborhoods, prices and the buying process.";
 
   return (
