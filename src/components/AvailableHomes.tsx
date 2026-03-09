@@ -163,10 +163,10 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
   const hasMore = limit && properties.length > limit;
 
   const sectionTitle = limit
-    ? (isHe ? "נכסים מובחרים בזכרון יעקב" : "Featured Homes in Zichron Yaakov")
+    ? (isHe ? "נכסים שמוצעים עכשיו בזכרון יעקב" : "Featured Homes in Zichron Yaakov")
     : t("home.available.title");
   const sectionSubtitle = limit
-    ? (isHe ? "גלו חלק מהנכסים המבוקשים ביותר הזמינים כעת במושבה." : "Explore some of the most desirable homes currently available in the Moshava.")
+    ? (isHe ? "דירות, בתים ופנטהאוזים שנמצאים כרגע בשוק המקומי." : "Explore some of the most desirable homes currently available in the Moshava.")
     : t("home.available.subtitle");
 
   return (
