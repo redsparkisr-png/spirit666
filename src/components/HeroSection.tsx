@@ -187,12 +187,13 @@ const HeroSection = () => {
 
             {/* Helper text */}
             <p
-              className="text-white/60 font-body"
+              className="text-white font-body"
               style={{
-                fontSize: "clamp(11px, 1.2vw, 13px)",
+                fontSize: "clamp(12px, 1.3vw, 14px)",
                 lineHeight: 1.5,
                 marginTop: "-2px",
-                textShadow: "0 1px 8px rgba(0,0,0,0.5)",
+                textShadow: "0 2px 12px rgba(0,0,0,0.7), 0 0 4px rgba(0,0,0,0.5)",
+                opacity: 0.85,
               }}
             >
               {guideMicro}
