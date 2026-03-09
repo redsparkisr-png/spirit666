@@ -13,6 +13,24 @@ const TrustBar = () => {
     { icon: MapPin, en: "Local Market Specialists", he: "מומחי שוק מקומיים" },
   ];
 
+  const MobileRow = ({ left, right }: { left: number; right: number }) => {
+    const L = items[left];
+    const R = items[right];
+    return (
+      <div className="flex items-center justify-center gap-2">
+        <L.icon className="w-3.5 h-3.5 text-gold/70 flex-shrink-0" />
+        <span className="text-[12px] text-primary-foreground/75 font-body tracking-wide">
+          {isHe ? L.he : L.en}
+        </span>
+        <span className="mx-1.5 text-gold/30 text-[10px]">•</span>
+        <R.icon className="w-3.5 h-3.5 text-gold/70 flex-shrink-0" />
+        <span className="text-[12px] text-primary-foreground/75 font-body tracking-wide">
+          {isHe ? R.he : R.en}
+        </span>
+      </div>
+    );
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -33,9 +51,7 @@ const TrustBar = () => {
               transition={{ duration: 0.4, delay: 0.3 + idx * 0.1 }}
               className="flex items-center"
             >
-              {idx > 0 && (
-                <span className="mx-5 w-px h-4 bg-gold/20" />
-              )}
+              {idx > 0 && <span className="mx-5 w-px h-4 bg-gold/20" />}
               <item.icon className="w-4 h-4 text-gold/70 flex-shrink-0" />
               <span className="ml-2 text-[14px] text-primary-foreground/75 font-body tracking-wide">
                 {isHe ? item.he : item.en}
@@ -44,30 +60,10 @@ const TrustBar = () => {
           ))}
         </div>
 
-        {/* Mobile: two rows, centered, with gold dot separators */}
+        {/* Mobile: two centered rows with dot separators */}
         <div className="flex md:hidden flex-col items-center gap-3">
-          <div className="flex items-center justify-center gap-2">
-            <items[0].icon className="w-3.5 h-3.5 text-gold/70 flex-shrink-0" />
-            <span className="text-[12px] text-primary-foreground/75 font-body tracking-wide">
-              {isHe ? items[0].he : items[0].en}
-            </span>
-            <span className="mx-1.5 text-gold/30 text-[10px]">•</span>
-            <items[1].icon className="w-3.5 h-3.5 text-gold/70 flex-shrink-0" />
-            <span className="text-[12px] text-primary-foreground/75 font-body tracking-wide">
-              {isHe ? items[1].he : items[1].en}
-            </span>
-          </div>
-          <div className="flex items-center justify-center gap-2">
-            <items[2].icon className="w-3.5 h-3.5 text-gold/70 flex-shrink-0" />
-            <span className="text-[12px] text-primary-foreground/75 font-body tracking-wide">
-              {isHe ? items[2].he : items[2].en}
-            </span>
-            <span className="mx-1.5 text-gold/30 text-[10px]">•</span>
-            <items[3].icon className="w-3.5 h-3.5 text-gold/70 flex-shrink-0" />
-            <span className="text-[12px] text-primary-foreground/75 font-body tracking-wide">
-              {isHe ? items[3].he : items[3].en}
-            </span>
-          </div>
+          <MobileRow left={0} right={1} />
+          <MobileRow left={2} right={3} />
         </div>
       </div>
     </motion.div>
