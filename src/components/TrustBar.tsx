@@ -30,7 +30,7 @@ const TrustBar = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.3 + idx * 0.1 }}
-              className="flex items-center gap-2 whitespace-nowrap"
+              className="flex items-center gap-2"
             >
               <item.icon className="w-4 h-4 text-gold/70 flex-shrink-0" />
               <span className="text-[12px] sm:text-[13px] md:text-[14px] text-primary-foreground/70 font-body tracking-wide">
