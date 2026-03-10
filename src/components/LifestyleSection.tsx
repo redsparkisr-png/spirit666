@@ -107,7 +107,7 @@ const LifestyleSection = () => {
                   { title: "Easy access", desc: "To both Tel Aviv and Haifa" },
                 ]
             ).map((item, i) => (
-              <li key={i} className={`flex items-start gap-2 ${isHe ? "flex-row-reverse" : ""}`}>
+              <li key={i} className="flex items-start gap-2">
                 <span className="text-gold mt-1 shrink-0">•</span>
                 <span><strong>{item.title}</strong> — {item.desc}</span>
               </li>
