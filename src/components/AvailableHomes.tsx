@@ -96,7 +96,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">{property.property_status}</span>
           )}
         </div>
-        <div className="p-5 md:p-6">
+        <div className="p-5 md:p-6 text-start">
           {property.price_label && (
             <p className="text-sm font-body font-semibold mb-2 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">{property.price_label}</p>
           )}

@@ -299,7 +299,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
         )}
 
         {/* Bullet highlights */}
-        <ul className="text-muted-foreground font-body text-sm space-y-1.5 list-disc list-inside">
+        <ul className="text-muted-foreground font-body text-sm space-y-1.5 list-disc ps-5">
           <li>{t("property.modal.bullet_1")}</li>
           <li>{t("property.modal.bullet_2")}</li>
           <li>{t("property.modal.bullet_3")}</li>
