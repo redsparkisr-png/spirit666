@@ -71,7 +71,7 @@ const BlueprintPromoSection = () => {
             {/* Highlights */}
             <ul className="space-y-3 mb-8">
               {highlights.map((item, idx) => (
-                <li key={idx} className={`flex items-center gap-3 font-body text-sm text-foreground ${isHe ? "flex-row-reverse" : ""}`}>
+                <li key={idx} className="flex items-center gap-3 font-body text-sm text-foreground">
                   <CheckCircle className="w-4 h-4 text-gold flex-shrink-0" />
                   <span>{isHe ? item.he : item.en}</span>
                 </li>
