@@ -75,7 +75,7 @@ const LifestyleSection = () => {
           <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
             {isHe ? "למה כל כך הרבה אנשים מגיעים לזכרון יעקב — ובסוף מחליטים להישאר" : "Why Overseas Families Choose Zichron Yaakov"}
           </h2>
-          <div className={`text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5 space-y-2 ${isHe ? "text-right" : "text-left"}`}>
+          <div className={`text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5 space-y-2 ${isHe ? "text-start" : "text-start"}`}>
             {isHe ? (
               <>
                 <p>יש מקומות שנוח לגור בהם.</p>
