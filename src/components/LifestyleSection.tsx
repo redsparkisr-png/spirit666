@@ -75,7 +75,7 @@ const LifestyleSection = () => {
           <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
             {isHe ? "למה כל כך הרבה אנשים מגיעים לזכרון יעקב — ובסוף מחליטים להישאר" : "Why Overseas Families Choose Zichron Yaakov"}
           </h2>
-          <div className={`text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5 space-y-2 ${isHe ? "text-right" : "text-left"}`}>
+          <div className={`text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5 space-y-2 ${isHe ? "text-start" : "text-start"}`}>
             {isHe ? (
               <>
                 <p>יש מקומות שנוח לגור בהם.</p>
@@ -87,7 +87,7 @@ const LifestyleSection = () => {
               <p className="text-center">A rare blend of Mediterranean lifestyle, strong community and long-term value.</p>
             )}
           </div>
-          <ul className={`max-w-xl mx-auto text-muted-foreground font-body text-sm space-y-3 ${isHe ? "text-right" : "text-left"}`}>
+          <ul className={`max-w-xl mx-auto text-muted-foreground font-body text-sm space-y-3 text-start`}>
             {(isHe
               ? [
                   { title: "נוף פתוח לים התיכון", desc: "מהרבה בתים במושבה ניתן לראות את האופק הכחול עד קו החוף." },
@@ -107,7 +107,7 @@ const LifestyleSection = () => {
                   { title: "Easy access", desc: "To both Tel Aviv and Haifa" },
                 ]
             ).map((item, i) => (
-              <li key={i} className={`flex items-start gap-2 ${isHe ? "flex-row-reverse" : ""}`}>
+              <li key={i} className="flex items-start gap-2">
                 <span className="text-gold mt-1 shrink-0">•</span>
                 <span><strong>{item.title}</strong> — {item.desc}</span>
               </li>
@@ -159,7 +159,7 @@ const LifestyleSection = () => {
                         {desc}
                       </p>
                     )}
-                    <div className="h-[2px] w-10 bg-gold mt-3 scale-x-0 group-hover:scale-x-100 group-focus-within:scale-x-100 origin-left transition-transform duration-500 delay-100" />
+                    <div className={`h-[2px] w-10 bg-gold mt-3 scale-x-0 group-hover:scale-x-100 group-focus-within:scale-x-100 transition-transform duration-500 delay-100 ${isHe ? "origin-right" : "origin-left"}`} />
                   </div>
                 </div>
 

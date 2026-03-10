@@ -53,7 +53,7 @@ const TrustBar = () => {
             >
               {idx > 0 && <span className="mx-5 w-px h-4 bg-gold/20" />}
               <item.icon className="w-4 h-4 text-gold/70 flex-shrink-0" />
-              <span className="ml-2 text-[14px] text-primary-foreground/75 font-body tracking-wide">
+              <span className="ms-2 text-[14px] text-primary-foreground/75 font-body tracking-wide">
                 {isHe ? item.he : item.en}
               </span>
             </motion.div>

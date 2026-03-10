@@ -31,7 +31,7 @@ const MicroTrustLine = () => {
               transition={{ duration: 0.4, delay: 0.3 + idx * 0.1 }}
               className="flex items-center gap-2"
             >
-              <item.icon className="w-4 h-4 text-gold/70 flex-shrink-0" />
+              <item.icon className="w-4 h-4 text-gold/70 flex-shrink-0 me-2" />
               <span className="text-[12px] sm:text-[13px] md:text-[14px] text-primary-foreground/70 font-body tracking-wide">
                 {t(item.key)}
               </span>

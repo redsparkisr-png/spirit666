@@ -51,7 +51,7 @@ const BlueprintPromoSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className={isHe ? "md:order-1 text-right" : ""}
+            className={isHe ? "md:order-1 text-start" : ""}
           >
             <p className="text-xs tracking-[0.2em] uppercase font-body text-gold mb-3">
               {isHe ? "מדריך בלעדי" : "Exclusive Guide"}
@@ -71,7 +71,7 @@ const BlueprintPromoSection = () => {
             {/* Highlights */}
             <ul className="space-y-3 mb-8">
               {highlights.map((item, idx) => (
-                <li key={idx} className={`flex items-center gap-3 font-body text-sm text-foreground ${isHe ? "flex-row-reverse" : ""}`}>
+                <li key={idx} className="flex items-center gap-3 font-body text-sm text-foreground">
                   <CheckCircle className="w-4 h-4 text-gold flex-shrink-0" />
                   <span>{isHe ? item.he : item.en}</span>
                 </li>
@@ -85,7 +85,7 @@ const BlueprintPromoSection = () => {
                 : "This guide is shared privately with serious buyers exploring property in Zichron Yaakov."}
             </p>
 
-            <div className={`flex flex-col sm:flex-row gap-3 ${isHe ? "sm:flex-row-reverse" : ""}`}>
+            <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href={BLUEPRINT_URL}
                 target="_blank"
@@ -99,7 +99,7 @@ const BlueprintPromoSection = () => {
                 href={BLUEPRINT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#25D366]/20 hover:-translate-y-0.5 active:scale-[0.98]"
+                className={`inline-flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#25D366]/20 hover:-translate-y-0.5 active:scale-[0.98] ${isHe ? "flex-row-reverse" : ""}`}
                 style={{ fontSize: "16px" }}
               >
                 <MessageCircle className="w-5 h-5" />
