@@ -87,7 +87,7 @@ const LifestyleSection = () => {
               <p className="text-center">A rare blend of Mediterranean lifestyle, strong community and long-term value.</p>
             )}
           </div>
-          <ul className={`max-w-xl mx-auto text-muted-foreground font-body text-sm space-y-3 ${isHe ? "text-right" : "text-left"}`}>
+          <ul className={`max-w-xl mx-auto text-muted-foreground font-body text-sm space-y-3 text-start`}>
             {(isHe
               ? [
                   { title: "נוף פתוח לים התיכון", desc: "מהרבה בתים במושבה ניתן לראות את האופק הכחול עד קו החוף." },
