@@ -73,7 +73,7 @@ const ClosingCTA = () => {
               href={GUIDE_WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-primary-foreground/70 hover:text-primary-foreground font-body text-sm transition-colors duration-300"
+              className={`inline-flex items-center gap-2 text-primary-foreground/70 hover:text-primary-foreground font-body text-sm transition-colors duration-300 ${isHe ? "flex-row-reverse" : ""}`}
             >
               <Download className="w-4 h-4" />
               {isHe

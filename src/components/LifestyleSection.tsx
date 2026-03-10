@@ -159,7 +159,7 @@ const LifestyleSection = () => {
                         {desc}
                       </p>
                     )}
-                    <div className="h-[2px] w-10 bg-gold mt-3 scale-x-0 group-hover:scale-x-100 group-focus-within:scale-x-100 origin-left transition-transform duration-500 delay-100" />
+                    <div className={`h-[2px] w-10 bg-gold mt-3 scale-x-0 group-hover:scale-x-100 group-focus-within:scale-x-100 transition-transform duration-500 delay-100 ${isHe ? "origin-right" : "origin-left"}`} />
                   </div>
                 </div>
 

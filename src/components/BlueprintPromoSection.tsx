@@ -85,7 +85,7 @@ const BlueprintPromoSection = () => {
                 : "This guide is shared privately with serious buyers exploring property in Zichron Yaakov."}
             </p>
 
-            <div className={`flex flex-col sm:flex-row gap-3 ${isHe ? "sm:flex-row-reverse" : ""}`}>
+            <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href={BLUEPRINT_URL}
                 target="_blank"

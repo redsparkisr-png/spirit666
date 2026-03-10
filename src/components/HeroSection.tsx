@@ -169,7 +169,7 @@ const HeroSection = () => {
                 href={BLUEPRINT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
+                className={`inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px] ${isHe ? "flex-row-reverse" : ""}`}
                 style={{
                   fontSize: "15px",
                   background: "rgba(255,255,255,0.12)",
