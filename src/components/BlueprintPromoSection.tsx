@@ -51,7 +51,7 @@ const BlueprintPromoSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className={isHe ? "md:order-1 text-right" : ""}
+            className={isHe ? "md:order-1 text-start" : ""}
           >
             <p className="text-xs tracking-[0.2em] uppercase font-body text-gold mb-3">
               {isHe ? "מדריך בלעדי" : "Exclusive Guide"}
