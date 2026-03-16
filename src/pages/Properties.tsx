@@ -169,6 +169,29 @@ const Properties = () => {
             {properties.map((p) => (<PropertyCard key={p.id} property={p} />))}
           </div>
         )}
+
+        {/* SEO internal links */}
+        <div className="mt-12 pt-8 border-t border-border text-center space-y-3">
+          <p className="text-sm text-muted-foreground font-body">
+            {lang === "he"
+              ? "מחפשים מידע נוסף על רכישת נכס בזכרון יעקב?"
+              : "Looking for more information about buying property in Zichron Yaakov?"}
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-xs font-body">
+            <Link to={`/${lang}/buying-property-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "מדריך רכישת נכס" : "Buying Property Guide"}
+            </Link>
+            <Link to={`/${lang}/living-in-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov"}
+            </Link>
+            <Link to={`/${lang}/guides`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "מדריכים ותובנות" : "Guides & Insights"}
+            </Link>
+            <Link to={`/${lang}/contact`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "צרו קשר" : "Contact Us"}
+            </Link>
+          </div>
+        </div>
       </div>
     </main>
   );
