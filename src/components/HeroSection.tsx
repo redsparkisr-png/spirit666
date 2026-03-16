@@ -165,10 +165,8 @@ const HeroSection = () => {
               >
                 {isHe ? "צפו בנכסים בזכרון יעקב" : "See Available Homes"}
               </Link>
-              <a
-                href={BLUEPRINT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => document.getElementById("buyer-guide-section")?.scrollIntoView({ behavior: "smooth" })}
                 className={`inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px] ${isHe ? "flex-row-reverse" : ""}`}
                 style={{
                   fontSize: "15px",
@@ -182,7 +180,7 @@ const HeroSection = () => {
               >
                 <Download className="w-4 h-4 flex-shrink-0" />
                 {guideCta}
-              </a>
+              </button>
             </div>
 
             {/* Helper text */}

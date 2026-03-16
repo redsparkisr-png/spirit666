@@ -190,7 +190,9 @@ const LifestyleSection = () => {
           transition={{ delay: 0.5, duration: 0.6 }}
           className="text-center text-muted-foreground font-body text-sm italic mt-12"
         >
-          {t("home.lifestyle.bottom_line")}
+          {isHe
+            ? "מעל 288 משפחות כבר נעזרו ב-Spirit Real Estate כדי למצוא את הבית שלהן בזכרון יעקב."
+            : t("home.lifestyle.bottom_line")}
         </motion.p>
       </div>
     </section>
