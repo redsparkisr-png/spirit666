@@ -122,7 +122,7 @@ const LifestyleSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 md:mb-12"
         >
-          <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
+          <h2 className="text-[26px] md:text-[30px] font-display font-semibold text-foreground mb-3">
             {isHe ? "למה כל כך הרבה אנשים מגיעים לזכרון יעקב — ובסוף מחליטים להישאר" : "Why Overseas Families Choose Zichron Yaakov"}
           </h2>
 
