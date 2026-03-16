@@ -236,20 +236,33 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
         )}
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-center mt-10 max-w-lg mx-auto space-y-2"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="bg-primary rounded-2xl p-8 md:p-12 mt-14 max-w-3xl mx-auto text-center"
         >
-          <p className="text-sm font-body font-semibold text-foreground/80 mb-1">
+          <h3 className="font-display font-semibold text-primary-foreground text-xl md:text-2xl mb-4">
             {t("home.offmarket.title")}
-          </p>
-          <p className="text-sm text-muted-foreground/80 font-body">
+          </h3>
+          <p className="text-sm md:text-base text-primary-foreground/85 font-body mb-2 max-w-xl mx-auto">
             {t("home.offmarket.text_1")}
           </p>
-          <p className="text-sm text-muted-foreground/80 font-body">
+          <p className="text-sm md:text-base text-primary-foreground/75 font-body mb-8 max-w-xl mx-auto">
             {t("home.offmarket.text_2")}
+          </p>
+          <a
+            href={`https://wa.me/${t("whatsapp.phone_number") || "972522820632"}?text=${encodeURIComponent(t("whatsapp.default_message") || "Hi, I'm interested in private opportunities in Zichron Yaakov.")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2.5 bg-gold hover:bg-gold-hover text-white py-4 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+            style={{ fontSize: "16px" }}
+          >
+            <MessageCircle className="w-5 h-5" />
+            {t("home.offmarket.cta") || (isHe ? "קבלו גישה להזדמנויות פרטיות" : "Get Access to Private Opportunities")}
+          </a>
+          <p className="mt-3 text-xs text-primary-foreground/50 font-body max-w-md mx-auto">
+            {t("home.offmarket.helper") || (isHe ? "שלחו הודעה ונעדכן אתכם כשנכסים רלוונטיים מגיעים לשוק — גם אם הם לא פורסמו פומבית." : "Message us and we'll let you know when relevant homes reach the market — even before they are publicly listed.")}
           </p>
         </motion.div>
       </div>
