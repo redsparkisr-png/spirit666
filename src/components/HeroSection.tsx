@@ -170,7 +170,7 @@ const HeroSection = () => {
                 opacity: 0.85,
               }}
             >
-              {t("home.hero.trust_1")} · {t("home.hero.trust_2")} · {t("home.hero.trust_3")}
+              {t("home.hero.helper_text")}
             </p>
           </motion.div>
         </div>

@@ -10,6 +10,7 @@ const HERO_KEYS = [
   { key: "home.hero.anchor_text", label: "Supporting Line" },
   { key: "home.hero.cta_primary", label: "Primary CTA Label" },
   { key: "home.hero.cta_secondary", label: "Secondary CTA Label" },
+  { key: "home.hero.helper_text", label: "Helper Text (below CTAs)" },
   { key: "home.hero.trust_1", label: "Trust Badge 1" },
   { key: "home.hero.trust_2", label: "Trust Badge 2" },
   { key: "home.hero.trust_3", label: "Trust Badge 3" },
