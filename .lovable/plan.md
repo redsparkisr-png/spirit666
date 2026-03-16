@@ -1,65 +1,123 @@
 
 
-# Spirit Real Estate — Targeted Fixes
+# Implementation Plan: Search, Price, Admin Sync & SEO Fixes
 
-## Summary
-The codebase is already in good shape from previous iterations. This pass addresses the remaining console errors and the few gaps between current state and the requirements.
+## Summary of Issues Found
 
----
-
-## 1. Fix Missing i18n Key: `property.detail.interested_title`
-
-**File: `src/hooks/useSiteContent.ts`**
-
-The console shows `[i18n] Missing key: "property.detail.interested_title"`. Add this key to the `localFallbacks` object:
-- EN: "Interested in this home?"
-- HE: "מעוניינים בנכס הזה?"
+1. **Search bar price range** dynamically shrinks to match current inventory max (lines 358-365 in SearchBar.tsx) — must be fixed to 0–20M default
+2. **Property cards on Properties page** still use `price_label` only, missing `price_number` fallback and missing premium price container
+3. **AvailableHomes cards** show old micro-copy "Photos, pricing and full details sent privately" — must remove
+4. **Properties page cards** lack the CTA button and price formatting from AvailableHomes
+5. **WhatsApp messages** are hardcoded across ~5 components (Hero, GoldenConversionPoint, BlueprintPromo, ClosingCTA, TeamTrust) — not loaded from admin
+6. **Guide content** loads from `buyer_guide_sections` table correctly in admin, but homepage guide section (GoldenConversionPoint + BlueprintPromoSection) uses hardcoded copy, not CMS
+7. **Internal SEO links** exist only at bottom of Index.tsx — need more strategic cross-linking
+8. **Admin has `price_label` as a separate text field** — need to clarify it's optional override, `price_number` is source of truth
 
 ---
 
-## 2. Fix forwardRef Console Warnings
+## Part 1–3: Price Data Structure & Display
 
-**File: `src/pages/PropertyDetail.tsx`**
+**SearchBar.tsx** — Fix the dynamic max price:
+- Remove the query to `properties_available` for price max calculation (lines 350, 358-365)
+- Set `dataMax` to a fixed `20_000_000` (already the initial state, just stop overwriting it)
+- Add CMS keys `search.price_min`, `search.price_max`, `search.price_step` to `site_content` table via data insert so admin can control these values
+- Load these settings in SearchBar and use them instead of hardcoded values
 
-Two `forwardRef` warnings appear:
-- `InquiryForm` is defined as an inline function component inside `PropertyDetail` and receives an `id` prop but React tries to pass a ref. Fix by converting `InquiryForm` to use `React.forwardRef` or by extracting it outside the render function as a standalone component with proper typing.
+**AvailableHomes.tsx** — Update PropertyCard price display:
+- Replace plain gold gradient text with a premium price badge: `bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5` container
+- Format price from `price_number` as `₪X,XXX,XXX` (HE) or `ILS X,XXX,XXX` (EN) when `price_label` is absent
+- Remove the micro-copy line (line 146-148): "Photos, pricing and full details sent privately"
 
-The simplest fix: move `InquiryForm` outside the `PropertyDetail` component and pass `property`, `formData`, etc. as props. This prevents React from trying to assign a ref to an inline component.
+**Properties.tsx** — Sync PropertyCard with AvailableHomes:
+- Add the same premium price badge and `price_number` formatting fallback
+- Add the CTA button "לפרטי הנכס" / "View Property Details"
+- Remove any "Request Full Details" references
 
-**File: `src/components/Header.tsx`**
-
-The Header forwardRef warning comes from it being used somewhere that passes a ref. Since Header doesn't need a ref, wrap it with `React.forwardRef` to silence the warning, or check the call site. The warning points to PropertyDetail's render -- likely the `<Header />` call. This is a React quirk with function components; wrapping Header in `forwardRef` with a no-op ref fixes it cleanly.
-
----
-
-## 3. Property Detail "Send Inquiry" Mobile Behavior
-
-**File: `src/pages/PropertyDetail.tsx`**
-
-Current: The CTA block's "Send Inquiry" button tries `getElementById("inquiry-form")` (desktop sidebar, hidden on mobile) and falls back to `openWhatsApp()`. This is functional but inconsistent with user expectation.
-
-Fix: On mobile, when `#inquiry-form` is not visible, scroll to `#inquiry-form-mobile` (the CTA block itself) and open WhatsApp as a more explicit action. OR better: make the "Send Inquiry" button in the mobile sticky bar scroll to the CTA block AND show a toast prompting the user to use WhatsApp or call. This keeps the flow consistent.
-
-Actually, the simplest robust fix: change the CTA block's "Send Inquiry" to always open WhatsApp with a pre-filled message (since there's no standalone form on mobile). The desktop sidebar form handles desktop users.
+**AvailableManager.tsx** — Clarify admin field:
+- Add helper text under `price_label` input: "Optional display override. Leave blank to auto-format from Price (number)."
+- `price_number` field label: "Price (number) — required for search & display"
 
 ---
 
-## 4. Verify All Existing Features Are Working
+## Part 5: Search Range Admin Settings
 
-Already confirmed working:
-- Header: logo centered, sizes correct (40px mobile, 56px desktop)
-- Hero: 85svh, dark glass card wrapper around search
-- Search: ESC handler, click-outside close, z-[100] dropdowns, mobile bottom sheets
-- Property cards: fully wrapped in `Link`, clickable everywhere
-- Cookie consent: global in `LanguageLayout`, reopen from footer
-- Accessibility: skip-to-content in `LanguageLayout`, accessibility page linked in footer
-- Footer: gold divider, cookie preferences button, legal links
+Insert CMS keys into `site_content`:
+```sql
+INSERT INTO site_content (key, value_en, value_he, page, section) VALUES
+('search.price_min', '0', '0', 'global', 'search'),
+('search.price_max', '20000000', '20000000', 'global', 'search'),
+('search.price_step', '50000', '50000', 'global', 'search');
+```
+
+SearchBar will read these on mount and use them for slider min/max/step.
 
 ---
 
-## Files Modified
+## Part 7: Search Filtering Logic
 
-1. **`src/hooks/useSiteContent.ts`** -- Add `property.detail.interested_title` fallback (EN/HE)
-2. **`src/pages/PropertyDetail.tsx`** -- Extract InquiryForm to fix forwardRef warning, improve Send Inquiry mobile fallback
-3. **`src/components/Header.tsx`** -- Wrap in forwardRef to fix console warning
+Already works correctly — `Properties.tsx` uses `.lte("price_number", Number(priceMaxFilter))`. No change needed, just ensuring the fixed range doesn't break it.
+
+---
+
+## Part 8: Internal Linking for SEO
+
+Add contextual internal links in these components:
+- **LifestyleSection**: Link "זכרון יעקב" mentions to `/properties` and `/living-in-zichron-yaakov`
+- **BlueprintPromoSection**: Link guide bullet items to relevant blog/content pages
+- **ClosingCTA**: Add link to guide page and properties page
+- **Properties page**: Add contextual links to buying guide, lifestyle, contact
+- **Blog pages**: Add sidebar/footer links to properties, guide, contact
+- Keep links natural with descriptive anchor text, not "click here"
+
+---
+
+## Part 9: Guide Content Loading in Admin
+
+The guide admin (`GuideManager.tsx`) already loads from `buyer_guide_sections` table and works correctly. The issue is that the **homepage** guide sections (`GoldenConversionPoint.tsx`, `BlueprintPromoSection.tsx`) use hardcoded Hebrew/English copy instead of CMS.
+
+**Fix**: Make GoldenConversionPoint and BlueprintPromoSection read from `site_content` keys via `useSiteContent()`:
+- Add CMS keys: `guide.title_he`, `guide.hook_he`, `guide.intro_he`, `guide.cta_primary`, `guide.cta_secondary`, `guide.trust_line`, plus all 8 bullet items
+- Components fall back to current hardcoded values if CMS keys are empty
+
+Insert the current hardcoded values as initial data in `site_content`.
+
+---
+
+## Part 10: WhatsApp Auto-Messages in Admin
+
+**Current state**: 5+ components hardcode WhatsApp phone number and message text. WhatsAppManager only manages 4 keys.
+
+**Fix**:
+- Expand `WA_KEYS` in WhatsAppManager to include section-specific messages:
+  - `whatsapp.hero_message` / `whatsapp.guide_message` / `whatsapp.closing_message` / `whatsapp.team_message` / `whatsapp.offmarket_message`
+- Insert current hardcoded messages as initial values in `site_content`
+- Update all components (HeroSection, GoldenConversionPoint, BlueprintPromoSection, ClosingCTA, TeamTrustSection) to read WhatsApp phone + message from CMS via `useSiteContent()`
+- Fall back to current hardcoded values if CMS is empty
+
+---
+
+## Part 11–13: Admin Content Sync & Source of Truth
+
+Most sections already use `useSiteContent()` correctly. The gaps are:
+1. **Guide section on homepage** — hardcoded (fix in Part 9)
+2. **WhatsApp messages** — hardcoded (fix in Part 10)
+3. **Team section** — hardcoded text. Make it read from CMS keys with fallbacks
+4. **Off-market message** in AvailableHomes — hardcoded. Add CMS keys
+
+For each, insert current live values into `site_content` and update components to read from CMS with fallbacks.
+
+---
+
+## Implementation Order
+
+1. **Database**: Insert ~25 new `site_content` rows for search settings, guide section, WhatsApp messages, team text, off-market message
+2. **SearchBar.tsx**: Fix price range to use CMS settings instead of dynamic inventory max
+3. **AvailableHomes.tsx**: Premium price badge, remove micro-copy, format price from `price_number`
+4. **Properties.tsx**: Sync card design with AvailableHomes (price badge, CTA, formatting)
+5. **AvailableManager.tsx**: Add helper text for price fields
+6. **GoldenConversionPoint.tsx + BlueprintPromoSection.tsx**: Read guide copy from CMS
+7. **WhatsApp components**: Read phone + messages from CMS (Hero, Guide, Closing, Team, Off-market)
+8. **WhatsAppManager.tsx**: Expand keys to cover all WhatsApp CTAs
+9. **Internal linking**: Add strategic links in Lifestyle, Blueprint, Closing, Properties, Blog
+10. **QA sweep**: Verify all 20 checklist items
 
