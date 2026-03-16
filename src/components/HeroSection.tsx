@@ -75,7 +75,7 @@ const HeroSection = () => {
         }}
       >
         <div
-          className={`max-w-[600px] flex flex-col ${isHe ? "items-end text-right mr-auto md:mr-0 md:ml-auto md:pr-[6%]" : "items-start text-left ml-auto md:ml-0 md:pl-[6%]"}`}
+          className="max-w-[640px] mx-auto flex flex-col items-center text-center"
         >
           {/* Brand label */}
           <motion.p
