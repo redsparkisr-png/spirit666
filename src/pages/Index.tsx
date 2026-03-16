@@ -9,6 +9,7 @@ import LifestyleSection from "@/components/LifestyleSection";
 import GoldenConversionPoint from "@/components/GoldenConversionPoint";
 import BlueprintPromoSection from "@/components/BlueprintPromoSection";
 import Testimonials from "@/components/Testimonials";
+import TeamTrustSection from "@/components/TeamTrustSection";
 import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
@@ -32,30 +33,31 @@ const Index = () => {
       <HeroSection />
       <div id="main-content" />
 
-      {/* 2. Search bar is inside HeroSection */}
-
-      {/* 3. Trust Bar */}
+      {/* 2. Trust Bar */}
       <TrustBar />
 
-      {/* 4. Short Testimonial */}
+      {/* 3. Short Testimonial */}
       <ShortTestimonial />
 
-      {/* 5. Featured Homes */}
+      {/* 4. Featured Homes */}
       <AvailableHomes limit={6} />
+
+      {/* 5. Buyer Guide section (moved up) */}
+      <div id="buyer-guide-section">
+        <GoldenConversionPoint />
+        <BlueprintPromoSection />
+      </div>
 
       {/* 6. Lifestyle */}
       <LifestyleSection />
 
-      {/* 7. Guide CTA Block */}
-      <GoldenConversionPoint />
-
-      {/* 8. Buyer Blueprint Section */}
-      <BlueprintPromoSection />
-
-      {/* 9. Testimonials */}
+      {/* 7. Testimonials */}
       <Testimonials />
 
-      {/* 10. Closing CTA */}
+      {/* 8. Team Trust Section */}
+      <TeamTrustSection />
+
+      {/* 9. Closing CTA */}
       <ClosingCTA />
 
       {/* SEO internal links */}
@@ -77,6 +79,9 @@ const Index = () => {
               </Link>
               <Link to={`${prefix}/moving-to-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
                 {isHe ? "מעבר לזכרון יעקב" : "Moving to Zichron Yaakov"}
+              </Link>
+              <Link to={`${prefix}/guides`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+                {isHe ? "מדריכים ותובנות" : "Guides & Insights"}
               </Link>
             </div>
           </div>

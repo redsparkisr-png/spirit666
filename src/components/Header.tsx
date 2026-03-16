@@ -108,7 +108,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
           <img
             src={spiritLogo}
             alt="Spirit Real Estate"
-            className="w-auto h-[44px] md:h-[60px] rounded-md"
+            className="w-auto h-[52px] md:h-[60px] rounded-md"
             style={{
               imageRendering: "-webkit-optimize-contrast" as any,
               objectFit: "contain",
