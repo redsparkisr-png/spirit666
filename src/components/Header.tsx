@@ -23,9 +23,11 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
   const prefix = `/${lang}`;
   const currentPath = location.pathname;
 
+  const isHe = lang === "he";
   const navLinks = [
     { to: prefix + "/", label: t("header.nav.home") },
     { to: prefix + "/properties", label: t("header.nav.properties") },
+    { to: prefix + "/guides", label: isHe ? "מדריכים ותובנות" : "Guides" },
     { to: prefix + "/sell", label: t("header.nav.sell") },
     { to: prefix + "/about", label: t("header.nav.about") },
     { to: prefix + "/contact", label: t("header.nav.contact") },
@@ -106,7 +108,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
           <img
             src={spiritLogo}
             alt="Spirit Real Estate"
-            className="w-auto h-[44px] md:h-[60px] rounded-md"
+            className="w-auto h-[52px] md:h-[60px] rounded-md"
             style={{
               imageRendering: "-webkit-optimize-contrast" as any,
               objectFit: "contain",

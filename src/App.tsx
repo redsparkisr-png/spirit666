@@ -25,6 +25,8 @@ const LivingInZichron = lazy(() => import("./pages/LivingInZichron"));
 const MovingToZichron = lazy(() => import("./pages/MovingToZichron"));
 const BlueprintDownload = lazy(() => import("./pages/BlueprintDownload"));
 const BuyerGuide2026 = lazy(() => import("./pages/BuyerGuide2026"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // CRM pages — fully isolated
@@ -87,6 +89,8 @@ const App = () => (
                 <Route path="moving-to-zichron-yaakov" element={<MovingToZichron />} />
                 <Route path="blueprint-download" element={<BlueprintDownload />} />
                 <Route path="buyer-guide-2026" element={<BuyerGuide2026 />} />
+                <Route path="guides" element={<Blog />} />
+                <Route path="guides/:slug" element={<BlogPost />} />
                 <Route path="admin" element={<Admin />} />
               </Route>
               {/* Backward compat for /admin */}

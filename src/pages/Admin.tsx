@@ -2,6 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import AdminLogin from "@/components/admin/AdminLogin";
 import AvailableManager from "@/components/admin/AvailableManager";
 import SoldManager from "@/components/admin/SoldManager";
+import BlogManager from "@/components/admin/BlogManager";
 import LifestyleManager from "@/components/admin/LifestyleManager";
 import LeadsList from "@/components/admin/LeadsList";
 import ContentManager from "@/components/admin/ContentManager";
@@ -14,7 +15,7 @@ import WhatsAppManager from "@/components/admin/WhatsAppManager";
 import { useState } from "react";
 import { LogOut } from "lucide-react";
 
-const tabs = ["Available", "Sold", "Lifestyle", "Testimonials", "Leads", "Hero", "WhatsApp", "Content", "Locations", "Property Types", "Guide"] as const;
+const tabs = ["Available", "Sold", "Lifestyle", "Testimonials", "Leads", "Hero", "WhatsApp", "Content", "Locations", "Property Types", "Guide", "Blog"] as const;
 
 const Admin = () => {
   const { user, isAdmin, loading, error, signOut, retry } = useAuth();
@@ -110,6 +111,7 @@ const Admin = () => {
         {tab === "Locations" && <LocationsManager />}
         {tab === "Property Types" && <PropertyTypesManager />}
         {tab === "Guide" && <GuideManager />}
+        {tab === "Blog" && <BlogManager />}
       </div>
     </div>
   );

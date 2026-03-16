@@ -22,7 +22,7 @@ const ShortTestimonial = () => {
             : '"Buying in Zichron Yaakov from abroad felt simple with Spirit Real Estate guiding us. Their local knowledge made all the difference."'}
         </p>
         <p className="text-xs font-body text-muted-foreground font-medium">
-          {isHe ? "דיוויד ורייצ׳ל, לונדון" : "David & Rachel, London"}
+          {isHe ? "דיוויד ורייצ׳ל כהן, לונדון" : "David & Rachel Cohen, London"}
         </p>
       </div>
     </motion.div>
