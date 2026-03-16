@@ -23,9 +23,11 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
   const prefix = `/${lang}`;
   const currentPath = location.pathname;
 
+  const isHe = lang === "he";
   const navLinks = [
     { to: prefix + "/", label: t("header.nav.home") },
     { to: prefix + "/properties", label: t("header.nav.properties") },
+    { to: prefix + "/guides", label: isHe ? "מדריכים ותובנות" : "Guides" },
     { to: prefix + "/sell", label: t("header.nav.sell") },
     { to: prefix + "/about", label: t("header.nav.about") },
     { to: prefix + "/contact", label: t("header.nav.contact") },
