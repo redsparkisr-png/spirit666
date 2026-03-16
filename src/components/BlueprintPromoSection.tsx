@@ -60,7 +60,7 @@ const BlueprintPromoSection = () => {
             </p>
             <h2
               id="blueprint-promo-heading"
-              className="font-display font-semibold text-foreground mb-2 text-2xl md:text-[30px] leading-tight"
+              className="font-display font-semibold text-foreground mb-2 text-[26px] md:text-[30px] leading-tight"
             >
               {isHe ? "המדריך לרוכשי בתים בזכרון יעקב" : "Zichron Yaakov Buyer Blueprint 2026"}
             </h2>
