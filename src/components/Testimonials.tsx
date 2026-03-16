@@ -85,7 +85,7 @@ const Testimonials = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 md:mb-12"
         >
-          <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
+          <h2 className="text-[26px] md:text-[30px] font-display font-semibold text-foreground mb-3">
             {t("home.testimonials.title")}
           </h2>
           <p className="text-muted-foreground font-body text-sm max-w-md mx-auto">
