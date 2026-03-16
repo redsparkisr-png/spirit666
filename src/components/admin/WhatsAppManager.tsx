@@ -119,7 +119,7 @@ const WhatsAppManager = () => {
       </p>
 
       {WA_KEYS.map(({ key, label }) => {
-        const isTextarea = key === "whatsapp.default_message";
+        const isTextarea = key.includes("message");
         const isPhone = key === "whatsapp.phone_number";
 
         return (
