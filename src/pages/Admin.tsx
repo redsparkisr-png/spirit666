@@ -15,7 +15,7 @@ import WhatsAppManager from "@/components/admin/WhatsAppManager";
 import { useState } from "react";
 import { LogOut } from "lucide-react";
 
-const tabs = ["Available", "Sold", "Lifestyle", "Testimonials", "Leads", "Hero", "WhatsApp", "Content", "Locations", "Property Types", "Guide"] as const;
+const tabs = ["Available", "Sold", "Lifestyle", "Testimonials", "Leads", "Hero", "WhatsApp", "Content", "Locations", "Property Types", "Guide", "Blog"] as const;
 
 const Admin = () => {
   const { user, isAdmin, loading, error, signOut, retry } = useAuth();
