@@ -97,14 +97,18 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
           )}
         </div>
         <div className="p-5 md:p-6 text-start">
-          {/* Price display */}
-          {property.price_label ? (
-            <p className="text-sm font-body font-semibold mb-2 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">{property.price_label}</p>
-          ) : property.price_number ? (
-            <p className="text-sm font-body font-semibold mb-2 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">
-              {property.currency === "USD" ? "$" : "₪"}{Number(property.price_number).toLocaleString()}
-            </p>
-          ) : null}
+          {/* Price display — premium badge */}
+          {(property.price_label || property.price_number) && (
+            <div className="mb-3">
+              <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold">
+                {property.price_label
+                  ? property.price_label
+                  : lang === "he"
+                    ? `₪${Number(property.price_number).toLocaleString()}`
+                    : `ILS ${Number(property.price_number).toLocaleString()}`}
+              </span>
+            </div>
+          )}
           <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">{property.title}</h3>
           
           {/* Neighborhood / Location */}
@@ -143,9 +147,6 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
           <span className="block w-full bg-charcoal text-white py-3 rounded-full font-body font-medium text-sm btn-text text-center transition-all duration-300 group-hover:bg-charcoal-hover group-hover:shadow-md">
             {lang === "he" ? "לפרטי הנכס" : "View Property Details"}
           </span>
-          <p className="text-[11px] text-muted-foreground/60 font-body text-center mt-2">
-            {lang === "he" ? "תמונות, מחיר ופרטים מלאים נשלחים בפרטי." : "Photos, pricing and full details sent privately."}
-          </p>
         </div>
       </motion.div>
     </Link>
