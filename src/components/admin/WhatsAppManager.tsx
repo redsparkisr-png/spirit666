@@ -4,10 +4,16 @@ import { toast } from "sonner";
 import { Save, Loader2, MessageCircle } from "lucide-react";
 
 const WA_KEYS = [
+  { key: "whatsapp.phone_number", label: "Phone Number (e.g. 972522820632)" },
   { key: "whatsapp.default_message", label: "Default WhatsApp Message" },
   { key: "whatsapp.contact_name", label: "Contact Name" },
   { key: "whatsapp.cta_label", label: "CTA Button Label" },
-  { key: "whatsapp.phone_number", label: "Phone Number (e.g. 972522820632)" },
+  { key: "whatsapp.hero_message", label: "Hero Section Message" },
+  { key: "whatsapp.guide_message", label: "Guide Section Message" },
+  { key: "whatsapp.closing_message", label: "Closing CTA Message" },
+  { key: "whatsapp.closing_guide_message", label: "Closing Guide CTA Message" },
+  { key: "whatsapp.team_message", label: "Team Section Message" },
+  { key: "whatsapp.offmarket_message", label: "Off-Market CTA Message" },
 ];
 
 interface ContentRow {

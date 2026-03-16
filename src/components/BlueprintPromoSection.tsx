@@ -1,27 +1,29 @@
 import { motion } from "framer-motion";
 import { MessageCircle, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import guideImg from "@/assets/guide-img-1.jpg";
 
-const BLUEPRINT_MSG = encodeURIComponent(
-  "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint."
-);
-const BLUEPRINT_URL = `https://wa.me/972522820632?text=${BLUEPRINT_MSG}`;
-
-const highlights = [
-  { en: "Real neighborhood price data", he: "מחירי בתים אמיתיים לפי שכונות בזכרון יעקב" },
-  { en: "Verified market transactions", he: "עסקאות שבוצעו בפועל ומה באמת משלמים היום" },
-  { en: "Investment insights", he: "איפה מתרכזת האוכלוסייה החזקה במושבה" },
-  { en: "Neighborhood comparison", he: "הבדלים בין השכונות ומה מתאים למשפחות" },
-  { en: "Fast-selling homes", he: "מה גורם לבתים טובים להימכר מהר" },
-  { en: "Off-market opportunities", he: "איך לזהות הזדמנות לפני שהיא מגיעה ללוחות" },
-  { en: "Common buyer mistakes", he: "טעויות נפוצות שקונים עושים בזכרון יעקב ואיך להימנע מהן" },
-  { en: "Step-by-step buying roadmap", he: "ניתוח שוק מקומי שלא תמצאו ביד2" },
+const BULLET_KEYS = [
+  "guide.home.bullet_1",
+  "guide.home.bullet_2",
+  "guide.home.bullet_3",
+  "guide.home.bullet_4",
+  "guide.home.bullet_5",
+  "guide.home.bullet_6",
+  "guide.home.bullet_7",
+  "guide.home.bullet_8",
 ];
 
 const BlueprintPromoSection = () => {
   const { lang } = useLanguage();
   const isHe = lang === "he";
+  const { t } = useSiteContent();
+
+  const phone = t("whatsapp.phone_number") || "972522820632";
+  const msg = encodeURIComponent(t("whatsapp.guide_message") || "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint.");
+  const blueprintUrl = `https://wa.me/${phone}?text=${msg}`;
 
   return (
     <section className="py-16 md:py-24 bg-background" aria-labelledby="blueprint-promo-heading">
@@ -68,47 +70,58 @@ const BlueprintPromoSection = () => {
                 : "The definitive guide for English-speaking buyers exploring property in Israel\u2019s most desirable moshava."}
             </p>
 
-            {/* Highlights */}
+            {/* Highlights from CMS */}
             <ul className="space-y-3 mb-8">
-              {highlights.map((item, idx) => (
-                <li key={idx} className="flex items-center gap-3 font-body text-sm text-foreground">
+              {BULLET_KEYS.map((key) => (
+                <li key={key} className="flex items-center gap-3 font-body text-sm text-foreground">
                   <CheckCircle className="w-4 h-4 text-gold flex-shrink-0" />
-                  <span>{isHe ? item.he : item.en}</span>
+                  <span>{t(key)}</span>
                 </li>
               ))}
             </ul>
 
             {/* Private positioning line */}
             <p className="font-body text-xs text-muted-foreground/70 italic mb-4">
-              {isHe
-                ? "המדריך נשלח באופן פרטי למי שבוחן קנייה בזכרון יעקב."
-                : "This guide is shared privately with serious buyers exploring property in Zichron Yaakov."}
+              {t("guide.home.positioning")}
             </p>
+
+            {/* Internal SEO links */}
+            <div className="flex flex-wrap gap-3 mb-6 text-xs font-body">
+              <Link to={`/${lang}/properties`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+                {isHe ? "נכסים בזכרון יעקב" : "Homes for sale in Zichron Yaakov"}
+              </Link>
+              <Link to={`/${lang}/buying-property-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+                {isHe ? "מדריך רכישה" : "Buying guide"}
+              </Link>
+              <Link to={`/${lang}/living-in-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+                {isHe ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov"}
+              </Link>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href={BLUEPRINT_URL}
+                href={blueprintUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2.5 bg-gold hover:bg-gold-hover text-white py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
                 style={{ fontSize: "16px" }}
               >
-                {isHe ? "הורדת המדריך" : "Download the Guide"}
+                {t("guide.home.cta_primary")}
               </a>
               <a
-                href={BLUEPRINT_URL}
+                href={blueprintUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`inline-flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#25D366]/20 hover:-translate-y-0.5 active:scale-[0.98] ${isHe ? "flex-row-reverse" : ""}`}
                 style={{ fontSize: "16px" }}
               >
                 <MessageCircle className="w-5 h-5" />
-                {isHe ? "שלחו לי את המדריך בוואטסאפ" : "Get the Zichron Buyer Blueprint"}
+                {t("guide.home.cta_secondary")}
               </a>
             </div>
 
             <p className="mt-3 text-xs text-muted-foreground/70 font-body">
-              {isHe ? "נשלח מיידית בוואטסאפ." : "Sent instantly via WhatsApp."}
+              {t("guide.home.trust_line")}
             </p>
           </motion.div>
         </div>

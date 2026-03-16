@@ -243,19 +243,13 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
           className="text-center mt-10 max-w-lg mx-auto space-y-2"
         >
           <p className="text-sm font-body font-semibold text-foreground/80 mb-1">
-            {isHe
-              ? "משהו שרוב הקונים לא יודעים:"
-              : "What most buyers don't know:"}
+            {t("home.offmarket.title")}
           </p>
           <p className="text-sm text-muted-foreground/80 font-body">
-            {isHe
-              ? "חלק מהבתים הטובים ביותר בזכרון יעקב נמכרים עוד לפני שהם מגיעים ללוחות."
-              : "Some of our best opportunities are sold quietly and never reach public listing sites."}
+            {t("home.offmarket.text_1")}
           </p>
           <p className="text-sm text-muted-foreground/80 font-body">
-            {isHe
-              ? "שלחו הודעה ונשלח לכם הזדמנויות חדשות כשהן מגיעות לשוק."
-              : "Message us to access off-market homes in Zichron Yaakov."}
+            {t("home.offmarket.text_2")}
           </p>
         </motion.div>
       </div>
