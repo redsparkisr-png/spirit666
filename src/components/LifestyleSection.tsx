@@ -63,17 +63,16 @@ const LifestyleSection = () => {
   }, []);
 
   const display = items.length > 0 ? items : FALLBACK_ITEMS;
-  const mobileItems = display.slice(0, 5);
 
-  // Track active slide via scroll
+  // Track active slide via scroll for mobile carousel
   const handleScroll = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
     const scrollLeft = el.scrollLeft;
-    const itemWidth = el.firstElementChild?.clientWidth || 1;
+    const itemWidth = el.clientWidth;
     const idx = Math.round(scrollLeft / itemWidth);
-    setActiveSlide(Math.min(idx, mobileItems.length - 1));
-  }, [mobileItems.length]);
+    setActiveSlide(Math.min(idx, display.length - 1));
+  }, [display.length]);
 
   const renderCard = (item: GalleryItem, idx: number) => {
     const title = isHe ? item.title_he : item.title_en;
