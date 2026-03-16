@@ -25,6 +25,8 @@ const LivingInZichron = lazy(() => import("./pages/LivingInZichron"));
 const MovingToZichron = lazy(() => import("./pages/MovingToZichron"));
 const BlueprintDownload = lazy(() => import("./pages/BlueprintDownload"));
 const BuyerGuide2026 = lazy(() => import("./pages/BuyerGuide2026"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // CRM pages — fully isolated
