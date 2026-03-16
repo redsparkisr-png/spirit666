@@ -1,65 +1,94 @@
 
 
-# Spirit Real Estate — Targeted Fixes
+# Implementation Plan: Homepage Polish — Gallery, Off-Market, Guide Flow, Testimonials
 
-## Summary
-The codebase is already in good shape from previous iterations. This pass addresses the remaining console errors and the few gaps between current state and the requirements.
+## Part 1 — Lifestyle Gallery: Main Image + Thumbnails on Mobile
 
----
+**File**: `src/components/LifestyleSection.tsx`
 
-## 1. Fix Missing i18n Key: `property.detail.interested_title`
+Replace the current mobile swipe carousel (lines 226-260) with a main-image + thumbnail-row pattern:
 
-**File: `src/hooks/useSiteContent.ts`**
+- Add `selectedIdx` state (default 0)
+- **Main image**: Full-width `aspect-[4/3]` with `rounded-2xl`, shows `mobileItems[selectedIdx]` with title/desc overlay (reuse `renderCard` logic)
+- **Thumbnail row**: Below main image, a horizontal scrollable row of small thumbnails (`w-16 h-16 rounded-lg object-cover`) with `overflow-x-auto snap-x`. Active thumbnail gets `ring-2 ring-gold`. Tapping sets `selectedIdx`.
+- Remove dot indicators
+- Keep desktop grid unchanged
+- Keep framing line (already exists at line 131-133)
 
-The console shows `[i18n] Missing key: "property.detail.interested_title"`. Add this key to the `localFallbacks` object:
-- EN: "Interested in this home?"
-- HE: "מעוניינים בנכס הזה?"
+## Part 2 — Off-Market CTA Upgrade
 
----
+**File**: `src/components/AvailableHomes.tsx` (lines 238-254)
 
-## 2. Fix forwardRef Console Warnings
+Replace the current lightweight off-market text block with a full premium FOMO conversion block:
 
-**File: `src/pages/PropertyDetail.tsx`**
+- Wrap in a visually distinct container: `bg-primary rounded-2xl p-8 md:p-12 mt-14 max-w-3xl mx-auto text-center`
+- Title: bold, `text-primary-foreground`, use the new copy
+- Two paragraphs of body text
+- Gold CTA button linking to WhatsApp with `MessageCircle` icon
+- Helper text below CTA in `text-primary-foreground/50`
 
-Two `forwardRef` warnings appear:
-- `InquiryForm` is defined as an inline function component inside `PropertyDetail` and receives an `id` prop but React tries to pass a ref. Fix by converting `InquiryForm` to use `React.forwardRef` or by extracting it outside the render function as a standalone component with proper typing.
+Update CMS values via migration for `home.offmarket.title`, `home.offmarket.text_1`, `home.offmarket.text_2`. Add new keys: `home.offmarket.cta`, `home.offmarket.helper`.
 
-The simplest fix: move `InquiryForm` outside the `PropertyDetail` component and pass `property`, `formData`, etc. as props. This prevents React from trying to assign a ref to an inline component.
+**Hebrew copy**: 
+- Title: "רוב הקונים בכלל לא רואים את ההזדמנויות הכי טובות"
+- Text 1: "חלק מהבתים המבוקשים בזכרון יעקב נסגרים עוד לפני שהם מגיעים ללוחות."
+- Text 2: "אלה הזדמנויות שעוברות דרך השוק המקומי, קשרים ישירים ופניות פרטיות — ולכן מי שלא מחובר בזמן, פשוט לא רואה אותן."
+- CTA: "קבלו גישה להזדמנויות פרטיות"
+- Helper: "שלחו הודעה ונעדכן אתכם כשנכסים רלוונטיים מגיעים לשוק — גם אם הם לא פורסמו פומבית."
 
-**File: `src/components/Header.tsx`**
+**English copy**:
+- Title: "Most buyers never even see the best opportunities"
+- Text 1: "Some of the most desirable homes in Zichron Yaakov are sold before they ever reach public listing sites."
+- Text 2: "These opportunities move through local relationships, private conversations and early market access — so buyers who are not connected early often miss them completely."
+- CTA: "Get Access to Private Opportunities"
+- Helper: "Message us and we'll let you know when relevant homes reach the market — even before they are publicly listed."
 
-The Header forwardRef warning comes from it being used somewhere that passes a ref. Since Header doesn't need a ref, wrap it with `React.forwardRef` to silence the warning, or check the call site. The warning points to PropertyDetail's render -- likely the `<Header />` call. This is a React quirk with function components; wrapping Header in `forwardRef` with a no-op ref fixes it cleanly.
+## Part 3 — Guide Duplication Cleanup
 
----
+**File**: `src/pages/Index.tsx`
 
-## 3. Property Detail "Send Inquiry" Mobile Behavior
+Currently the guide section has two consecutive components: `GoldenConversionPoint` (dark CTA block) + `BlueprintPromoSection` (detailed guide with bullets). They appear back-to-back which feels repetitive.
 
-**File: `src/pages/PropertyDetail.tsx`**
+**Fix**: 
+- Remove `GoldenConversionPoint` from position 5 (inside `#buyer-guide-section`)
+- Keep only `BlueprintPromoSection` as the main guide section
+- Move `GoldenConversionPoint` lower — place it after `Testimonials` and before `TeamTrustSection` as a lighter reminder CTA
+- The hero secondary CTA already scrolls to `#buyer-guide-section`, which will now contain only `BlueprintPromoSection`
 
-Current: The CTA block's "Send Inquiry" button tries `getElementById("inquiry-form")` (desktop sidebar, hidden on mobile) and falls back to `openWhatsApp()`. This is functional but inconsistent with user expectation.
+New order:
+```
+Hero → TrustBar → ShortTestimonial → AvailableHomes → BlueprintPromoSection (guide) → LifestyleSection → Testimonials → GoldenConversionPoint (reminder) → TeamTrustSection → ClosingCTA
+```
 
-Fix: On mobile, when `#inquiry-form` is not visible, scroll to `#inquiry-form-mobile` (the CTA block itself) and open WhatsApp as a more explicit action. OR better: make the "Send Inquiry" button in the mobile sticky bar scroll to the CTA block AND show a toast prompting the user to use WhatsApp or call. This keeps the flow consistent.
+## Part 4 — Hebrew Testimonials Full Local Adaptation
 
-Actually, the simplest robust fix: change the CTA block's "Send Inquiry" to always open WhatsApp with a pre-filled message (since there's no standalone form on mobile). The desktop sidebar form handles desktop users.
+**Database migration** to update `site_content` values:
 
----
+Update all Hebrew testimonial values to use Israeli names, locations and context:
 
-## 4. Verify All Existing Features Are Working
+| Key | New Hebrew Value |
+|-----|-----------------|
+| `home.testimonials.title` | "מה אומרים לקוחות שכבר עברו את התהליך" |
+| `home.testimonials.subtitle` | "משפחות מרחבי הארץ שמצאו את הבית שלהן בזכרון יעקב" |
+| `home.testimonials.author_1` | "דויד ושרה מזרחי" |
+| `home.testimonials.context_1` | "רעננה · 2024" |
+| `home.testimonials.quote_1` | "חיפשנו בית בזכרון יעקב במשך חודשים. ספיריט הכירו כל רחוב ושכונה, וזה עשה את כל ההבדל." |
+| `home.testimonials.author_2` | "אורן כהן" |
+| `home.testimonials.context_2` | "הרצליה · 2024" |
+| `home.testimonials.quote_2` | "הרגשנו שמישהו באמת מייצג אותנו. התקשורת הייתה שקופה, ותמיד ידענו מה קורה." |
+| `home.testimonials.author_3` | "נועם ושירי לוי" |
+| `home.testimonials.context_3` | "הוד השרון · 2024" |
+| `home.testimonials.quote_3` | "ההיכרות של ספיריט עם השוק המקומי עשתה את כל ההבדל. ידענו שאנחנו מקבלים החלטה נכונה." |
+| `home.testimonials.author_4` | "איילת ועידו פרידמן" |
+| `home.testimonials.context_4` | "תל אביב · 2023" |
+| `home.testimonials.quote_4` | "ספיריט ליוו אותנו בכל צעד — מהסיור הראשון ועד החתימה. מעולם לא הרגשנו לבד בתהליך." |
+| `home.testimonials.author_5` | "משפחת ברק" |
+| `home.testimonials.context_5` | "כפר סבא · 2024" |
+| `home.testimonials.quote_5` | "מקצועיים, דיסקרטיים ובאמת מושקעים במציאת הבית הנכון למשפחה שלנו. ממליצים בחום." |
+| `home.testimonials.cta_text` | "הזדמנויות פרטיות ממעטות להתפרסם." |
+| `home.testimonials.cta_button` | "בקשו גישה פרטית" |
 
-Already confirmed working:
-- Header: logo centered, sizes correct (40px mobile, 56px desktop)
-- Hero: 85svh, dark glass card wrapper around search
-- Search: ESC handler, click-outside close, z-[100] dropdowns, mobile bottom sheets
-- Property cards: fully wrapped in `Link`, clickable everywhere
-- Cookie consent: global in `LanguageLayout`, reopen from footer
-- Accessibility: skip-to-content in `LanguageLayout`, accessibility page linked in footer
-- Footer: gold divider, cookie preferences button, legal links
+English values remain unchanged (international audience).
 
----
-
-## Files Modified
-
-1. **`src/hooks/useSiteContent.ts`** -- Add `property.detail.interested_title` fallback (EN/HE)
-2. **`src/pages/PropertyDetail.tsx`** -- Extract InquiryForm to fix forwardRef warning, improve Send Inquiry mobile fallback
-3. **`src/components/Header.tsx`** -- Wrap in forwardRef to fix console warning
+Also update the `Testimonials.tsx` initials to match new Hebrew names (use first initials of Hebrew names for both: DM, AK, NL, AF, MB).
 
