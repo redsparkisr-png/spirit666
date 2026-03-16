@@ -63,17 +63,16 @@ const LifestyleSection = () => {
   }, []);
 
   const display = items.length > 0 ? items : FALLBACK_ITEMS;
-  const mobileItems = display.slice(0, 5);
 
-  // Track active slide via scroll
+  // Track active slide via scroll for mobile carousel
   const handleScroll = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
     const scrollLeft = el.scrollLeft;
-    const itemWidth = el.firstElementChild?.clientWidth || 1;
+    const itemWidth = el.clientWidth;
     const idx = Math.round(scrollLeft / itemWidth);
-    setActiveSlide(Math.min(idx, mobileItems.length - 1));
-  }, [mobileItems.length]);
+    setActiveSlide(Math.min(idx, display.length - 1));
+  }, [display.length]);
 
   const renderCard = (item: GalleryItem, idx: number) => {
     const title = isHe ? item.title_he : item.title_en;
@@ -222,51 +221,71 @@ const LifestyleSection = () => {
           })}
         </div>
 
-        {/* Mobile: Main image + thumbnail row */}
-        <div className="md:hidden">
-          {/* Main image */}
-          <div className="relative overflow-hidden rounded-2xl shadow-md mb-3">
-            <div className="aspect-[4/3] overflow-hidden">
-              <img
-                src={mobileItems[activeSlide]?.image_url}
-                alt={(isHe ? mobileItems[activeSlide]?.alt_he : mobileItems[activeSlide]?.alt_en) || ""}
-                className="w-full h-full object-cover object-center transition-opacity duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="absolute bottom-0 inset-x-0" dir={isHe ? "rtl" : "ltr"}>
-              <div className="bg-gradient-to-t from-foreground/70 via-foreground/40 to-transparent pt-10 pb-4 px-4">
-                {(isHe ? mobileItems[activeSlide]?.title_he : mobileItems[activeSlide]?.title_en) && (
-                  <p className="text-primary-foreground font-display text-base font-semibold drop-shadow-md">
-                    {isHe ? mobileItems[activeSlide]?.title_he : mobileItems[activeSlide]?.title_en}
-                  </p>
-                )}
-                {(isHe ? mobileItems[activeSlide]?.description_he : mobileItems[activeSlide]?.description_en) && (
-                  <p className="text-primary-foreground/85 font-body text-xs mt-0.5 drop-shadow-sm">
-                    {isHe ? mobileItems[activeSlide]?.description_he : mobileItems[activeSlide]?.description_en}
-                  </p>
-                )}
-              </div>
-            </div>
+        {/* Mobile: Full-bleed swipe carousel */}
+        <div className="md:hidden -mx-6">
+          {/* Swipeable carousel */}
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex snap-x snap-mandatory overflow-x-auto scrollbar-hide"
+            style={{ scrollBehavior: 'smooth' }}
+          >
+            {display.map((item, idx) => {
+              const title = isHe ? item.title_he : item.title_en;
+              const desc = isHe ? item.description_he : item.description_en;
+              const alt = (isHe ? item.alt_he : item.alt_en) || title || `Zichron Yaakov lifestyle ${idx + 1}`;
+
+              return (
+                <div
+                  key={item.id}
+                  className="w-full flex-shrink-0 snap-center px-1"
+                >
+                  <div className="relative overflow-hidden rounded-2xl mx-2">
+                    <div className="aspect-[3/4] overflow-hidden">
+                      <img
+                        src={item.image_url}
+                        alt={alt}
+                        className="w-full h-full object-cover object-center"
+                        loading={idx < 2 ? "eager" : "lazy"}
+                      />
+                    </div>
+                    {/* Gradient overlay with text */}
+                    <div className="absolute bottom-0 inset-x-0" dir={isHe ? "rtl" : "ltr"}>
+                      <div className="bg-gradient-to-t from-foreground/80 via-foreground/40 to-transparent pt-16 pb-6 px-5">
+                        {title && (
+                          <p className="text-primary-foreground font-display text-lg font-semibold drop-shadow-lg">
+                            {title}
+                          </p>
+                        )}
+                        {desc && (
+                          <p className="text-primary-foreground/85 font-body text-sm mt-1 drop-shadow-md">
+                            {desc}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          {/* Thumbnail row */}
-          <div className="flex gap-2 overflow-x-auto snap-x scrollbar-hide pb-2 px-1">
-            {mobileItems.map((item, idx) => (
+
+          {/* Dot indicators */}
+          <div className="flex justify-center gap-1.5 mt-4 px-6">
+            {display.map((_, idx) => (
               <button
-                key={item.id}
-                onClick={() => setActiveSlide(idx)}
-                className={`w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 snap-center transition-all duration-200 ${
-                  activeSlide === idx ? "ring-2 ring-gold ring-offset-1" : "opacity-60"
+                key={idx}
+                onClick={() => {
+                  const el = scrollRef.current;
+                  if (el) el.scrollTo({ left: idx * el.clientWidth, behavior: 'smooth' });
+                }}
+                className={`rounded-full transition-all duration-300 ${
+                  activeSlide === idx
+                    ? "w-6 h-2 bg-gold"
+                    : "w-2 h-2 bg-muted-foreground/25"
                 }`}
-                aria-label={`${isHe ? item.title_he : item.title_en} - ${idx + 1}`}
-              >
-                <img
-                  src={item.image_url}
-                  alt=""
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </button>
+                aria-label={`Slide ${idx + 1}`}
+              />
             ))}
           </div>
         </div>
