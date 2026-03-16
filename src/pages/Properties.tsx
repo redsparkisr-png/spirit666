@@ -63,19 +63,31 @@ const PropertyCard = ({ property }: { property: Property }) => {
           <span className="absolute top-3 left-3 bg-charcoal text-white text-xs font-body font-medium px-2.5 py-1 rounded-full">{property.property_status}</span>
         )}
       </div>
-      <div className="p-5">
-        {property.price_label && (
-          <p className="text-sm font-body font-semibold mb-1.5 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">{property.price_label}</p>
+      <div className="p-5 text-start">
+        {/* Price — premium badge */}
+        {(property.price_label || property.price_number) && (
+          <div className="mb-3">
+            <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold">
+              {property.price_label
+                ? property.price_label
+                : lang === "he"
+                  ? `₪${Number(property.price_number).toLocaleString()}`
+                  : `ILS ${Number(property.price_number).toLocaleString()}`}
+            </span>
+          </div>
         )}
         <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">{property.title}</h3>
         {property.short_description && (
           <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{property.short_description}</p>
         )}
-        <div className="flex items-center gap-3 text-xs text-muted-foreground font-body flex-wrap">
-          {property.bedrooms && (<span className="flex items-center gap-1"><BedDouble className="w-3.5 h-3.5" /> {property.bedrooms} {t("search.beds_label")}</span>)}
-          {property.built_sqm && (<span className="flex items-center gap-1"><Ruler className="w-3.5 h-3.5" /> {property.built_sqm} sqm</span>)}
-          {property.lot_sqm && (<span className="flex items-center gap-1"><LandPlot className="w-3.5 h-3.5" /> {property.lot_sqm} sqm</span>)}
+        <div className="flex items-center gap-3 text-xs text-muted-foreground font-body mb-4 flex-wrap">
+          {property.bedrooms && (<span className="flex items-center gap-1"><BedDouble className="w-3.5 h-3.5 text-primary" /> {property.bedrooms} {t("search.beds_label")}</span>)}
+          {property.built_sqm && (<span className="flex items-center gap-1"><Ruler className="w-3.5 h-3.5 text-primary" /> {property.built_sqm} {lang === "he" ? 'מ"ר' : "sqm"}</span>)}
+          {property.lot_sqm && (<span className="flex items-center gap-1"><LandPlot className="w-3.5 h-3.5 text-primary" /> {property.lot_sqm} {lang === "he" ? 'מ"ר' : "sqm"}</span>)}
         </div>
+        <span className="block w-full bg-charcoal text-white py-3 rounded-full font-body font-medium text-sm btn-text text-center transition-all duration-300 group-hover:bg-charcoal-hover group-hover:shadow-md">
+          {lang === "he" ? "לפרטי הנכס" : "View Property Details"}
+        </span>
       </div>
     </Link>
   );
@@ -84,6 +96,7 @@ const PropertyCard = ({ property }: { property: Property }) => {
 const Properties = () => {
   const [searchParams] = useSearchParams();
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("newest");
@@ -157,6 +170,29 @@ const Properties = () => {
             {properties.map((p) => (<PropertyCard key={p.id} property={p} />))}
           </div>
         )}
+
+        {/* SEO internal links */}
+        <div className="mt-12 pt-8 border-t border-border text-center space-y-3">
+          <p className="text-sm text-muted-foreground font-body">
+            {lang === "he"
+              ? "מחפשים מידע נוסף על רכישת נכס בזכרון יעקב?"
+              : "Looking for more information about buying property in Zichron Yaakov?"}
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-xs font-body">
+            <Link to={`/${lang}/buying-property-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "מדריך רכישת נכס" : "Buying Property Guide"}
+            </Link>
+            <Link to={`/${lang}/living-in-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov"}
+            </Link>
+            <Link to={`/${lang}/guides`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "מדריכים ותובנות" : "Guides & Insights"}
+            </Link>
+            <Link to={`/${lang}/contact`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "צרו קשר" : "Contact Us"}
+            </Link>
+          </div>
+        </div>
       </div>
     </main>
   );

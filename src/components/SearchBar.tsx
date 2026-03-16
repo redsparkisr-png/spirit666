@@ -347,21 +347,17 @@ const SearchBar = ({
     Promise.all([
       supabase.from("search_locations").select("*").order("display_order"),
       supabase.from("search_property_types").select("*").order("display_order"),
-      supabase.from("properties_available").select("price_number").not("price_number", "is", null),
-    ]).then(([locRes, typeRes, priceRes]) => {
-      if (locRes.data) {
-        setLocations(locRes.data);
-      }
-      if (typeRes.data) {
-        setPropertyTypes(typeRes.data);
-      }
-      if (priceRes.data && priceRes.data.length > 0) {
-        const prices = priceRes.data.map((p) => Number(p.price_number)).filter((n) => n > 0);
-        if (prices.length > 0) {
-          const max = Math.max(...prices);
-          setDataMax(max);
-          setMaxPrice(initialPriceMax ? Number(initialPriceMax) : max);
-        }
+      supabase.from("site_content").select("key, value_en").in("key", ["search.price_min", "search.price_max", "search.price_step"]),
+    ]).then(([locRes, typeRes, settingsRes]) => {
+      if (locRes.data) setLocations(locRes.data);
+      if (typeRes.data) setPropertyTypes(typeRes.data);
+      // Use CMS search settings (fixed range, not derived from inventory)
+      if (settingsRes.data) {
+        const getVal = (k: string) => settingsRes.data.find((r: any) => r.key === k)?.value_en;
+        const cmsMax = Number(getVal("search.price_max")) || 20_000_000;
+        const cmsStep = Number(getVal("search.price_step")) || 50_000;
+        setDataMax(cmsMax);
+        setMaxPrice(initialPriceMax ? Number(initialPriceMax) : cmsMax);
       }
     });
   }, []);

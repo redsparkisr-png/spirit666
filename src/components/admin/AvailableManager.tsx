@@ -227,8 +227,14 @@ const AvailableManager = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <input placeholder="Title *" value={editing.title} onChange={(e) => setEditing({ ...editing, title: e.target.value })} className={inputCls} />
           <input placeholder="Neighborhood / Location" value={editing.neighborhood_note || ""} onChange={(e) => setEditing({ ...editing, neighborhood_note: e.target.value })} className={inputCls} />
-          <input placeholder="Price label (display)" value={editing.price_label || ""} onChange={(e) => setEditing({ ...editing, price_label: e.target.value })} className={inputCls} />
-          <input type="number" placeholder="Price (number)" value={editing.price_number ?? ""} onChange={(e) => setEditing({ ...editing, price_number: e.target.value ? Number(e.target.value) : null })} className={inputCls} />
+          <div className="flex flex-col gap-0.5">
+            <input type="number" placeholder="Price (number) *" value={editing.price_number ?? ""} onChange={(e) => setEditing({ ...editing, price_number: e.target.value ? Number(e.target.value) : null })} className={inputCls} />
+            <span className="text-[10px] text-muted-foreground font-body">Required — source of truth for search & card display (store as number only, e.g. 4750000)</span>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <input placeholder="Price label (optional override)" value={editing.price_label || ""} onChange={(e) => setEditing({ ...editing, price_label: e.target.value })} className={inputCls} />
+            <span className="text-[10px] text-muted-foreground font-body">Leave blank to auto-format from Price number. Use for custom text like "Price Upon Request".</span>
+          </div>
           <input type="number" placeholder="Bedrooms" value={editing.bedrooms ?? ""} onChange={(e) => setEditing({ ...editing, bedrooms: e.target.value ? Number(e.target.value) : null })} className={inputCls} />
           <select value={editing.property_status || "Active"} onChange={(e) => setEditing({ ...editing, property_status: e.target.value })} className={inputCls}>
             {PROPERTY_STATUS_OPTIONS.map((s) => <option key={s} value={s}>{s}</option>)}

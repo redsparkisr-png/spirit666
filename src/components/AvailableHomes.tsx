@@ -97,14 +97,18 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
           )}
         </div>
         <div className="p-5 md:p-6 text-start">
-          {/* Price display */}
-          {property.price_label ? (
-            <p className="text-sm font-body font-semibold mb-2 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">{property.price_label}</p>
-          ) : property.price_number ? (
-            <p className="text-sm font-body font-semibold mb-2 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">
-              {property.currency === "USD" ? "$" : "₪"}{Number(property.price_number).toLocaleString()}
-            </p>
-          ) : null}
+          {/* Price display — premium badge */}
+          {(property.price_label || property.price_number) && (
+            <div className="mb-3">
+              <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold">
+                {property.price_label
+                  ? property.price_label
+                  : lang === "he"
+                    ? `₪${Number(property.price_number).toLocaleString()}`
+                    : `ILS ${Number(property.price_number).toLocaleString()}`}
+              </span>
+            </div>
+          )}
           <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">{property.title}</h3>
           
           {/* Neighborhood / Location */}
@@ -143,9 +147,6 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
           <span className="block w-full bg-charcoal text-white py-3 rounded-full font-body font-medium text-sm btn-text text-center transition-all duration-300 group-hover:bg-charcoal-hover group-hover:shadow-md">
             {lang === "he" ? "לפרטי הנכס" : "View Property Details"}
           </span>
-          <p className="text-[11px] text-muted-foreground/60 font-body text-center mt-2">
-            {lang === "he" ? "תמונות, מחיר ופרטים מלאים נשלחים בפרטי." : "Photos, pricing and full details sent privately."}
-          </p>
         </div>
       </motion.div>
     </Link>
@@ -242,19 +243,13 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
           className="text-center mt-10 max-w-lg mx-auto space-y-2"
         >
           <p className="text-sm font-body font-semibold text-foreground/80 mb-1">
-            {isHe
-              ? "משהו שרוב הקונים לא יודעים:"
-              : "What most buyers don't know:"}
+            {t("home.offmarket.title")}
           </p>
           <p className="text-sm text-muted-foreground/80 font-body">
-            {isHe
-              ? "חלק מהבתים הטובים ביותר בזכרון יעקב נמכרים עוד לפני שהם מגיעים ללוחות."
-              : "Some of our best opportunities are sold quietly and never reach public listing sites."}
+            {t("home.offmarket.text_1")}
           </p>
           <p className="text-sm text-muted-foreground/80 font-body">
-            {isHe
-              ? "שלחו הודעה ונשלח לכם הזדמנויות חדשות כשהן מגיעות לשוק."
-              : "Message us to access off-market homes in Zichron Yaakov."}
+            {t("home.offmarket.text_2")}
           </p>
         </motion.div>
       </div>
