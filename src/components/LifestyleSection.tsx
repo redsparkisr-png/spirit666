@@ -222,39 +222,51 @@ const LifestyleSection = () => {
           })}
         </div>
 
-        {/* Mobile: Horizontal swipe carousel */}
+        {/* Mobile: Main image + thumbnail row */}
         <div className="md:hidden">
-          <div
-            ref={scrollRef}
-            onScroll={handleScroll}
-            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4"
-            style={{ scrollPaddingInline: "24px" }}
-          >
-            {mobileItems.map((item, idx) => (
-              <div
-                key={item.id}
-                className="min-w-[85vw] snap-center flex-shrink-0 first:ms-0"
-              >
-                {renderCard(item, idx)}
-              </div>
-            ))}
-          </div>
-          {/* Dot indicators */}
-          <div className="flex justify-center gap-2 mt-3">
-            {mobileItems.map((_, idx) => (
-              <button
-                key={idx}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  activeSlide === idx ? "bg-gold w-4" : "bg-gold/30"
-                }`}
-                aria-label={`Slide ${idx + 1}`}
-                onClick={() => {
-                  const el = scrollRef.current;
-                  if (!el || !el.firstElementChild) return;
-                  const itemWidth = el.firstElementChild.clientWidth + 16; // gap
-                  el.scrollTo({ left: itemWidth * idx, behavior: "smooth" });
-                }}
+          {/* Main image */}
+          <div className="relative overflow-hidden rounded-2xl shadow-md mb-3">
+            <div className="aspect-[4/3] overflow-hidden">
+              <img
+                src={mobileItems[activeSlide]?.image_url}
+                alt={(isHe ? mobileItems[activeSlide]?.alt_he : mobileItems[activeSlide]?.alt_en) || ""}
+                className="w-full h-full object-cover object-center transition-opacity duration-300"
+                loading="lazy"
               />
+            </div>
+            <div className="absolute bottom-0 inset-x-0" dir={isHe ? "rtl" : "ltr"}>
+              <div className="bg-gradient-to-t from-foreground/70 via-foreground/40 to-transparent pt-10 pb-4 px-4">
+                {(isHe ? mobileItems[activeSlide]?.title_he : mobileItems[activeSlide]?.title_en) && (
+                  <p className="text-primary-foreground font-display text-base font-semibold drop-shadow-md">
+                    {isHe ? mobileItems[activeSlide]?.title_he : mobileItems[activeSlide]?.title_en}
+                  </p>
+                )}
+                {(isHe ? mobileItems[activeSlide]?.description_he : mobileItems[activeSlide]?.description_en) && (
+                  <p className="text-primary-foreground/85 font-body text-xs mt-0.5 drop-shadow-sm">
+                    {isHe ? mobileItems[activeSlide]?.description_he : mobileItems[activeSlide]?.description_en}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+          {/* Thumbnail row */}
+          <div className="flex gap-2 overflow-x-auto snap-x scrollbar-hide pb-2 px-1">
+            {mobileItems.map((item, idx) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveSlide(idx)}
+                className={`w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 snap-center transition-all duration-200 ${
+                  activeSlide === idx ? "ring-2 ring-gold ring-offset-1" : "opacity-60"
+                }`}
+                aria-label={`${isHe ? item.title_he : item.title_en} - ${idx + 1}`}
+              >
+                <img
+                  src={item.image_url}
+                  alt=""
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </button>
             ))}
           </div>
         </div>

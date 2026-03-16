@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, LandPlot, Ruler, BedDouble, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, LandPlot, Ruler, BedDouble, MapPin, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";

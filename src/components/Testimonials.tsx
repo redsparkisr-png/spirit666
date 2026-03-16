@@ -70,9 +70,9 @@ const Testimonials = () => {
   };
 
   const testimonials = [
-    { quoteKey: "home.testimonials.quote_2", authorKey: "home.testimonials.author_2", contextKey: "home.testimonials.context_2", initials: "MR" },
-    { quoteKey: "home.testimonials.quote_3", authorKey: "home.testimonials.author_3", contextKey: "home.testimonials.context_3", initials: "JL" },
-    { quoteKey: "home.testimonials.quote_4", authorKey: "home.testimonials.author_4", contextKey: "home.testimonials.context_4", initials: "RD" },
+    { quoteKey: "home.testimonials.quote_2", authorKey: "home.testimonials.author_2", contextKey: "home.testimonials.context_2", initials: "AK" },
+    { quoteKey: "home.testimonials.quote_3", authorKey: "home.testimonials.author_3", contextKey: "home.testimonials.context_3", initials: "NL" },
+    { quoteKey: "home.testimonials.quote_4", authorKey: "home.testimonials.author_4", contextKey: "home.testimonials.context_4", initials: "AF" },
   ];
 
   return (
