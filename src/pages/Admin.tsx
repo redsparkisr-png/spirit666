@@ -2,6 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import AdminLogin from "@/components/admin/AdminLogin";
 import AvailableManager from "@/components/admin/AvailableManager";
 import SoldManager from "@/components/admin/SoldManager";
+import BlogManager from "@/components/admin/BlogManager";
 import LifestyleManager from "@/components/admin/LifestyleManager";
 import LeadsList from "@/components/admin/LeadsList";
 import ContentManager from "@/components/admin/ContentManager";
