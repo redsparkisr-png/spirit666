@@ -66,7 +66,7 @@ const BlueprintPromoSection = () => {
             </h2>
             <p className="font-display italic text-base md:text-lg text-muted-foreground mb-6">
               {isHe
-                ? "המדריך המקיף לרוכשים דוברי אנגלית החוקרים נדל\"ן במושבה המבוקשת בישראל."
+                ? "כל מה שצריך לדעת לפני שקונים בית בזכרון יעקב."
                 : "The definitive guide for English-speaking buyers exploring property in Israel\u2019s most desirable moshava."}
             </p>
 
