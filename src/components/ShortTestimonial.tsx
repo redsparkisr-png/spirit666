@@ -18,11 +18,11 @@ const ShortTestimonial = () => {
         <Quote className="w-5 h-5 mx-auto mb-3 text-gold/30" />
         <p className="font-body text-foreground text-sm md:text-base leading-relaxed italic mb-4">
           {isHe
-            ? "״רכישת נכס בזכרון יעקב מחו״ל הרגישה פשוטה עם הליווי של ספיריט נדל״ן. הידע המקומי שלהם עשה את כל ההבדל.״"
+            ? "״חיפשנו בית בזכרון יעקב וספיריט ליוותה אותנו מהרגע הראשון. ההיכרות שלהם עם השוק המקומי עשתה את כל ההבדל.״"
             : '"Buying in Zichron Yaakov from abroad felt simple with Spirit Real Estate guiding us. Their local knowledge made all the difference."'}
         </p>
         <p className="text-xs font-body text-muted-foreground font-medium">
-          {isHe ? "דיוויד ורייצ׳ל כהן, לונדון" : "David & Rachel Cohen, London"}
+          {isHe ? "דניאל ונעמה לוי, תל אביב" : "David & Rachel Cohen, London"}
         </p>
       </div>
     </motion.div>

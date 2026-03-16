@@ -58,19 +58,11 @@ const HeroSection = () => {
         />
       </motion.div>
 
-      {/* Top-heavy gradient for text readability */}
+      {/* Uniform gradient overlay for centered layout */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: isHe
-            ? "linear-gradient(270deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.12) 60%, rgba(0,0,0,0.0) 100%)"
-            : "linear-gradient(90deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.12) 60%, rgba(0,0,0,0.0) 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.20) 100%)",
+          background: "linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.40) 100%)",
         }}
       />
 
@@ -83,7 +75,7 @@ const HeroSection = () => {
         }}
       >
         <div
-          className={`max-w-[600px] flex flex-col ${isHe ? "items-end text-right mr-auto md:mr-0 md:ml-auto md:pr-[6%]" : "items-start text-left ml-auto md:ml-0 md:pl-[6%]"}`}
+          className="max-w-[640px] mx-auto flex flex-col items-center text-center"
         >
           {/* Brand label */}
           <motion.p
@@ -155,7 +147,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.5 }}
-            className={`flex flex-col gap-4 mt-8 md:mt-10 ${isHe ? "items-end" : "items-start"}`}
+            className="flex flex-col gap-4 mt-8 md:mt-10 items-center"
           >
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link

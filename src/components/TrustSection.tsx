@@ -12,7 +12,7 @@ const TrustSection = () => {
   const navLinks = [
     { to: prefix + "/", label: t("header.nav.home") },
     { to: prefix + "/properties", label: t("header.nav.properties") },
-    { to: prefix + "/guides", label: lang === "he" ? "מדריכים ותובנות" : "Guides" },
+    { to: prefix + "/guides", label: lang === "he" ? "בלוג" : "Blog" },
     { to: prefix + "/sell", label: t("header.nav.sell") },
     { to: prefix + "/about", label: t("header.nav.about") },
     { to: prefix + "/contact", label: t("header.nav.contact") },

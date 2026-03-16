@@ -27,7 +27,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
   const navLinks = [
     { to: prefix + "/", label: t("header.nav.home") },
     { to: prefix + "/properties", label: t("header.nav.properties") },
-    { to: prefix + "/guides", label: isHe ? "מדריכים ותובנות" : "Guides" },
+    { to: prefix + "/guides", label: isHe ? "בלוג" : "Blog" },
     { to: prefix + "/sell", label: t("header.nav.sell") },
     { to: prefix + "/about", label: t("header.nav.about") },
     { to: prefix + "/contact", label: t("header.nav.contact") },
@@ -65,12 +65,9 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
                     style={
                       isActive(link.to)
                         ? {
-                            borderLeftColor: "hsl(var(--gold))",
-                            borderLeftWidth: lang === "he" ? 0 : 3,
-                            borderRightColor: "hsl(var(--gold))",
-                            borderRightWidth: lang === "he" ? 3 : 0,
-                            paddingLeft: lang === "he" ? undefined : 12,
-                            paddingRight: lang === "he" ? 12 : undefined,
+                            borderInlineStartColor: "hsl(var(--gold))",
+                            borderInlineStartWidth: 3,
+                            paddingInlineStart: 12,
                           }
                         : undefined
                     }

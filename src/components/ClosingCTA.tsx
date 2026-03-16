@@ -80,7 +80,7 @@ const ClosingCTA = () => {
             </a>
             <div className="flex flex-wrap justify-center gap-4 text-xs font-body">
               <Link to={`/${lang}/guides`} className="text-primary-foreground/50 hover:text-primary-foreground/80 underline underline-offset-4 transition-colors">
-                {isHe ? "מדריכים ותובנות" : "Guides & Insights"}
+                {isHe ? "בלוג" : "Blog"}
               </Link>
               <Link to={`/${lang}/sell`} className="text-primary-foreground/50 hover:text-primary-foreground/80 underline underline-offset-4 transition-colors">
                 {isHe ? "מכירת נכס" : "Sell Your Property"}

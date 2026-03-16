@@ -9,7 +9,7 @@ import eliranImg from "@/assets/eliran-amsalem.jpg";
 const team = [
   { img: hagitImg, en: "Hagit Cohen Morgan", he: "חגית כהן מורגן", roleEn: "Founder", roleHe: "מייסדת" },
   { img: aviImg, en: "Avi Suleiman", he: "אבי סולימן", roleEn: "Founder", roleHe: "מייסד" },
-  { img: eliranImg, en: "Eliran Amsalem", he: "אלירן אמסלם", roleEn: "International Marketing & Overseas Buyers", roleHe: "שיווק בינלאומי וקונים מחו״ל" },
+  { img: eliranImg, en: "Eliran Amsalem", he: "אלירן אמסלם", roleEn: "Digital Marketing & Business Development", roleHe: "שיווק דיגיטלי ופיתוח עסקי" },
 ];
 
 const TeamTrustSection = () => {
