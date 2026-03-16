@@ -32,7 +32,7 @@ const ClosingCTA = () => {
           transition={{ duration: 0.6 }}
           className="max-w-xl mx-auto text-center"
         >
-          <h2 className="font-display font-semibold text-primary-foreground text-2xl md:text-[30px] leading-tight mb-3">
+          <h2 className="font-display font-semibold text-primary-foreground text-[26px] md:text-[30px] leading-tight mb-3">
             {isHe
               ? "מחפשים בית בזכרון יעקב?"
               : "Looking for a Home in Zichron Yaakov?"}

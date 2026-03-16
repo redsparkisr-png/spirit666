@@ -113,16 +113,16 @@ const LifestyleSection = () => {
   };
 
   return (
-    <section className="py-12 md:py-24 bg-sand-light">
+    <section className="py-20 md:py-28 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
           className="text-center mb-8 md:mb-12"
         >
-          <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
+          <h2 className="text-[26px] md:text-[30px] font-display font-semibold text-foreground mb-3">
             {isHe ? "למה כל כך הרבה אנשים מגיעים לזכרון יעקב — ובסוף מחליטים להישאר" : "Why Overseas Families Choose Zichron Yaakov"}
           </h2>
 
