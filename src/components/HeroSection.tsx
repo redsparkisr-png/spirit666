@@ -3,36 +3,20 @@ import { Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.webp";
 import { useLanguage } from "@/lib/i18n";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import SearchBar from "./SearchBar";
-
-const BLUEPRINT_MSG = encodeURIComponent(
-  "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint."
-);
-const BLUEPRINT_URL = `https://wa.me/972522820632?text=${BLUEPRINT_MSG}`;
 
 const HeroSection = () => {
   const { lang } = useLanguage();
   const isHe = lang === "he";
+  const { t } = useSiteContent();
 
-  const headline = isHe
-    ? "מחפשים בית בזכרון יעקב?"
-    : "The Smart Way to Buy in Zichron Yaakov";
-
-  const subtitle = isHe
-    ? "יש בתים שמגיעים ליד2 — ויש כאלה שנמכרים עוד לפני שהם מופיעים שם."
-    : "Trusted Local Experts on the Ground.";
-
-  const supportingLine = isHe
-    ? "אנחנו עובדים בתוך השוק המקומי ומקבלים גישה לבתים, פנטהאוזים ודירות מיוחדות בזכרון יעקב — לעיתים עוד לפני הפרסום."
-    : "Exclusive access to premium homes and trusted guidance through the Israeli buying process.";
-
-  const guideCta = isHe
-    ? "קבלו את מדריך הקנייה לזכרון יעקב"
-    : "Get the Zichron Buyer Blueprint";
-
-  const guideMicro = isHe
-    ? "הנכסים כאן מתעדכנים כל הזמן — חלקם נמכרים תוך ימים."
-    : "Free guide covering neighborhoods, prices and the buying process.";
+  const headline = t("home.hero.headline");
+  const subtitle = t("home.hero.subline");
+  const supportingLine = t("home.hero.anchor_text");
+  const ctaPrimary = t("home.hero.cta_primary");
+  const ctaSecondary = t("home.hero.cta_secondary");
+  const preTitle = t("home.hero.pre_title");
 
   return (
     <section className="relative flex flex-col items-center">
@@ -91,7 +75,7 @@ const HeroSection = () => {
               textShadow: "0 2px 14px rgba(0,0,0,0.5)",
             }}
           >
-            SPIRIT REAL ESTATE
+            {preTitle}
           </motion.p>
 
           {/* Headline */}
@@ -155,7 +139,7 @@ const HeroSection = () => {
                 className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
                 style={{ fontSize: "16px" }}
               >
-                {isHe ? "צפו בנכסים בזכרון יעקב" : "See Available Homes"}
+                {ctaPrimary}
               </Link>
               <button
                 onClick={() => document.getElementById("buyer-guide-section")?.scrollIntoView({ behavior: "smooth" })}
@@ -171,7 +155,7 @@ const HeroSection = () => {
                 }}
               >
                 <Download className="w-4 h-4 flex-shrink-0" />
-                {guideCta}
+                {ctaSecondary}
               </button>
             </div>
 
@@ -186,7 +170,7 @@ const HeroSection = () => {
                 opacity: 0.85,
               }}
             >
-              {guideMicro}
+              {t("home.hero.trust_1")} · {t("home.hero.trust_2")} · {t("home.hero.trust_3")}
             </p>
           </motion.div>
         </div>
