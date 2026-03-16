@@ -42,9 +42,8 @@ const Index = () => {
       {/* 4. Featured Homes */}
       <AvailableHomes limit={6} />
 
-      {/* 5. Buyer Guide section (moved up) */}
+      {/* 5. Buyer Guide section */}
       <div id="buyer-guide-section">
-        <GoldenConversionPoint />
         <BlueprintPromoSection />
       </div>
 
@@ -54,7 +53,10 @@ const Index = () => {
       {/* 7. Testimonials */}
       <Testimonials />
 
-      {/* 8. Team Trust Section */}
+      {/* 8. Guide Reminder CTA */}
+      <GoldenConversionPoint />
+
+      {/* 9. Team Trust Section */}
       <TeamTrustSection />
 
       {/* 9. Closing CTA */}
