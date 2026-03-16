@@ -27,7 +27,7 @@ const HeroSection = () => {
     : "Exclusive access to premium homes and trusted guidance through the Israeli buying process.";
 
   const guideCta = isHe
-    ? "שלחו הודעה בוואטסאפ"
+    ? "קבלו את מדריך הקנייה לזכרון יעקב"
     : "Get the Zichron Buyer Blueprint";
 
   const guideMicro = isHe
