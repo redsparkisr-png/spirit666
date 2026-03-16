@@ -73,7 +73,7 @@ const BlueprintPromoSection = () => {
             {/* Highlights from CMS */}
             <ul className="space-y-3 mb-8">
               {BULLET_KEYS.map((key) => (
-                <li key={key} className="flex items-center gap-3 font-body text-sm text-foreground">
+                <li key={key} className="flex items-start gap-3 font-body text-sm text-foreground">
                   <CheckCircle className="w-4 h-4 text-gold flex-shrink-0" />
                   <span>{t(key)}</span>
                 </li>

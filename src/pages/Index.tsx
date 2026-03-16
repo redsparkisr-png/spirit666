@@ -60,34 +60,6 @@ const Index = () => {
       {/* 9. Closing CTA */}
       <ClosingCTA />
 
-      {/* SEO internal links */}
-      <section className="py-12 bg-card">
-        <div className="container px-6">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="font-display font-semibold text-foreground text-center mb-6 text-xl">
-              {isHe ? "מדריכי נדל\"ן לזכרון יעקב" : "Zichron Yaakov Real Estate Guides"}
-            </h2>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link to={`${prefix}/buying-property-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
-                {isHe ? "מדריך רכישת נכס" : "Buying Property Guide"}
-              </Link>
-              <Link to={`${prefix}/homes-for-sale-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
-                {isHe ? "בתים למכירה" : "Homes for Sale"}
-              </Link>
-              <Link to={`${prefix}/living-in-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
-                {isHe ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov"}
-              </Link>
-              <Link to={`${prefix}/moving-to-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
-                {isHe ? "מעבר לזכרון יעקב" : "Moving to Zichron Yaakov"}
-              </Link>
-              <Link to={`${prefix}/guides`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
-                {isHe ? "מדריכים ותובנות" : "Guides & Insights"}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <TrustSection />
       <FloatingElements />
       <ExitIntentPopup />

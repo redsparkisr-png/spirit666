@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -34,6 +34,8 @@ const FALLBACK_ITEMS: GalleryItem[] = [
 
 const LifestyleSection = () => {
   const [items, setItems] = useState<GalleryItem[]>([]);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { lang } = useLanguage();
   const isHe = lang === "he";
   const { t } = useSiteContent();
@@ -61,9 +63,58 @@ const LifestyleSection = () => {
   }, []);
 
   const display = items.length > 0 ? items : FALLBACK_ITEMS;
+  const mobileItems = display.slice(0, 5);
+
+  // Track active slide via scroll
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const scrollLeft = el.scrollLeft;
+    const itemWidth = el.firstElementChild?.clientWidth || 1;
+    const idx = Math.round(scrollLeft / itemWidth);
+    setActiveSlide(Math.min(idx, mobileItems.length - 1));
+  }, [mobileItems.length]);
+
+  const renderCard = (item: GalleryItem, idx: number) => {
+    const title = isHe ? item.title_he : item.title_en;
+    const desc = isHe ? item.description_he : item.description_en;
+    const alt = (isHe ? item.alt_he : item.alt_en) || title || `Zichron Yaakov lifestyle ${idx + 1}`;
+
+    return (
+      <div
+        key={item.id}
+        className="relative overflow-hidden rounded-2xl shadow-md"
+        role="figure"
+        aria-label={title || alt}
+      >
+        <div className="aspect-[4/3] overflow-hidden">
+          <img
+            src={item.image_url}
+            alt={alt}
+            className="w-full h-full object-cover object-center"
+            loading="lazy"
+          />
+        </div>
+        <div className="absolute bottom-0 inset-x-0" dir={isHe ? "rtl" : "ltr"}>
+          <div className="bg-gradient-to-t from-foreground/70 via-foreground/40 to-transparent pt-10 pb-4 px-4">
+            {title && (
+              <p className="text-primary-foreground font-display text-base font-semibold drop-shadow-md">
+                {title}
+              </p>
+            )}
+            {desc && (
+              <p className="text-primary-foreground/85 font-body text-xs mt-0.5 drop-shadow-sm">
+                {desc}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <section className="py-16 md:py-24 bg-sand-light">
+    <section className="py-12 md:py-24 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -75,7 +126,13 @@ const LifestyleSection = () => {
           <h2 className="text-2xl md:text-[30px] font-display font-semibold text-foreground mb-3">
             {isHe ? "למה כל כך הרבה אנשים מגיעים לזכרון יעקב — ובסוף מחליטים להישאר" : "Why Overseas Families Choose Zichron Yaakov"}
           </h2>
-          <div className={`text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5 space-y-2 ${isHe ? "text-start" : "text-start"}`}>
+
+          {/* Framing line */}
+          <p className="font-display italic text-muted-foreground text-base md:text-lg mb-5">
+            {isHe ? "הבתים של זכרון הם רק חלק מהסיפור." : "The homes are only part of the story."}
+          </p>
+
+          <div className={`text-muted-foreground font-body max-w-lg mx-auto text-sm md:text-base mb-5 space-y-2 text-start`}>
             {isHe ? (
               <>
                 <p>יש מקומות שנוח לגור בהם.</p>
@@ -115,7 +172,8 @@ const LifestyleSection = () => {
           </ul>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7 max-w-5xl mx-auto">
+        {/* Desktop: Grid layout */}
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7 max-w-5xl mx-auto">
           {display.map((item, idx) => {
             const title = isHe ? item.title_he : item.title_en;
             const desc = isHe ? item.description_he : item.description_en;
@@ -141,11 +199,8 @@ const LifestyleSection = () => {
                     loading="lazy"
                   />
                 </div>
-
-                {/* Desktop: overlay on hover/focus */}
                 <div
-                  className="absolute inset-0 hidden md:flex flex-col justify-end p-5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300"
-                  aria-hidden="false"
+                  className="absolute inset-0 flex flex-col justify-end p-5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300"
                 >
                   <div className="absolute inset-0 bg-foreground/45" />
                   <div className="relative z-10" dir={isHe ? "rtl" : "ltr"}>
@@ -162,25 +217,46 @@ const LifestyleSection = () => {
                     <div className={`h-[2px] w-10 bg-gold mt-3 scale-x-0 group-hover:scale-x-100 group-focus-within:scale-x-100 transition-transform duration-500 delay-100 ${isHe ? "origin-right" : "origin-left"}`} />
                   </div>
                 </div>
-
-                {/* Mobile: permanent text at bottom */}
-                <div className="md:hidden absolute bottom-0 inset-x-0" dir={isHe ? "rtl" : "ltr"}>
-                  <div className="bg-gradient-to-t from-foreground/70 via-foreground/40 to-transparent pt-10 pb-4 px-4">
-                    {title && (
-                      <p className="text-primary-foreground font-display text-base font-semibold drop-shadow-md">
-                        {title}
-                      </p>
-                    )}
-                    {desc && (
-                      <p className="text-primary-foreground/85 font-body text-xs mt-0.5 drop-shadow-sm">
-                        {desc}
-                      </p>
-                    )}
-                  </div>
-                </div>
               </motion.div>
             );
           })}
+        </div>
+
+        {/* Mobile: Horizontal swipe carousel */}
+        <div className="md:hidden">
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4"
+            style={{ scrollPaddingInline: "24px" }}
+          >
+            {mobileItems.map((item, idx) => (
+              <div
+                key={item.id}
+                className="min-w-[85vw] snap-center flex-shrink-0 first:ms-0"
+              >
+                {renderCard(item, idx)}
+              </div>
+            ))}
+          </div>
+          {/* Dot indicators */}
+          <div className="flex justify-center gap-2 mt-3">
+            {mobileItems.map((_, idx) => (
+              <button
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  activeSlide === idx ? "bg-gold w-4" : "bg-gold/30"
+                }`}
+                aria-label={`Slide ${idx + 1}`}
+                onClick={() => {
+                  const el = scrollRef.current;
+                  if (!el || !el.firstElementChild) return;
+                  const itemWidth = el.firstElementChild.clientWidth + 16; // gap
+                  el.scrollTo({ left: itemWidth * idx, behavior: "smooth" });
+                }}
+              />
+            ))}
+          </div>
         </div>
 
         <motion.p
@@ -188,7 +264,7 @@ const LifestyleSection = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="text-center text-muted-foreground font-body text-sm italic mt-12"
+          className="text-center text-muted-foreground font-body text-sm italic mt-10"
         >
           {isHe
             ? "מעל 288 משפחות כבר נעזרו ב-Spirit Real Estate כדי למצוא את הבית שלהן בזכרון יעקב."

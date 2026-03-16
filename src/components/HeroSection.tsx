@@ -147,7 +147,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.5 }}
-            className={`flex flex-col gap-4 mt-8 md:mt-10 ${isHe ? "items-end" : "items-start"}`}
+            className="flex flex-col gap-4 mt-8 md:mt-10 items-center"
           >
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link

@@ -148,30 +148,24 @@ html {
   display: none;
 }
 
-/* RTL Support */
+/* RTL Support — Heebo for Hebrew body, Frank Ruhl Libre for Hebrew headings */
 [dir="rtl"] {
-  font-family: "Heebo", "DM Sans", system-ui, sans-serif;
+  font-family: "Heebo", system-ui, sans-serif;
 }
 
-[dir="rtl"] .font-display {
-  font-family: "Frank Ruhl Libre", "Heebo", "Playfair Display", Georgia, serif;
+[dir="rtl"] .font-display,
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6 {
+  font-family: "Frank Ruhl Libre", "Heebo", Georgia, serif;
   line-height: 1.35;
 }
 
 [dir="rtl"] .font-body {
-  font-family: "Heebo", "DM Sans", system-ui, sans-serif;
-}
-
-[dir="rtl"] .flex-row {
-  flex-direction: row-reverse;
-}
-
-[dir="rtl"] .text-left {
-  text-align: right;
-}
-
-[dir="rtl"] .text-right {
-  text-align: left;
+  font-family: "Heebo", system-ui, sans-serif;
 }
 
 /* Hero background image responsive positioning */
