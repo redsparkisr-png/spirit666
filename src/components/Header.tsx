@@ -27,7 +27,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
   const navLinks = [
     { to: prefix + "/", label: t("header.nav.home") },
     { to: prefix + "/properties", label: t("header.nav.properties") },
-    { to: prefix + "/guides", label: isHe ? "מדריכים ותובנות" : "Guides" },
+    { to: prefix + "/guides", label: isHe ? "בלוג" : "Blog" },
     { to: prefix + "/sell", label: t("header.nav.sell") },
     { to: prefix + "/about", label: t("header.nav.about") },
     { to: prefix + "/contact", label: t("header.nav.contact") },
