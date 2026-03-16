@@ -14,6 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_categories: {
+        Row: {
+          display_order: number
+          id: string
+          name_en: string
+          name_he: string
+          slug: string
+        }
+        Insert: {
+          display_order?: number
+          id?: string
+          name_en: string
+          name_he: string
+          slug: string
+        }
+        Update: {
+          display_order?: number
+          id?: string
+          name_en?: string
+          name_he?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author: string
+          body_en: string
+          body_he: string
+          canonical_url: string | null
+          category: string | null
+          created_at: string
+          excerpt_en: string
+          excerpt_he: string
+          featured_image: string | null
+          id: string
+          meta_description_en: string | null
+          meta_description_he: string | null
+          noindex: boolean
+          og_image: string | null
+          publish_date: string
+          reading_time_minutes: number
+          seo_title_en: string | null
+          seo_title_he: string | null
+          slug: string
+          status: string
+          tags: string[] | null
+          title_en: string
+          title_he: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string
+          body_en?: string
+          body_he?: string
+          canonical_url?: string | null
+          category?: string | null
+          created_at?: string
+          excerpt_en?: string
+          excerpt_he?: string
+          featured_image?: string | null
+          id?: string
+          meta_description_en?: string | null
+          meta_description_he?: string | null
+          noindex?: boolean
+          og_image?: string | null
+          publish_date?: string
+          reading_time_minutes?: number
+          seo_title_en?: string | null
+          seo_title_he?: string | null
+          slug: string
+          status?: string
+          tags?: string[] | null
+          title_en?: string
+          title_he?: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          body_en?: string
+          body_he?: string
+          canonical_url?: string | null
+          category?: string | null
+          created_at?: string
+          excerpt_en?: string
+          excerpt_he?: string
+          featured_image?: string | null
+          id?: string
+          meta_description_en?: string | null
+          meta_description_he?: string | null
+          noindex?: boolean
+          og_image?: string | null
+          publish_date?: string
+          reading_time_minutes?: number
+          seo_title_en?: string | null
+          seo_title_he?: string | null
+          slug?: string
+          status?: string
+          tags?: string[] | null
+          title_en?: string
+          title_he?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       buyer_guide_sections: {
         Row: {
           body: string
