@@ -31,7 +31,7 @@ const TeamTrustSection = () => {
           transition={{ duration: 0.6 }}
           className="max-w-3xl mx-auto text-center"
         >
-          <h2 className="font-display font-semibold text-foreground text-2xl md:text-[30px] leading-tight mb-4">
+          <h2 className="font-display font-semibold text-foreground text-[26px] md:text-[30px] leading-tight mb-4">
             {t("team.title")}
           </h2>
           <p className="font-body text-muted-foreground text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-10 whitespace-pre-line">

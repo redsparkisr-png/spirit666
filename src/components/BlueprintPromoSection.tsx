@@ -112,7 +112,7 @@ const BlueprintPromoSection = () => {
                 href={blueprintUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`inline-flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#25D366]/20 hover:-translate-y-0.5 active:scale-[0.98] ${isHe ? "flex-row-reverse" : ""}`}
+                className={`inline-flex items-center justify-center gap-2.5 border-2 border-gold/40 text-foreground hover:bg-gold/10 py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] ${isHe ? "flex-row-reverse" : ""}`}
                 style={{ fontSize: "16px" }}
               >
                 <MessageCircle className="w-5 h-5" />
