@@ -96,6 +96,7 @@ const PropertyCard = ({ property }: { property: Property }) => {
 const Properties = () => {
   const [searchParams] = useSearchParams();
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("newest");
