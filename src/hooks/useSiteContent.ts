@@ -58,6 +58,14 @@ export function useSiteContent() {
     "home.trust_line.item_2": { en: "70+ Families", he: "70+ משפחות" },
     "home.trust_line.item_3": { en: "Strategic Negotiation", he: "משא ומתן אסטרטגי" },
     "home.trust_line.item_4": { en: "Local Specialists", he: "מומחים מקומיים" },
+    "whatsapp.phone_number": { en: "972522820632", he: "972522820632" },
+    "whatsapp.default_message": { en: "Hi, I'm interested in properties in Zichron Yaakov.", he: "שלום, אני מתעניין/ת בנכסים בזכרון יעקב." },
+    "whatsapp.hero_message": { en: "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint.", he: "שלום, אשמח לקבל את מדריך הקונה לזכרון יעקב." },
+    "whatsapp.guide_message": { en: "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint.", he: "שלום, אשמח לקבל את מדריך הקונה לזכרון יעקב." },
+    "whatsapp.closing_message": { en: "Hi Hagit, I'm looking at homes in Zichron Yaakov and would love to learn more.", he: "שלום חגית, אני מתעניין/ת בבתים בזכרון יעקב ואשמח לשמוע עוד." },
+    "whatsapp.closing_guide_message": { en: "Hi Hagit, I would love to receive the guide about buying property in Zichron Yaakov.", he: "שלום חגית, אשמח לקבל את המדריך על רכישת נכס בזכרון יעקב." },
+    "whatsapp.team_message": { en: "Hi, I'd like to learn more about homes in Zichron Yaakov.", he: "שלום, אשמח לשמוע עוד על בתים בזכרון יעקב." },
+    "whatsapp.offmarket_message": { en: "Hi, I'm interested in off-market homes in Zichron Yaakov.", he: "שלום, אני מתעניין/ת בנכסים שלא פורסמו בזכרון יעקב." },
   };
 
   const t = useCallback(
