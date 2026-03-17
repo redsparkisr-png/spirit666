@@ -169,6 +169,97 @@ const LifestyleSection = () => {
               </li>
             ))}
           </ul>
+
+          {/* Nature & Sea Highlight Block */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-10 max-w-2xl mx-auto rounded-2xl bg-gradient-to-br from-primary/5 via-card to-accent/10 border border-border/60 p-6 md:p-8"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl">🌊</span>
+              <h3 className="font-display text-lg md:text-xl font-semibold text-foreground">
+                {isHe ? "הים ושמורות הטבע — במרחק נגיעה" : "Sea & Nature Reserves — Minutes Away"}
+              </h3>
+            </div>
+            <div className={`font-body text-sm md:text-base text-muted-foreground space-y-3 text-start`}>
+              {isHe ? (
+                <>
+                  <p>
+                    אחד הדברים שהופכים את זכרון יעקב למיוחדת במיוחד הוא הקרבה לטבע ולים. תוך דקות ספורות מהבית אפשר להגיע לאתרים מדהימים:
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                    <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
+                      <span className="text-gold text-lg mt-0.5">🏖️</span>
+                      <div>
+                        <p className="font-display font-semibold text-foreground text-sm">חוף דור – הבוכטה</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">מפרצון טורקיז מוקף סלעים טבעיים, אחד החופים היפים בישראל. מושלם למשפחות ולשחייה בים צלול.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
+                      <span className="text-gold text-lg mt-0.5">🌿</span>
+                      <div>
+                        <p className="font-display font-semibold text-foreground text-sm">רמת הנדיב</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">גני הנדיב וגן הזיכרון של הברון רוטשילד — פארק מרהיב עם שבילי הליכה, גנים מעוצבים ונוף פנורמי.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
+                      <span className="text-gold text-lg mt-0.5">🥾</span>
+                      <div>
+                        <p className="font-display font-semibold text-foreground text-sm">שמורת נחל תנינים</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">שמורת טבע עתיקה עם סכר מתקופת הצלבנים, בריכות מים ומסלולי הליכה בין צמחייה ירוקה.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
+                      <span className="text-gold text-lg mt-0.5">🌅</span>
+                      <div>
+                        <p className="font-display font-semibold text-foreground text-sm">חוף הכרמל ועין חוד</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">רצועת חופים לאורך הכרמל והכפר האמנים עין חוד — תרבות, אומנות וטבע במרחק דקות.</p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p>
+                    What makes Zichron Yaakov truly special is its proximity to world-class nature and coastline. Within minutes you can reach:
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                    <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
+                      <span className="text-gold text-lg mt-0.5">🏖️</span>
+                      <div>
+                        <p className="font-display font-semibold text-foreground text-sm">Dor Beach (HaBukhta)</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">A stunning turquoise lagoon surrounded by natural rock formations — one of Israel's most beautiful beaches.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
+                      <span className="text-gold text-lg mt-0.5">🌿</span>
+                      <div>
+                        <p className="font-display font-semibold text-foreground text-sm">Ramat Hanadiv</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">Baron Rothschild's memorial gardens — a breathtaking park with walking trails, landscaped gardens and panoramic views.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
+                      <span className="text-gold text-lg mt-0.5">🥾</span>
+                      <div>
+                        <p className="font-display font-semibold text-foreground text-sm">Nahal Taninim Reserve</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">An ancient nature reserve with a Crusader-era dam, natural pools and scenic walking paths through lush greenery.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
+                      <span className="text-gold text-lg mt-0.5">🌅</span>
+                      <div>
+                        <p className="font-display font-semibold text-foreground text-sm">Carmel Coast & Ein Hod</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">A strip of pristine beaches along the Carmel ridge and the artists' village of Ein Hod — culture, art and nature combined.</p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* Desktop: Grid layout */}
