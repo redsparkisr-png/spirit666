@@ -194,7 +194,7 @@ const LifestyleSection = () => {
                     <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
                       <span className="text-gold text-lg mt-0.5">🏖️</span>
                       <div>
-                        <p className="font-display font-semibold text-foreground text-sm">חוף דור – הבוכטה</p>
+                        <p className="font-display font-semibold text-foreground text-sm">חוף דור</p>
                         <p className="text-xs text-muted-foreground mt-0.5">מפרצון טורקיז מוקף סלעים טבעיים, אחד החופים היפים בישראל. מושלם למשפחות ולשחייה בים צלול.</p>
                       </div>
                     </div>
