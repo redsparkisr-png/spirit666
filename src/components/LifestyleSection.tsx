@@ -144,30 +144,26 @@ const LifestyleSection = () => {
             )}
           </div>
           <ul className={`max-w-xl mx-auto text-muted-foreground font-body text-sm space-y-3 text-start`}>
-            {(isHe
-              ? [
-                  { title: "נוף פתוח לים התיכון", desc: "מהרבה בתים במושבה ניתן לראות את האופק הכחול עד קו החוף." },
-                  { title: "טבע ושמורות טבע", desc: "שבילי הליכה, חורשות ושמורות טבע נמצאים דקות מהבית וגם חופי ים מהיפים בארץ נמצאים מתחת לגבעה." },
-                  { title: "חינוך איכותי", desc: "משפחות רבות מגיעות לזכרון בזכות מערכת החינוך החזקה והסביבה המשפחתית במושבה." },
-                  { title: "המדרחוב ההיסטורי", desc: "בתי האבן, היקבים, הגלריות והמסעדות לאורך המדרחוב יוצרים מרכז חיים ייחודי." },
-                  { title: "קהילה ואוכלוסייה איכותית", desc: "זכרון מושכת אליה לאורך השנים משפחות שמחפשות איכות חיים, סביבה חזקה וקהילה טובה לגדל בה ילדים." },
-                  { title: "קרבה למרכז", desc: "כשעה מתל אביב וכחצי שעה מחיפה — אבל האוויר והקצב כאן שונים לגמרי." },
-                  { title: "ביקוש גבוה לנכסים", desc: "זכרון יעקב נשארת אחת המושבות המבוקשות בישראל ושומרת על ערך הנדל״ן לאורך שנים." },
-                ]
-              : [
-                  { title: "Coastal Mediterranean lifestyle", desc: "Just 60 minutes from Tel Aviv" },
-                  { title: "Strong English-speaking community", desc: "International and welcoming" },
-                  { title: "Excellent schools and nature", desc: "Family-friendly atmosphere" },
-                  { title: "Limited housing supply", desc: "Supporting long-term value" },
-                  { title: "Historic charm and vineyards", desc: "Uniquely walkable town center" },
-                  { title: "Easy access", desc: "To both Tel Aviv and Haifa" },
-                ]
-            ).map((item, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="text-gold mt-1 shrink-0">•</span>
-                <span><strong>{item.title}</strong> — {item.desc}</span>
-              </li>
-            ))}
+            {isHe ? (
+              <>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>נוף פתוח לים התיכון</strong> — מהרבה בתים במושבה ניתן לראות את <strong>האופק הכחול</strong> עד קו החוף.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>טבע ושמורות טבע</strong> — <strong>שבילי הליכה</strong>, חורשות ושמורות טבע דקות מהבית, ו<strong>חופי ים מהיפים בארץ</strong> ממש מתחת לגבעה.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>חינוך איכותי</strong> — משפחות רבות מגיעות לזכרון בזכות <strong>מערכת החינוך החזקה</strong> והסביבה המשפחתית.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>המדרחוב ההיסטורי</strong> — <strong>בתי אבן</strong>, <strong>יקבים</strong>, <strong>גלריות</strong> ו<strong>בתי קפה קטנים</strong> לאורך המדרחוב יוצרים מרכז חיים ייחודי.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>קהילה איכותית</strong> — זכרון מושכת משפחות שמחפשות <strong>איכות חיים</strong>, סביבה חזקה וקהילה טובה לגדל בה ילדים.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>קרבה למרכז</strong> — כשעה מ<strong>תל אביב</strong> וכחצי שעה מ<strong>חיפה</strong> — אבל האוויר והקצב כאן שונים לגמרי.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>ביקוש גבוה לנכסים</strong> — זכרון נשארת אחת <strong>המושבות המבוקשות בישראל</strong> ושומרת על ערך הנדל״ן לאורך שנים.</span></li>
+              </>
+            ) : (
+              <>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>Coastal Mediterranean lifestyle</strong> — <strong>Sea views</strong>, golden sunsets, just 60 minutes from Tel Aviv.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>Strong English-speaking community</strong> — International, welcoming and well-connected.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>Excellent schools and nature</strong> — A <strong>family-friendly</strong> atmosphere surrounded by greenery.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>Historic charm and vineyards</strong> — <strong>Stone houses</strong>, <strong>boutique wineries</strong>, <strong>cozy cafés</strong> and a uniquely walkable town center.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>Limited housing supply</strong> — Supporting <strong>long-term value</strong> in one of Israel's most sought-after towns.</span></li>
+                <li className="flex items-start gap-2"><span className="text-gold mt-1 shrink-0">•</span><span><strong>Easy access</strong> — To both <strong>Tel Aviv</strong> and <strong>Haifa</strong>, yet a completely different pace of life.</span></li>
+              </>
+            )}
           </ul>
 
           {/* Nature & Sea Highlight Block */}
