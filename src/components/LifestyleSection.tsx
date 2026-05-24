@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -60,8 +60,6 @@ const lifestyleOrderIndex = new Map(LIFESTYLE_MARKETING_ORDER.map((id, index) =>
 
 const LifestyleSection = () => {
   const [items, setItems] = useState<GalleryItem[]>([]);
-  const [activeSlide, setActiveSlide] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const { lang } = useLanguage();
   const isHe = lang === "he";
   const { t } = useSiteContent();
@@ -98,16 +96,6 @@ const LifestyleSection = () => {
   }, []);
 
   const display = items.length > 0 ? items : FALLBACK_ITEMS;
-
-  // Track active slide via scroll for mobile carousel
-  const handleScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const scrollLeft = el.scrollLeft;
-    const itemWidth = el.clientWidth;
-    const idx = Math.round(scrollLeft / itemWidth);
-    setActiveSlide(Math.min(idx, display.length - 1));
-  }, [display.length]);
 
   const renderCard = (item: GalleryItem, idx: number) => {
     const title = isHe ? item.title_he : item.title_en;
@@ -343,71 +331,60 @@ const LifestyleSection = () => {
           })}
         </div>
 
-        {/* Mobile: Full-bleed swipe carousel */}
+        {/* Mobile: Mosaic gallery in a dark green frame (single visual "breather") */}
         <div className="md:hidden -mx-6">
-          {/* Swipeable carousel */}
-          <div
-            ref={scrollRef}
-            onScroll={handleScroll}
-            className="flex snap-x snap-mandatory overflow-x-auto scrollbar-hide items-center"
-            style={{ scrollBehavior: 'smooth' }}
-          >
-            {display.map((item, idx) => {
-              const title = isHe ? item.title_he : item.title_en;
-              const desc = isHe ? item.description_he : item.description_en;
-              const alt = (isHe ? item.alt_he : item.alt_en) || title || `Zichron Yaakov lifestyle ${idx + 1}`;
+          <div className="bg-primary px-4 py-8 rounded-none">
+            <p className="text-primary-foreground/85 font-body uppercase tracking-[0.18em] text-[11px] text-center mb-1">
+              {isHe ? "גלריה" : "Gallery"}
+            </p>
+            <h3 className="text-primary-foreground font-display font-semibold text-xl text-center mb-5">
+              {isHe ? "זכרון יעקב — במבט אחד" : "Zichron Yaakov — At a Glance"}
+            </h3>
 
-              return (
-                <div
-                  key={item.id}
-                  className="w-full flex-shrink-0 snap-center px-1"
-                >
-                  <div className="relative overflow-hidden rounded-2xl mx-2">
+            <div className="grid grid-cols-2 gap-2">
+              {display.map((item, idx) => {
+                const title = isHe ? item.title_he : item.title_en;
+                const desc = isHe ? item.description_he : item.description_en;
+                const alt = (isHe ? item.alt_he : item.alt_en) || title || `Zichron Yaakov lifestyle ${idx + 1}`;
+                const cycle = idx % 6;
+                const isFull = cycle === 0 || cycle === 3;
+
+                return (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.4, delay: (idx % 6) * 0.05 }}
+                    className={`relative overflow-hidden rounded-xl shadow-sm ${
+                      isFull ? "col-span-2 aspect-[16/10]" : "aspect-[4/5]"
+                    }`}
+                  >
                     <img
-                      src={optimizedImageUrl(item.image_url, { width: 1200, quality: 78, resize: "contain", format: "webp" })}
+                      src={optimizedImageUrl(item.image_url, { width: isFull ? 900 : 500, quality: 78, resize: "cover", format: "webp" })}
                       alt={alt}
-                      className="block w-full h-auto"
-                      loading={idx < 2 ? "eager" : "lazy"}
+                      className="w-full h-full object-cover"
+                      loading={idx < 3 ? "eager" : "lazy"}
                       decoding="async"
                     />
-                    {/* Gradient overlay with text */}
-                    <div className="absolute bottom-0 inset-x-0" dir={isHe ? "rtl" : "ltr"}>
-                      <div className="bg-gradient-to-t from-foreground/80 via-foreground/40 to-transparent pt-16 pb-6 px-5">
-                        {title && (
-                          <p className="text-primary-foreground font-display text-lg font-semibold drop-shadow-lg">
+                    {isFull && title && (
+                      <div className="absolute inset-x-0 bottom-0" dir={isHe ? "rtl" : "ltr"}>
+                        <div className="bg-gradient-to-t from-foreground/80 via-foreground/35 to-transparent pt-10 pb-3 px-4">
+                          <p className="text-primary-foreground font-display text-base font-semibold drop-shadow-md leading-tight">
                             {title}
                           </p>
-                        )}
-                        {desc && (
-                          <p className="text-primary-foreground/85 font-body text-sm mt-1 drop-shadow-md">
-                            {desc}
-                          </p>
-                        )}
+                          {desc && (
+                            <p className="text-primary-foreground/85 font-body text-[11px] mt-0.5 drop-shadow-sm line-clamp-1">
+                              {desc}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Dot indicators */}
-          <div className="flex justify-center gap-1.5 mt-4 px-6">
-            {display.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  const el = scrollRef.current;
-                  if (el) el.scrollTo({ left: idx * el.clientWidth, behavior: 'smooth' });
-                }}
-                className={`rounded-full transition-all duration-300 ${
-                  activeSlide === idx
-                    ? "w-6 h-2 bg-gold"
-                    : "w-2 h-2 bg-muted-foreground/25"
-                }`}
-                aria-label={`Slide ${idx + 1}`}
-              />
-            ))}
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
