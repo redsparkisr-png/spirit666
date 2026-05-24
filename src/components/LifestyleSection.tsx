@@ -261,7 +261,7 @@ const LifestyleSection = () => {
         </motion.div>
 
         {/* Desktop: Grid layout */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7 max-w-5xl mx-auto">
+        <div className="hidden md:block md:columns-2 lg:columns-3 gap-5 md:gap-7 max-w-5xl mx-auto [column-fill:_balance]">
           {display.map((item, idx) => {
             const title = isHe ? item.title_he : item.title_en;
             const desc = isHe ? item.description_he : item.description_en;
@@ -274,20 +274,18 @@ const LifestyleSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: idx * 0.08 }}
-                className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-500 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2"
+                className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-500 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 mb-5 md:mb-7 break-inside-avoid block"
                 tabIndex={0}
                 role="figure"
                 aria-label={title || alt}
               >
-                <div className="aspect-[4/3] overflow-hidden bg-sand-light">
-                  <img
-                    src={optimizedImageUrl(item.image_url, { width: 1200, quality: 78, resize: "contain", format: "webp" })}
-                    alt={alt}
-                    className="w-full h-full object-contain object-center transition-transform duration-700 ease-out group-hover:scale-105 group-focus-within:scale-105"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
+                <img
+                  src={optimizedImageUrl(item.image_url, { width: 1200, quality: 78, resize: "contain", format: "webp" })}
+                  alt={alt}
+                  className="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105 group-focus-within:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div
                   className="absolute inset-0 flex flex-col justify-end p-5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300"
                 >
@@ -317,7 +315,7 @@ const LifestyleSection = () => {
           <div
             ref={scrollRef}
             onScroll={handleScroll}
-            className="flex snap-x snap-mandatory overflow-x-auto scrollbar-hide"
+            className="flex snap-x snap-mandatory overflow-x-auto scrollbar-hide items-center"
             style={{ scrollBehavior: 'smooth' }}
           >
             {display.map((item, idx) => {
@@ -331,15 +329,13 @@ const LifestyleSection = () => {
                   className="w-full flex-shrink-0 snap-center px-1"
                 >
                   <div className="relative overflow-hidden rounded-2xl mx-2">
-                    <div className="aspect-[3/4] overflow-hidden bg-sand-light">
-                      <img
-                        src={optimizedImageUrl(item.image_url, { width: 1200, quality: 78, resize: "contain", format: "webp" })}
-                        alt={alt}
-                        className="w-full h-full object-contain object-center"
-                        loading={idx < 2 ? "eager" : "lazy"}
-                        decoding="async"
-                      />
-                    </div>
+                    <img
+                      src={optimizedImageUrl(item.image_url, { width: 1200, quality: 78, resize: "contain", format: "webp" })}
+                      alt={alt}
+                      className="block w-full h-auto"
+                      loading={idx < 2 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
                     {/* Gradient overlay with text */}
                     <div className="absolute bottom-0 inset-x-0" dir={isHe ? "rtl" : "ltr"}>
                       <div className="bg-gradient-to-t from-foreground/80 via-foreground/40 to-transparent pt-16 pb-6 px-5">
