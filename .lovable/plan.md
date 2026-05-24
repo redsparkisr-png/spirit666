@@ -1,89 +1,59 @@
+# תוכנית — סבב סיום: SEO דינמי + ביצועי תמונות
 
-# תוכנית שיפורים — אתר Spirit Zichron
+## מצב נוכחי (מה שכן קיים)
 
-מטרה: לבצע את כל השיפורים שהצעתי בלי לשבור פיצ'רים קיימים, ולסיים ב-QA מקיף.
+- Code splitting (React.lazy לכל הדפים), manualChunks ב-Vite, lazy loading על תגי `<img>`, פונטים non-blocking. זה כבר טוב.
+- **חסר**: התמונות שמנהל המשרד מעלה דרך ה-Admin נשמרות **כפי שהן** (JPG/PNG מהמצלמה, לפעמים 3-8MB), ללא המרה ל-WebP וללא resize. זו הסיבה הגדולה ביותר לטעינה איטית.
+- חסר: sitemap דינמי, og:image דינמי לכל נכס.
 
-## שלב 1 — ריתמוס ופרופורציות באתר הציבורי
+## מה אבצע
 
-**1.1 Section rhythm אחיד**
-- ליצור utility class בשם `section` ב-`src/index.css` שמגדיר `py-20 md:py-28` + `container px-6 mx-auto max-w-7xl`.
-- לעדכן את כל סקשני העמוד הראשי (`HeroSection`, `AvailableHomes`, `SoldHomes`, `LifestyleSection`, `Testimonials`, `BlueprintPromoSection`, `TeamTrustSection`, `WhyDifferent`, `MarketSnapshot`, `TrustSection`, `ClosingCTA`, `GuidePromoSection`) להשתמש בו.
+### 1. אופטימיזציית תמונות אוטומטית בממשק הניהול (ההשפעה הגדולה ביותר)
 
-**1.2 טיפוגרפיה**
-- H2 ל-`clamp(28px, 4vw, 44px)` ב-`index.css`.
-- `line-height` של גוף בעברית ל-1.7.
+`src/components/admin/ImageManager.tsx`:
+- לפני העלאה ל-Supabase Storage, להמיר כל תמונה אוטומטית ל-**WebP** ולשנות גודל ל-max 2000px (רוחב) באמצעות `<canvas>` בדפדפן — ללא תלות חדשה, ללא עבודה למשתמש.
+- איכות 0.82 (איזון איכות/גודל). תוצאה צפויה: ירידה של 70-85% במשקל קובץ.
+- שמירת שם קובץ עם סיומת `.webp`.
+- הצגת הודעת toast עם החיסכון ("נדחס מ-4.2MB ל-380KB").
 
-**1.3 Audit כפתורים**
-- לעבור על כל ה-CTAs ולוודא `rounded-full` עקבי (לפי memory).
-- לתקן מקומות עם `rounded-lg` בכפתורים ראשיים.
+### 2. Rendering מהיר של תמונות קיימות
 
-**1.4 Gold dividers**
-- לוודא שמופיע בין כל הסקשנים הראשיים בעמוד הבית.
+יצירת helper `src/lib/image.ts` עם פונקציה `optimizedImageUrl(url, { width, quality })` שמשתמש ב-Supabase Image Transformations (קיים בחינם ב-Storage):
+```
+?width=800&quality=75&format=webp
+```
+- עדכון `AvailableHomes`, `SoldHomes`, `LifestyleSection`, `PropertyDetail` כך שתמונות הכרטיסים יבקשו רוחב 800px, וגלריית הנכס תבקש 1600px.
+- זה אופטימלי גם לתמונות שכבר הועלו בעבר (לא צריך להעלות שוב).
 
-## שלב 2 — ארגון מחדש של ממשק Admin
+### 3. LCP — Preload לתמונת ה-Hero
 
-**2.1 Sidebar במקום טאבים**
-- להחליף את ה-12 טאבים האופקיים ב-`src/pages/Admin.tsx` ב-sidebar עם קיבוץ:
-  - **תוכן**: Hero, Content, Blog, Guide
-  - **נכסים**: Available, Sold, Property Types, Locations
-  - **Social Proof**: Testimonials, Lifestyle
-  - **תקשורת**: Leads, WhatsApp
-- שמירה על כל הקומפוננטות הקיימות (`AvailableManager`, וכו') ללא שינוי לוגי.
+ב-`HeroSection`: להוסיף `<link rel="preload" as="image" fetchpriority="high">` לתמונה הראשית, ו-`loading="eager"` במקום `lazy` (היום ה-Hero כנראה lazy בטעות).
 
-**2.2 Dashboard ראשי**
-- מסך ברירת מחדל חדש (`/admin` ללא טאב) עם KPIs:
-  - מספר לידים השבוע (מ-`crm_leads`)
-  - מספר נכסים פעילים (`available_homes`)
-  - מספר נכסים שנמכרו לאחרונה (`sold_homes`)
-  - מספר פוסטים מפורסמים
-- 4 כרטיסים נקיים בעיצוב המותג.
+### 4. OG meta דינמי לעמוד נכס
 
-**2.3 שיפורי UX קטנים**
-- חיפוש בסיסי ב-Leads ו-Available (filter על שם/כותרת).
-- ב-Admin כפתור חזרה לאתר ולוגו המותג בכותרת.
-- מעבר הממשק לעברית (עקביות עם CRM).
+`src/pages/PropertyDetail.tsx` כבר מזריק `<meta name="description">` ידנית — להרחיב לאותה גישה (DOM injection, ללא תלות חדשה ב-react-helmet) עבור:
+- `og:title`, `og:description`, `og:image` (תמונה ראשית של הנכס דרך optimizedImageUrl), `og:url`, `twitter:card`.
 
-## שלב 3 — SEO דינמי
+### 5. Sitemap דינמי
 
-**3.1 Sitemap דינמי**
-- ליצור `scripts/generate-sitemap.ts` שמושך נכסים פעילים + פוסטים מ-Supabase.
-- להוסיף `predev` ו-`prebuild` ב-`package.json`.
-- Base URL: `https://spirit666.lovable.app`.
+`supabase/functions/sitemap/index.ts` — Edge Function ציבורית שמחזירה `application/xml` עם כל הנכסים הפעילים + פוסטים מה-DB.
+- הוספת rewrite ב-`public/_redirects` כך ש-`/sitemap.xml` יפנה ל-Edge Function. (אם לא ניתן, להחליף את ה-`sitemap.xml` הסטטי ב-redirect ידני בקובץ).
+- חלופה פשוטה יותר: script שרץ ב-`prebuild` ומייצר את `public/sitemap.xml`. **אבחר את האפשרות הזו** — פשוטה ויציבה.
 
-**3.2 OG meta דינמי לעמוד נכס**
-- ב-`PropertyDetail.tsx`: להוסיף `react-helmet-async` עם title, description, og:image (תמונה ראשית של הנכס), canonical.
-- להוסיף `HelmetProvider` ב-`src/main.tsx` אם לא קיים.
+### 6. QA לאחר ביצוע
 
-## שלב 4 — Polish
+- בדיקת ביצועים: Network panel — לוודא שתמונות `<img>` חוזרות כ-WebP עם הגדלים הנכונים.
+- העלאת תמונה דרך ה-Admin — לוודא המרה ל-WebP והודעת חיסכון.
+- בדיקת `view-source` של עמוד נכס — לוודא תגי og מלאים.
+- `/sitemap.xml` — לוודא רשומות דינמיות.
+- לוודא שלא נשבר: עמוד בית HE/EN, רשת נכסים, עמוד נכס, גלריה, Admin upload, CRM.
 
-**4.1 404 ממותג**
-- לעצב מחדש את `src/pages/NotFound.tsx` בעיצוב המותג (Primary green, Gold, פונט Frank Ruhl, כפתור חזרה לבית, אופציה ל-WhatsApp).
+## קבצים שייגעו
 
-**4.2 Loading states**
-- להחליף spinners ב-`Admin.tsx` ו-`CrmLayout` ב-skeleton/spinner בצבעי המותג (gold/primary במקום blue).
+- ערוך: `src/components/admin/ImageManager.tsx`, `src/components/AvailableHomes.tsx`, `src/components/SoldHomes.tsx`, `src/components/LifestyleSection.tsx`, `src/pages/PropertyDetail.tsx`, `src/components/HeroSection.tsx`, `package.json` (prebuild), `public/sitemap.xml` (יוחלף בייצור).
+- חדש: `src/lib/image.ts`, `scripts/generate-sitemap.mjs`.
+- **לא** ייגעו: CRM, DB schema, RLS, auth, FloatingElements.
 
-## שלב 5 — QA מקיף
+## הערכת סיכון
 
-לאחר הביצוע, להריץ דרך browser tool:
-
-1. **עמוד בית `/he`** — לבדוק ריתמוס סקשנים, dividers, CTAs, אין שבירת layout.
-2. **עמוד בית `/en`** — אותו דבר ב-LTR.
-3. **נכסים `/he/properties`** ו-`/en/properties` — לבדוק SearchBar, slider, רשת נכסים.
-4. **נכס בודד** — לפתוח נכס לדוגמה, לוודא מטא-תגיות, גלריה, CTA WhatsApp.
-5. **`/admin`** — לוודא login, sidebar, מעבר בין סקשנים, dashboard עם KPIs.
-6. **`/crm`** — לוודא שלא נשבר (לא שינינו אותו).
-7. **Floating elements** — WhatsApp + Accessibility + Cookie consent לא חופפים, נראים אלגנטיים.
-8. **Mobile (375px)** — בדיקה ידנית של 1-2 עמודים מרכזיים.
-9. **Console** — אפס errors.
-10. **Sitemap** — לאמת ש-`/sitemap.xml` נטען עם רשומות דינמיות.
-
-## הערות טכניות
-
-- **ללא שינויי DB**: כל השיפורים frontend בלבד.
-- **תלות חדשה**: `react-helmet-async` (קטנה, סטנדרטית).
-- **קבצים שייגעו**: `src/index.css`, `src/pages/Admin.tsx`, `src/pages/NotFound.tsx`, `src/main.tsx`, `src/pages/PropertyDetail.tsx`, ~10 קומפוננטות סקשנים בעמוד הבית, `package.json`, חדש: `scripts/generate-sitemap.ts` + קומפוננטות חדשות ל-AdminSidebar ו-AdminDashboard.
-- **לא ייגעו**: CRM, Supabase client/types, auth flow, RLS policies, FloatingElements, AccessibilityWidget, לוגיקת לידים.
-
-## הערכת היקף
-
-שינוי גדול אבל לא מסוכן — רוב העבודה היא טיפוגרפיה/spacing/ארגון UI. הסיכון העיקרי הוא ב-Admin reorganization, ולכן אשמור את כל ה-Manager components כמו שהם ורק אעטוף אותם ב-shell חדש.
+נמוך. ההמרה ל-WebP בדפדפן היא טכניקה סטנדרטית (Canvas API). תמונות ישנות ימשיכו לעבוד דרך Supabase transforms שמופעלות אוטומטית. אין שינויי DB.
