@@ -117,6 +117,12 @@
   .btn-text {
     letter-spacing: 0.03em;
   }
+
+  /* Refined heading tracking — LTR only; Hebrew stays normal */
+  [dir="ltr"] h1,
+  [dir="ltr"] h2 {
+    letter-spacing: 0.005em;
+  }
 }
 
 /* Smooth scrolling */

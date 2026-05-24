@@ -77,14 +77,14 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.4, delay: index * 0.1 }}
-        className="bg-card rounded-2xl overflow-hidden shadow-md md:hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
+        className="bg-card rounded-2xl overflow-hidden shadow-md transition-all duration-[600ms] ease-out group hover:-translate-y-1 md:hover:[box-shadow:0_18px_44px_-18px_hsl(var(--gold)/0.35)]"
       >
         <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
           {images.length === 0 && (
             <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
           )}
           {images.map((url, idx) => (
-            <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" />
+            <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover object-center transition-[opacity,transform] duration-[600ms] ease-out group-hover:scale-[1.03]" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" />
           ))}
           {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
           {isNew && (
@@ -109,7 +109,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
               </span>
             </div>
           )}
-          <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">{property.title}</h3>
+          <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug transition-colors duration-300 group-hover:text-primary">{property.title}</h3>
           
           {/* Neighborhood / Location */}
           {property.location && (

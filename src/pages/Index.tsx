@@ -15,6 +15,7 @@ import FloatingElements from "@/components/FloatingElements";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
 import SchemaOrg from "@/components/SchemaOrg";
 import ClosingCTA from "@/components/ClosingCTA";
+import GoldDivider from "@/components/ui/gold-divider";
 
 const Index = () => {
   const { lang } = useLanguage();
@@ -39,8 +40,12 @@ const Index = () => {
       {/* 3. Short Testimonial */}
       <ShortTestimonial />
 
+      <GoldDivider />
+
       {/* 4. Featured Homes */}
       <AvailableHomes limit={6} />
+
+      <GoldDivider />
 
       {/* 5. Buyer Guide section */}
       <div id="buyer-guide-section">
@@ -50,11 +55,15 @@ const Index = () => {
       {/* 6. Lifestyle */}
       <LifestyleSection />
 
+      <GoldDivider />
+
       {/* 7. Testimonials */}
       <Testimonials />
 
       {/* 8. Guide Reminder CTA */}
       <GoldenConversionPoint />
+
+      <GoldDivider />
 
       {/* 9. Team Trust Section */}
       <TeamTrustSection />
