@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
-import { optimizedImageUrl } from "@/lib/image";
 
 import fallbackImg1 from "@/assets/guide-img-12.jpg";
 import fallbackImg2 from "@/assets/guide-img-8.jpg";
@@ -89,7 +88,7 @@ const LifestyleSection = () => {
       >
         <div className="aspect-[4/3] overflow-hidden">
           <img
-            src={optimizedImageUrl(item.image_url, { width: 800, quality: 75 })}
+            src={item.image_url}
             alt={alt}
             className="w-full h-full object-cover object-center"
             loading="lazy"
@@ -281,7 +280,7 @@ const LifestyleSection = () => {
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={optimizedImageUrl(item.image_url, { width: 800, quality: 75 })}
+                    src={item.image_url}
                     alt={alt}
                     className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 group-focus-within:scale-105"
                     loading="lazy"
@@ -333,7 +332,7 @@ const LifestyleSection = () => {
                   <div className="relative overflow-hidden rounded-2xl mx-2">
                     <div className="aspect-[3/4] overflow-hidden">
                       <img
-                        src={optimizedImageUrl(item.image_url, { width: 800, quality: 75 })}
+                        src={item.image_url}
                         alt={alt}
                         className="w-full h-full object-cover object-center"
                         loading={idx < 2 ? "eager" : "lazy"}
