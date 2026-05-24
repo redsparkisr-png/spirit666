@@ -80,7 +80,8 @@
 
   h2 {
     @apply font-display font-semibold;
-    font-size: 24px;
+    font-size: clamp(26px, 4vw, 44px);
+    line-height: 1.3;
   }
 
   h3, h4, h5, h6 {
@@ -88,9 +89,7 @@
   }
 
   @media (min-width: 768px) {
-    h2 {
-      font-size: 30px;
-    }
+    h2 { line-height: 1.25; }
   }
 
   /* Global focus indicators for WCAG 2.1 AA */
@@ -157,6 +156,7 @@ html {
 /* RTL Support — Heebo for Hebrew body, Frank Ruhl Libre for Hebrew headings */
 [dir="rtl"] {
   font-family: "Heebo", system-ui, sans-serif;
+  line-height: 1.7;
 }
 
 [dir="rtl"] .font-display,
