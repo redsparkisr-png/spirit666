@@ -77,7 +77,7 @@ const TeamTrustSection = () => {
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex items-center justify-center gap-2.5 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] ${isHe ? "flex-row-reverse" : ""}`}
+            className={`inline-flex items-center justify-center gap-2.5 bg-charcoal hover:bg-charcoal-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] ${isHe ? "flex-row-reverse" : ""}`}
           >
             <MessageCircle className="w-5 h-5" />
             {t("team.cta")}
