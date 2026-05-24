@@ -1,59 +1,22 @@
-# תוכנית — סבב סיום: SEO דינמי + ביצועי תמונות
+## הבעיה
+לאחר ההוספה של אופטימיזציית התמונות (Supabase Image Transformations) ב-`LifestyleSection`, התמונות בגלריית "למה זכרון יעקב" עוברות דרך endpoint של `render/image` עם `width=800`. ה-endpoint מחיל ברירת מחדל של `resize=cover` ולעיתים חותך/מזיז את הקומפוזיציה של התמונה המקורית — וזו הסיבה שהגלריה נראית עכשיו שונה ממה שהיה.
 
-## מצב נוכחי (מה שכן קיים)
+## התיקון
+להחזיר את תמונות גלריית הלייפסטייל לשימוש ב-URL המקורי של התמונה כפי שהועלתה, בלי לעבור דרך הטרנספורמציה — בדיוק כמו לפני השינוי האחרון.
 
-- Code splitting (React.lazy לכל הדפים), manualChunks ב-Vite, lazy loading על תגי `<img>`, פונטים non-blocking. זה כבר טוב.
-- **חסר**: התמונות שמנהל המשרד מעלה דרך ה-Admin נשמרות **כפי שהן** (JPG/PNG מהמצלמה, לפעמים 3-8MB), ללא המרה ל-WebP וללא resize. זו הסיבה הגדולה ביותר לטעינה איטית.
-- חסר: sitemap דינמי, og:image דינמי לכל נכס.
+### קבצים שישתנו
+- `src/components/LifestyleSection.tsx`
+  - בכרטיס הדסקטופ (שורה ~284): להחליף `src={optimizedImageUrl(item.image_url, { width: 800, quality: 75 })}` ל-`src={item.image_url}`.
+  - בקרוסלה במובייל (שורה ~336): אותו דבר.
+  - הסרת ה-import של `optimizedImageUrl` אם לא בשימוש נוסף בקובץ.
+  - שמירה על `loading`, `decoding`, `aspect-ratio`, ו-`object-cover object-center` כפי שהיו — כדי לא לשנות שום דבר אחר בקומפוזיציה.
 
-## מה אבצע
+### מה לא משתנה
+- כרטיסי הנכסים (`AvailableHomes`, `SoldHomes`) — שם הקרופ הוא 4:3 קבוע שתוכנן מראש לכרטיס, ולא דווח על שינוי שם. נשאיר את האופטימיזציה.
+- העלאות חדשות מ-Admin ימשיכו להתבצע ב-WebP מכווץ (לא משפיע על הקומפוזיציה — רק על הגודל).
+- אין שינויים ב-DB, ב-RLS, או באקסיסיביליטי.
 
-### 1. אופטימיזציית תמונות אוטומטית בממשק הניהול (ההשפעה הגדולה ביותר)
-
-`src/components/admin/ImageManager.tsx`:
-- לפני העלאה ל-Supabase Storage, להמיר כל תמונה אוטומטית ל-**WebP** ולשנות גודל ל-max 2000px (רוחב) באמצעות `<canvas>` בדפדפן — ללא תלות חדשה, ללא עבודה למשתמש.
-- איכות 0.82 (איזון איכות/גודל). תוצאה צפויה: ירידה של 70-85% במשקל קובץ.
-- שמירת שם קובץ עם סיומת `.webp`.
-- הצגת הודעת toast עם החיסכון ("נדחס מ-4.2MB ל-380KB").
-
-### 2. Rendering מהיר של תמונות קיימות
-
-יצירת helper `src/lib/image.ts` עם פונקציה `optimizedImageUrl(url, { width, quality })` שמשתמש ב-Supabase Image Transformations (קיים בחינם ב-Storage):
-```
-?width=800&quality=75&format=webp
-```
-- עדכון `AvailableHomes`, `SoldHomes`, `LifestyleSection`, `PropertyDetail` כך שתמונות הכרטיסים יבקשו רוחב 800px, וגלריית הנכס תבקש 1600px.
-- זה אופטימלי גם לתמונות שכבר הועלו בעבר (לא צריך להעלות שוב).
-
-### 3. LCP — Preload לתמונת ה-Hero
-
-ב-`HeroSection`: להוסיף `<link rel="preload" as="image" fetchpriority="high">` לתמונה הראשית, ו-`loading="eager"` במקום `lazy` (היום ה-Hero כנראה lazy בטעות).
-
-### 4. OG meta דינמי לעמוד נכס
-
-`src/pages/PropertyDetail.tsx` כבר מזריק `<meta name="description">` ידנית — להרחיב לאותה גישה (DOM injection, ללא תלות חדשה ב-react-helmet) עבור:
-- `og:title`, `og:description`, `og:image` (תמונה ראשית של הנכס דרך optimizedImageUrl), `og:url`, `twitter:card`.
-
-### 5. Sitemap דינמי
-
-`supabase/functions/sitemap/index.ts` — Edge Function ציבורית שמחזירה `application/xml` עם כל הנכסים הפעילים + פוסטים מה-DB.
-- הוספת rewrite ב-`public/_redirects` כך ש-`/sitemap.xml` יפנה ל-Edge Function. (אם לא ניתן, להחליף את ה-`sitemap.xml` הסטטי ב-redirect ידני בקובץ).
-- חלופה פשוטה יותר: script שרץ ב-`prebuild` ומייצר את `public/sitemap.xml`. **אבחר את האפשרות הזו** — פשוטה ויציבה.
-
-### 6. QA לאחר ביצוע
-
-- בדיקת ביצועים: Network panel — לוודא שתמונות `<img>` חוזרות כ-WebP עם הגדלים הנכונים.
-- העלאת תמונה דרך ה-Admin — לוודא המרה ל-WebP והודעת חיסכון.
-- בדיקת `view-source` של עמוד נכס — לוודא תגי og מלאים.
-- `/sitemap.xml` — לוודא רשומות דינמיות.
-- לוודא שלא נשבר: עמוד בית HE/EN, רשת נכסים, עמוד נכס, גלריה, Admin upload, CRM.
-
-## קבצים שייגעו
-
-- ערוך: `src/components/admin/ImageManager.tsx`, `src/components/AvailableHomes.tsx`, `src/components/SoldHomes.tsx`, `src/components/LifestyleSection.tsx`, `src/pages/PropertyDetail.tsx`, `src/components/HeroSection.tsx`, `package.json` (prebuild), `public/sitemap.xml` (יוחלף בייצור).
-- חדש: `src/lib/image.ts`, `scripts/generate-sitemap.mjs`.
-- **לא** ייגעו: CRM, DB schema, RLS, auth, FloatingElements.
-
-## הערכת סיכון
-
-נמוך. ההמרה ל-WebP בדפדפן היא טכניקה סטנדרטית (Canvas API). תמונות ישנות ימשיכו לעבוד דרך Supabase transforms שמופעלות אוטומטית. אין שינויי DB.
+## QA לאחר התיקון
+1. דסקטופ `/he`: כל 6 תמונות הגלריה מציגות את הקומפוזיציה המקורית.
+2. מובייל `/he`: הקרוסלה (aspect-[3/4]) מציגה את אותה התמונה ללא חיתוך חדש.
+3. אין שגיאות בקונסול.
