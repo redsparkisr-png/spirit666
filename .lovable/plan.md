@@ -1,18 +1,33 @@
-## המטרה
-להחזיר את האופטימיזציה (WebP דינמי דרך Supabase Image Transformations) לגלריית הלייפסטייל — אבל בלי שום חיתוך של התמונה. התמונה המקורית תישמר במלואה, רק תוקטן לרוחב המתאים ותומר ל-WebP.
+## הבעיה
+`object-contain` בקופסה עם יחס קבוע (`aspect-[4/3]` בדסקטופ, `aspect-[3/4]` במובייל) יוצר שוליים לבנים בצדדים כשהתמונה לא באותו יחס בדיוק.
 
-## השינוי
-1. **`src/lib/image.ts`** — להוסיף אפשרות `resize` ל-`ImageOpts` (`'cover' | 'contain' | 'fill'`, ברירת מחדל `cover` כדי לא לשבור את כרטיסי הנכסים). כשהקורא מבקש `contain` נוסיף `&resize=contain` ל-URL, וכן נחליף `format=origin` ל-`format=webp` (כדי שגם JPG ישנים יומרו ל-WebP בלייב).
-2. **`src/components/LifestyleSection.tsx`** — להחזיר את `optimizedImageUrl(item.image_url, { width: 1200, quality: 78, resize: 'contain' })` בשלוש נקודות (דסקטופ ראשי, דסקטופ עם hover, מובייל). רוחב 1200 כדי שגם רטינה תיראה חד.
-3. **התאמת הקונטיינר ב-`LifestyleSection`** — `aspect-[4/3]`/`aspect-[3/4]` ימשיכו להגדיר את הקופסה, אבל ה-`<img>` יקבל `object-contain` במקום `object-cover`, עם רקע ניטרלי (`bg-sand-light` / `bg-card`) כדי שאם יחסי התמונה לא תואמים נראה מסגרת נקייה ולא חיתוך. ככה התמונה מוצגת *במלואה* תמיד.
+## הפתרון
+לבטל את היחס הקבוע של הקופסה — להציג כל תמונה ביחס הטבעי שלה. כך אין חיתוך וגם אין שוליים.
+
+### דסקטופ (`grid grid-cols-2 lg:grid-cols-3`)
+- מסירים `aspect-[4/3]`, מסירים את הרקע (`bg-sand-light`).
+- ה-`<img>` יקבל `w-full h-auto` במקום `h-full object-contain`.
+- כדי שהשורות לא ייראו "קופצות" יותר מדי, נעטוף את הגריד ב-CSS `columns` (masonry פשוטה): `columns-2 lg:columns-3 gap-7` במקום `grid`, וכל פריט יקבל `mb-7 break-inside-avoid`. ככה התמונות מסתדרות לפי גובהן הטבעי בלי שוליים ובלי חיתוך.
+- ה-overlay של ה-hover נשאר ממוקם `absolute inset-0` מעל ה-`<img>`.
+
+### מובייל (קרוסלה)
+- מסירים `aspect-[3/4]` והרקע.
+- ה-`<img>` יקבל `w-full h-auto max-h-[80vh] object-contain` (אבל כיוון שאין יותר קופסה עם יחס שונה, ה-contain פשוט יציג את התמונה במלואה ללא שוליים).
+- הקופסה של הטקסט (gradient bottom) נשארת `absolute bottom-0 inset-x-0` — תיצמד לתחתית התמונה בפועל.
+- לוגיקת ה-`handleScroll` נשארת — `el.clientWidth` עדיין עובד.
+
+### transform על hover
+- האנימציה הקיימת `group-hover:scale-105` נשמרת — היא תעבוד על `<img>` ישירות.
+
+## קבצים
+- `src/components/LifestyleSection.tsx` בלבד.
 
 ## מה לא משתנה
-- `AvailableHomes`, `SoldHomes`, `PropertyDetail` — ממשיכים עם `cover` (כי הכרטיסים תוכננו לפורמט 4:3 קבוע).
-- העלאות חדשות — `compressToWebP` בממשק האדמין נשאר.
+- `optimizedImageUrl(..., resize: "contain", format: "webp")` נשאר — WebP מהיר.
+- `AvailableHomes`, `SoldHomes` — לא נוגעים.
 - אין שינויי DB/RLS.
 
 ## QA
-1. דסקטופ `/he` ו-`/en` — 6 התמונות מוצגות במלואן, ללא חיתוך, עם רקע עדין מסביב במידת הצורך.
-2. מובייל — הקרוסלה (aspect-[3/4]) מציגה את כל התמונה.
-3. Network panel — ה-URL כולל `format=webp&resize=contain` והקובץ קטן משמעותית מהמקור.
-4. אין שגיאות בקונסול.
+1. דסקטופ `/he` ו-`/en` — כל 6 התמונות מוצגות במלואן, ללא שוליים לבנים, ביחס הטבעי שלהן, פרוסות יפה ב-masonry.
+2. מובייל — קרוסלה מציגה כל תמונה במלואה ללא שוליים, הטקסט נצמד לתחתית התמונה.
+3. אין שגיאות בקונסול.
