@@ -39,6 +39,15 @@ const ORGANIZATION_SCHEMA = {
   ],
 };
 
+const WEBSITE_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Spirit Real Estate",
+  url: SITE_URL,
+  inLanguage: ["en", "he"],
+  publisher: { "@type": "Organization", name: "Spirit Real Estate" },
+};
+
 const BREADCRUMB_BASE = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -140,6 +149,13 @@ const SchemaOrg = () => {
     orgScript.setAttribute("data-schema-org", "organization");
     orgScript.textContent = JSON.stringify(ORGANIZATION_SCHEMA);
     document.head.appendChild(orgScript);
+
+    // WebSite schema (always present)
+    const siteScript = document.createElement("script");
+    siteScript.type = "application/ld+json";
+    siteScript.setAttribute("data-schema-org", "website");
+    siteScript.textContent = JSON.stringify(WEBSITE_SCHEMA);
+    document.head.appendChild(siteScript);
 
     // Breadcrumb schema
     const pathSegments = location.pathname.split("/").filter(Boolean);
