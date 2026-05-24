@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
 import TrustSection from "@/components/TrustSection";
+import PageMeta from "@/components/PageMeta";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 interface BlogPost {
   id: string;
@@ -34,6 +36,7 @@ interface BlogCategory {
 
 const Blog = () => {
   const { lang } = useLanguage();
+  const { t } = useSiteContent();
   const isHe = lang === "he";
   const prefix = `/${lang}`;
 
@@ -65,21 +68,11 @@ const Blog = () => {
   const featured = filtered[0];
   const rest = filtered.slice(1);
 
-  const metaTitle = isHe ? "מדריכים ותובנות | Spirit Real Estate" : "Guides & Insights | Spirit Real Estate";
-  const metaDesc = isHe
-    ? "מדריכים מקצועיים לרכישת נכס בזכרון יעקב — שכונות, מחירים, טיפים ותובנות שוק"
-    : "Expert guides for buying property in Zichron Yaakov — neighborhoods, prices, tips and market insights";
-
-  useEffect(() => {
-    document.title = metaTitle;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", metaDesc);
-  }, [lang]);
-
   const WHATSAPP_URL = `https://wa.me/972522820632?text=${encodeURIComponent(isHe ? "היי, אשמח לקבל את המדריך לרכישת בית בזכרון יעקב" : "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint.")}`;
 
   return (
     <main>
+      <PageMeta title={t("seo.guides.title")} description={t("seo.guides.description")} />
       <Header />
       <section className="py-16 md:py-24 bg-sand-light">
         <div className="container px-6">

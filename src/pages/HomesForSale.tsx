@@ -10,6 +10,7 @@ import { useRef } from "react";
 import Header from "@/components/Header";
 import TrustSection from "@/components/TrustSection";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
+import PageMeta from "@/components/PageMeta";
 
 type Property = Tables<"properties_available">;
 
@@ -98,22 +99,14 @@ const HomesForSale = () => {
     fetch();
   }, []);
 
-  const neighborhoods = isHe
-    ? [
-        { name: "מרכז היסטורי", desc: "רחובות מקסימים, בתים אופייניים, ואווירה של פעם." },
-        { name: "אלון", desc: "שכונה ירוקה עם בתים פרטיים ונופים פנורמיים." },
-        { name: "מורדות הכרמל", desc: "קרבה לטבע ושקט, אידיאלי למשפחות." },
-        { name: "גבעת עדן", desc: "שכונה משפחתית עם גישה נוחה לכל השירותים." },
-      ]
-    : [
-        { name: "Historic Center", desc: "Charming streets, traditional homes, and old-world atmosphere." },
-        { name: "Alon", desc: "Green neighborhood with private homes and panoramic views." },
-        { name: "Mordot HaCarmel", desc: "Close to nature, quiet — ideal for families." },
-        { name: "Givat Eden", desc: "Family-friendly with convenient access to all amenities." },
-      ];
+  const neighborhoods = [1, 2, 3, 4].map((i) => ({
+    name: t(`homes_for_sale.neighborhoods.item_${i}_name`),
+    desc: t(`homes_for_sale.neighborhoods.item_${i}_desc`),
+  }));
 
   return (
     <main className="min-h-screen bg-background">
+      <PageMeta title={t("seo.homes_for_sale.title")} description={t("seo.homes_for_sale.description")} />
       <Header />
 
       {/* Hero */}
@@ -142,7 +135,7 @@ const HomesForSale = () => {
       <section className="py-12 md:py-16 bg-card">
         <div className="container px-6">
           <h2 className="font-display font-semibold text-foreground text-center mb-10">
-            {isHe ? "שכונות פופולריות" : "Popular Neighborhoods"}
+            {t("homes_for_sale.neighborhoods.title")}
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {neighborhoods.map((n, i) => (
@@ -204,7 +197,7 @@ const HomesForSale = () => {
             </p>
             <Link
               to={`${prefix}/contact`}
-              className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-primary-foreground py-4 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-primary-foreground py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
               style={{ fontSize: "17px" }}
             >
               {isHe ? "קבעו ייעוץ" : "Schedule a Consultation"}
