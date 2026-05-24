@@ -38,7 +38,7 @@ const HeroSection = () => {
           width={2000}
           height={1125}
           loading="eager"
-          fetchPriority="high"
+          {...({ fetchpriority: "high" } as any)}
         />
       </motion.div>
 

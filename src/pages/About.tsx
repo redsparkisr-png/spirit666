@@ -107,7 +107,7 @@ const About = () => {
                 className="text-center"
               >
                 <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-border shadow-sm mx-auto mb-4">
-                  <img src={m.img} alt={t(m.nameKey)} className="w-full h-full object-cover" />
+                  <img src={m.img} alt={t(m.nameKey)} className="w-full h-full object-cover"  loading="lazy" decoding="async" />
                 </div>
                 <h3 className="font-display font-semibold text-foreground text-base">{t(m.nameKey)}</h3>
                 <p className="text-xs text-muted-foreground font-body mb-2">{t(m.roleKey)}</p>

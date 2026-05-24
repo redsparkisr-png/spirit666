@@ -137,9 +137,16 @@ const LanguageLayout = () => {
     heLink.href = `${base}/he${path || "/"}`;
     document.head.appendChild(heLink);
 
+    const xDefaultLink = document.createElement("link");
+    xDefaultLink.rel = "alternate";
+    xDefaultLink.hreflang = "x-default";
+    xDefaultLink.href = `${base}/en${path || "/"}`;
+    document.head.appendChild(xDefaultLink);
+
     return () => {
       enLink.remove();
       heLink.remove();
+      xDefaultLink.remove();
     };
   }, [location.pathname]);
 

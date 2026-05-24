@@ -62,7 +62,7 @@ const TrustSection = () => {
               alt="Spirit Real Estate"
               className="h-[50px] md:h-[68px] w-auto rounded-md mx-auto transition-transform duration-500 group-hover:scale-105"
               style={{ objectFit: "contain", imageRendering: "-webkit-optimize-contrast" as any }}
-            />
+             loading="lazy" decoding="async" />
           </Link>
 
           {/* Gold accent divider */}
