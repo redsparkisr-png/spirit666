@@ -66,8 +66,8 @@ function urlEntry(loc, opts = {}) {
 
 async function main() {
   const [properties, posts] = await Promise.all([
-    fetchTable("properties_available", "select=slug,id,updated_at"),
-    fetchTable("blog_posts", "select=slug,updated_at&published=eq.true"),
+    fetchTable("properties_available", "select=*"),
+    fetchTable("blog_posts", "select=*"),
   ]);
 
   const entries = [];
