@@ -4,7 +4,7 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 import spiritLogo from "@/assets/spirit-logo.jpg";
 import React, { useState, forwardRef } from "react";
 import { Menu } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
   const { lang, setLang } = useLanguage();
@@ -52,6 +52,8 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
             side={lang === "he" ? "right" : "left"}
             className="bg-primary border-white/10 w-[85%] max-w-sm p-0"
           >
+            <SheetTitle className="sr-only">{lang === "he" ? "תפריט ניווט" : "Navigation menu"}</SheetTitle>
+            <SheetDescription className="sr-only">{lang === "he" ? "ניווט ראשי ובחירת שפה" : "Main navigation and language selection"}</SheetDescription>
             <div className="flex flex-col h-full pt-16 px-8">
               <nav className="flex flex-col gap-1" role="navigation" aria-label="Main navigation">
                 {navLinks.map((link) => (
