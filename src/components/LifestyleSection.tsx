@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -60,8 +60,6 @@ const lifestyleOrderIndex = new Map(LIFESTYLE_MARKETING_ORDER.map((id, index) =>
 
 const LifestyleSection = () => {
   const [items, setItems] = useState<GalleryItem[]>([]);
-  const [activeSlide, setActiveSlide] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const { lang } = useLanguage();
   const isHe = lang === "he";
   const { t } = useSiteContent();
@@ -98,16 +96,6 @@ const LifestyleSection = () => {
   }, []);
 
   const display = items.length > 0 ? items : FALLBACK_ITEMS;
-
-  // Track active slide via scroll for mobile carousel
-  const handleScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const scrollLeft = el.scrollLeft;
-    const itemWidth = el.clientWidth;
-    const idx = Math.round(scrollLeft / itemWidth);
-    setActiveSlide(Math.min(idx, display.length - 1));
-  }, [display.length]);
 
   const renderCard = (item: GalleryItem, idx: number) => {
     const title = isHe ? item.title_he : item.title_en;
