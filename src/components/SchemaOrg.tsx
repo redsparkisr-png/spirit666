@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const SITE_URL = "https://spirit-homes-guide.lovable.app";
+const SITE_URL = "https://spirit666.lovable.app";
 
 const ORGANIZATION_SCHEMA = {
   "@context": "https://schema.org",
@@ -34,6 +34,9 @@ const ORGANIZATION_SCHEMA = {
   },
   priceRange: "$$$$",
   image: `${SITE_URL}/favicon.ico`,
+  sameAs: [
+    "https://wa.me/972522820632",
+  ],
 };
 
 const BREADCRUMB_BASE = {

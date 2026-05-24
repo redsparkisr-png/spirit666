@@ -65,6 +65,12 @@ const LanguageLayout = () => {
     }
   }, [urlLang, setLang]);
 
+  // Sync <html> lang & dir for accessibility and SEO
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = dir;
+  }, [lang, dir]);
+
   // Dynamic meta tags + canonical
   useEffect(() => {
     const pathSegments = location.pathname.split("/").filter(Boolean);
@@ -82,7 +88,7 @@ const LanguageLayout = () => {
       descTag.setAttribute("content", meta.desc);
 
       // Canonical tag
-      const canonicalUrl = `https://spirit-homes-guide.lovable.app${location.pathname}`;
+      const canonicalUrl = `https://spirit666.lovable.app${location.pathname}`;
       let canonicalTag = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
       if (!canonicalTag) {
         canonicalTag = document.createElement("link");
