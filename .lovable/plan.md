@@ -1,35 +1,38 @@
-# Refinement Plan — Quiet Luxury Polish
+## שדרוג אלגנטי — כפתור WhatsApp צף
 
-Keep the existing brand intact. Apply low-risk, high-impact refinements that elevate the boutique feel without breaking layout or copy.
+הכפתור הירוק הנוכחי (`bg-green-600`) שובר את שפת ה־Quiet Luxury של האתר. נחליף אותו במשהו שמתיישר עם הזהב/ירוק־כהה של המותג ועדיין נשאר מזוהה כ־WhatsApp.
 
-## 1. Thin gold section dividers
-- Add a reusable `<GoldDivider />` component: centered thin line (1px) in `--gold` at 30% opacity, ~120px wide, with optional small diamond/dot in the middle.
-- Place between main homepage sections (Hero → Trust → Properties → WhyDifferent → About → CTA).
+### שינויים ב-`src/components/FloatingElements.tsx`
 
-## 2. Refined property card hover
-- Update `PropertyCard` hover: subtle lift (`translateY(-4px)`), soft shadow using gold tint (`0 12px 40px -12px hsl(var(--gold)/0.25)`), image `scale(1.03)` over 600ms ease-out.
-- Gold underline animation on the property title on hover.
+**1. עיצוב הכפתור**
+- רקע: `bg-primary` (ירוק כהה מותגי #0F2E26) במקום `green-600`
+- מסגרת זהב עדינה: `ring-1 ring-gold/40`
+- אייקון WhatsApp בצבע זהב (`text-gold`) במקום לבן — מבדיל מ-CTAs רגילים ושומר על שפה אחידה
+- צל רך וחם: `shadow-[0_8px_24px_-8px_hsl(var(--primary)/0.45)]`, ב-hover `shadow-[0_14px_36px_-10px_hsl(var(--gold)/0.4)]`
+- גודל: `w-14 h-14` נשאר (תקין לנגישות 44px+)
 
-## 3. Heading typography polish (desktop only)
-- Add `tracking-[0.01em]` to h1/h2 in EN, `tracking-normal` in HE (Hebrew shouldn't be tracked).
-- Slightly tighter `leading` on large display headings.
+**2. אייקון**
+- מעבר מ-`MessageCircle` (lucide גנרי) ל-SVG WhatsApp אמיתי (lucide אין; נשתמש ב-inline SVG דק, stroke-based, בצבע זהב) — נראה הרבה יותר בוטיק
+- אנימציית `hover:scale-105` עדינה (200ms)
 
-## 4. Subtler scroll reveals
-- Reduce existing fade-in distance from `translateY(10px)` to `translateY(6px)`, duration 500ms, ease-out.
-- Stagger children by 60ms in section grids.
+**3. Pulse עדין חד-פעמי**
+- טבעת זהב דקה (`ring-2 ring-gold/30`) מתפוגגת פעם אחת אחרי 3 שניות מהטעינה, כדי למשוך תשומת לב בלי להיות מציק. לא לולאה אינסופית.
 
-## 5. Micro-refinements
-- Primary CTA: add gentle gold ring on hover (`ring-1 ring-gold/40`).
-- Section padding rhythm: ensure consistent `py-20 md:py-28` across homepage sections.
+**4. Tooltip**
+- שדרוג ה-tooltip לרקע `bg-primary text-primary-foreground` עם מסגרת זהב דקה ופונט מותגי, במקום `bg-card` נייטרלי
+- חץ קטן שמצביע לכפתור
 
-## Files to edit
-- `src/components/ui/gold-divider.tsx` (new)
-- `src/pages/Index.tsx` (insert dividers)
-- `src/components/PropertyCard.tsx` (hover refinement)
-- `src/index.css` (refined keyframes, tracking utility)
-- `src/components/HeroSection.tsx`, `TrustSection.tsx`, `WhyDifferent.tsx` (padding/tracking pass)
+**5. יישור עם כפתור הנגישות**
+- כיום שניהם בפינה הימנית (RTL: שמאלית). ודא שאין חפיפה — הנגישות תישאר במיקומה, ה-WhatsApp ב-`bottom-6`, פער אנכי עקבי.
 
-## QA
-- Verify both `/he` and `/en` routes
-- Check mobile (375px) and desktop (1373px)
-- Confirm no console errors, no layout shifts, RTL/LTR both correct
+### מה לא משתנה
+- ההתנהגות (פתיחת wa.me, הסתרה כשמודאל פתוח, התאמה לבאנר קוקיז)
+- המספר והודעת ברירת המחדל
+- המיקום הגלובלי דרך `LanguageLayout`
+
+### QA
+- `/he` ו-`/en` — וודא RTL/LTR תקין
+- מובייל (375px) + דסקטופ — אין חפיפה עם widget הנגישות או באנר קוקיז
+- ניגודיות אייקון זהב על רקע ירוק כהה — WCAG AA
+
+**קובץ יחיד שנערך:** `src/components/FloatingElements.tsx`
