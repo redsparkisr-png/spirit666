@@ -180,7 +180,7 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
     : t("home.available.subtitle");
 
   return (
-    <section id="available-homes" className="py-20 md:py-28 bg-sand-light">
+    <section id="available-homes" className="py-14 md:py-20 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -241,7 +241,7 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="bg-primary rounded-2xl p-8 md:p-12 mt-14 max-w-3xl mx-auto text-center"
+          className="bg-primary rounded-2xl p-6 md:p-12 mt-10 max-w-3xl mx-auto text-center"
         >
           <h3 className="font-display font-semibold text-primary-foreground text-xl md:text-2xl mb-4">
             {t("home.offmarket.title")}
@@ -256,7 +256,7 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
             href={`https://wa.me/${t("whatsapp.phone_number") || "972522820632"}?text=${encodeURIComponent(t("whatsapp.default_message") || "Hi, I'm interested in private opportunities in Zichron Yaakov.")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 sm:gap-2.5 bg-gold hover:bg-gold-hover text-white py-3.5 sm:py-4 px-6 sm:px-10 rounded-full font-body font-semibold text-sm sm:text-base whitespace-nowrap transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2 sm:gap-2.5 bg-gold hover:bg-gold-hover text-white py-3.5 sm:py-4 px-5 sm:px-10 rounded-full font-body font-semibold text-sm sm:text-base max-w-full text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
           >
             <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
             <span>{t("home.offmarket.cta") || (isHe ? "קבלו גישה להזדמנויות פרטיות" : "Get Access to Private Opportunities")}</span>

@@ -39,7 +39,7 @@ const BlueprintSection = () => {
     "w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-charcoal/20 focus:border-charcoal transition-all";
 
   return (
-    <section id="blueprint" className="py-20 md:py-28 lg:py-32 bg-card relative overflow-hidden" aria-labelledby="blueprint-heading">
+    <section id="blueprint" className="py-14 md:py-20 lg:py-24 bg-card relative overflow-hidden" aria-labelledby="blueprint-heading">
       {/* Subtle decorative accent */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-bronze/[0.03] blur-3xl pointer-events-none" />
 

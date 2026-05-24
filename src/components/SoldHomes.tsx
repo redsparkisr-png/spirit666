@@ -36,7 +36,7 @@ const SoldHomes = () => {
   const isEmpty = loaded && items.length === 0;
 
   return (
-    <section className="py-20 md:py-28 bg-secondary">
+    <section className="py-14 md:py-20 bg-secondary">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

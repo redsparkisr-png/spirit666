@@ -149,7 +149,7 @@ const LifestyleSection = () => {
   };
 
   return (
-    <section className="py-20 md:py-28 bg-sand-light">
+    <section className="py-14 md:py-20 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

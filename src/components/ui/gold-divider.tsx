@@ -13,7 +13,7 @@ interface GoldDividerProps {
 const GoldDivider = ({ className, width = 60 }: GoldDividerProps) => {
   return (
     <div
-      className={cn("flex items-center justify-center gap-3 py-8 md:py-10", className)}
+      className={cn("flex items-center justify-center gap-3 py-4 md:py-6", className)}
       aria-hidden="true"
     >
       <span

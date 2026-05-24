@@ -6,7 +6,6 @@ import TrustBar from "@/components/TrustBar";
 import ShortTestimonial from "@/components/ShortTestimonial";
 import AvailableHomes from "@/components/AvailableHomes";
 import LifestyleSection from "@/components/LifestyleSection";
-import GoldenConversionPoint from "@/components/GoldenConversionPoint";
 import BlueprintPromoSection from "@/components/BlueprintPromoSection";
 import Testimonials from "@/components/Testimonials";
 import TeamTrustSection from "@/components/TeamTrustSection";
@@ -59,9 +58,6 @@ const Index = () => {
 
       {/* 7. Testimonials */}
       <Testimonials />
-
-      {/* 8. Guide Reminder CTA */}
-      <GoldenConversionPoint />
 
       <GoldDivider />
 
