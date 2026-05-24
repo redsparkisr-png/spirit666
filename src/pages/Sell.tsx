@@ -170,7 +170,7 @@ const Sell = () => {
                   <div className="aspect-[4/3] overflow-hidden bg-muted relative">
                     {p.images?.[0] && (
                       <img
-                        src={optimizedImageUrl(p.images[0], { width: 600, height: 450 })}
+                        src={optimizedImageUrl(p.images[0], { width: 600 })}
                         alt={p.title}
                         className="w-full h-full object-cover"
                         loading="lazy"
