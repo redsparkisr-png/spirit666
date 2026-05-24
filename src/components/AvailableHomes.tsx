@@ -256,11 +256,10 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
             href={`https://wa.me/${t("whatsapp.phone_number") || "972522820632"}?text=${encodeURIComponent(t("whatsapp.default_message") || "Hi, I'm interested in private opportunities in Zichron Yaakov.")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2.5 bg-gold hover:bg-gold-hover text-white py-4 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
-            style={{ fontSize: "16px" }}
+            className="inline-flex items-center justify-center gap-2 sm:gap-2.5 bg-gold hover:bg-gold-hover text-white py-3.5 sm:py-4 px-6 sm:px-10 rounded-full font-body font-semibold text-sm sm:text-base whitespace-nowrap transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
           >
-            <MessageCircle className="w-5 h-5" />
-            {t("home.offmarket.cta") || (isHe ? "קבלו גישה להזדמנויות פרטיות" : "Get Access to Private Opportunities")}
+            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+            <span>{t("home.offmarket.cta") || (isHe ? "קבלו גישה להזדמנויות פרטיות" : "Get Access to Private Opportunities")}</span>
           </a>
           <p className="mt-3 text-xs text-primary-foreground/50 font-body max-w-md mx-auto">
             {t("home.offmarket.helper") || (isHe ? "שלחו הודעה ונעדכן אתכם כשנכסים רלוונטיים מגיעים לשוק — גם אם הם לא פורסמו פומבית." : "Message us and we'll let you know when relevant homes reach the market — even before they are publicly listed.")}
