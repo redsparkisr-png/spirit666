@@ -3,7 +3,6 @@ import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import TrustBar from "@/components/TrustBar";
-import TrustStrip from "@/components/TrustStrip";
 import AvailableHomes from "@/components/AvailableHomes";
 import LifestyleSection from "@/components/LifestyleSection";
 import BlueprintPromoSection from "@/components/BlueprintPromoSection";
@@ -35,9 +34,6 @@ const Index = () => {
 
       {/* 2. Trust Bar */}
       <TrustBar />
-
-      {/* 3. Trust Strip */}
-      <TrustStrip />
 
       <GoldDivider />
 
