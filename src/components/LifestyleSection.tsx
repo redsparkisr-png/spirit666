@@ -341,13 +341,11 @@ const LifestyleSection = () => {
               {isHe ? "זכרון יעקב — במבט אחד" : "Zichron Yaakov — At a Glance"}
             </h3>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="columns-2 gap-2 [column-fill:_balance]">
               {display.map((item, idx) => {
                 const title = isHe ? item.title_he : item.title_en;
                 const desc = isHe ? item.description_he : item.description_en;
                 const alt = (isHe ? item.alt_he : item.alt_en) || title || `Zichron Yaakov lifestyle ${idx + 1}`;
-                const cycle = idx % 6;
-                const isFull = cycle === 0 || cycle === 3;
 
                 return (
                   <motion.div
@@ -356,28 +354,21 @@ const LifestyleSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-40px" }}
                     transition={{ duration: 0.4, delay: (idx % 6) * 0.05 }}
-                    className={`relative overflow-hidden rounded-xl shadow-sm ${
-                      isFull ? "col-span-2 aspect-[16/10]" : "aspect-[4/5]"
-                    }`}
+                    className="relative overflow-hidden rounded-xl shadow-sm mb-2 break-inside-avoid block bg-primary/30"
                   >
                     <img
-                      src={optimizedImageUrl(item.image_url, { width: isFull ? 900 : 500, quality: 78, resize: "cover", format: "webp" })}
+                      src={optimizedImageUrl(item.image_url, { width: 700, quality: 78, resize: "contain", format: "webp" })}
                       alt={alt}
-                      className="w-full h-full object-cover"
+                      className="block w-full h-auto"
                       loading={idx < 3 ? "eager" : "lazy"}
                       decoding="async"
                     />
-                    {isFull && title && (
+                    {title && (
                       <div className="absolute inset-x-0 bottom-0" dir={isHe ? "rtl" : "ltr"}>
-                        <div className="bg-gradient-to-t from-foreground/80 via-foreground/35 to-transparent pt-10 pb-3 px-4">
-                          <p className="text-primary-foreground font-display text-base font-semibold drop-shadow-md leading-tight">
+                        <div className="bg-gradient-to-t from-foreground/80 via-foreground/35 to-transparent pt-8 pb-2 px-3">
+                          <p className="text-primary-foreground font-display text-[13px] font-semibold drop-shadow-md leading-tight line-clamp-2">
                             {title}
                           </p>
-                          {desc && (
-                            <p className="text-primary-foreground/85 font-body text-[11px] mt-0.5 drop-shadow-sm line-clamp-1">
-                              {desc}
-                            </p>
-                          )}
                         </div>
                       </div>
                     )}
