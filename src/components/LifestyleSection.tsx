@@ -33,6 +33,31 @@ const FALLBACK_ITEMS: GalleryItem[] = [
   { id: "f6", image_url: fallbackImg6, display_order: 6, title_en: "Family-Friendly Living", title_he: "חיים משפחתיים", description_en: "Safe neighborhoods, warm community", description_he: "שכונות בטוחות, קהילה חמה", alt_en: "Family life in Zichron Yaakov", alt_he: "חיי משפחה בזכרון יעקב" },
 ];
 
+const LIFESTYLE_MARKETING_ORDER = [
+  "184f68b7-36f0-401a-91e6-21a5e3eb0f1c",
+  "5e68ca40-3c97-4e91-8901-b4d5c9b8f162",
+  "a75a7324-d15f-4069-9cbe-b62322176952",
+  "c910c395-5569-4607-8521-0c0aa653661e",
+  "6a2233fa-f4b8-4d89-a77b-74a06bf5ea56",
+  "ae1d7141-3cb0-4c9a-bc9d-85941424cb3d",
+  "1dea5d5b-c020-451d-a5f2-07cbb7e36db3",
+  "11ab24d9-4bc4-4575-ab09-9cec24d42abf",
+  "2d7c8962-8fca-4066-b5d6-1df437da0aa1",
+  "2fdcc354-8319-4bfd-b595-f258cfacfab3",
+  "b63a100c-0f7c-4d5c-b3d3-ec0dd1eaaf5f",
+  "37ce202a-af77-472c-a36b-613d623514f1",
+  "c019de16-cb99-4bd6-83c6-f563fb8dcc6a",
+  "178c6527-a7c7-4977-a6e4-76b2f5fe7a1b",
+  "65f6b758-ddeb-447b-ab61-0af3216786cd",
+  "d5c167ea-cced-4f2d-9639-706bea4c1d88",
+  "3f2b8475-e9f0-4b52-8d62-195a11cc8a9b",
+  "ca0ef46b-8c7f-403b-aa4b-86b178b1b642",
+  "dd760ad7-20c8-49f9-bca3-8617a3ce0096",
+  "2191104f-b9b1-4d5e-b329-dc026ef4c4de",
+];
+
+const lifestyleOrderIndex = new Map(LIFESTYLE_MARKETING_ORDER.map((id, index) => [id, index]));
+
 const LifestyleSection = () => {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [activeSlide, setActiveSlide] = useState(0);
@@ -48,17 +73,26 @@ const LifestyleSection = () => {
       .order("display_order")
       .then(({ data }) => {
         if (data && data.length > 0) {
-          setItems(data.map((d: any) => ({
-            id: d.id,
-            image_url: d.image_url,
-            display_order: d.display_order,
-            title_en: d.title_en || "",
-            title_he: d.title_he || "",
-            description_en: d.description_en || "",
-            description_he: d.description_he || "",
-            alt_en: d.alt_en || "",
-            alt_he: d.alt_he || "",
-          })));
+          setItems(
+            data
+              .map((d: any) => ({
+                id: d.id,
+                image_url: d.image_url,
+                display_order: d.display_order,
+                title_en: d.title_en || "",
+                title_he: d.title_he || "",
+                description_en: d.description_en || "",
+                description_he: d.description_he || "",
+                alt_en: d.alt_en || "",
+                alt_he: d.alt_he || "",
+              }))
+              .sort((a, b) => {
+                const aIndex = lifestyleOrderIndex.get(a.id) ?? Number.MAX_SAFE_INTEGER;
+                const bIndex = lifestyleOrderIndex.get(b.id) ?? Number.MAX_SAFE_INTEGER;
+                if (aIndex !== bIndex) return aIndex - bIndex;
+                return a.display_order - b.display_order;
+              })
+          );
         }
       });
   }, []);
