@@ -3,63 +3,45 @@ import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
 import { motion } from "framer-motion";
 import { useSiteContent } from "@/hooks/useSiteContent";
-import { useState } from "react";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { Phone, Mail, MapPin } from "lucide-react";
-import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
+import { Phone, Mail, MapPin, MessageCircle, Clock } from "lucide-react";
+import PageMeta from "@/components/PageMeta";
+import LeadForm from "@/components/LeadForm";
+import BreadcrumbNav from "@/components/BreadcrumbNav";
 
 const Contact = () => {
   const { t } = useSiteContent();
-  const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
-  const [privacyConsent, setPrivacyConsent] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const phoneRaw = t("contact.info.phone_value").replace(/[^\d+]/g, "");
+  const emailRaw = t("contact.info.email_value");
+  const waUrl = `https://wa.me/${t("whatsapp.phone_number")}?text=${encodeURIComponent(t("whatsapp.default_message"))}`;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
-      toast.error(t("home.contact.validation_error"));
-      return;
-    }
-    if (!privacyConsent) {
-      toast.error(t("form.privacy_consent_required"));
-      return;
-    }
-    setIsSubmitting(true);
-    const { error } = await supabase.from("leads").insert({
-      full_name: formData.name.trim(),
-      phone: formData.phone.trim(),
-      email: formData.email.trim(),
-      message: formData.message.trim() || null,
-      source: "contact_page",
-    });
-    if (error) {
-      toast.error(t("contact.form.error"));
-    } else {
-      toast.success(t("contact.form.success"));
-      setFormData({ name: "", phone: "", email: "", message: "" });
-      setPrivacyConsent(false);
-    }
-    setIsSubmitting(false);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    name: "Spirit Real Estate",
+    telephone: t("contact.info.phone_value"),
+    email: emailRaw,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: t("contact.map.address"),
+      addressLocality: "Zichron Yaakov",
+      addressCountry: "IL",
+    },
+    openingHours: ["Su-Th 09:00-18:00", "Fr 09:00-13:00"],
+    url: "https://spirit666.lovable.app/",
   };
-
-  const contactInfo = [
-    { icon: Phone, labelKey: "contact.info.phone_label", valueKey: "contact.info.phone_value" },
-    { icon: Mail, labelKey: "contact.info.email_label", valueKey: "contact.info.email_value" },
-    { icon: MapPin, labelKey: "contact.info.address_label", valueKey: "contact.info.address_value" },
-  ];
 
   return (
     <main>
+      <PageMeta title={t("seo.contact.title")} description={t("seo.contact.description")} jsonLd={jsonLd} />
       <Header />
-      {/* Hero */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container px-6">
+          <BreadcrumbNav items={[{ label: t("contact.breadcrumb") }]} />
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto text-center"
+            className="max-w-2xl mx-auto text-center mt-6"
           >
             <h1 className="font-display font-semibold text-foreground mb-4">
               {t("contact.hero.title")}
@@ -67,6 +49,24 @@ const Contact = () => {
             <p className="text-muted-foreground font-body text-lg">
               {t("contact.hero.subtitle")}
             </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-primary-foreground py-3 px-6 rounded-full font-body font-semibold transition-all hover:shadow-lg hover:-translate-y-0.5"
+              >
+                <MessageCircle className="w-4 h-4" />
+                {t("contact.whatsapp.cta")}
+              </a>
+              <a
+                href={`tel:${phoneRaw}`}
+                className="inline-flex items-center justify-center gap-2 border border-border hover:border-primary text-foreground py-3 px-6 rounded-full font-body font-semibold transition-all"
+              >
+                <Phone className="w-4 h-4" />
+                {t("contact.cta.call")}
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -74,87 +74,77 @@ const Contact = () => {
       <section className="py-12 md:py-20 bg-card">
         <div className="container px-6">
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
-            {/* Form */}
             <div>
               <h2 className="font-display font-semibold text-foreground mb-6">
                 {t("contact.form.title")}
               </h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <label htmlFor="contact-page-name" className="sr-only">{t("contact.form.placeholder_name")}</label>
-                <input
-                  id="contact-page-name"
-                  type="text"
-                  placeholder={t("contact.form.placeholder_name")}
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  maxLength={100}
-                  className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                />
-                <label htmlFor="contact-page-phone" className="sr-only">{t("contact.form.placeholder_phone")}</label>
-                <input
-                  id="contact-page-phone"
-                  type="tel"
-                  placeholder={t("contact.form.placeholder_phone")}
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  maxLength={20}
-                  className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                />
-                <label htmlFor="contact-page-email" className="sr-only">{t("contact.form.placeholder_email")}</label>
-                <input
-                  id="contact-page-email"
-                  type="email"
-                  placeholder={t("contact.form.placeholder_email")}
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  maxLength={255}
-                  className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                />
-                <label htmlFor="contact-page-message" className="sr-only">{t("contact.form.placeholder_message")}</label>
-                <textarea
-                  id="contact-page-message"
-                  placeholder={t("contact.form.placeholder_message")}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  maxLength={1000}
-                  rows={4}
-                  className="w-full px-5 py-4 rounded-lg border border-border bg-background text-foreground font-body placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"
-                />
-                <PrivacyConsentCheckbox
-                  checked={privacyConsent}
-                  onCheckedChange={setPrivacyConsent}
-                  id="contact-page-privacy-consent"
-                />
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-gold hover:bg-gold-hover text-primary-foreground py-4 rounded-full font-body font-semibold transition-colors duration-300 disabled:opacity-60"
-                  style={{ fontSize: "17px" }}
-                >
-                  {isSubmitting ? t("contact.form.sending") : t("contact.form.button")}
-                </button>
-              </form>
+              <LeadForm source="contact_page" idPrefix="contact-page" includeMessage />
             </div>
 
-            {/* Info */}
             <div>
               <h2 className="font-display font-semibold text-foreground mb-6">
                 {t("contact.info.title")}
               </h2>
-              <div className="space-y-6">
-                {contactInfo.map((c) => (
-                  <div key={c.labelKey} className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <c.icon className="w-4 h-4 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-body font-medium text-foreground">{t(c.labelKey)}</p>
-                      <p className="text-sm font-body text-muted-foreground">{t(c.valueKey)}</p>
-                    </div>
+              <div className="space-y-5">
+                <a href={`tel:${phoneRaw}`} className="flex items-start gap-4 group">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                    <Phone className="w-4 h-4 text-primary" />
                   </div>
-                ))}
+                  <div>
+                    <p className="text-sm font-body font-medium text-foreground">{t("contact.info.phone_label")}</p>
+                    <p className="text-sm font-body text-muted-foreground group-hover:text-gold transition-colors">{t("contact.info.phone_value")}</p>
+                  </div>
+                </a>
+                <a href={`mailto:${emailRaw}`} className="flex items-start gap-4 group">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                    <Mail className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-body font-medium text-foreground">{t("contact.info.email_label")}</p>
+                    <p className="text-sm font-body text-muted-foreground group-hover:text-gold transition-colors">{emailRaw}</p>
+                  </div>
+                </a>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-body font-medium text-foreground">{t("contact.info.address_label")}</p>
+                    <p className="text-sm font-body text-muted-foreground">{t("contact.info.address_value")}</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-body font-medium text-foreground">{t("contact.hours.title")}</p>
+                    <p className="text-xs font-body text-muted-foreground">{t("contact.hours.weekdays")}</p>
+                    <p className="text-xs font-body text-muted-foreground">{t("contact.hours.friday")}</p>
+                    <p className="text-xs font-body text-muted-foreground">{t("contact.hours.saturday")}</p>
+                    <p className="text-xs font-body text-muted-foreground/80 mt-2 italic">{t("contact.hours.response")}</p>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Map */}
+      <section className="py-12 md:py-16 bg-background">
+        <div className="container px-6">
+          <h2 className="font-display font-semibold text-foreground text-center mb-8">
+            {t("contact.map.title")}
+          </h2>
+          <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden border border-border shadow-md aspect-[16/9]">
+            <iframe
+              title={t("contact.map.title")}
+              src="https://www.google.com/maps?q=Zichron+Yaakov,+Israel&output=embed"
+              className="w-full h-full"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
         </div>
       </section>
