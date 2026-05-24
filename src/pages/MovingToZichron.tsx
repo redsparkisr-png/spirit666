@@ -1,65 +1,39 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
 import TrustSection from "@/components/TrustSection";
 import BuyerBlueprintBlock from "@/components/BuyerBlueprintBlock";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
+import PageMeta from "@/components/PageMeta";
+import FAQSection from "@/components/FAQSection";
+import RelatedGuides from "@/components/RelatedGuides";
 import { Users, Info, TrendingUp, Handshake, ArrowRight } from "lucide-react";
 
 const MovingToZichron = () => {
   const { lang } = useLanguage();
+  const { t } = useSiteContent();
   const isHe = lang === "he";
   const prefix = `/${lang}`;
 
-  const sections = isHe
-    ? [
-        {
-          icon: Users,
-          title: "למי זכרון יעקב מתאימה?",
-          content: "זכרון יעקב מושכת משפחות צעירות, זוגות שמחפשים איכות חיים, עולים חדשים (במיוחד מצרפת, ארה\"ב ודרום אפריקה), וגם מי שרוצה בית שני בישראל. אם אתם מחפשים שילוב של טבע, תרבות וקהילה — זכרון יעקב היא המקום.",
-        },
-        {
-          icon: Info,
-          title: "מה חשוב לדעת לפני המעבר",
-          content: "תכננו מראש: בדקו את מערכת החינוך, הכירו את השכונות, הבינו את מבנה הארנונה ותחבורה ציבורית. שיחה עם מומחה מקומי תחסוך לכם זמן יקר ותעזור לכם להתמקד ברלוונטי.",
-        },
-        {
-          icon: TrendingUp,
-          title: "הבנת שוק הדיור המקומי",
-          content: "המחירים בזכרון יעקב עלו בעקביות בשנים האחרונות — ביקוש גבוה, היצע מוגבל ומיקום מעולה. הבנה של מגמות המחירים, אזורי הפיתוח ופוטנציאל ההשבחה חיונית לקבלת החלטה נכונה.",
-        },
-        {
-          icon: Handshake,
-          title: "איך Spirit Real Estate עוזרים לקונים לעבור",
-          content: "אנחנו לא רק מוכרים נכסים — אנחנו מלווים אתכם בכל התהליך: מציאת נכס, משא ומתן, ליווי משפטי, ועזרה בהתאקלמות. הידע המקומי שלנו עושה את ההבדל.",
-        },
-      ]
-    : [
-        {
-          icon: Users,
-          title: "Who Zichron Yaakov Is Ideal For",
-          content: "Zichron Yaakov attracts young families, couples seeking quality of life, new immigrants (especially from France, the US, and South Africa), and those looking for a second home in Israel. If you're looking for a blend of nature, culture, and community — Zichron Yaakov is the place.",
-        },
-        {
-          icon: Info,
-          title: "What to Know Before Moving",
-          content: "Plan ahead: research the education system, explore neighborhoods, understand municipal taxes and public transport. A conversation with a local expert will save you valuable time and help you focus on what matters.",
-        },
-        {
-          icon: TrendingUp,
-          title: "Understanding the Local Housing Market",
-          content: "Prices in Zichron Yaakov have risen consistently in recent years — high demand, limited supply, and an excellent location. Understanding pricing trends, development areas, and appreciation potential is essential for making the right decision.",
-        },
-        {
-          icon: Handshake,
-          title: "How Spirit Real Estate Helps Buyers Relocate",
-          content: "We don't just sell properties — we guide you through the entire process: finding a property, negotiation, legal support, and helping you settle in. Our local knowledge makes all the difference.",
-        },
-      ];
+  const sectionIcons = [Users, Info, TrendingUp, Handshake];
+  const sections = sectionIcons.map((Icon, idx) => ({
+    Icon,
+    title: t(`moving.section_${idx + 1}_title`),
+    body: t(`moving.section_${idx + 1}_body`),
+  }));
+
+  const stats = [1, 2, 3, 4].map((i) => ({
+    value: t(`moving.stats.item_${i}_value`),
+    label: t(`moving.stats.item_${i}_label`),
+  }));
+
+  const faq = [1, 2, 3, 4].map((i) => ({ q: t(`moving.faq.q_${i}`), a: t(`moving.faq.a_${i}`) }));
 
   return (
     <main className="min-h-screen bg-background">
+      <PageMeta title={t("seo.moving.title")} description={t("seo.moving.description")} />
       <Header />
 
       <section className="py-16 md:py-24 bg-background">
@@ -83,10 +57,34 @@ const MovingToZichron = () => {
         </div>
       </section>
 
+      {/* Stats infographic */}
+      <section className="py-10 md:py-14 bg-primary text-primary-foreground">
+        <div className="container px-6">
+          <p className="text-center font-display text-primary-foreground/70 text-xs uppercase tracking-[0.25em] mb-6">
+            {t("moving.stats.title")}
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            {stats.map((s, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.06 }}
+                className="text-center"
+              >
+                <p className="font-display text-2xl md:text-3xl text-gold mb-1">{s.value}</p>
+                <p className="font-body text-xs md:text-sm text-primary-foreground/80">{s.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-12 md:py-20 bg-card">
         <div className="container px-6">
           <div className="max-w-3xl mx-auto space-y-16">
-            {sections.map((s, i) => (
+            {sections.map(({ Icon, title, body }, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -96,11 +94,11 @@ const MovingToZichron = () => {
               >
                 <div className="flex items-start gap-4 mb-3">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <s.icon className="w-5 h-5 text-primary" />
+                    <Icon className="w-5 h-5 text-primary" />
                   </div>
-                  <h2 className="font-display font-semibold text-foreground text-xl md:text-2xl">{s.title}</h2>
+                  <h2 className="font-display font-semibold text-foreground text-xl md:text-2xl">{title}</h2>
                 </div>
-                <p className="text-muted-foreground font-body leading-relaxed ps-14">{s.content}</p>
+                <p className="text-muted-foreground font-body leading-relaxed ps-14">{body}</p>
               </motion.div>
             ))}
           </div>
@@ -121,7 +119,7 @@ const MovingToZichron = () => {
             </p>
             <Link
               to={`${prefix}/contact`}
-              className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-primary-foreground py-4 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-primary-foreground py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
               style={{ fontSize: "17px" }}
             >
               {isHe ? "קבעו ייעוץ מקומי" : "Book a Local Consultation"}
@@ -132,6 +130,10 @@ const MovingToZichron = () => {
       </section>
 
       <BuyerBlueprintBlock />
+
+      <FAQSection title={t("moving.faq.title")} items={faq} />
+
+      <RelatedGuides limit={3} />
 
       {/* Internal links */}
       <section className="py-12 bg-background">

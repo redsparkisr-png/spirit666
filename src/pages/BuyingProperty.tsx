@@ -1,65 +1,35 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
 import TrustSection from "@/components/TrustSection";
 import BuyerBlueprintBlock from "@/components/BuyerBlueprintBlock";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
-import { ArrowRight, AlertTriangle, Home, Handshake, MapPin } from "lucide-react";
+import PageMeta from "@/components/PageMeta";
+import FAQSection from "@/components/FAQSection";
+import RelatedGuides from "@/components/RelatedGuides";
+import { ArrowRight, AlertTriangle, Home, Handshake, MapPin, CheckSquare } from "lucide-react";
 
 const BuyingProperty = () => {
   const { lang } = useLanguage();
+  const { t } = useSiteContent();
   const isHe = lang === "he";
   const prefix = `/${lang}`;
 
-  const sections = isHe
-    ? [
-        {
-          icon: MapPin,
-          title: "סקירת שוק הנדל\"ן המקומי",
-          content: "זכרון יעקב מציעה שוק נדל\"ן ייחודי — שילוב של שכונות ותיקות עם פיתוח חדש, נופים מרהיבים לים ולכרמל, וקהילה חמה. המחירים משתנים בהתאם למיקום, גודל המגרש וקרבה למרכז ההיסטורי. הבנת הדינמיקה המקומית היא צעד ראשון חיוני לרכישה חכמה.",
-        },
-        {
-          icon: Home,
-          title: "סוגי נכסים בזכרון יעקב",
-          content: "בין אם אתם מחפשים וילה עם גינה, קוטג' משפחתי, דירת גן או דירה במרכז — זכרון יעקב מציעה מגוון רחב. שכונות כמו אלון, מורדות הכרמל, גבעת עדן ומרכז ההיסטורי מתאימות לצרכים שונים ולתקציבים מגוונים.",
-        },
-        {
-          icon: AlertTriangle,
-          title: "טעויות נפוצות של קונים",
-          content: "רכישה ללא בדיקת תב\"ע, הסתמכות על מחירים ישנים, אי בדיקת היטלי השבחה, או ויתור על ייעוץ מקומי — אלו טעויות שעלולות לעלות ביוקר. ליווי מקצועי מקומי יכול לחסוך לכם כסף רב ולהבטיח שהעסקה שלכם מוגנת.",
-        },
-        {
-          icon: Handshake,
-          title: "שיקולים במשא ומתן",
-          content: "משא ומתן על נכס בזכרון יעקב דורש הבנה של השוק המקומי, מגמות המחירים, והמוטיבציה של המוכר. מומחה מקומי יודע מתי להתקדם ומתי לחכות — וזה ההבדל בין עסקה טובה לעסקה מצוינת.",
-        },
-      ]
-    : [
-        {
-          icon: MapPin,
-          title: "Overview of the Local Property Market",
-          content: "Zichron Yaakov offers a unique real estate market — a blend of historic neighborhoods and new developments, stunning Mediterranean and Carmel views, and a warm community. Prices vary by location, lot size, and proximity to the historic center. Understanding local dynamics is the essential first step to a smart purchase.",
-        },
-        {
-          icon: Home,
-          title: "Property Types in Zichron Yaakov",
-          content: "Whether you're looking for a villa with a garden, a family townhouse, a garden apartment, or a centrally located flat — Zichron Yaakov offers a diverse range. Neighborhoods like Alon, Mordot HaCarmel, Givat Eden, and the Historic Center cater to different needs and budgets.",
-        },
-        {
-          icon: AlertTriangle,
-          title: "Common Mistakes Buyers Make",
-          content: "Buying without checking zoning plans, relying on outdated prices, ignoring betterment levies, or skipping local guidance — these are costly mistakes. Professional local guidance can save you significant money and ensure your transaction is protected.",
-        },
-        {
-          icon: Handshake,
-          title: "Negotiation Considerations",
-          content: "Negotiating a property in Zichron Yaakov requires understanding the local market, pricing trends, and seller motivation. A local expert knows when to move forward and when to wait — and that's the difference between a good deal and a great one.",
-        },
-      ];
+  const sectionIcons = [MapPin, Home, AlertTriangle, Handshake];
+  const sections = sectionIcons.map((Icon, idx) => ({
+    Icon,
+    title: t(`buying.section_${idx + 1}_title`),
+    body: t(`buying.section_${idx + 1}_body`),
+  }));
+
+  const checklist = [1, 2, 3, 4, 5, 6].map((i) => t(`buying.checklist.item_${i}`));
+  const faq = [1, 2, 3, 4].map((i) => ({ q: t(`buying.faq.q_${i}`), a: t(`buying.faq.a_${i}`) }));
 
   return (
     <main className="min-h-screen bg-background">
+      <PageMeta title={t("seo.buying.title")} description={t("seo.buying.description")} />
       <Header />
 
       {/* Hero */}
@@ -88,7 +58,7 @@ const BuyingProperty = () => {
       <section className="py-12 md:py-20 bg-card">
         <div className="container px-6">
           <div className="max-w-3xl mx-auto space-y-16">
-            {sections.map((s, i) => (
+            {sections.map(({ Icon, title, body }, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -98,13 +68,44 @@ const BuyingProperty = () => {
               >
                 <div className="flex items-start gap-4 mb-3">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <s.icon className="w-5 h-5 text-primary" />
+                    <Icon className="w-5 h-5 text-primary" />
                   </div>
-                  <h2 className="font-display font-semibold text-foreground text-xl md:text-2xl">{s.title}</h2>
+                  <h2 className="font-display font-semibold text-foreground text-xl md:text-2xl">{title}</h2>
                 </div>
-                <p className="text-muted-foreground font-body leading-relaxed ps-14">{s.content}</p>
+                <p className="text-muted-foreground font-body leading-relaxed ps-14">{body}</p>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Checklist */}
+      <section className="py-14 md:py-20 bg-background">
+        <div className="container px-6">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-10">
+              <div className="inline-flex w-12 h-12 rounded-full bg-gold/10 items-center justify-center mb-4">
+                <CheckSquare className="w-5 h-5 text-gold" />
+              </div>
+              <h2 className="font-display font-semibold text-foreground">{t("buying.checklist.title")}</h2>
+            </div>
+            <ul className="space-y-3">
+              {checklist.map((item, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: isHe ? 10 : -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.04 }}
+                  className="flex items-start gap-3 bg-card border border-border rounded-xl p-4"
+                >
+                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-display flex items-center justify-center mt-0.5">
+                    {i + 1}
+                  </span>
+                  <span className="font-body text-foreground text-sm leading-relaxed">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -123,7 +124,7 @@ const BuyingProperty = () => {
             </p>
             <Link
               to={`${prefix}/properties`}
-              className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-primary-foreground py-4 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-primary-foreground py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
               style={{ fontSize: "17px" }}
             >
               {isHe ? "צפו בנכסים" : "Explore Homes in Zichron Yaakov"}
@@ -133,8 +134,11 @@ const BuyingProperty = () => {
         </div>
       </section>
 
-      {/* Blueprint Lead Magnet */}
       <BuyerBlueprintBlock />
+
+      <FAQSection title={t("buying.faq.title")} items={faq} />
+
+      <RelatedGuides limit={3} />
 
       {/* Internal links */}
       <section className="py-12 bg-background">

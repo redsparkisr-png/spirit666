@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Clock, Calendar, ArrowLeft, ArrowRight, User } from "lucide-react";
+import { Clock, Calendar, ArrowLeft, ArrowRight, User, Share2, Facebook, Linkedin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
 import TrustSection from "@/components/TrustSection";
+import PageMeta from "@/components/PageMeta";
+import { useSiteContent } from "@/hooks/useSiteContent";
+import { toast } from "sonner";
 
 interface Post {
   id: string;
@@ -34,6 +37,7 @@ interface Post {
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { lang } = useLanguage();
+  const { t } = useSiteContent();
   const isHe = lang === "he";
   const prefix = `/${lang}`;
 
@@ -68,21 +72,30 @@ const BlogPost = () => {
       });
   }, [slug]);
 
-  useEffect(() => {
-    if (!post) return;
-    const title = (isHe ? post.seo_title_he : post.seo_title_en) || (isHe ? post.title_he : post.title_en);
-    document.title = `${title} | Spirit Real Estate`;
-    const desc = (isHe ? post.meta_description_he : post.meta_description_en) || (isHe ? post.excerpt_he : post.excerpt_en);
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", desc);
-    if (post.noindex) {
-      let robots = document.querySelector('meta[name="robots"]');
-      if (!robots) { robots = document.createElement("meta"); robots.setAttribute("name", "robots"); document.head.appendChild(robots); }
-      robots.setAttribute("content", "noindex");
-    }
-  }, [post, lang]);
-
   const WHATSAPP_URL = `https://wa.me/972522820632?text=${encodeURIComponent(isHe ? "היי, אשמח לקבל מידע נוסף על נדל״ן בזכרון יעקב" : "Hi, I'd like to learn more about property in Zichron Yaakov.")}`;
+
+  // Build TOC from H2/H3 in body (must be before any early return)
+  const bodyForTOC = post ? (isHe ? post.body_he : post.body_en) : "";
+  const toc = useMemo(() => {
+    if (!bodyForTOC) return [] as { id: string; text: string; level: number }[];
+    const matches = Array.from(bodyForTOC.matchAll(/<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi));
+    return matches.map((m, idx) => {
+      const text = m[2].replace(/<[^>]+>/g, "").trim();
+      const id = `h-${idx}-${text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").slice(0, 60)}`;
+      return { id, text, level: Number(m[1]) };
+    });
+  }, [bodyForTOC]);
+
+  // Inject ids into rendered headings
+  const enhancedBody = useMemo(() => {
+    if (!bodyForTOC) return "";
+    let i = 0;
+    return bodyForTOC.replace(/<h([23])([^>]*)>/gi, (_, lvl, attrs) => {
+      const id = toc[i]?.id;
+      i += 1;
+      return id ? `<h${lvl}${attrs} id="${id}">` : `<h${lvl}${attrs}>`;
+    });
+  }, [bodyForTOC, toc]);
 
   if (loading) {
     return (
@@ -110,12 +123,31 @@ const BlogPost = () => {
   }
 
   const title = isHe ? post.title_he : post.title_en;
-  const body = isHe ? post.body_he : post.body_en;
   const excerpt = isHe ? post.excerpt_he : post.excerpt_en;
   const BackArrow = isHe ? ArrowRight : ArrowLeft;
+  const seoTitle = (isHe ? post.seo_title_he : post.seo_title_en) || `${title} | Spirit Real Estate`;
+  const seoDesc = (isHe ? post.meta_description_he : post.meta_description_en) || excerpt;
+  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description: excerpt,
+    author: { "@type": "Person", name: post.author },
+    datePublished: post.publish_date,
+    image: post.featured_image || undefined,
+    mainEntityOfPage: shareUrl,
+  };
 
   return (
     <main>
+      <PageMeta
+        title={seoTitle}
+        description={seoDesc}
+        ogType="article"
+        ogImage={post.og_image || post.featured_image || undefined}
+        jsonLd={articleSchema}
+      />
       <Header />
       <article className="py-12 md:py-20 bg-background">
         <div className="container px-6">
@@ -162,6 +194,20 @@ const BlogPost = () => {
               </motion.div>
             )}
 
+            {/* Table of contents */}
+            {toc.length > 2 && (
+              <nav className="mb-10 bg-card border border-border rounded-2xl p-5">
+                <p className="font-display font-semibold text-foreground text-sm mb-3">{t("blog.toc.title")}</p>
+                <ol className="space-y-1.5 list-decimal list-inside font-body text-sm text-muted-foreground">
+                  {toc.map((it) => (
+                    <li key={it.id} className={it.level === 3 ? "ms-4" : ""}>
+                      <a href={`#${it.id}`} className="hover:text-gold transition-colors">{it.text}</a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )}
+
             {/* Body */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -173,8 +219,52 @@ const BlogPost = () => {
                 prose-a:text-gold prose-a:no-underline hover:prose-a:underline
                 prose-strong:text-foreground
                 prose-img:rounded-xl prose-img:shadow-md"
-              dangerouslySetInnerHTML={{ __html: body }}
+              dangerouslySetInnerHTML={{ __html: enhancedBody }}
             />
+
+            {/* Share */}
+            <div className="mt-10 pt-6 border-t border-border flex flex-wrap items-center gap-3">
+              <span className="font-body text-sm text-muted-foreground inline-flex items-center gap-2">
+                <Share2 className="w-4 h-4" />
+                {t("blog.share.title")}
+              </span>
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(`${title} — ${shareUrl}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-body px-3 py-1.5 rounded-full border border-border hover:border-gold hover:text-gold transition-colors"
+              >
+                WhatsApp
+              </a>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="inline-flex items-center gap-1.5 text-xs font-body px-3 py-1.5 rounded-full border border-border hover:border-gold hover:text-gold transition-colors"
+              >
+                <Facebook className="w-3 h-3" /> Facebook
+              </a>
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="inline-flex items-center gap-1.5 text-xs font-body px-3 py-1.5 rounded-full border border-border hover:border-gold hover:text-gold transition-colors"
+              >
+                <Linkedin className="w-3 h-3" /> LinkedIn
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(shareUrl);
+                  toast.success(isHe ? "הקישור הועתק" : "Link copied");
+                }}
+                className="inline-flex items-center gap-1.5 text-xs font-body px-3 py-1.5 rounded-full border border-border hover:border-gold hover:text-gold transition-colors"
+              >
+                {isHe ? "העתק קישור" : "Copy link"}
+              </button>
+            </div>
 
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (

@@ -9,6 +9,7 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
+import PageMeta from "@/components/PageMeta";
 import { useRef } from "react";
 
 type Property = Tables<"properties_available">;
@@ -137,6 +138,7 @@ const Properties = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageMeta title={t("seo.properties.title")} description={t("seo.properties.description")} />
       <Header />
       <div className="container px-6 py-8 md:py-12">
         <BreadcrumbNav items={[{ label: t("header.nav.properties") }]} />
