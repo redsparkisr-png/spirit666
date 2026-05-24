@@ -13,7 +13,7 @@ const GoldenConversionPoint = () => {
   const blueprintUrl = `https://wa.me/${phone}?text=${msg}`;
 
   return (
-    <section className="py-20 md:py-28 bg-card border-y border-border/40 relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-card border-y border-border/40 relative overflow-hidden">
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] pointer-events-none"
         style={{

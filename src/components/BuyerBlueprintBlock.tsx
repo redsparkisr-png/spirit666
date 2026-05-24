@@ -38,7 +38,7 @@ const BuyerBlueprintBlock = () => {
   const whatsappUrl = `https://wa.me/972522820632?text=${whatsappMessage}`;
 
   return (
-    <section className="py-20 md:py-28 bg-card relative overflow-hidden" aria-labelledby="buyer-blueprint-heading">
+    <section className="py-14 md:py-20 bg-card relative overflow-hidden" aria-labelledby="buyer-blueprint-heading">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-bronze/[0.03] blur-3xl pointer-events-none" />
 
       <div className="container px-6 relative z-10">

@@ -26,7 +26,7 @@ const BlueprintPromoSection = () => {
   const blueprintUrl = `https://wa.me/${phone}?text=${msg}`;
 
   return (
-    <section className="py-20 md:py-28 bg-background" aria-labelledby="blueprint-promo-heading">
+    <section className="py-14 md:py-20 bg-background" aria-labelledby="blueprint-promo-heading">
       <div className="container px-6">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
           {/* Image */}

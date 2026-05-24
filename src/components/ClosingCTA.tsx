@@ -16,7 +16,7 @@ const ClosingCTA = () => {
   const guideUrl = `https://wa.me/${phone}?text=${guideMsg}`;
 
   return (
-    <section className="py-20 md:py-28 bg-primary relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-primary relative overflow-hidden">
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] pointer-events-none"
         style={{
