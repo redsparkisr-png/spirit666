@@ -11,6 +11,19 @@ import { motion } from "framer-motion";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 import { injectPropertySchema } from "@/components/SchemaOrg";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
+import { optimizedImageUrl } from "@/lib/image";
+
+const SITE_ORIGIN = "https://spirit666.lovable.app";
+
+function setMeta(selector: string, attr: "name" | "property", key: string, content: string) {
+  let tag = document.querySelector(selector) as HTMLMetaElement | null;
+  if (!tag) {
+    tag = document.createElement("meta");
+    tag.setAttribute(attr, key);
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute("content", content);
+}
 
 type Property = Tables<"properties_available">;
 
@@ -68,13 +81,9 @@ const PropertyDetail = () => {
 
         document.title = data.meta_title || `${data.title} | Spirit Real Estate`;
         const descContent = data.meta_description || data.short_description || data.title;
-        let descTag = document.querySelector('meta[name="description"]');
-        if (!descTag) {
-          descTag = document.createElement("meta");
-          descTag.setAttribute("name", "description");
-          document.head.appendChild(descTag);
-        }
-        descTag.setAttribute("content", descContent);
+        const pageUrl = `${SITE_ORIGIN}/${lang}/property/${data.slug || data.id}`;
+
+        setMeta('meta[name="description"]', "name", "description", descContent);
 
         let canonicalTag = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
         if (!canonicalTag) {
@@ -82,17 +91,22 @@ const PropertyDetail = () => {
           canonicalTag.rel = "canonical";
           document.head.appendChild(canonicalTag);
         }
-        canonicalTag.href = `https://spirit-homes-guide.lovable.app/${lang}/property/${data.slug || data.id}`;
+        canonicalTag.href = pageUrl;
+
+        // Dynamic Open Graph + Twitter Card
+        setMeta('meta[property="og:title"]', "property", "og:title", data.meta_title || data.title);
+        setMeta('meta[property="og:description"]', "property", "og:description", descContent);
+        setMeta('meta[property="og:url"]', "property", "og:url", pageUrl);
+        setMeta('meta[property="og:type"]', "property", "og:type", "article");
+        setMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary_large_image");
+        setMeta('meta[name="twitter:title"]', "name", "twitter:title", data.meta_title || data.title);
+        setMeta('meta[name="twitter:description"]', "name", "twitter:description", descContent);
 
         if (data.og_image || data.images?.[0]) {
-          const ogImg = data.og_image || data.images![0];
-          let ogImgTag = document.querySelector('meta[property="og:image"]');
-          if (!ogImgTag) {
-            ogImgTag = document.createElement("meta");
-            ogImgTag.setAttribute("property", "og:image");
-            document.head.appendChild(ogImgTag);
-          }
-          ogImgTag.setAttribute("content", ogImg);
+          const ogRaw = data.og_image || data.images![0];
+          const ogImg = optimizedImageUrl(ogRaw, { width: 1200, quality: 80 });
+          setMeta('meta[property="og:image"]', "property", "og:image", ogImg);
+          setMeta('meta[name="twitter:image"]', "name", "twitter:image", ogImg);
         }
 
         const { data: sim } = await supabase.from("properties_available").select("*").neq("id", data.id).limit(3);
@@ -235,7 +249,7 @@ const PropertyDetail = () => {
         ) : (
           <>
             {images.map((url, idx) => (
-              <img key={idx} src={url} alt={`${property.title} – ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} />
+              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={`${property.title} – ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" {...(idx === 0 ? { fetchpriority: "high" } as any : {})} />
             ))}
             {images.length > 1 && (
               <>
@@ -259,7 +273,7 @@ const PropertyDetail = () => {
         <div className="container px-6 py-3 flex gap-2.5 overflow-x-auto scrollbar-hide">
           {images.map((url, idx) => (
             <button key={idx} onClick={() => setCurrentImg(idx)} className={`flex-shrink-0 w-[88px] h-[60px] rounded-lg overflow-hidden border-2 transition-colors ${currentImg === idx ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"}`} aria-label={`View image ${idx + 1}`}>
-              <img src={url} alt="" className="w-full h-full object-cover" loading="lazy" />
+              <img src={optimizedImageUrl(url, { width: 200, quality: 70 })} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
             </button>
           ))}
         </div>
@@ -383,7 +397,7 @@ const PropertyDetail = () => {
                     <Link key={sp.id} to={`/${lang}/property/${sp.slug || sp.id}`} className="group cursor-pointer rounded-2xl overflow-hidden bg-card border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                       <div className="aspect-[4/3] bg-muted overflow-hidden">
                         {sp.images?.[0] ? (
-                          <img src={sp.images[0]} alt={sp.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                          <img src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })} alt={sp.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
                         ) : (
                           <div className="w-full h-full bg-muted" />
                         )}
