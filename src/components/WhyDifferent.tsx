@@ -32,7 +32,7 @@ const WhyDifferent = () => {
       ];
 
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="py-20 md:py-28 bg-background">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
