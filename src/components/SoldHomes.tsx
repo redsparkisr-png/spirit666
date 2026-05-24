@@ -5,6 +5,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
 import { BedDouble, Ruler } from "lucide-react";
+import { optimizedImageUrl } from "@/lib/image";
 
 type SoldProp = Tables<"properties_sold">;
 
@@ -83,10 +84,11 @@ const SoldHomes = () => {
                 <div className="relative aspect-[4/3] bg-muted overflow-hidden">
                   {p.images && p.images[0] ? (
                     <img
-                      src={p.images[0]}
+                      src={optimizedImageUrl(p.images[0], { width: 800, quality: 75 })}
                       alt={p.title}
                       className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <div className="w-full h-full bg-muted" />

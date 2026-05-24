@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { GripVertical, Upload, Star, Trash2, Replace, CheckSquare, X } from "lucide-react";
 import { toast } from "sonner";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
+import { compressToWebP, formatBytes } from "@/lib/image";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,12 +43,23 @@ const ImageManager = ({ images, onChange, folder }: Props) => {
     const progress: Record<string, number> = {};
 
     for (const file of Array.from(files)) {
-      const ext = file.name.split(".").pop();
-      const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
       progress[file.name] = 0;
       setUploadProgress({ ...progress });
 
-      const { error } = await supabase.storage.from("images").upload(path, file);
+      // Compress + convert to WebP in browser before upload
+      const originalSize = file.size;
+      const optimized = await compressToWebP(file, { maxWidth: 2000, quality: 0.82 });
+      if (optimized !== file && optimized.size < originalSize) {
+        toast.success(`${file.name}: ${formatBytes(originalSize)} → ${formatBytes(optimized.size)}`);
+      }
+
+      const ext = optimized.name.split(".").pop();
+      const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+      const { error } = await supabase.storage.from("images").upload(path, optimized, {
+        contentType: optimized.type,
+        cacheControl: "31536000",
+      });
       if (error) {
         toast.error(`Upload failed: ${error.message}`);
         continue;
