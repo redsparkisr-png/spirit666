@@ -86,7 +86,7 @@ const WhyDifferent = () => {
               className="text-center"
             >
               <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-border shadow-md mx-auto mb-4">
-                <img src={member.imgKey} alt={t(member.nameKey)} className="w-full h-full object-cover" />
+                <img src={member.imgKey} alt={t(member.nameKey)} className="w-full h-full object-cover" / loading="lazy" decoding="async">
               </div>
               <p className="font-display font-semibold text-foreground text-base md:text-lg">{t(member.nameKey)}</p>
               <p className="text-sm text-bronze font-body mb-2">{t(member.roleKey)}</p>
