@@ -1,65 +1,54 @@
 
+# סבב שדרוגים לאתר Spirit Real Estate
 
-# Spirit Real Estate — Targeted Fixes
+מאז הביקור האחרון שלך, השתפרו לי הכלים בתחומי ה-SEO, נגישות, ניתוח ביצועים, ו-UI polish. הנה תוכנית עבודה מסודרת לפי תחומים. אפשר לבחור הכל או רק חלק.
 
-## Summary
-The codebase is already in good shape from previous iterations. This pass addresses the remaining console errors and the few gaps between current state and the requirements.
+## 1. SEO וגילוי בגוגל
+- **תיקון Canonical שגוי** ב-`index.html` – כרגע מצביע ל-`spirit-homes-guide.lovable.app` במקום `spirit666.lovable.app`. זה פוגע באינדוקס.
+- **og:url** באותו מקום – לעדכן לדומיין הנכון.
+- **JSON-LD מורחב**: להוסיף `RealEstateAgent` עם `address`, `geo`, `areaServed`, `openingHours`, ו-`sameAs` (רשתות חברתיות) – חיזוק Local SEO לזכרון.
+- **הרצת סריקת SEO מלאה** (seo--trigger_scan) ותיקון ממצאים חיים.
+- **Hreflang audit** – לוודא שכל עמוד EN/HE מצביע נכון אחד על השני.
+- **sitemap.xml** – לוודא שכל עמודי האוטוריטי (buying-property, living-in וכו') כלולים עם עדכוני lastmod.
 
----
+## 2. ביצועים (Core Web Vitals)
+- **LCP**: הוספת `fetchpriority="high"` ו-`preload` לתמונת ה-Hero.
+- **Fonts**: מעבר ל-`font-display: swap` כבר מובנה, אבל אפשר להסיר משקלים לא בשימוש (Heebo 600/700, Playfair 1,500) – חוסך ~30KB.
+- **Lazy loading**: וידוא שכל התמונות מתחת ל-fold משתמשות ב-`loading="lazy"` ו-`decoding="async"`.
+- **Image dimensions**: הוספת `width`/`height` מפורשים למניעת CLS בגלריית הלייפסטייל וב-AvailableHomes.
 
-## 1. Fix Missing i18n Key: `property.detail.interested_title`
+## 3. נגישות (a11y) – חיזוק מעבר ל-Widget הקיים
+- סריקת רכיבים ל-icon-only buttons שחסר להם `aria-label`.
+- בדיקת ניגודיות של טקסטים זהובים על רקע ירוק (Gold #C8A96A על Primary #0F2E26) – יתכן ש-AA חסר.
+- וידוא `<main>` יחיד לכל route.
+- Focus-visible states עקביים על כל ה-CTAs.
+- `lang="he"` דינמי על `<html>` במעבר שפה (אם לא קיים).
 
-**File: `src/hooks/useSiteContent.ts`**
+## 4. UX וקונברז'ן
+- **Sticky CTA במובייל** באזורי תוכן ארוכים (Buying Guides) – "דברו איתנו" שצף בתחתית.
+- **Trust signals** מעל הקפל: הוספת badge עם "20+ עסקאות השנה" או דומה ליד ה-Hero (אם רלוונטי – צריך אישור).
+- **Exit intent**: שיקול softer – הצעה עדינה להוריד את ה-Buyer Blueprint לפני יציאה (רק דסקטופ, פעם אחת לסשן).
+- **Property cards**: הוספת "WhatsApp ישיר על הנכס הזה" עם prefill של כתובת הנכס.
+- **Loading states**: skeletons עדינים יותר בעמוד התוצאות במקום spinner.
 
-The console shows `[i18n] Missing key: "property.detail.interested_title"`. Add this key to the `localFallbacks` object:
-- EN: "Interested in this home?"
-- HE: "מעוניינים בנכס הזה?"
+## 5. UI Polish (Quiet Luxury)
+- **Hero**: הוספת ken-burns עדין (scale 1.0 → 1.05 ב-20s) על תמונת הרקע.
+- **Section dividers**: קו זהב דק (1px, opacity 30%) בין סקשנים מרכזיים – ריטמוס ויזואלי.
+- **Typography refinement**: tracking שלילי קל (-0.02em) לכותרות Playfair בדסקטופ.
+- **Hover על Property Cards**: הצללה רכה יותר + תזוזה של 2px במקום 4px – מרגיש בוטיק יותר.
+- **Footer**: ארגון מחדש לעמודות מאוזנות יותר במובייל.
 
----
-
-## 2. Fix forwardRef Console Warnings
-
-**File: `src/pages/PropertyDetail.tsx`**
-
-Two `forwardRef` warnings appear:
-- `InquiryForm` is defined as an inline function component inside `PropertyDetail` and receives an `id` prop but React tries to pass a ref. Fix by converting `InquiryForm` to use `React.forwardRef` or by extracting it outside the render function as a standalone component with proper typing.
-
-The simplest fix: move `InquiryForm` outside the `PropertyDetail` component and pass `property`, `formData`, etc. as props. This prevents React from trying to assign a ref to an inline component.
-
-**File: `src/components/Header.tsx`**
-
-The Header forwardRef warning comes from it being used somewhere that passes a ref. Since Header doesn't need a ref, wrap it with `React.forwardRef` to silence the warning, or check the call site. The warning points to PropertyDetail's render -- likely the `<Header />` call. This is a React quirk with function components; wrapping Header in `forwardRef` with a no-op ref fixes it cleanly.
-
----
-
-## 3. Property Detail "Send Inquiry" Mobile Behavior
-
-**File: `src/pages/PropertyDetail.tsx`**
-
-Current: The CTA block's "Send Inquiry" button tries `getElementById("inquiry-form")` (desktop sidebar, hidden on mobile) and falls back to `openWhatsApp()`. This is functional but inconsistent with user expectation.
-
-Fix: On mobile, when `#inquiry-form` is not visible, scroll to `#inquiry-form-mobile` (the CTA block itself) and open WhatsApp as a more explicit action. OR better: make the "Send Inquiry" button in the mobile sticky bar scroll to the CTA block AND show a toast prompting the user to use WhatsApp or call. This keeps the flow consistent.
-
-Actually, the simplest robust fix: change the CTA block's "Send Inquiry" to always open WhatsApp with a pre-filled message (since there's no standalone form on mobile). The desktop sidebar form handles desktop users.
-
----
-
-## 4. Verify All Existing Features Are Working
-
-Already confirmed working:
-- Header: logo centered, sizes correct (40px mobile, 56px desktop)
-- Hero: 85svh, dark glass card wrapper around search
-- Search: ESC handler, click-outside close, z-[100] dropdowns, mobile bottom sheets
-- Property cards: fully wrapped in `Link`, clickable everywhere
-- Cookie consent: global in `LanguageLayout`, reopen from footer
-- Accessibility: skip-to-content in `LanguageLayout`, accessibility page linked in footer
-- Footer: gold divider, cookie preferences button, legal links
+## 6. ניטור ואנליטיקה
+- וידוא שאירועי המרה (WhatsApp click, Blueprint download, Contact submit) נשלחים נכון.
+- הוספת dataLayer events לאנליטיקס אם יש GTM.
 
 ---
 
-## Files Modified
+## איך נמשיך
+אני ממליץ להתחיל בשלושת הראשונים (SEO + ביצועים + נגישות) כי זה ה-impact הגבוה ביותר עם סיכון הכי נמוך לעיצוב הקיים. את ה-UX וה-UI polish נעשה אחרי, עם אישור פרטני לכל שינוי שנוגע ל-look & feel.
 
-1. **`src/hooks/useSiteContent.ts`** -- Add `property.detail.interested_title` fallback (EN/HE)
-2. **`src/pages/PropertyDetail.tsx`** -- Extract InquiryForm to fix forwardRef warning, improve Send Inquiry mobile fallback
-3. **`src/components/Header.tsx`** -- Wrap in forwardRef to fix console warning
-
+**מה תרצה?**
+1. הכל לפי הסדר (סבב מלא)
+2. רק SEO + ביצועים + נגישות (טכני, ללא שינוי ויזואלי)
+3. UX + UI polish (חוויה ויזואלית)
+4. תבחר בעצמך – אגיד לך בנפרד אילו פריטים
