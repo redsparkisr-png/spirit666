@@ -281,10 +281,11 @@ const LifestyleSection = () => {
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={item.image_url}
+                    src={optimizedImageUrl(item.image_url, { width: 800, quality: 75 })}
                     alt={alt}
                     className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 group-focus-within:scale-105"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div
@@ -332,10 +333,11 @@ const LifestyleSection = () => {
                   <div className="relative overflow-hidden rounded-2xl mx-2">
                     <div className="aspect-[3/4] overflow-hidden">
                       <img
-                        src={item.image_url}
+                        src={optimizedImageUrl(item.image_url, { width: 800, quality: 75 })}
                         alt={alt}
                         className="w-full h-full object-cover object-center"
                         loading={idx < 2 ? "eager" : "lazy"}
+                        decoding="async"
                       />
                     </div>
                     {/* Gradient overlay with text */}
