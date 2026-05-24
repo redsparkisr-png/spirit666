@@ -34,7 +34,7 @@ const TrustSection = () => {
 
   return (
     <footer
-      className="py-16 md:py-24 relative overflow-hidden"
+      className="py-20 md:py-28 relative overflow-hidden"
       style={{
         background: "linear-gradient(180deg, hsl(var(--primary)) 0%, hsl(160 62% 8%) 100%)",
       }}

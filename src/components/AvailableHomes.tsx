@@ -179,7 +179,7 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
     : t("home.available.subtitle");
 
   return (
-    <section id="available-homes" className="py-16 md:py-24 bg-sand-light">
+    <section id="available-homes" className="py-20 md:py-28 bg-sand-light">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
