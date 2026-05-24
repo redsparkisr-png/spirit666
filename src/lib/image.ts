@@ -5,6 +5,8 @@
 export interface ImageOpts {
   width?: number;
   quality?: number;
+  resize?: "cover" | "contain" | "fill";
+  format?: "webp" | "origin";
 }
 
 export function optimizedImageUrl(url: string | null | undefined, opts: ImageOpts = {}): string {
@@ -15,7 +17,9 @@ export function optimizedImageUrl(url: string | null | undefined, opts: ImageOpt
   const [, origin, rest] = match;
   const width = opts.width ?? 1200;
   const quality = opts.quality ?? 75;
-  return `${origin}/storage/v1/render/image/public/${rest}?width=${width}&quality=${quality}&format=origin`;
+  const resize = opts.resize ?? "cover";
+  const format = opts.format ?? "origin";
+  return `${origin}/storage/v1/render/image/public/${rest}?width=${width}&quality=${quality}&resize=${resize}&format=${format}`;
 }
 
 // Convert an uploaded image File to WebP via canvas, with optional max-width resize.
