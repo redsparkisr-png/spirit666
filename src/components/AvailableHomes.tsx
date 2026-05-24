@@ -72,13 +72,13 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
   const isNew = isNewListing(property.created_at);
 
   return (
-    <Link to={`/${lang}/property/${property.slug || property.id}`} className="block cursor-pointer">
+    <Link to={`/${lang}/property/${property.slug || property.id}`} className="block cursor-pointer h-full">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.4, delay: index * 0.1 }}
-        className="bg-card rounded-2xl overflow-hidden shadow-md transition-all duration-[600ms] ease-out group hover:-translate-y-1 md:hover:[box-shadow:0_18px_44px_-18px_hsl(var(--gold)/0.35)]"
+        className="bg-card rounded-2xl overflow-hidden shadow-md transition-all duration-[600ms] ease-out group hover:-translate-y-1 md:hover:[box-shadow:0_18px_44px_-18px_hsl(var(--gold)/0.35)] h-full flex flex-col"
       >
         <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
           {images.length === 0 && (
@@ -97,10 +97,10 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">{property.property_status}</span>
           )}
         </div>
-        <div className="p-5 md:p-6 text-start">
-          {/* Price display — premium badge */}
-          {(property.price_label || property.price_number) && (
-            <div className="mb-3">
+        <div className="p-5 md:p-6 text-start flex-1 flex flex-col">
+          {/* Price display — premium badge (reserved height to keep cards aligned) */}
+          <div className="mb-3 min-h-[34px] flex items-center">
+            {(property.price_label || property.price_number) && (
               <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold">
                 {property.price_label
                   ? property.price_label
@@ -108,8 +108,8 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
                     ? `₪${Number(property.price_number).toLocaleString()}`
                     : `ILS ${Number(property.price_number).toLocaleString()}`}
               </span>
-            </div>
-          )}
+            )}
+          </div>
           <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug transition-colors duration-300 group-hover:text-primary">{property.title}</h3>
           
           {/* Neighborhood / Location */}
@@ -145,7 +145,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             </div>
           )}
 
-          <span className="block w-full bg-charcoal text-white py-3 rounded-full font-body font-medium text-sm btn-text text-center transition-all duration-300 group-hover:bg-charcoal-hover group-hover:shadow-md">
+          <span className="block w-full bg-charcoal text-white py-3 rounded-full font-body font-medium text-sm btn-text text-center transition-all duration-300 group-hover:bg-charcoal-hover group-hover:shadow-md mt-auto">
             {lang === "he" ? "לפרטי הנכס" : "View Property Details"}
           </span>
         </div>
@@ -256,11 +256,10 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
             href={`https://wa.me/${t("whatsapp.phone_number") || "972522820632"}?text=${encodeURIComponent(t("whatsapp.default_message") || "Hi, I'm interested in private opportunities in Zichron Yaakov.")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2.5 bg-gold hover:bg-gold-hover text-white py-4 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
-            style={{ fontSize: "16px" }}
+            className="inline-flex items-center justify-center gap-2 sm:gap-2.5 bg-gold hover:bg-gold-hover text-white py-3.5 sm:py-4 px-6 sm:px-10 rounded-full font-body font-semibold text-sm sm:text-base whitespace-nowrap transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
           >
-            <MessageCircle className="w-5 h-5" />
-            {t("home.offmarket.cta") || (isHe ? "קבלו גישה להזדמנויות פרטיות" : "Get Access to Private Opportunities")}
+            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+            <span>{t("home.offmarket.cta") || (isHe ? "קבלו גישה להזדמנויות פרטיות" : "Get Access to Private Opportunities")}</span>
           </a>
           <p className="mt-3 text-xs text-primary-foreground/50 font-body max-w-md mx-auto">
             {t("home.offmarket.helper") || (isHe ? "שלחו הודעה ונעדכן אתכם כשנכסים רלוונטיים מגיעים לשוק — גם אם הם לא פורסמו פומבית." : "Message us and we'll let you know when relevant homes reach the market — even before they are publicly listed.")}
