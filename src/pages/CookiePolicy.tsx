@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
+import PageMeta from "@/components/PageMeta";
 
 const SECTIONS = [
   { titleKey: "cookies.what_title", bodyKey: "cookies.what_body" },
@@ -18,6 +19,10 @@ const CookiePolicy = () => {
 
   return (
     <>
+      <PageMeta
+        title={lang === "he" ? "מדיניות עוגיות | ספיריט נדל\"ן" : "Cookie Policy | Spirit Real Estate"}
+        description={lang === "he" ? "כיצד אנו משתמשים בעוגיות באתר וכיצד תוכלו לנהל את ההעדפות שלכם." : "How we use cookies on our website and how you can manage your preferences."}
+      />
       <Header />
       <main className="min-h-screen bg-background">
         <div className="container px-6 py-20 md:py-28 max-w-3xl mx-auto">

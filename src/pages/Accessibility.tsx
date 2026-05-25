@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
+import PageMeta from "@/components/PageMeta";
 import TrustSection from "@/components/TrustSection";
 
 const Accessibility = () => {

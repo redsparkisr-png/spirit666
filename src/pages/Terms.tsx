@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
+import PageMeta from "@/components/PageMeta";
 
 const Terms = () => {
   const { lang } = useLanguage();
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title={lang === "he" ? "תנאי שימוש | ספיריט נדל\"ן" : "Terms of Use | Spirit Real Estate"}
+        description={lang === "he" ? "תנאי השימוש באתר ספיריט נדל\"ן בזכרון יעקב." : "Terms of use for the Spirit Real Estate website in Zichron Yaakov."}
+      />
       <div className="container px-6 py-16 md:py-24 max-w-3xl mx-auto">
         <Link to={`/${lang}/`} className="text-primary font-body text-sm hover:underline mb-8 inline-block">
           ← Back to Home
