@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
+import PageMeta from "@/components/PageMeta";
 
 const SECTIONS = [
   { titleKey: "privacy.collection_title", bodyKey: "privacy.collection_body" },
@@ -21,6 +22,10 @@ const Privacy = () => {
 
   return (
     <>
+      <PageMeta
+        title={lang === "he" ? "מדיניות פרטיות | ספיריט נדל\"ן" : "Privacy Policy | Spirit Real Estate"}
+        description={lang === "he" ? "כיצד אנו אוספים, משתמשים ומגינים על המידע האישי שלך באתר ספיריט נדל\"ן." : "How we collect, use and protect your personal information at Spirit Real Estate."}
+      />
       <Header />
       <main className="min-h-screen bg-background">
         <div className="container px-6 py-20 md:py-28 max-w-3xl mx-auto">

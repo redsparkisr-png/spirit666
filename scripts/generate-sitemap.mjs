@@ -23,6 +23,8 @@ const STATIC_ROUTES = [
   { path: "/buyer-guide-2026", changefreq: "monthly", priority: "0.7" },
   { path: "/guides", changefreq: "weekly", priority: "0.7" },
   { path: "/privacy", changefreq: "yearly", priority: "0.3" },
+  { path: "/terms", changefreq: "yearly", priority: "0.3" },
+  { path: "/cookies", changefreq: "yearly", priority: "0.3" },
   { path: "/accessibility", changefreq: "yearly", priority: "0.3" },
 ];
 

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
+import PageMeta from "@/components/PageMeta";
 import HeroSection from "@/components/HeroSection";
 import TrustBar from "@/components/TrustBar";
 import AvailableHomes from "@/components/AvailableHomes";
@@ -23,6 +24,10 @@ const Index = () => {
 
   return (
     <main>
+      <PageMeta
+        title={isHe ? "ספיריט נדל\"ן | בתים למכירה בזכרון יעקב" : "Spirit Real Estate | Homes for Sale in Zichron Yaakov"}
+        description={isHe ? "משרד נדל\"ן בוטיק בזכרון יעקב. ליווי אישי לקונים מחו\"ל ולישראלים שחוזרים הביתה." : "Boutique real estate firm in Zichron Yaakov. Personal guidance for foreign buyers and Israelis returning home."}
+      />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2 focus:rounded-lg font-body text-sm">
         {isHe ? "דלג לתוכן" : "Skip to content"}
       </a>

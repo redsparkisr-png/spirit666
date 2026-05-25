@@ -1,0 +1,35 @@
+# Spirit Real Estate — Zichron Yaakov, Israel
+
+> Boutique real estate firm based in Zichron Yaakov, Israel.
+> We specialize in helping foreign buyers, Olim, and Israelis returning
+> home navigate the Zichron Yaakov property market with personal,
+> hands-on guidance from search to closing.
+
+Languages: English, Hebrew (עברית)
+Contact: WhatsApp +972-52-282-0632
+Website: https://spirit666.lovable.app
+Sitemap: https://spirit666.lovable.app/sitemap.xml
+
+## Core pages
+
+- [Home (EN)](https://spirit666.lovable.app/en/): Boutique real estate in Zichron Yaakov.
+- [Home (HE)](https://spirit666.lovable.app/he/): נדל"ן בוטיק בזכרון יעקב.
+- [Available Properties](https://spirit666.lovable.app/en/properties): Current homes for sale in Zichron Yaakov.
+- [Homes for Sale Guide](https://spirit666.lovable.app/en/homes-for-sale-zichron-yaakov): Overview of the local market.
+- [Buying Property in Zichron Yaakov](https://spirit666.lovable.app/en/buying-property-zichron-yaakov): Step-by-step buyer guidance.
+- [Living in Zichron Yaakov](https://spirit666.lovable.app/en/living-in-zichron-yaakov): Lifestyle, neighborhoods, amenities.
+- [Moving to Zichron Yaakov](https://spirit666.lovable.app/en/moving-to-zichron-yaakov): Relocation guide for Olim and foreign buyers.
+- [Selling Your Home](https://spirit666.lovable.app/en/sell): Listing and marketing services.
+- [About](https://spirit666.lovable.app/en/about): Team and approach.
+- [Contact](https://spirit666.lovable.app/en/contact): Reach the team.
+
+## Guides & Insights
+
+- [Guides Hub](https://spirit666.lovable.app/en/guides): Articles on buying, taxes, neighborhoods, and the Olim experience.
+
+## Legal
+
+- [Privacy Policy](https://spirit666.lovable.app/en/privacy)
+- [Terms of Use](https://spirit666.lovable.app/en/terms)
+- [Cookie Policy](https://spirit666.lovable.app/en/cookies)
+- [Accessibility Statement](https://spirit666.lovable.app/en/accessibility) — WCAG 2.1 AA and Israeli Standard 5568 compliant.
