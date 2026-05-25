@@ -84,6 +84,10 @@ const Accessibility = () => {
 
   return (
     <>
+      <PageMeta
+        title={isHe ? "הצהרת נגישות | ספיריט נדל\"ן" : "Accessibility Statement | Spirit Real Estate"}
+        description={isHe ? "האתר עומד בתקן הישראלי 5568 ובדרישות WCAG 2.1 AA." : "Our site complies with Israeli Standard 5568 and WCAG 2.1 AA."}
+      />
       <Header />
       <main className="min-h-screen bg-background" id="main-content">
         <div className="container px-6 py-20 md:py-28 max-w-3xl mx-auto">
