@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
 import TrustSection from "@/components/TrustSection";
 import PageMeta from "@/components/PageMeta";
+import ReadingProgress from "@/components/ReadingProgress";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { toast } from "sonner";
 
@@ -32,6 +33,7 @@ interface Post {
   og_image: string | null;
   canonical_url: string | null;
   noindex: boolean;
+  updated_at?: string;
 }
 
 const BlogPost = () => {
@@ -148,6 +150,7 @@ const BlogPost = () => {
         ogImage={post.og_image || post.featured_image || undefined}
         jsonLd={articleSchema}
       />
+      <ReadingProgress />
       <Header />
       <article className="py-12 md:py-20 bg-background">
         <div className="container px-6">
@@ -180,6 +183,11 @@ const BlogPost = () => {
               <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" />{post.author}</span>
               <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{new Date(post.publish_date).toLocaleDateString(isHe ? "he-IL" : "en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
               <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{post.reading_time_minutes} {isHe ? "דק׳ קריאה" : "min read"}</span>
+              {post.updated_at && new Date(post.updated_at).toDateString() !== new Date(post.publish_date).toDateString() && (
+                <span className="italic text-muted-foreground/80">
+                  {isHe ? "עודכן" : "Updated"} {new Date(post.updated_at).toLocaleDateString(isHe ? "he-IL" : "en-US", { month: "short", day: "numeric", year: "numeric" })}
+                </span>
+              )}
             </div>
 
             {/* Featured image */}
