@@ -92,10 +92,19 @@ const Contact = () => {
                     <Phone className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm font-body font-medium text-foreground">{t("contact.info.phone_label")}</p>
-                    <p className="text-sm font-body text-muted-foreground group-hover:text-gold transition-colors">{t("contact.info.phone_value")}</p>
+                    <p className="text-sm font-body font-medium text-foreground">{t("contact.info.phone_hagit_label")}</p>
+                    <p className="text-sm font-body text-muted-foreground group-hover:text-gold transition-colors">{t("contact.info.phone_hagit_value")}</p>
                   </div>
                 </a>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-body font-medium text-foreground">{t("contact.info.phone_avi_label")}</p>
+                    <p className="text-sm font-body text-muted-foreground">{t("contact.info.phone_avi_value")}</p>
+                  </div>
+                </div>
                 <a href={`mailto:${emailRaw}`} className="flex items-start gap-4 group">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
                     <Mail className="w-4 h-4 text-primary" />
