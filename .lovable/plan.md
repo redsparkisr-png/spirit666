@@ -1,45 +1,31 @@
-# ניקיון קוד + QA נגישות
+## סגירת כל פתיחי ה-SEO
 
-## חלק א' — ניקיון קוד
+**מה ייעשה:**
 
-1. **מחיקת components לא בשימוש**
-   - סריקה עם `rg` על כל קובץ ב־`src/components/` ו־`src/pages/`
-   - מחיקת קבצים ללא ייבוא חי (חשודים מסבבים קודמים: `BlueprintPromoSection` vs `BlueprintSection`, `BuyerBlueprintBlock`, `GuidePromoSection`, `TrustBar` vs `TrustSection`, `MicroTrustLine` — נאמת לפני מחיקה)
+1. **Canonical דינמי לכל ראוט** — התקנת `react-helmet-async`, עטיפת האפליקציה ב-`HelmetProvider`, והסרת ה-`<link rel="canonical">` הסטטי מ-`index.html`.
 
-2. **איחוד duplications**
-   - איחוד טפסי לידים שעדיין משתמשים ב־inline forms במקום `LeadForm` המשותף (`ContactForm.tsx`, `GoldenConversionPoint.tsx` אם רלוונטי)
-   - חילוץ `PropertyCard` משותף אם יש כפילות בין `Properties.tsx`, `HomesForSale.tsx`, `AvailableHomes.tsx`
+2. **Per-route meta + Open Graph** — רכיב `<SEO>` משותף שמוסיף `title`, `description`, `canonical`, `og:title/description/url/type` לכל עמוד:
+   - דפים סטטיים: Home, Properties, HomesForSale, Selling, Blog, Privacy, Terms, Accessibility, Cookies
+   - דפים דינמיים: BlogPost (לפי הפוסט), PropertyDetail (לפי הנכס)
 
-3. **TypeScript hardening**
-   - הסרת `any` מ־hooks (`useSiteContent`, `useCrmAuth`)
-   - הוספת types מדויקים ל־props של forms
+3. **Article JSON-LD** — בכל פוסט בלוג, JSON-LD מסוג `Article` עם headline, datePublished, author, image.
 
-## חלק ב' — QA נגישות (WCAG AA / IS 5568)
+4. **Sitemap מלא** — עדכון `scripts/generate-sitemap.ts`:
+   - הוספת `/privacy`, `/terms`, `/accessibility`, `/cookies`, `/sell`
+   - גרסאות `/he/*` ו-`/en/*` לכל ראוט
+   - שליפת כל הפוסטים והנכסים מ-Supabase לכתובות דינמיות
 
-4. **בדיקת קונטרסט**
-   - סריקה של שימושים ב־`text-muted-foreground/50`, `text-gray-*`, opacity נמוכה על רקעים בהירים
-   - החלפה ב־semantic tokens (`text-foreground`, `text-muted-foreground`)
+5. **`public/llms.txt`** — קובץ סיכום קצר באנגלית לכלי AI עם תיאור המותג, קישורים מרכזיים והפניה ל-sitemap.
 
-5. **Icon-only buttons**
-   - הוספת `aria-label` לכל `<Button size="icon">` ללא טקסט (בעיקר ב־Header, גלריות, modals)
+6. **robots.txt** — וידוא ש-`Sitemap:` מצביע ל-`https://spirit666.lovable.app/sitemap.xml`.
 
-6. **תמונות**
-   - וידוא `alt` על כל `<img>` דינמי ב־`Properties`, `LifestyleSection`, `BlogPost`
-   - שימוש ב־`alt=""` לתמונות דקורטיביות
+7. **סימון Findings כ-fixed** — לאחר השינויים, עדכון כל ה-findings הרלוונטיים ב-SEO panel והפעלת סריקה חוזרת.
 
-7. **Keyboard navigation**
-   - בדיקת `PropertyModal`, גלריית lifestyle, ו־`AccessibilityWidget` — Escape, Tab trap, focus return
-   - וידוא focus-visible על כל אינטראקטיב
-
-8. **Landmarks & headings**
-   - וידוא `<main>` יחיד לכל route (ב־`LanguageLayout`)
-   - בדיקת סדר H1→H2→H3 ב־guides ובדפי נחיתה
-
-9. **Skip-to-content**
-   - וידוא שהוא כבר קיים ב־App.tsx; אם לא — הוספה
-
-## תוצר
-- רשימת קבצים שנמחקו
-- רשימת תיקוני נגישות (severity: critical/warning/info)
-- אישור Build + restart דב' סרבר
-- מעבר חזותי על ה־preview לאחר שינויים
+**קבצים מושפעים:**
+- `src/main.tsx` (HelmetProvider)
+- `index.html` (הסרת canonical סטטי)
+- `src/components/SEO.tsx` (חדש)
+- ~10 דפים (הוספת `<SEO>`)
+- `scripts/generate-sitemap.ts`
+- `public/llms.txt` (חדש)
+- `public/robots.txt` (אימות)
