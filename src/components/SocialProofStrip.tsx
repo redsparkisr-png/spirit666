@@ -12,22 +12,28 @@ const SocialProofStrip = () => {
   const { t } = useSiteContent();
   const isHe = lang === "he";
 
+  // t() returns the key itself when a translation is missing — treat that as "no value".
+  const tf = (key: string, fallback: string) => {
+    const v = t(key);
+    return !v || v === key ? fallback : v;
+  };
+
   const stats = [
     {
-      value: t("social_proof.stat_1_value") || "70+",
-      label: t("social_proof.stat_1_label") || (isHe ? "משפחות שליווינו" : "Families guided"),
+      value: tf("social_proof.stat_1_value", "70+"),
+      label: tf("social_proof.stat_1_label", isHe ? "משפחות שליווינו" : "Families guided"),
     },
     {
-      value: t("social_proof.stat_2_value") || "12+",
-      label: t("social_proof.stat_2_label") || (isHe ? "שנים בזכרון יעקב" : "Years in Zichron"),
+      value: tf("social_proof.stat_2_value", "12+"),
+      label: tf("social_proof.stat_2_label", isHe ? "שנים בזכרון יעקב" : "Years in Zichron"),
     },
     {
-      value: t("social_proof.stat_3_value") || "₪450M+",
-      label: t("social_proof.stat_3_label") || (isHe ? "עסקאות נסגרו" : "In closed deals"),
+      value: tf("social_proof.stat_3_value", "₪450M+"),
+      label: tf("social_proof.stat_3_label", isHe ? "עסקאות נסגרו" : "In closed deals"),
     },
     {
-      value: t("social_proof.stat_4_value") || "100%",
-      label: t("social_proof.stat_4_label") || (isHe ? "מתווכים מורשים" : "Licensed agents"),
+      value: tf("social_proof.stat_4_value", "100%"),
+      label: tf("social_proof.stat_4_label", isHe ? "מתווכים מורשים" : "Licensed agents"),
     },
   ];
 
