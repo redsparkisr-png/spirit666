@@ -169,6 +169,34 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://spirit666.lovable.app/en/terms</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/terms" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/terms" />
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://spirit666.lovable.app/he/terms</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/terms" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/terms" />
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://spirit666.lovable.app/en/cookies</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/cookies" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/cookies" />
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://spirit666.lovable.app/he/cookies</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/cookies" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/cookies" />
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://spirit666.lovable.app/en/accessibility</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/accessibility" />
     <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/accessibility" />
