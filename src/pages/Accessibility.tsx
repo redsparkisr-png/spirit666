@@ -40,10 +40,10 @@ const Accessibility = () => {
           title: "יצירת קשר בנושאי נגישות",
           body: `אם נתקלתם בבעיית נגישות או שיש לכם הצעות לשיפור, נשמח לשמוע מכם:
 
-• רכז/ת נגישות: [שם רכז/ת הנגישות]
-• טלפון: [מספר טלפון]
-• אימייל: [כתובת אימייל]
-• כתובת: [כתובת העסק]`,
+• רכזת נגישות: חגית כהן מורגן
+• טלפון: 052-282-0632
+• אימייל: spiritisraelhomes@gmail.com
+• כתובת: החוחית 15, זכרון יעקב 3091668`,
         },
       ]
     : [
@@ -75,10 +75,10 @@ const Accessibility = () => {
           title: "Contact for Accessibility",
           body: `If you encounter an accessibility issue or have suggestions for improvement, we would love to hear from you:
 
-• Accessibility coordinator: [Coordinator Name]
-• Phone: [Phone Number]
-• Email: [Email Address]
-• Address: [Business Address]`,
+• Accessibility coordinator: Hagit Cohen Morgan
+• Phone: +972-52-282-0632
+• Email: spiritisraelhomes@gmail.com
+• Address: HaChochit 15, Zichron Yaakov 3091668, Israel`,
         },
       ];
 
