@@ -14,7 +14,7 @@ import FloatingElements from "@/components/FloatingElements";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
 import SchemaOrg from "@/components/SchemaOrg";
 import ClosingCTA from "@/components/ClosingCTA";
-import SocialProofStrip from "@/components/SocialProofStrip";
+
 import GoldDivider from "@/components/ui/gold-divider";
 
 const Index = () => {
@@ -66,8 +66,6 @@ const Index = () => {
       {/* 9. Team Trust Section */}
       <TeamTrustSection />
 
-      {/* Social proof strip */}
-      <SocialProofStrip />
 
       {/* 9. Closing CTA */}
       <ClosingCTA />
