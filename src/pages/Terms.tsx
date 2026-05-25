@@ -38,7 +38,7 @@ const Terms = () => {
           <p>These terms are governed by the laws of the State of Israel. Any disputes shall be subject to the exclusive jurisdiction of the courts in Israel.</p>
 
           <h2 className="text-xl font-display font-semibold text-foreground">7. Contact</h2>
-          <p>For questions regarding these terms, please contact Spirit Real Estate at info@spiritrealestate.co.il.</p>
+          <p>For questions regarding these terms, please contact Spirit Real Estate at <a href="mailto:spiritisraelhomes@gmail.com" className="text-primary hover:underline">spiritisraelhomes@gmail.com</a>.</p>
         </div>
       </div>
     </div>

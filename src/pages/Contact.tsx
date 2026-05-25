@@ -24,6 +24,7 @@ const Contact = () => {
       "@type": "PostalAddress",
       streetAddress: t("contact.map.address"),
       addressLocality: "Zichron Yaakov",
+        postalCode: "3091668",
       addressCountry: "IL",
     },
     openingHours: ["Su-Th 09:00-18:00", "Fr 09:00-13:00"],
@@ -140,7 +141,7 @@ const Contact = () => {
           <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden border border-border shadow-md aspect-[16/9]">
             <iframe
               title={t("contact.map.title")}
-              src="https://www.google.com/maps?q=Zichron+Yaakov,+Israel&output=embed"
+              src="https://www.google.com/maps?q=HaChochit+15,+Zichron+Yaakov,+Israel&output=embed"
               className="w-full h-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

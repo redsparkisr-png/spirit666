@@ -10,15 +10,17 @@ const ORGANIZATION_SCHEMA = {
   description: "Boutique real estate firm in Zichron Yaakov, Israel — strategic advisory, local expertise, and personal representation.",
   url: SITE_URL,
   telephone: "+972-52-282-0632",
-  email: "info@spiritrealestate.co.il",
+  email: "spiritisraelhomes@gmail.com",
   areaServed: {
     "@type": "Place",
     name: "Zichron Yaakov, Israel",
   },
   address: {
     "@type": "PostalAddress",
+    streetAddress: "HaChochit 15",
     addressLocality: "Zichron Yaakov",
     addressRegion: "Haifa District",
+    postalCode: "3091668",
     addressCountry: "IL",
   },
   geo: {
