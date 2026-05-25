@@ -83,7 +83,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
                   <button
                     onClick={() => switchLang("he")}
                     className={`text-sm font-body font-medium px-3 py-1.5 rounded transition-colors ${
-                      lang === "he" ? "bg-white/15 text-white" : "text-white/50 hover:text-white"
+                      lang === "he" ? "bg-white/15 text-white" : "text-white/70 hover:text-white"
                     }`}
                   >
                     HE
@@ -91,7 +91,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
                   <button
                     onClick={() => switchLang("en")}
                     className={`text-sm font-body font-medium px-3 py-1.5 rounded transition-colors ${
-                      lang === "en" ? "bg-white/15 text-white" : "text-white/50 hover:text-white"
+                      lang === "en" ? "bg-white/15 text-white" : "text-white/70 hover:text-white"
                     }`}
                   >
                     EN
@@ -120,7 +120,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
           <button
             onClick={() => switchLang("he")}
             className={`text-xs font-body font-medium px-2.5 py-1.5 rounded transition-colors ${
-              lang === "he" ? "bg-white/15 text-white" : "text-white/40 hover:text-white"
+              lang === "he" ? "bg-white/15 text-white" : "text-white/70 hover:text-white"
             }`}
           >
             HE
@@ -129,7 +129,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
           <button
             onClick={() => switchLang("en")}
             className={`text-xs font-body font-medium px-2.5 py-1.5 rounded transition-colors ${
-              lang === "en" ? "bg-white/15 text-white" : "text-white/40 hover:text-white"
+              lang === "en" ? "bg-white/15 text-white" : "text-white/70 hover:text-white"
             }`}
           >
             EN
