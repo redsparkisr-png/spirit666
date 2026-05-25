@@ -21,17 +21,16 @@ export const useAuth = () => {
     }
     setUser(u);
     try {
-      // Check for admin OR super_admin role
-      const results = await Promise.all([
-        supabase.rpc("has_role", { _user_id: u.id, _role: "admin" }),
-        supabase.rpc("has_role", { _user_id: u.id, _role: "super_admin" }),
-      ]);
-      const hasAdmin = results.some(r => !!r.data);
-      const hasError = results.find(r => r.error);
-      if (hasError?.error) throw hasError.error;
-      setIsAdmin(hasAdmin);
+      // Query user_roles directly — single request, policy allows users to read own roles
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", u.id);
+      if (error) throw error;
+      const roles = (data ?? []).map((r) => r.role);
+      setIsAdmin(roles.includes("admin") || roles.includes("super_admin"));
     } catch (e: any) {
-      if (isDev) console.warn("Role check failed:", e?.message);
+      console.warn("Role check failed:", e?.message ?? e);
       setIsAdmin(false);
       setError("Failed to verify admin role. Please retry.");
     } finally {
@@ -50,10 +49,10 @@ export const useAuth = () => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (loading) {
-        setLoading(false);
-        setError("Loading timed out. Please retry.");
-      }
+      setLoading((cur) => {
+        if (cur) setError("Loading timed out. Please retry.");
+        return false;
+      });
     }, TIMEOUT_MS);
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -75,7 +74,7 @@ export const useAuth = () => {
       clearTimeout(timeout);
       subscription.unsubscribe();
     };
-  }, [checkRole, loading]);
+  }, [checkRole]);
 
   const signOut = () => supabase.auth.signOut();
 
