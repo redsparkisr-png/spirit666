@@ -459,7 +459,7 @@ const PropertyDetail = () => {
                     <Link key={sp.id} to={`/${lang}/property/${sp.slug || sp.id}`} className="group cursor-pointer rounded-2xl overflow-hidden bg-card border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                       <div className="aspect-[4/3] bg-muted overflow-hidden">
                         {sp.images?.[0] ? (
-                          <img src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })} alt={sp.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+                          <img src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })} alt={sp.title} className="w-full h-full object-contain transition-opacity duration-500" loading="lazy" decoding="async" />
                         ) : (
                           <div className="w-full h-full bg-muted" />
                         )}

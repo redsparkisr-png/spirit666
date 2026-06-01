@@ -172,7 +172,7 @@ const Sell = () => {
                       <img
                         src={optimizedImageUrl(p.images[0], { width: 600 })}
                         alt={p.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         loading="lazy"
                         decoding="async"
                       />

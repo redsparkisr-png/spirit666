@@ -67,7 +67,7 @@ const ImageGallery = ({
           key={idx}
           src={url}
           alt={`${title} – photo ${idx + 1}`}
-          className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ease-in-out"
+          className="absolute inset-0 w-full h-full object-contain object-center transition-opacity duration-500 ease-in-out"
           style={{ opacity: active === idx ? 1 : 0 }}
           loading={idx === 0 ? "eager" : "lazy"}
           width={800}
