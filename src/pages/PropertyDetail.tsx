@@ -260,13 +260,13 @@ const PropertyDetail = () => {
       <Header />
 
       {/* Gallery */}
-      <div className="relative w-full aspect-[16/9] md:aspect-[2.1/1] bg-muted overflow-hidden">
+      <div className="relative w-full aspect-[16/9] md:aspect-[2.1/1] bg-charcoal overflow-hidden">
         {images.length === 0 ? (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground font-body">No images</div>
         ) : (
           <>
             {images.map((url, idx) => (
-              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={`${property.title} – ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" {...(idx === 0 ? { fetchpriority: "high" } as any : {})} />
+              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={`${property.title} – ${idx + 1}`} onClick={() => setLightboxOpen(true)} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 cursor-zoom-in" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" {...(idx === 0 ? { fetchpriority: "high" } as any : {})} />
             ))}
             {images.length > 1 && (
               <>
