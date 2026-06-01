@@ -239,20 +239,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://spirit666.lovable.app/en/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0" />
-    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://spirit666.lovable.app/he/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0" />
-    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://spirit666.lovable.app/en/property/4388f39f-7ff0-4dbc-9829-663fc8d8276f</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/4388f39f-7ff0-4dbc-9829-663fc8d8276f" />
     <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/4388f39f-7ff0-4dbc-9829-663fc8d8276f" />
@@ -267,6 +253,20 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://spirit666.lovable.app/en/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit666.lovable.app/he/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/0ebe36eb-9a45-4fcd-9cb3-5bbd6ea284c0" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://spirit666.lovable.app/en/property/f053077b-6e99-4d24-9008-a2fbed8d0380</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/f053077b-6e99-4d24-9008-a2fbed8d0380" />
     <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/f053077b-6e99-4d24-9008-a2fbed8d0380" />
@@ -277,6 +277,34 @@
     <loc>https://spirit666.lovable.app/he/property/f053077b-6e99-4d24-9008-a2fbed8d0380</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/f053077b-6e99-4d24-9008-a2fbed8d0380" />
     <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/f053077b-6e99-4d24-9008-a2fbed8d0380" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit666.lovable.app/en/property/5471781e-59d9-4cc1-ac9f-4a194a9e595e</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/5471781e-59d9-4cc1-ac9f-4a194a9e595e" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/5471781e-59d9-4cc1-ac9f-4a194a9e595e" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit666.lovable.app/he/property/5471781e-59d9-4cc1-ac9f-4a194a9e595e</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/5471781e-59d9-4cc1-ac9f-4a194a9e595e" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/5471781e-59d9-4cc1-ac9f-4a194a9e595e" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit666.lovable.app/en/property/9e6713e2-5f43-492d-adf6-a7f2b1b44b8c</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/9e6713e2-5f43-492d-adf6-a7f2b1b44b8c" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/9e6713e2-5f43-492d-adf6-a7f2b1b44b8c" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spirit666.lovable.app/he/property/9e6713e2-5f43-492d-adf6-a7f2b1b44b8c</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spirit666.lovable.app/en/property/9e6713e2-5f43-492d-adf6-a7f2b1b44b8c" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://spirit666.lovable.app/he/property/9e6713e2-5f43-492d-adf6-a7f2b1b44b8c" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
