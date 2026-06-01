@@ -289,8 +289,8 @@ const PropertyDetail = () => {
       {images.length > 1 && (
         <div className="container px-6 py-3 flex gap-2.5 overflow-x-auto scrollbar-hide">
           {images.map((url, idx) => (
-            <button key={idx} onClick={() => setCurrentImg(idx)} className={`flex-shrink-0 w-[88px] h-[60px] rounded-lg overflow-hidden border-2 transition-colors ${currentImg === idx ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"}`} aria-label={`View image ${idx + 1}`}>
-              <img src={optimizedImageUrl(url, { width: 200, quality: 70 })} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+            <button key={idx} onClick={() => setCurrentImg(idx)} className={`flex-shrink-0 w-[88px] h-[60px] rounded-lg overflow-hidden border-2 bg-charcoal/5 transition-colors ${currentImg === idx ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"}`} aria-label={`View image ${idx + 1}`}>
+              <img src={optimizedImageUrl(url, { width: 200, quality: 70 })} alt="" className="w-full h-full object-contain" loading="lazy" decoding="async" />
             </button>
           ))}
         </div>
