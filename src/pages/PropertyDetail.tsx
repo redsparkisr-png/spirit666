@@ -118,6 +118,22 @@ const PropertyDetail = () => {
     load();
   }, [slug, lang]);
 
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const imgs = property?.images || [];
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxOpen(false);
+      else if (e.key === "ArrowRight") setCurrentImg((c) => (c + 1) % imgs.length);
+      else if (e.key === "ArrowLeft") setCurrentImg((c) => (c - 1 + imgs.length) % imgs.length);
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [lightboxOpen, property]);
+
   const handleInquiry = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim()) {
