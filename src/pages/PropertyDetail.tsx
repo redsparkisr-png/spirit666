@@ -48,6 +48,7 @@ const PropertyDetail = () => {
   const [similar, setSimilar] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentImg, setCurrentImg] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
