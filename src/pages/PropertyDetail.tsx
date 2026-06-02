@@ -266,7 +266,7 @@ const PropertyDetail = () => {
         ) : (
           <>
             {images.map((url, idx) => (
-              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={`${property.title} – ${idx + 1}`} onClick={() => setLightboxOpen(true)} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 cursor-zoom-in" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" {...(idx === 0 ? { fetchpriority: "high" } as any : {})} />
+              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={`${property.title} – ${idx + 1}`} onClick={() => setLightboxOpen(true)} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 cursor-zoom-in" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" {...(idx === 0 ? { fetchpriority: "high" } as any : {})} />
             ))}
             {images.length > 1 && (
               <>
@@ -290,7 +290,7 @@ const PropertyDetail = () => {
         <div className="container px-6 py-3 flex gap-2.5 overflow-x-auto scrollbar-hide">
           {images.map((url, idx) => (
             <button key={idx} onClick={() => setCurrentImg(idx)} className={`flex-shrink-0 w-[88px] h-[60px] rounded-lg overflow-hidden border-2 bg-charcoal/5 transition-colors ${currentImg === idx ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"}`} aria-label={`View image ${idx + 1}`}>
-              <img src={optimizedImageUrl(url, { width: 200, quality: 70 })} alt="" className="w-full h-full object-contain" loading="lazy" decoding="async" />
+              <img src={optimizedImageUrl(url, { width: 200, quality: 70 })} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
             </button>
           ))}
         </div>
@@ -459,7 +459,7 @@ const PropertyDetail = () => {
                     <Link key={sp.id} to={`/${lang}/property/${sp.slug || sp.id}`} className="group cursor-pointer rounded-2xl overflow-hidden bg-card border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                       <div className="aspect-[4/3] bg-muted overflow-hidden">
                         {sp.images?.[0] ? (
-                          <img src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })} alt={sp.title} className="w-full h-full object-contain transition-opacity duration-500" loading="lazy" decoding="async" />
+                          <img src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })} alt={sp.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
                         ) : (
                           <div className="w-full h-full bg-muted" />
                         )}
