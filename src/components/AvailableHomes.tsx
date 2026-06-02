@@ -85,7 +85,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
           )}
           {images.map((url, idx) => (
-            <img key={idx} src={optimizedImageUrl(url, { width: 800, quality: 75 })} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain object-center transition-opacity duration-[600ms] ease-out" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
+            <img key={idx} src={optimizedImageUrl(url, { width: 800, quality: 75 })} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-[600ms] ease-out group-hover:scale-[1.03]" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
           ))}
           {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
           {isNew && (
