@@ -2,7 +2,7 @@
  * SEO JSON-LD helpers — pure data builders, no React.
  */
 
-const SITE = "https://spirit666.lovable.app";
+const SITE = "https://spiritisraelhomes.com";
 
 export interface Crumb {
   name: string;

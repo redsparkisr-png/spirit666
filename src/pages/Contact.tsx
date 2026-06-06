@@ -28,7 +28,7 @@ const Contact = () => {
       addressCountry: "IL",
     },
     openingHours: ["Su-Th 09:00-18:00", "Fr 09:00-13:00"],
-    url: "https://spirit666.lovable.app/",
+    url: "https://spiritisraelhomes.com/",
   };
 
   return (

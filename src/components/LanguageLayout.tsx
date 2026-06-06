@@ -88,7 +88,7 @@ const LanguageLayout = () => {
       descTag.setAttribute("content", meta.desc);
 
       // Canonical tag
-      const canonicalUrl = `https://spirit666.lovable.app${location.pathname}`;
+      const canonicalUrl = `https://spiritisraelhomes.com${location.pathname}`;
       let canonicalTag = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
       if (!canonicalTag) {
         canonicalTag = document.createElement("link");

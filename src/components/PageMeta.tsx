@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 import { useLanguage } from "@/lib/i18n";
 
-const SITE = "https://spirit666.lovable.app";
+const SITE = "https://spiritisraelhomes.com";
 
 type Props = {
   title: string;

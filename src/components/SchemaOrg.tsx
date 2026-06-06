@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const SITE_URL = "https://spirit666.lovable.app";
+const SITE_URL = "https://spiritisraelhomes.com";
 
 const ORGANIZATION_SCHEMA = {
   "@context": "https://schema.org",

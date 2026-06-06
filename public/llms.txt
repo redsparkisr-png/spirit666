@@ -8,29 +8,29 @@
 Languages: English, Hebrew (עברית)
 Contact: WhatsApp +972-52-282-0632 · Email spiritisraelhomes@gmail.com
 Office: HaChochit 15, Zichron Yaakov 3091668, Israel
-Website: https://spirit666.lovable.app
-Sitemap: https://spirit666.lovable.app/sitemap.xml
+Website: https://spiritisraelhomes.com
+Sitemap: https://spiritisraelhomes.com/sitemap.xml
 
 ## Core pages
 
-- [Home (EN)](https://spirit666.lovable.app/en/): Boutique real estate in Zichron Yaakov.
-- [Home (HE)](https://spirit666.lovable.app/he/): נדל"ן בוטיק בזכרון יעקב.
-- [Available Properties](https://spirit666.lovable.app/en/properties): Current homes for sale in Zichron Yaakov.
-- [Homes for Sale Guide](https://spirit666.lovable.app/en/homes-for-sale-zichron-yaakov): Overview of the local market.
-- [Buying Property in Zichron Yaakov](https://spirit666.lovable.app/en/buying-property-zichron-yaakov): Step-by-step buyer guidance.
-- [Living in Zichron Yaakov](https://spirit666.lovable.app/en/living-in-zichron-yaakov): Lifestyle, neighborhoods, amenities.
-- [Moving to Zichron Yaakov](https://spirit666.lovable.app/en/moving-to-zichron-yaakov): Relocation guide for Olim and foreign buyers.
-- [Selling Your Home](https://spirit666.lovable.app/en/sell): Listing and marketing services.
-- [About](https://spirit666.lovable.app/en/about): Team and approach.
-- [Contact](https://spirit666.lovable.app/en/contact): Reach the team.
+- [Home (EN)](https://spiritisraelhomes.com/en/): Boutique real estate in Zichron Yaakov.
+- [Home (HE)](https://spiritisraelhomes.com/he/): נדל"ן בוטיק בזכרון יעקב.
+- [Available Properties](https://spiritisraelhomes.com/en/properties): Current homes for sale in Zichron Yaakov.
+- [Homes for Sale Guide](https://spiritisraelhomes.com/en/homes-for-sale-zichron-yaakov): Overview of the local market.
+- [Buying Property in Zichron Yaakov](https://spiritisraelhomes.com/en/buying-property-zichron-yaakov): Step-by-step buyer guidance.
+- [Living in Zichron Yaakov](https://spiritisraelhomes.com/en/living-in-zichron-yaakov): Lifestyle, neighborhoods, amenities.
+- [Moving to Zichron Yaakov](https://spiritisraelhomes.com/en/moving-to-zichron-yaakov): Relocation guide for Olim and foreign buyers.
+- [Selling Your Home](https://spiritisraelhomes.com/en/sell): Listing and marketing services.
+- [About](https://spiritisraelhomes.com/en/about): Team and approach.
+- [Contact](https://spiritisraelhomes.com/en/contact): Reach the team.
 
 ## Guides & Insights
 
-- [Guides Hub](https://spirit666.lovable.app/en/guides): Articles on buying, taxes, neighborhoods, and the Olim experience.
+- [Guides Hub](https://spiritisraelhomes.com/en/guides): Articles on buying, taxes, neighborhoods, and the Olim experience.
 
 ## Legal
 
-- [Privacy Policy](https://spirit666.lovable.app/en/privacy)
-- [Terms of Use](https://spirit666.lovable.app/en/terms)
-- [Cookie Policy](https://spirit666.lovable.app/en/cookies)
-- [Accessibility Statement](https://spirit666.lovable.app/en/accessibility) — WCAG 2.1 AA and Israeli Standard 5568 compliant.
+- [Privacy Policy](https://spiritisraelhomes.com/en/privacy)
+- [Terms of Use](https://spiritisraelhomes.com/en/terms)
+- [Cookie Policy](https://spiritisraelhomes.com/en/cookies)
+- [Accessibility Statement](https://spiritisraelhomes.com/en/accessibility) — WCAG 2.1 AA and Israeli Standard 5568 compliant.

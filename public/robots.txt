@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://spirit666.lovable.app/sitemap.xml
+Sitemap: https://spiritisraelhomes.com/sitemap.xml

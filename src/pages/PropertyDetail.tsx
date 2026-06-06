@@ -13,7 +13,7 @@ import { injectPropertySchema } from "@/components/SchemaOrg";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
 import { optimizedImageUrl } from "@/lib/image";
 
-const SITE_ORIGIN = "https://spirit666.lovable.app";
+const SITE_ORIGIN = "https://spiritisraelhomes.com";
 
 function setMeta(selector: string, attr: "name" | "property", key: string, content: string) {
   let tag = document.querySelector(selector) as HTMLMetaElement | null;

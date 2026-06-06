@@ -40,7 +40,7 @@ const About = () => {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Spirit Real Estate",
-    url: "https://spirit666.lovable.app/",
+    url: "https://spiritisraelhomes.com/",
     foundingDate: "2019",
     areaServed: "Zichron Yaakov, Israel",
   };

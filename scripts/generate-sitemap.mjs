@@ -4,7 +4,7 @@
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-const BASE_URL = "https://spirit666.lovable.app";
+const BASE_URL = "https://spiritisraelhomes.com";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || "https://zbrkbianodvzpwxgaonb.supabase.co";
 const SUPABASE_KEY =
   process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
