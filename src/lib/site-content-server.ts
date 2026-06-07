@@ -11,8 +11,8 @@ export interface SiteContentRow {
 // Plain REST fetch (not the browser supabase-js client) so this can run safely
 // during SSR/SSG without relying on localStorage-based session persistence.
 export async function fetchSiteContentServer(): Promise<SiteContentRow[]> {
-  const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/site_content?select=*&order=key`;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
+  const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()}/rest/v1/site_content?select=*&order=key`;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!.trim();
 
   const res = await fetch(url, {
     headers: { apikey: key, Authorization: `Bearer ${key}` },
