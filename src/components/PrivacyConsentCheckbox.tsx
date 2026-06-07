@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -25,7 +27,7 @@ const PrivacyConsentCheckbox = ({ checked, onCheckedChange, id = "privacy-consen
       <label htmlFor={id} className="text-sm font-body text-foreground/70 cursor-pointer leading-snug select-none">
         {t("form.privacy_consent")}{" "}
         <Link
-          to={`/${lang}/privacy`}
+          href={`/${lang}/privacy`}
           className="underline text-gold hover:text-gold-hover transition-colors"
           target="_blank"
           rel="noopener noreferrer"

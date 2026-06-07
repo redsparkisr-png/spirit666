@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Users, AlertTriangle, Flame, CalendarClock, TrendingUp, Clock } from "lucide-react";
 import type { CrmLead } from "../types";
 import { LEAD_SOURCE_LABELS, TEMPERATURE_CONFIG, STATUS_CONFIG } from "../types";
@@ -85,7 +87,7 @@ const CrmDashboard = () => {
     <div className="p-4 md:p-6 pb-24 lg:pb-6 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold text-white">דשבורד</h1>
-        <Link to="/crm/leads/new" className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+        <Link href="/crm/leads/new" className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
           + ליד חדש
         </Link>
       </div>
@@ -112,7 +114,7 @@ const CrmDashboard = () => {
           ) : (
             <div className="space-y-2">
               {stats.recentLeads.map((lead) => (
-                <Link key={lead.id} to={`/crm/leads/${lead.id}`} className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
+                <Link key={lead.id} href={`/crm/leads/${lead.id}`} className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-white truncate">{lead.full_name}</p>
                     <p className="text-xs text-gray-500">{LEAD_SOURCE_LABELS[lead.source] || lead.source}</p>

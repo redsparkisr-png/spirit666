@@ -1,6 +1,8 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { MessageCircle, CheckCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import guideImg from "@/assets/guide-img-1.jpg";
@@ -39,7 +41,7 @@ const BlueprintPromoSection = () => {
           >
             <div className="rounded-2xl overflow-hidden shadow-xl border border-border">
               <img
-                src={guideImg}
+                src={(guideImg as any).src ?? (guideImg as unknown as string)}
                 alt={isHe ? "מדריך הקונה לזכרון יעקב 2026" : "Zichron Yaakov Buyer Blueprint 2026"}
                 className="w-full aspect-[4/3] object-cover"
                 loading="lazy"
@@ -87,13 +89,13 @@ const BlueprintPromoSection = () => {
 
             {/* Internal SEO links */}
             <div className="flex flex-wrap gap-3 mb-6 text-xs font-body">
-              <Link to={`/${lang}/properties`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              <Link href={`/${lang}/properties`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
                 {isHe ? "נכסים בזכרון יעקב" : "Homes for sale in Zichron Yaakov"}
               </Link>
-              <Link to={`/${lang}/buying-property-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              <Link href={`/${lang}/buying-property-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
                 {isHe ? "מדריך רכישה" : "Buying guide"}
               </Link>
-              <Link to={`/${lang}/living-in-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              <Link href={`/${lang}/living-in-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
                 {isHe ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov"}
               </Link>
             </div>

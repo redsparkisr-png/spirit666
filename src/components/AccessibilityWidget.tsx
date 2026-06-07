@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import { X, RotateCcw, Plus, Minus, Type, Eye, Sun, Moon, Contrast, Link2, Heading, Underline, BookOpen, Pause, MousePointer, Keyboard } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";

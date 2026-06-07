@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { CheckCircle2, Clock, AlertTriangle } from "lucide-react";
 import type { CrmTask } from "../types";
 import { TASK_TYPES } from "../types";
@@ -109,7 +111,7 @@ const CrmTasks = () => {
                 </div>
               </div>
               {task.lead_id && (
-                <Link to={`/crm/leads/${task.lead_id}`} className="text-xs text-blue-400 underline flex-shrink-0">
+                <Link href={`/crm/leads/${task.lead_id}`} className="text-xs text-blue-400 underline flex-shrink-0">
                   צפה בליד
                 </Link>
               )}

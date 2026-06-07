@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { toast } from "sonner";
 import type { CrmLead } from "../types";
 import { PIPELINE_STAGES, TEMPERATURE_CONFIG, LEAD_SOURCE_LABELS } from "../types";
@@ -74,7 +76,7 @@ const CrmPipeline = () => {
                   {stageLeads.map((lead) => (
                     <Link
                       key={lead.id}
-                      to={`/crm/leads/${lead.id}`}
+                      href={`/crm/leads/${lead.id}`}
                       draggable
                       onDragStart={(e) => {
                         e.dataTransfer.setData("text/plain", lead.id);

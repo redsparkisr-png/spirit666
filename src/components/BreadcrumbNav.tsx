@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
 import { ChevronRight } from "lucide-react";
 
@@ -18,7 +20,7 @@ const BreadcrumbNav = ({ items }: BreadcrumbNavProps) => {
     <nav aria-label="Breadcrumb" className="mb-4">
       <ol className="flex items-center gap-1.5 text-sm font-body text-muted-foreground flex-wrap">
         <li>
-          <Link to={`/${lang}/`} className="hover:text-foreground transition-colors">
+          <Link href={`/${lang}/`} className="hover:text-foreground transition-colors">
             {lang === "he" ? "דף הבית" : "Home"}
           </Link>
         </li>
@@ -26,7 +28,7 @@ const BreadcrumbNav = ({ items }: BreadcrumbNavProps) => {
           <li key={i} className="flex items-center gap-1.5">
             <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/50 rtl:rotate-180" />
             {item.to ? (
-              <Link to={item.to} className="hover:text-foreground transition-colors">
+              <Link href={item.to} className="hover:text-foreground transition-colors">
                 {item.label}
               </Link>
             ) : (

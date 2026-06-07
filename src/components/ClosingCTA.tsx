@@ -1,6 +1,8 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { MessageCircle, Download } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
@@ -45,7 +47,7 @@ const ClosingCTA = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              to={`/${lang}/properties`}
+              href={`/${lang}/properties`}
               className="inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] text-primary-foreground"
               style={{
                 background:
@@ -79,13 +81,13 @@ const ClosingCTA = () => {
                 : "Get the Free Zichron Yaakov Home Buying Guide"}
             </a>
             <div className="flex flex-wrap justify-center gap-4 text-xs font-body">
-              <Link to={`/${lang}/guides`} className="text-primary-foreground/50 hover:text-primary-foreground/80 underline underline-offset-4 transition-colors">
+              <Link href={`/${lang}/guides`} className="text-primary-foreground/50 hover:text-primary-foreground/80 underline underline-offset-4 transition-colors">
                 {isHe ? "בלוג" : "Blog"}
               </Link>
-              <Link to={`/${lang}/sell`} className="text-primary-foreground/50 hover:text-primary-foreground/80 underline underline-offset-4 transition-colors">
+              <Link href={`/${lang}/sell`} className="text-primary-foreground/50 hover:text-primary-foreground/80 underline underline-offset-4 transition-colors">
                 {isHe ? "מכירת נכס" : "Sell Your Property"}
               </Link>
-              <Link to={`/${lang}/contact`} className="text-primary-foreground/50 hover:text-primary-foreground/80 underline underline-offset-4 transition-colors">
+              <Link href={`/${lang}/contact`} className="text-primary-foreground/50 hover:text-primary-foreground/80 underline underline-offset-4 transition-colors">
                 {isHe ? "צרו קשר" : "Contact Us"}
               </Link>
             </div>

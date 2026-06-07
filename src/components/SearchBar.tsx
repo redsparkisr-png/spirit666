@@ -1,6 +1,8 @@
+"use client";
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { Search, ChevronDown, X, Check, SlidersHorizontal } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
@@ -151,7 +153,7 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
             }`}
             style={{ minWidth: 200, maxHeight: 420, overflowY: "auto" }}
           >
-            {renderOptions(inline)}
+            {renderOptions(!!inline)}
           </motion.div>
         )}
       </AnimatePresence>
@@ -328,7 +330,7 @@ const SearchBar = ({
 }: SearchBarProps) => {
   const { lang } = useLanguage();
   const { t } = useSiteContent();
-  const navigate = useNavigate();
+  const router = useRouter();
   const isMobile = useIsMobile();
   const [moreFiltersOpen, setMoreFiltersOpen] = useState(false);
 
@@ -373,7 +375,7 @@ const SearchBar = ({
     if (selectedType) params.set("type", selectedType);
     if (selectedBeds) params.set("beds", selectedBeds);
     if (maxPrice < dataMax) params.set("priceMax", String(maxPrice));
-    navigate(`/${lang}/properties?${params.toString()}`);
+    router.push(`/${lang}/properties?${params.toString()}`);
   };
 
   const locationOptions = locations.map((l) => ({ value: getName(l), label: getName(l) }));

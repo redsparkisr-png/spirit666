@@ -1,5 +1,7 @@
+"use client";
+
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
 import spiritLogo from "@/assets/spirit-logo.jpg";
@@ -56,9 +58,9 @@ const TrustSection = () => {
           className="max-w-2xl mx-auto text-center"
         >
           {/* Logo */}
-          <Link to={prefix + "/"} className="inline-block mb-10 group">
+          <Link href={prefix + "/"} className="inline-block mb-10 group">
             <img
-              src={spiritLogo}
+              src={(spiritLogo as any).src ?? (spiritLogo as unknown as string)}
               alt="Spirit Real Estate"
               className="h-[50px] md:h-[68px] w-auto rounded-md mx-auto transition-transform duration-500 group-hover:scale-105"
               style={{ objectFit: "contain", imageRendering: "-webkit-optimize-contrast" as any }}
@@ -77,7 +79,7 @@ const TrustSection = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.to}
-                to={link.to}
+                href={link.to}
                 className="text-primary-foreground/60 hover:text-primary-foreground font-body text-sm transition-all duration-300 hover:tracking-wide"
               >
                 {link.label}
@@ -94,7 +96,7 @@ const TrustSection = () => {
               {guideLinks.map((link) => (
                 <Link
                   key={link.to}
-                  to={link.to}
+                  href={link.to}
                   className="text-primary-foreground/50 hover:text-primary-foreground/80 font-body text-[13px] transition-colors duration-300"
                 >
                   {link.label}
@@ -109,7 +111,7 @@ const TrustSection = () => {
           {/* Legal links */}
           <nav className="flex justify-center gap-6 mb-10 flex-wrap" aria-label="Legal links">
             {legalLinks.map((link) => (
-              <Link key={link.to} to={link.to} className="text-primary-foreground/40 hover:text-primary-foreground/70 font-body text-[13px] transition-colors duration-300">
+              <Link key={link.to} href={link.to} className="text-primary-foreground/40 hover:text-primary-foreground/70 font-body text-[13px] transition-colors duration-300">
                 {link.label}
               </Link>
             ))}

@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Clock, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
@@ -63,7 +65,7 @@ const RelatedGuides = ({ category, excludeSlug, limit = 3 }: Props) => {
               return (
                 <Link
                   key={p.id}
-                  to={`/${lang}/guides/${p.slug}`}
+                  href={`/${lang}/guides/${p.slug}`}
                   className="group block bg-background rounded-2xl overflow-hidden border border-border hover:border-gold/50 hover:shadow-lg transition-all"
                 >
                   {p.featured_image && (
