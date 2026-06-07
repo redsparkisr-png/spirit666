@@ -1,7 +1,8 @@
+"use client";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
-import { Helmet } from "react-helmet-async";
 
 export type FAQItem = { q: string; a: string };
 
@@ -30,9 +31,10 @@ const FAQSection = ({ title, subtitle, items, emitSchema = true }: Props) => {
   return (
     <section className="py-14 md:py-20 bg-background">
       {emitSchema && (
-        <Helmet>
-          <script type="application/ld+json">{JSON.stringify(schema)}</script>
-        </Helmet>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
       )}
       <div className="container px-6">
         <div className="max-w-3xl mx-auto">

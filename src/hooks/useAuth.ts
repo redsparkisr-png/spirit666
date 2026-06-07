@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
 const TIMEOUT_MS = 8000;
-const isDev = import.meta.env.DEV;
+const isDev = process.env.NODE_ENV === "development";
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);

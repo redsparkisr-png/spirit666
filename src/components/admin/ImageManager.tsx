@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { GripVertical, Upload, Star, Trash2, Replace, CheckSquare, X } from "lucide-react";

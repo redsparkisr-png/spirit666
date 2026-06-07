@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useCrmAuth } from "../hooks/useCrmAuth";
 import CrmLogin from "./CrmLogin";
 import {
@@ -7,17 +10,28 @@ import {
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { to: "/crm", icon: LayoutDashboard, label: "דשבורד", end: true },
-  { to: "/crm/leads", icon: Users, label: "לידים", end: false },
-  { to: "/crm/tasks", icon: ListTodo, label: "משימות", end: false },
-  { to: "/crm/pipeline", icon: Columns3, label: "Pipeline", end: false },
-  { to: "/crm/reports", icon: BarChart3, label: "דוחות", end: false },
+  { to: "/crm", icon: LayoutDashboard, label: "דשבורד", exact: true },
+  { to: "/crm/leads", icon: Users, label: "לידים", exact: false },
+  { to: "/crm/tasks", icon: ListTodo, label: "משימות", exact: false },
+  { to: "/crm/pipeline", icon: Columns3, label: "Pipeline", exact: false },
+  { to: "/crm/reports", icon: BarChart3, label: "דוחות", exact: false },
 ];
 
-const CrmLayout = () => {
-  const { user, hasCrmAccess, isSuperAdmin, loading, error, signOut, retry } = useCrmAuth();
+const CrmLayout = ({ children }: { children: React.ReactNode }) => {
+  const { user, hasCrmAccess, loading, error, signOut, retry } = useCrmAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const isActive = (to: string, exact: boolean) =>
+    exact ? pathname === to : (pathname || "").startsWith(to);
+
+  const navClass = (to: string, exact: boolean) =>
+    `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+      isActive(to, exact)
+        ? "bg-blue-600/15 text-blue-400"
+        : "text-gray-400 hover:text-white hover:bg-white/5"
+    }`;
 
   if (loading) {
     return (
@@ -53,13 +67,6 @@ const CrmLayout = () => {
     );
   }
 
-  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-      isActive
-        ? "bg-blue-600/15 text-blue-400"
-        : "text-gray-400 hover:text-white hover:bg-white/5"
-    }`;
-
   return (
     <div className="min-h-screen bg-[#0f1117] text-white" dir="rtl">
       {/* Mobile header */}
@@ -69,14 +76,13 @@ const CrmLayout = () => {
         </button>
         <span className="text-sm font-bold text-white">Spirit CRM</span>
         <button
-          onClick={() => navigate("/crm/leads/new")}
+          onClick={() => router.push("/crm/leads/new")}
           className="p-2 bg-blue-600 rounded-lg"
         >
           <Plus className="w-4 h-4" />
         </button>
       </header>
 
-      {/* Sidebar overlay on mobile */}
       {sidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-30 bg-black/50" onClick={() => setSidebarOpen(false)} />
       )}
@@ -94,22 +100,21 @@ const CrmLayout = () => {
 
         <nav className="flex-1 p-3 space-y-1">
           {NAV_ITEMS.map((item) => (
-            <NavLink
+            <Link
               key={item.to}
-              to={item.to}
-              end={item.end}
-              className={navLinkClass}
+              href={item.to}
+              className={navClass(item.to, item.exact)}
               onClick={() => setSidebarOpen(false)}
             >
               <item.icon className="w-4.5 h-4.5 flex-shrink-0" />
               {item.label}
-            </NavLink>
+            </Link>
           ))}
         </nav>
 
         <div className="p-3 border-t border-white/5">
           <button
-            onClick={() => { navigate("/crm/leads/new"); setSidebarOpen(false); }}
+            onClick={() => { router.push("/crm/leads/new"); setSidebarOpen(false); }}
             className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg text-sm font-medium transition-colors mb-2"
           >
             <Plus className="w-4 h-4" />
@@ -124,25 +129,22 @@ const CrmLayout = () => {
 
       {/* Main content */}
       <main className="lg:mr-64 pt-16 lg:pt-0 min-h-screen">
-        <Outlet />
+        {children}
       </main>
 
       {/* Mobile bottom nav */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-[#13161f]/95 backdrop-blur-md border-t border-white/5 flex justify-around py-2" style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}>
         {NAV_ITEMS.slice(0, 4).map((item) => (
-          <NavLink
+          <Link
             key={item.to}
-            to={item.to}
-            end={item.end}
-            className={({ isActive }) =>
-              `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-[10px] font-medium transition-colors ${
-                isActive ? "text-blue-400" : "text-gray-500"
-              }`
-            }
+            href={item.to}
+            className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-[10px] font-medium transition-colors ${
+              isActive(item.to, item.exact) ? "text-blue-400" : "text-gray-500"
+            }`}
           >
             <item.icon className="w-5 h-5" />
             {item.label}
-          </NavLink>
+          </Link>
         ))}
       </nav>
     </div>

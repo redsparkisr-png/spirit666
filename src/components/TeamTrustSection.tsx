@@ -51,7 +51,7 @@ const TeamTrustSection = () => {
               >
                 <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-gold/30 shadow-md mb-3">
                   <img
-                    src={member.img}
+                    src={(member.img as any).src ?? (member.img as unknown as string)}
                     alt={isHe ? member.he : member.en}
                     className="w-full h-full object-cover object-center"
                     loading="lazy"

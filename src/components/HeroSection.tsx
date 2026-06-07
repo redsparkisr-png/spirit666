@@ -1,6 +1,8 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Download } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import heroBg from "@/assets/hero-bg.webp";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -28,7 +30,7 @@ const HeroSection = () => {
         transition={{ duration: 10, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
       >
         <img
-          src={heroBg}
+          src={(heroBg as any).src ?? (heroBg as unknown as string)}
           alt="Aerial view of Zichron Yaakov with Mediterranean Sea views"
           className="w-full h-full object-cover"
           style={{
@@ -135,7 +137,7 @@ const HeroSection = () => {
           >
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
-                to={`/${lang}/properties`}
+                href={`/${lang}/properties`}
                 className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
                 style={{ fontSize: "16px" }}
               >

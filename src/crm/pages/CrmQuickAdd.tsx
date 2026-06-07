@@ -1,12 +1,14 @@
+"use client";
+
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useCrmAuth } from "../hooks/useCrmAuth";
 import { LEAD_SOURCE_LABELS } from "../types";
 
 const CrmQuickAdd = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { user } = useCrmAuth();
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
@@ -72,7 +74,7 @@ const CrmQuickAdd = () => {
     }
 
     toast.success("ליד נוצר בהצלחה!");
-    navigate(`/crm/leads/${data?.id}`);
+    router.push(`/crm/leads/${data?.id}`);
   };
 
   const update = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));

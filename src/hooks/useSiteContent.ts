@@ -284,7 +284,7 @@ export function useSiteContent() {
       if (!row) {
         const fb = localFallbacks[key];
         if (fb) return lang === "he" ? fb.he : fb.en;
-        if (import.meta.env.DEV) {
+        if (process.env.NODE_ENV === "development") {
           console.warn(`[i18n] Missing key: "${key}"`);
         }
         return key;

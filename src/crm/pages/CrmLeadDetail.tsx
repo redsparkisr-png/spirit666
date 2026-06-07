@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ArrowRight, Phone, MessageCircle, Mail, Save, Plus, CalendarClock } from "lucide-react";
@@ -8,8 +11,9 @@ import { LEAD_SOURCE_LABELS, TEMPERATURE_CONFIG, STATUS_CONFIG, PIPELINE_STAGES,
 import { useCrmAuth } from "../hooks/useCrmAuth";
 
 const CrmLeadDetail = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const id = pathname?.split("/").pop();
+  const router = useRouter();
   const { user } = useCrmAuth();
   const [lead, setLead] = useState<CrmLead | null>(null);
   const [notes, setNotes] = useState<CrmNote[]>([]);
@@ -128,7 +132,7 @@ const CrmLeadDetail = () => {
     return (
       <div className="p-6 text-center py-20">
         <p className="text-gray-400">ליד לא נמצא</p>
-        <Link to="/crm/leads" className="text-blue-400 text-sm underline mt-2 inline-block">חזרה לרשימה</Link>
+        <Link href="/crm/leads" className="text-blue-400 text-sm underline mt-2 inline-block">חזרה לרשימה</Link>
       </div>
     );
   }
@@ -137,7 +141,7 @@ const CrmLeadDetail = () => {
     <div className="p-4 md:p-6 pb-24 lg:pb-6 space-y-4 max-w-4xl">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <button onClick={() => navigate("/crm/leads")} className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 transition-colors">
+        <button onClick={() => router.push("/crm/leads")} className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 transition-colors">
           <ArrowRight className="w-4 h-4" />
         </button>
         <div className="flex-1">

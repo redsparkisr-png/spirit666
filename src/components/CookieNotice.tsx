@@ -1,6 +1,8 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
 import { Switch } from "@/components/ui/switch";
@@ -91,13 +93,13 @@ const CookieNotice = () => {
               <p className="text-white/80 font-body text-xs leading-snug mb-4">
                 {t("home.cookie.text")}{" "}
                 <Link
-                  to={`/${lang}/cookies`}
+                  href={`/${lang}/cookies`}
                   className="text-gold underline underline-offset-2 hover:text-gold-hover"
                 >
                   {t("header.nav.cookies")}
                 </Link>{" | "}
                 <Link
-                  to={`/${lang}/privacy`}
+                  href={`/${lang}/privacy`}
                   className="text-gold underline underline-offset-2 hover:text-gold-hover"
                 >
                   {t("header.nav.privacy")}

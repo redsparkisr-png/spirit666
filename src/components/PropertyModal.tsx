@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import { BedDouble, Ruler, LandPlot, MapPin, MessageCircle, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";

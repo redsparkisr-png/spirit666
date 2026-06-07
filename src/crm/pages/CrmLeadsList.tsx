@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Search, Phone, MessageCircle, Mail, Filter, ChevronDown } from "lucide-react";
 import type { CrmLead } from "../types";
 import { LEAD_SOURCE_LABELS, TEMPERATURE_CONFIG, STATUS_CONFIG } from "../types";
@@ -84,7 +86,7 @@ const CrmLeadsList = () => {
     <div className="p-4 md:p-6 pb-24 lg:pb-6 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold text-white">לידים</h1>
-        <Link to="/crm/leads/new" className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+        <Link href="/crm/leads/new" className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
           + ליד חדש
         </Link>
       </div>
@@ -147,7 +149,7 @@ const CrmLeadsList = () => {
       {/* Lead cards */}
       <div className="space-y-2">
         {filtered.map((lead) => (
-          <Link key={lead.id} to={`/crm/leads/${lead.id}`} className="block bg-[#1a1d27] rounded-xl border border-white/5 p-4 hover:bg-white/[0.03] transition-colors">
+          <Link key={lead.id} href={`/crm/leads/${lead.id}`} className="block bg-[#1a1d27] rounded-xl border border-white/5 p-4 hover:bg-white/[0.03] transition-colors">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">

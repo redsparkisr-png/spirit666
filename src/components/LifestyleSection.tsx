@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,6 +14,8 @@ import fallbackImg4 from "@/assets/guide-img-13.jpg";
 import fallbackImg5 from "@/assets/guide-img-5.jpg";
 import fallbackImg6 from "@/assets/guide-img-19.jpg";
 
+const imgSrc = (img: unknown): string => (img as any)?.src ?? (img as string);
+
 interface GalleryItem {
   id: string;
   image_url: string;
@@ -25,12 +29,12 @@ interface GalleryItem {
 }
 
 const FALLBACK_ITEMS: GalleryItem[] = [
-  { id: "f1", image_url: fallbackImg1, display_order: 1, title_en: "Mediterranean Sea Views", title_he: "נוף לים התיכון", description_en: "Golden sunsets just minutes from home", description_he: "שקיעות מרהיבות מעל הים", alt_en: "Mediterranean sea view from Zichron Yaakov", alt_he: "נוף ים תיכוני מזכרון יעקב" },
-  { id: "f2", image_url: fallbackImg2, display_order: 2, title_en: "Historic Stone Houses", title_he: "בתי אבן היסטוריים", description_en: "Timeless architecture with modern charm", description_he: "אדריכלות נצחית עם קסם מודרני", alt_en: "Historic stone houses in Zichron Yaakov", alt_he: "בתי אבן היסטוריים בזכרון יעקב" },
-  { id: "f3", image_url: fallbackImg3, display_order: 3, title_en: "Pedestrian Street Life", title_he: "חיי רחוב מדרחוב", description_en: "Boutiques, cafés and vibrant culture", description_he: "בוטיקים, בתי קפה ותרבות תוססת", alt_en: "Pedestrian street in Zichron Yaakov", alt_he: "מדרחוב זכרון יעקב" },
-  { id: "f4", image_url: fallbackImg4, display_order: 4, title_en: "Nature & Gardens", title_he: "טבע וגנים", description_en: "Green spaces and scenic walking trails", description_he: "שטחים ירוקים ושבילי הליכה", alt_en: "Nature and gardens in Zichron Yaakov", alt_he: "טבע וגנים בזכרון יעקב" },
-  { id: "f5", image_url: fallbackImg5, display_order: 5, title_en: "Vineyards & Wine", title_he: "כרמים ויין", description_en: "Israel's original wine country heritage", description_he: "מורשת היין המקורית של ישראל", alt_en: "Vineyards in Zichron Yaakov", alt_he: "כרמים בזכרון יעקב" },
-  { id: "f6", image_url: fallbackImg6, display_order: 6, title_en: "Family-Friendly Living", title_he: "חיים משפחתיים", description_en: "Safe neighborhoods, warm community", description_he: "שכונות בטוחות, קהילה חמה", alt_en: "Family life in Zichron Yaakov", alt_he: "חיי משפחה בזכרון יעקב" },
+  { id: "f1", image_url: imgSrc(fallbackImg1), display_order: 1, title_en: "Mediterranean Sea Views", title_he: "נוף לים התיכון", description_en: "Golden sunsets just minutes from home", description_he: "שקיעות מרהיבות מעל הים", alt_en: "Mediterranean sea view from Zichron Yaakov", alt_he: "נוף ים תיכוני מזכרון יעקב" },
+  { id: "f2", image_url: imgSrc(fallbackImg2), display_order: 2, title_en: "Historic Stone Houses", title_he: "בתי אבן היסטוריים", description_en: "Timeless architecture with modern charm", description_he: "אדריכלות נצחית עם קסם מודרני", alt_en: "Historic stone houses in Zichron Yaakov", alt_he: "בתי אבן היסטוריים בזכרון יעקב" },
+  { id: "f3", image_url: imgSrc(fallbackImg3), display_order: 3, title_en: "Pedestrian Street Life", title_he: "חיי רחוב מדרחוב", description_en: "Boutiques, cafés and vibrant culture", description_he: "בוטיקים, בתי קפה ותרבות תוססת", alt_en: "Pedestrian street in Zichron Yaakov", alt_he: "מדרחוב זכרון יעקב" },
+  { id: "f4", image_url: imgSrc(fallbackImg4), display_order: 4, title_en: "Nature & Gardens", title_he: "טבע וגנים", description_en: "Green spaces and scenic walking trails", description_he: "שטחים ירוקים ושבילי הליכה", alt_en: "Nature and gardens in Zichron Yaakov", alt_he: "טבע וגנים בזכרון יעקב" },
+  { id: "f5", image_url: imgSrc(fallbackImg5), display_order: 5, title_en: "Vineyards & Wine", title_he: "כרמים ויין", description_en: "Israel's original wine country heritage", description_he: "מורשת היין המקורית של ישראל", alt_en: "Vineyards in Zichron Yaakov", alt_he: "כרמים בזכרון יעקב" },
+  { id: "f6", image_url: imgSrc(fallbackImg6), display_order: 6, title_en: "Family-Friendly Living", title_he: "חיים משפחתיים", description_en: "Safe neighborhoods, warm community", description_he: "שכונות בטוחות, קהילה חמה", alt_en: "Family life in Zichron Yaakov", alt_he: "חיי משפחה בזכרון יעקב" },
 ];
 
 const LIFESTYLE_MARKETING_ORDER = [

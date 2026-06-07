@@ -1,7 +1,9 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, LandPlot, Ruler, BedDouble, MapPin, MessageCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -72,7 +74,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
   const isNew = isNewListing(property.created_at);
 
   return (
-    <Link to={`/${lang}/property/${property.slug || property.id}`} className="block cursor-pointer h-full">
+    <Link href={`/${lang}/property/${property.slug || property.id}`} className="block cursor-pointer h-full">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -226,7 +228,7 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
                 className="text-center mt-10"
               >
                 <Link
-                  to={`/${lang}/properties`}
+                  href={`/${lang}/properties`}
                   className="inline-flex items-center justify-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white py-3.5 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
                 >
                   {isHe ? "לכל הנכסים בזכרון יעקב" : "View All Homes"}

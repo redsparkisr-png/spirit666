@@ -1,4 +1,7 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import spiritLogo from "@/assets/spirit-logo.jpg";
@@ -9,31 +12,31 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from 
 const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
   const { lang, setLang } = useLanguage();
   const { t } = useSiteContent();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   const switchLang = (newLang: "en" | "he") => {
-    const path = location.pathname.replace(/^\/(en|he)/, "");
+    const path = (pathname || "").replace(/^\/(en|he)/, "");
     setLang(newLang);
-    navigate(`/${newLang}${path || "/"}`);
+    router.push(`/${newLang}${path || "/"}`);
     setOpen(false);
   };
 
   const prefix = `/${lang}`;
-  const currentPath = location.pathname;
 
   const isHe = lang === "he";
   const navLinks = [
-    { to: prefix + "/", label: t("header.nav.home") },
-    { to: prefix + "/properties", label: t("header.nav.properties") },
-    { to: prefix + "/guides", label: isHe ? "בלוג" : "Blog" },
-    { to: prefix + "/sell", label: t("header.nav.sell") },
-    { to: prefix + "/about", label: t("header.nav.about") },
-    { to: prefix + "/contact", label: t("header.nav.contact") },
+    { href: prefix + "/", label: t("header.nav.home") },
+    { href: prefix + "/properties", label: t("header.nav.properties") },
+    { href: prefix + "/guides", label: isHe ? "בלוג" : "Blog" },
+    { href: prefix + "/sell", label: t("header.nav.sell") },
+    { href: prefix + "/about", label: t("header.nav.about") },
+    { href: prefix + "/contact", label: t("header.nav.contact") },
   ];
 
-  const isActive = (to: string) => currentPath === to || (to !== prefix + "/" && currentPath.startsWith(to));
+  const isActive = (href: string) =>
+    pathname === href || (href !== prefix + "/" && (pathname || "").startsWith(href));
 
   return (
     <header ref={ref} className="sticky top-0 z-50 bg-primary border-b border-white/10">
@@ -58,14 +61,14 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
               <nav className="flex flex-col gap-1" role="navigation" aria-label="Main navigation">
                 {navLinks.map((link) => (
                   <Link
-                    key={link.to}
-                    to={link.to}
+                    key={link.href}
+                    href={link.href}
                     onClick={() => setOpen(false)}
                     className={`text-white/70 hover:text-white font-body text-base py-4 border-b border-white/5 transition-colors relative ${
-                      isActive(link.to) ? "text-white" : ""
+                      isActive(link.href) ? "text-white" : ""
                     }`}
                     style={
-                      isActive(link.to)
+                      isActive(link.href)
                         ? {
                             borderInlineStartColor: "hsl(var(--gold))",
                             borderInlineStartWidth: 3,
@@ -103,13 +106,13 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
         </Sheet>
 
         {/* Center: logo */}
-        <Link to={prefix + "/"} className="absolute left-1/2 -translate-x-1/2 flex items-center">
+        <Link href={prefix + "/"} className="absolute left-1/2 -translate-x-1/2 flex items-center">
           <img
-            src={spiritLogo}
+            src={spiritLogo.src ?? (spiritLogo as unknown as string)}
             alt="Spirit Real Estate"
             className="w-auto h-[52px] md:h-[60px] rounded-md"
             style={{
-              imageRendering: "-webkit-optimize-contrast" as any,
+              imageRendering: "-webkit-optimize-contrast" as React.CSSProperties["imageRendering"],
               objectFit: "contain",
             }}
           />
