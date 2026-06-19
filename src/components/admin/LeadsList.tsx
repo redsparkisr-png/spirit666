@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Download, ChevronDown } from "lucide-react";
+import { Download, ChevronDown, MessageCircle } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Lead = Tables<"leads">;
@@ -68,9 +68,16 @@ const LeadsList = () => {
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center gap-3 bg-[#25D366]/10 border border-[#25D366]/30 rounded-xl px-4 py-3">
+        <MessageCircle className="w-4 h-4 text-[#25D366] shrink-0" />
+        <p className="text-sm font-body text-foreground/80">
+          <span className="font-semibold">הלידים מגיעים דרך וואטסאפ.</span>{" "}
+          פניות שנשלחו ישירות לאפליקציה לא נרשמות כאן אוטומטית. הטבלה הזו שומרת פניות שהגיעו דרך טפסים אם יופעלו בעתיד.
+        </p>
+      </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h3 className="font-display font-semibold text-foreground">Leads ({leads.length})</h3>
+          <h3 className="font-display font-semibold text-foreground">לידים ({leads.length})</h3>
           {newCount > 0 && (
             <span className="bg-gold text-primary-foreground text-xs font-body font-semibold px-2 py-0.5 rounded-full">
               {newCount} new

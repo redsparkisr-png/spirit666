@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Home, Users, FileText, CheckCircle2 } from "lucide-react";
+import { Home, AlertCircle, FileText, CheckCircle2 } from "lucide-react";
 
 interface Kpis {
-  leadsWeek: number;
+  incomplete: number;
   active: number;
   sold: number;
   posts: number;
@@ -18,16 +18,15 @@ const AdminDashboard = ({ onNavigate }: { onNavigate?: (tab: string) => void }) 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-      const [leadsRes, activeRes, soldRes, postsRes] = await Promise.all([
-        supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", weekAgo),
+      const [incompleteRes, activeRes, soldRes, postsRes] = await Promise.all([
+        supabase.from("properties_available").select("id", { count: "exact", head: true }).or("location.is.null,property_type.is.null"),
         supabase.from("properties_available").select("id", { count: "exact", head: true }),
         supabase.from("properties_sold").select("id", { count: "exact", head: true }),
         supabase.from("blog_posts").select("id", { count: "exact", head: true }).eq("status", "published"),
       ]);
       if (cancelled) return;
       setKpis({
-        leadsWeek: leadsRes.count ?? 0,
+        incomplete: incompleteRes.count ?? 0,
         active: activeRes.count ?? 0,
         sold: soldRes.count ?? 0,
         posts: postsRes.count ?? 0,
@@ -38,7 +37,7 @@ const AdminDashboard = ({ onNavigate }: { onNavigate?: (tab: string) => void }) 
   }, []);
 
   const cards = [
-    { label: "לידים השבוע", value: kpis?.leadsWeek, icon: Users, tab: "Leads", accent: "text-gold" },
+    { label: "נכסים ללא מיקום / סוג", value: kpis?.incomplete, icon: AlertCircle, tab: "Available", accent: kpis?.incomplete ? "text-destructive" : "text-emerald-500" },
     { label: "נכסים פעילים", value: kpis?.active, icon: Home, tab: "Available", accent: "text-primary" },
     { label: "נכסים שנמכרו", value: kpis?.sold, icon: CheckCircle2, tab: "Sold", accent: "text-primary" },
     { label: "פוסטים מפורסמים", value: kpis?.posts, icon: FileText, tab: "Blog", accent: "text-gold" },
