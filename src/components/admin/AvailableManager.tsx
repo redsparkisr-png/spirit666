@@ -76,6 +76,8 @@ const empty: Partial<Property> = {
   meta_title: "",
   meta_description: "",
   og_image: "",
+  location: "",
+  property_type: "",
 };
 
 const AvailableManager = () => {
@@ -86,13 +88,18 @@ const AvailableManager = () => {
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [quickMode, setQuickMode] = useState(false);
   const [tagInput, setTagInput] = useState("");
+  const [locationOptions, setLocationOptions] = useState<{ value: string; label: string }[]>([]);
+  const [typeOptions, setTypeOptions] = useState<{ value: string; label: string }[]>([]);
 
   const load = async () => {
-    const { data } = await supabase
-      .from("properties_available")
-      .select("*")
-      .order("priority_order", { ascending: true });
-    if (data) setItems(data as any);
+    const [propRes, locRes, typeRes] = await Promise.all([
+      supabase.from("properties_available").select("*").order("priority_order", { ascending: true }),
+      supabase.from("search_locations").select("name_en").order("display_order"),
+      supabase.from("search_property_types").select("name_en").order("display_order"),
+    ]);
+    if (propRes.data) setItems(propRes.data as any);
+    if (locRes.data) setLocationOptions(locRes.data.map((r) => ({ value: r.name_en, label: r.name_en })));
+    if (typeRes.data) setTypeOptions(typeRes.data.map((r) => ({ value: r.name_en, label: r.name_en })));
   };
 
   useEffect(() => { load(); }, []);
@@ -228,7 +235,21 @@ const AvailableManager = () => {
         {/* Core fields (always shown) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <input placeholder="Title *" value={editing.title} onChange={(e) => setEditing({ ...editing, title: e.target.value })} className={inputCls} />
-          <input placeholder="Neighborhood / Location" value={editing.neighborhood_note || ""} onChange={(e) => setEditing({ ...editing, neighborhood_note: e.target.value })} className={inputCls} />
+          <input placeholder="Neighborhood note (display text)" value={editing.neighborhood_note || ""} onChange={(e) => setEditing({ ...editing, neighborhood_note: e.target.value })} className={inputCls} />
+          <div className="flex flex-col gap-0.5">
+            <select value={editing.location || ""} onChange={(e) => setEditing({ ...editing, location: e.target.value || null })} className={inputCls}>
+              <option value="">Location (for search filter)</option>
+              {locationOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+            <span className="text-[10px] text-muted-foreground font-body">Required for location filter to work</span>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <select value={editing.property_type || ""} onChange={(e) => setEditing({ ...editing, property_type: e.target.value || null })} className={inputCls}>
+              <option value="">Property Type (for search filter)</option>
+              {typeOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+            <span className="text-[10px] text-muted-foreground font-body">Required for property type filter to work</span>
+          </div>
           <div className="flex flex-col gap-0.5">
             <input type="number" placeholder="Price (number) *" value={editing.price_number ?? ""} onChange={(e) => setEditing({ ...editing, price_number: e.target.value ? Number(e.target.value) : null })} className={inputCls} />
             <span className="text-[10px] text-muted-foreground font-body">Required — source of truth for search & card display (store as number only, e.g. 4750000)</span>
@@ -436,7 +457,7 @@ const AvailableManager = () => {
                             </span>
                           </div>
                           <p className="text-xs text-muted-foreground truncate">
-                            {p.price_label || p.short_description || "—"}
+                            {[p.location, p.property_type, p.bedrooms ? `${p.bedrooms}br` : null].filter(Boolean).join(" · ") || p.price_label || p.short_description || "—"}
                           </p>
                         </div>
                         <button onClick={() => duplicate(p)} className="p-1.5 hover:bg-muted rounded" title="Duplicate">

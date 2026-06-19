@@ -378,8 +378,9 @@ const SearchBar = ({
     router.push(`/${lang}/properties?${params.toString()}`);
   };
 
-  const locationOptions = locations.map((l) => ({ value: getName(l), label: getName(l) }));
-  const typeOptions = propertyTypes.map((pt) => ({ value: getName(pt), label: getName(pt) }));
+  // Always use name_en as the canonical filter value so URL params are language-independent
+  const locationOptions = locations.map((l) => ({ value: l.name_en, label: getName(l) }));
+  const typeOptions = propertyTypes.map((pt) => ({ value: pt.name_en, label: getName(pt) }));
 
   const activeFilterCount = (selectedBeds ? 1 : 0) + (maxPrice < dataMax ? 1 : 0);
 
