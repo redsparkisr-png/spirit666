@@ -68,11 +68,10 @@ const LeadsList = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3 bg-[#25D366]/10 border border-[#25D366]/30 rounded-xl px-4 py-3">
-        <MessageCircle className="w-4 h-4 text-[#25D366] shrink-0" />
+      <div className="flex items-start gap-3 bg-primary/5 border border-border rounded-xl px-4 py-3">
+        <MessageCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
         <p className="text-sm font-body text-foreground/80">
-          <span className="font-semibold">הלידים מגיעים דרך וואטסאפ.</span>{" "}
-          פניות שנשלחו ישירות לאפליקציה לא נרשמות כאן אוטומטית. הטבלה הזו שומרת פניות שהגיעו דרך טפסים אם יופעלו בעתיד.
+          פניות שנשלחות דרך <span className="font-semibold">טפסי יצירת קשר בעמודי הנכסים</span> נשמרות כאן אוטומטית. פניות שנשלחות ישירות דרך וואטסאפ לא מופיעות בטבלה זו.
         </p>
       </div>
       <div className="flex items-center justify-between">
@@ -113,7 +112,13 @@ const LeadsList = () => {
                     <td className="py-2 pr-4 text-foreground">{l.full_name}</td>
                     <td className="py-2 pr-4 text-foreground">{l.email || "–"}</td>
                     <td className="py-2 pr-4 text-foreground">{l.phone || "–"}</td>
-                    <td className="py-2 pr-4 text-muted-foreground text-xs max-w-[120px] truncate">{l.source}</td>
+                    <td className="py-2 pr-4 text-xs max-w-[160px]">
+                      {l.source?.startsWith("property:") ? (
+                        <span className="text-primary font-medium">{l.source.replace("property:", "נכס: ")}</span>
+                      ) : (
+                        <span className="text-muted-foreground truncate block">{l.source || "–"}</span>
+                      )}
+                    </td>
                     <td className="py-2 pr-4">
                       <div className="relative inline-block">
                         <select

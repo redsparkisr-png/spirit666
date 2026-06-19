@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Home, AlertCircle, FileText, CheckCircle2 } from "lucide-react";
+import { Home, Users, FileText, CheckCircle2, AlertCircle } from "lucide-react";
 
 interface Kpis {
-  incomplete: number;
+  leadsWeek: number;
   active: number;
   sold: number;
   posts: number;
+  incomplete: number;
 }
 
 const AdminDashboard = ({ onNavigate }: { onNavigate?: (tab: string) => void }) => {
@@ -18,18 +19,21 @@ const AdminDashboard = ({ onNavigate }: { onNavigate?: (tab: string) => void }) 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const [incompleteRes, activeRes, soldRes, postsRes] = await Promise.all([
-        supabase.from("properties_available").select("id", { count: "exact", head: true }).or("location.is.null,property_type.is.null"),
+      const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const [leadsRes, activeRes, soldRes, postsRes, incompleteRes] = await Promise.all([
+        supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", weekAgo),
         supabase.from("properties_available").select("id", { count: "exact", head: true }),
         supabase.from("properties_sold").select("id", { count: "exact", head: true }),
         supabase.from("blog_posts").select("id", { count: "exact", head: true }).eq("status", "published"),
+        supabase.from("properties_available").select("id", { count: "exact", head: true }).or("location.is.null,property_type.is.null"),
       ]);
       if (cancelled) return;
       setKpis({
-        incomplete: incompleteRes.count ?? 0,
+        leadsWeek: leadsRes.count ?? 0,
         active: activeRes.count ?? 0,
         sold: soldRes.count ?? 0,
         posts: postsRes.count ?? 0,
+        incomplete: incompleteRes.count ?? 0,
       });
       setLoading(false);
     })();
@@ -37,7 +41,7 @@ const AdminDashboard = ({ onNavigate }: { onNavigate?: (tab: string) => void }) 
   }, []);
 
   const cards = [
-    { label: "נכסים ללא מיקום / סוג", value: kpis?.incomplete, icon: AlertCircle, tab: "Available", accent: kpis?.incomplete ? "text-destructive" : "text-emerald-500" },
+    { label: "לידים השבוע", value: kpis?.leadsWeek, icon: Users, tab: "Leads", accent: "text-gold" },
     { label: "נכסים פעילים", value: kpis?.active, icon: Home, tab: "Available", accent: "text-primary" },
     { label: "נכסים שנמכרו", value: kpis?.sold, icon: CheckCircle2, tab: "Sold", accent: "text-primary" },
     { label: "פוסטים מפורסמים", value: kpis?.posts, icon: FileText, tab: "Blog", accent: "text-gold" },
@@ -67,6 +71,18 @@ const AdminDashboard = ({ onNavigate }: { onNavigate?: (tab: string) => void }) 
           </button>
         ))}
       </div>
+
+      {!loading && (kpis?.incomplete ?? 0) > 0 && (
+        <button
+          onClick={() => onNavigate?.("Available")}
+          className="w-full flex items-center gap-3 bg-destructive/10 border border-destructive/30 rounded-xl px-4 py-3 text-right hover:bg-destructive/15 transition-colors"
+        >
+          <AlertCircle className="w-4 h-4 text-destructive shrink-0" />
+          <p className="text-sm font-body text-destructive">
+            <span className="font-semibold">{kpis?.incomplete} נכסים</span> ללא מיקום או סוג נכס — הסינון לא יעבוד עבורם. לחץ לתיקון.
+          </p>
+        </button>
+      )}
 
       <div className="bg-card border border-border rounded-xl p-6">
         <h3 className="font-display text-lg text-foreground mb-3">פעולות מהירות</h3>

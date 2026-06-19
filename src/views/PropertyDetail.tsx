@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import Link from "next/link";
 import { BedDouble, Ruler, LandPlot, ChevronLeft, ChevronRight, MessageCircle, CheckCircle, Bath, Car, Shield, Trees, MapPin, Calendar, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,13 +11,17 @@ import Header from "@/components/Header";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
-import { injectPropertySchema } from "@/components/SchemaOrg";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
 import { optimizedImageUrl } from "@/lib/image";
 
 const SITE_ORIGIN = "https://spiritisraelhomes.com";
 
 type Property = Tables<"properties_available">;
+
+type Props = {
+  property: Property | null;
+  similar: Property[];
+};
 
 const TAG_STYLES: Record<string, string> = {
   "Sea View": "bg-sky-100 text-sky-700 border-sky-200",
@@ -32,15 +35,14 @@ const TAG_STYLES: Record<string, string> = {
 };
 const getTagStyle = (tag: string) => TAG_STYLES[tag] || "bg-muted text-muted-foreground border-border";
 
-const PropertyDetail = () => {
-  const params = useParams<{ slug: string; lang: string }>();
-  const slug = params?.slug;
+const PropertyDetail = ({ property, similar }: Props) => {
   const { lang } = useLanguage();
   const { t } = useSiteContent();
   const isHe = lang === "he";
-  const [property, setProperty] = useState<Property | null>(null);
-  const [similar, setSimilar] = useState<Property[]>([]);
-  const [loading, setLoading] = useState(true);
+  const imageAlt = (p: Property, idx: number) =>
+    isHe
+      ? `${p.title}${p.location ? ` ב${p.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
+      : `${p.title}${p.location ? ` in ${p.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`;
   const [currentImg, setCurrentImg] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
@@ -49,37 +51,10 @@ const PropertyDetail = () => {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setCurrentImg(0);
-      setSubmitted(false);
-      let { data } = await supabase.from("properties_available").select("*").eq("slug", slug || "").maybeSingle();
-      if (!data) {
-        const res = await supabase.from("properties_available").select("*").eq("id", slug || "").maybeSingle();
-        data = res.data;
-      }
-      setProperty(data);
-      setLoading(false);
-      if (data) {
-        injectPropertySchema({
-          title: data.title,
-          description: data.short_description || data.title,
-          price: data.price_number || undefined,
-          currency: data.currency || "ILS",
-          images: data.images || [],
-          location: data.location || undefined,
-          bedrooms: data.bedrooms || undefined,
-          builtSqm: data.built_sqm || undefined,
-          lotSqm: data.lot_sqm || undefined,
-          slug: data.slug || data.id,
-        });
-        const { data: sim } = await supabase.from("properties_available").select("*").neq("id", data.id).limit(3);
-        if (sim) setSimilar(sim);
-      }
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    };
-    load();
-  }, [slug, lang]);
+    setCurrentImg(0);
+    setSubmitted(false);
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [property?.id]);
 
   useEffect(() => {
     if (!lightboxOpen) return;
@@ -108,13 +83,19 @@ const PropertyDetail = () => {
       return;
     }
     setSubmitting(true);
-    await supabase.from("leads").insert({
+    const { error } = await supabase.from("leads").insert({
       full_name: formData.name.trim(),
       phone: formData.phone.trim(),
       email: formData.email.trim() || null,
-      message: formData.message.trim() || null,
-      source: `property_${property?.slug || property?.id || "detail"}`,
+      message: `${property?.title ? `[${property.title}] ` : ""}${formData.message.trim() || ""}`.trim() || null,
+      source: `property:${property?.title || property?.slug || "detail"}`,
     });
+    if (error) {
+      console.error("Lead insert failed:", error.message);
+      toast.error(isHe ? "שגיאה בשליחה, נסו שוב" : "Send failed, please try again");
+      setSubmitting(false);
+      return;
+    }
     toast.success(t("property.detail.inquiry_success"));
     setFormData({ name: "", phone: "", email: "", message: "" });
     setPrivacyConsent(false);
@@ -138,17 +119,6 @@ const PropertyDetail = () => {
       : `Hi Hagit, I'd like to schedule a viewing for: ${property?.title || "a property"}\n${url}`;
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
-
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-background">
-        <Header />
-        <div className="container px-6 py-20 flex justify-center">
-          <div className="w-8 h-8 border-2 border-charcoal border-t-transparent rounded-full animate-spin" />
-        </div>
-      </main>
-    );
-  }
 
   if (!property) {
     return (
@@ -227,7 +197,7 @@ const PropertyDetail = () => {
         ) : (
           <>
             {images.map((url, idx) => (
-              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={`${property.title} – ${idx + 1}`} onClick={() => setLightboxOpen(true)} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 cursor-zoom-in" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" {...(idx === 0 ? { fetchpriority: "high" } as any : {})} />
+              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={imageAlt(property, idx)} onClick={() => setLightboxOpen(true)} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 cursor-zoom-in" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" {...(idx === 0 ? { fetchpriority: "high" } as any : {})} />
             ))}
             {images.length > 1 && (
               <>
@@ -261,7 +231,7 @@ const PropertyDetail = () => {
           <button onClick={(e) => { e.stopPropagation(); setLightboxOpen(false); }} className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10" aria-label="Close">
             <X className="w-6 h-6" />
           </button>
-          <img src={optimizedImageUrl(images[currentImg], { width: 2000, quality: 85 })} alt={`${property.title} – ${currentImg + 1}`} onClick={(e) => e.stopPropagation()} className="max-w-[95vw] max-h-[90vh] object-contain select-none" />
+          <img src={optimizedImageUrl(images[currentImg], { width: 2000, quality: 85 })} alt={imageAlt(property, currentImg)} onClick={(e) => e.stopPropagation()} className="max-w-[95vw] max-h-[90vh] object-contain select-none" />
           {images.length > 1 && (
             <>
               <button onClick={(e) => { e.stopPropagation(); setCurrentImg((c) => (c - 1 + images.length) % images.length); }} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors" aria-label="Previous image">
@@ -384,7 +354,7 @@ const PropertyDetail = () => {
                     <Link key={sp.id} href={`/${lang}/property/${sp.slug || sp.id}`} className="group cursor-pointer rounded-2xl overflow-hidden bg-card border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                       <div className="aspect-[4/3] bg-muted overflow-hidden">
                         {sp.images?.[0] ? (
-                          <img src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })} alt={sp.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+                          <img src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })} alt={imageAlt(sp, 0)} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
                         ) : (
                           <div className="w-full h-full bg-muted" />
                         )}
