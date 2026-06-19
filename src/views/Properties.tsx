@@ -189,14 +189,17 @@ const Properties = ({ initialProperties }: { initialProperties: Property[] }) =>
             <Link href={`/${lang}/buying-property-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
               {lang === "he" ? "מדריך רכישת נכס" : "Buying Property Guide"}
             </Link>
+            <Link href={`/${lang}/zichron-yaakov-neighborhoods`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "מדריך שכונות" : "Neighborhood Guide"}
+            </Link>
+            <Link href={`/${lang}/zichron-yaakov-real-estate-market-2026`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "דוח שוק 2026" : "Market Report 2026"}
+            </Link>
             <Link href={`/${lang}/living-in-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
               {lang === "he" ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov"}
             </Link>
             <Link href={`/${lang}/guides`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
               {lang === "he" ? "מדריכים ותובנות" : "Guides & Insights"}
-            </Link>
-            <Link href={`/${lang}/contact`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
-              {lang === "he" ? "צרו קשר" : "Contact Us"}
             </Link>
           </div>
         </div>

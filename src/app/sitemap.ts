@@ -4,11 +4,17 @@ import { createServerSupabase } from "@/lib/supabase/server";
 const BASE = "https://spiritisraelhomes.com";
 const LANGS = ["en", "he"] as const;
 
+// Bumped whenever a site-wide content/SEO deploy goes out, so static-route
+// lastmod reflects the real last change instead of being omitted entirely.
+const SITE_LAST_DEPLOY = new Date("2026-06-19");
+
 const STATIC_ROUTES: { path: string; changeFrequency: MetadataRoute.Sitemap[0]["changeFrequency"]; priority: number }[] = [
   { path: "", changeFrequency: "weekly", priority: 1.0 },
   { path: "/properties", changeFrequency: "daily", priority: 0.9 },
   { path: "/buying-property-zichron-yaakov", changeFrequency: "monthly", priority: 0.8 },
   { path: "/homes-for-sale-zichron-yaakov", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/zichron-yaakov-neighborhoods", changeFrequency: "monthly", priority: 0.85 },
+  { path: "/zichron-yaakov-real-estate-market-2026", changeFrequency: "monthly", priority: 0.85 },
   { path: "/living-in-zichron-yaakov", changeFrequency: "monthly", priority: 0.8 },
   { path: "/moving-to-zichron-yaakov", changeFrequency: "monthly", priority: 0.8 },
   { path: "/guides", changeFrequency: "weekly", priority: 0.7 },
@@ -28,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createServerSupabase();
 
   const [{ data: properties }, { data: posts }] = await Promise.all([
-    supabase.from("properties_available").select("slug, id"),
+    supabase.from("properties_available").select("slug, id, created_at"),
     supabase.from("blog_posts").select("slug, updated_at").eq("status", "published"),
   ]);
 
@@ -39,6 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const lang of LANGS) {
       entries.push({
         url: `${BASE}/${lang}${route.path || "/"}`,
+        lastModified: SITE_LAST_DEPLOY,
         changeFrequency: route.changeFrequency,
         priority: route.priority,
         alternates: {
@@ -54,6 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const lang of LANGS) {
       entries.push({
         url: `${BASE}/${lang}/property/${slug}`,
+        lastModified: p.created_at ? new Date(p.created_at) : SITE_LAST_DEPLOY,
         changeFrequency: "weekly",
         priority: 0.8,
         alternates: {
