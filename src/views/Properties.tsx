@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -12,7 +12,6 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
-import { useRef } from "react";
 
 type Property = Tables<"properties_available">;
 
@@ -45,12 +44,12 @@ const PropertyCard = ({ property }: { property: Property }) => {
       href={`/${lang}/property/${property.slug || property.id}`}
       className="block bg-card rounded-2xl overflow-hidden shadow-md md:hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
+      <div className="relative aspect-[3/2] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
         {images.length === 0 && (
           <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
         )}
         {images.map((url, idx) => (
-          <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading="lazy" />
+          <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0, objectPosition: "50% 35%" }} loading="lazy" />
         ))}
         {images.length > 1 && (
           <>
@@ -95,13 +94,14 @@ const PropertyCard = ({ property }: { property: Property }) => {
   );
 };
 
-const Properties = () => {
+const Properties = ({ initialProperties }: { initialProperties: Property[] }) => {
   const searchParams = useSearchParams();
   const { t } = useSiteContent();
   const { lang } = useLanguage();
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [properties, setProperties] = useState<Property[]>(initialProperties);
+  const [loading, setLoading] = useState(false);
   const [sort, setSort] = useState("newest");
+  const isFirstRun = useRef(true);
 
   const locFilter = searchParams?.get("location") || "";
   const typeFilter = searchParams?.get("type") || "";
@@ -110,6 +110,12 @@ const Properties = () => {
   const priceMaxFilter = searchParams?.get("priceMax") || "";
 
   useEffect(() => {
+    // Skip the first run — initialProperties already reflects the URL filters,
+    // fetched server-side so crawlers see real listings on first load.
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
     const fetchProperties = async () => {
       setLoading(true);
       let query = supabase.from("properties_available").select("*");
@@ -123,8 +129,8 @@ const Properties = () => {
         const minBeds = parseInt(bedsFilter);
         if (!isNaN(minBeds)) query = query.gte("bedrooms", minBeds);
       }
-      if (priceMinFilter) query = query.gte("price_number", Number(priceMinFilter));
-      if (priceMaxFilter) query = query.lte("price_number", Number(priceMaxFilter));
+      if (priceMinFilter) query = query.or(`price_number.gte.${Number(priceMinFilter)},price_number.is.null`);
+      if (priceMaxFilter) query = query.or(`price_number.lte.${Number(priceMaxFilter)},price_number.is.null`);
 
       if (sort === "price_asc") query = query.order("price_number", { ascending: true, nullsFirst: false });
       else if (sort === "price_desc") query = query.order("price_number", { ascending: false, nullsFirst: false });
@@ -155,7 +161,7 @@ const Properties = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-card rounded-2xl overflow-hidden shadow-md">
-                <div className="aspect-[4/3] bg-muted animate-pulse" />
+                <div className="aspect-[3/2] bg-muted animate-pulse" />
                 <div className="p-5 space-y-3">
                   <div className="h-5 bg-muted rounded w-3/4 animate-pulse" />
                   <div className="h-4 bg-muted rounded w-full animate-pulse" />

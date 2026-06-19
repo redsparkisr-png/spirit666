@@ -339,11 +339,9 @@ const SearchBar = ({
   const [maxPrice, setMaxPrice] = useState<number>(20_000_000);
   const [dataMax, setDataMax] = useState<number>(20_000_000);
 
-  const [selectedLocations, setSelectedLocations] = useState<string[]>(
-    initialLocation ? initialLocation.split(",") : []
-  );
-  const [selectedType, setSelectedType] = useState(initialType);
-  const [selectedBeds, setSelectedBeds] = useState(initialBeds);
+  const [selectedLocation, setSelectedLocation] = useState<string>(initialLocation || "");
+  const [selectedType, setSelectedType] = useState(initialType || "");
+  const [selectedBeds, setSelectedBeds] = useState(initialBeds || "");
 
   useEffect(() => {
     Promise.all([
@@ -371,7 +369,7 @@ const SearchBar = ({
 
   const handleSearch = () => {
     const params = new URLSearchParams();
-    if (selectedLocations.length > 0) params.set("location", selectedLocations.join(","));
+    if (selectedLocation) params.set("location", selectedLocation);
     if (selectedType) params.set("type", selectedType);
     if (selectedBeds) params.set("beds", selectedBeds);
     if (maxPrice < dataMax) params.set("priceMax", String(maxPrice));
@@ -389,7 +387,7 @@ const SearchBar = ({
     return (
       <div className="bg-card rounded-xl p-4 md:p-6 border border-border">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 items-end">
-          <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocations} onChange={(val) => setSelectedLocations(val as string[])} multi inline isMobile={isMobile} />
+          <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocation} onChange={(val) => setSelectedLocation(val as string)} inline isMobile={isMobile} />
           <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} inline isMobile={isMobile} />
           <div className="flex flex-col gap-1.5">
             <span className="text-xs font-body text-muted-foreground">{t("search.bedrooms")}</span>
@@ -437,7 +435,7 @@ const SearchBar = ({
         <div className="space-y-1">
           {/* Row 1: Location + Property Type */}
           <div className="grid grid-cols-2 gap-2">
-            <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocations} onChange={(val) => setSelectedLocations(val as string[])} multi isMobile={isMobile} />
+            <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocation} onChange={(val) => setSelectedLocation(val as string)} isMobile={isMobile} />
             <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} isMobile={isMobile} />
           </div>
 
@@ -505,7 +503,7 @@ const SearchBar = ({
         <div className="space-y-4">
           {/* Row 1: Location, Property Type, Bedrooms */}
           <div className="grid grid-cols-3 gap-5 items-end">
-            <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocations} onChange={(val) => setSelectedLocations(val as string[])} multi isMobile={false} />
+            <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocation} onChange={(val) => setSelectedLocation(val as string)} isMobile={false} />
             <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} isMobile={false} />
             <div className="flex flex-col gap-1">
               <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase">{t("search.bedrooms")}</span>
