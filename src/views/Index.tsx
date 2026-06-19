@@ -79,8 +79,8 @@ const Index = ({ featuredProperties }: { featuredProperties?: Property[] }) => {
               { href: `/${lang}/buying-property-zichron-yaakov`, labelHe: "מדריך רכישת נכס", labelEn: "Buying Property Guide" },
               { href: `/${lang}/zichron-yaakov-neighborhoods`, labelHe: "מדריך שכונות", labelEn: "Neighborhood Guide" },
               { href: `/${lang}/zichron-yaakov-real-estate-market-2026`, labelHe: "דוח שוק 2026", labelEn: "Market Report 2026" },
+              { href: `/${lang}/property-valuation-zichron-yaakov`, labelHe: "הערכת שווי נכס", labelEn: "Property Valuation" },
               { href: `/${lang}/living-in-zichron-yaakov`, labelHe: "חיים בזכרון יעקב", labelEn: "Living in Zichron Yaakov" },
-              { href: `/${lang}/moving-to-zichron-yaakov`, labelHe: "מעבר לזכרון יעקב", labelEn: "Moving to Zichron Yaakov" },
               { href: `/${lang}/guides`, labelHe: "כל המדריכים", labelEn: "All Guides" },
             ].map((l) => (
               <Link key={l.href} href={l.href} className="text-sm font-body text-muted-foreground hover:text-foreground border border-border hover:border-gold/50 rounded-full px-4 py-2 transition-colors">
