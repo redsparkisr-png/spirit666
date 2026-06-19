@@ -75,8 +75,8 @@ const CookieNotice = () => {
             <div className="px-5 py-4 flex items-center gap-4">
               <p className="flex-1 text-white/70 font-body text-xs leading-snug">
                 {isHe
-                  ? "אנו משתמשים בעוגיות לשיפור חוויית הגלישה. "
-                  : "We use cookies to improve your experience. "}
+                  ? "המשך הגלישה באתר מהווה הסכמה לשימוש בעוגיות לשיפור חוויית המשתמש. "
+                  : "By continuing to browse, you agree to our use of cookies to enhance your experience. "}
                 <Link href={`/${lang}/privacy`} className="text-gold underline underline-offset-2 hover:text-gold-hover whitespace-nowrap">
                   {isHe ? "מדיניות פרטיות" : "Privacy Policy"}
                 </Link>
@@ -85,7 +85,7 @@ const CookieNotice = () => {
                 onClick={accept}
                 className="shrink-0 bg-gold hover:bg-gold-hover text-primary-foreground px-5 py-2 rounded-lg font-body font-semibold text-sm transition-colors"
               >
-                {isHe ? "הבנתי" : "Got it"}
+                {isHe ? "אישור" : "OK"}
               </button>
             </div>
           </div>
