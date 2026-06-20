@@ -62,7 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const lang of LANGS) {
       entries.push({
         url: `${BASE}/${lang}/property/${slug}`,
-        lastModified: p.created_at ? new Date(p.created_at) : SITE_LAST_DEPLOY,
+        lastModified: (() => { const d = p.created_at ? new Date(p.created_at) : null; return d && !isNaN(d.getTime()) ? d : SITE_LAST_DEPLOY; })(),
         changeFrequency: "weekly",
         priority: 0.8,
         alternates: {

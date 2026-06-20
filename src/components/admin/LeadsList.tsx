@@ -47,16 +47,17 @@ const LeadsList = () => {
 
   const exportCSV = () => {
     const headers = ["Name", "Email", "Phone", "Source", "Status", "Notes", "Date"];
+    const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
     const rows = leads.map((l) => [
-      l.full_name,
-      l.email || "",
-      l.phone || "",
-      l.source,
-      (l as any).status || "new",
-      ((l as any).notes || "").replace(/"/g, '""'),
-      new Date(l.created_at).toLocaleDateString(),
-    ]);
-    const csv = [headers.join(","), ...rows.map((r) => r.map((v) => `"${v}"`).join(","))].join("\n");
+      esc(l.full_name),
+      esc(l.email || ""),
+      esc(l.phone || ""),
+      esc(l.source || ""),
+      esc((l as any).status || "new"),
+      esc((l as any).notes || ""),
+      esc(new Date(l.created_at).toLocaleDateString()),
+    ].join(","));
+    const csv = [headers.map((h) => `"${h}"`).join(","), ...rows].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -71,7 +72,7 @@ const LeadsList = () => {
       <div className="flex items-start gap-3 bg-primary/5 border border-border rounded-xl px-4 py-3">
         <MessageCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
         <p className="text-sm font-body text-foreground/80">
-          פניות שנשלחות דרך <span className="font-semibold">טפסי יצירת קשר בעמודי הנכסים</span> נשמרות כאן אוטומטית. פניות שנשלחות ישירות דרך וואטסאפ לא מופיעות בטבלה זו.
+          פניות שנשלחות דרך <span className="font-semibold">טפסי יצירת קשר בעמודי הנכסים</span> ודרך <span className="font-semibold">דף הערכת שווי</span> נשמרות כאן אוטומטית. פניות שנשלחות ישירות דרך וואטסאפ לא מופיעות בטבלה זו.
         </p>
       </div>
       <div className="flex items-center justify-between">
@@ -113,8 +114,12 @@ const LeadsList = () => {
                     <td className="py-2 pr-4 text-foreground">{l.email || "–"}</td>
                     <td className="py-2 pr-4 text-foreground">{l.phone || "–"}</td>
                     <td className="py-2 pr-4 text-xs max-w-[160px]">
-                      {l.source?.startsWith("property:") ? (
-                        <span className="text-primary font-medium">{l.source.replace("property:", "נכס: ")}</span>
+                      {l.source?.startsWith("property:") || l.source?.startsWith("property_") ? (
+                        <span className="text-primary font-medium truncate block">
+                          {l.source.startsWith("property:") ? l.source.replace("property:", "נכס: ") : l.source.replace("property_", "נכס: ")}
+                        </span>
+                      ) : l.source === "valuation" ? (
+                        <span className="text-amber-600 font-medium truncate block">הערכת שווי</span>
                       ) : (
                         <span className="text-muted-foreground truncate block">{l.source || "–"}</span>
                       )}

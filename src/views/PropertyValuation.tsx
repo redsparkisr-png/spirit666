@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
 import FAQSection from "@/components/FAQSection";
@@ -59,6 +60,7 @@ const PropertyValuation = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     if (!form.name.trim() || !form.phone.trim() || !form.address.trim()) {
       setError(isHe ? "אנא מלאו שם, טלפון וכתובת הנכס" : "Please fill in name, phone and property address");
       return;
@@ -66,15 +68,30 @@ const PropertyValuation = () => {
     setError("");
     setSubmitting(true);
 
-    const message = isHe
-      ? `היי, אני מעוניין/ת בהערכת שווי לנכסי בזכרון יעקב.\n\nשם: ${form.name}\nטלפון: ${form.phone}\nכתובת הנכס: ${form.address}\nסוג נכס: ${form.type || "לא צוין"}\nהערות: ${form.notes || "אין"}`
-      : `Hi, I'd like a property valuation in Zichron Yaakov.\n\nName: ${form.name}\nPhone: ${form.phone}\nProperty address: ${form.address}\nProperty type: ${form.type || "Not specified"}\nNotes: ${form.notes || "None"}`;
+    // Strip newlines to prevent message injection
+    const safeName = form.name.trim().replace(/[\r\n]+/g, " ");
+    const safePhone = form.phone.trim().replace(/[\r\n]+/g, " ");
+    const safeAddress = form.address.trim().replace(/[\r\n]+/g, " ");
+    const safeType = form.type.replace(/[\r\n]+/g, " ");
+    const safeNotes = form.notes.replace(/[\r\n]+/g, " ");
 
-    // Open WhatsApp with pre-filled message
-    window.open(`https://wa.me/972522820632?text=${encodeURIComponent(message)}`, "_blank");
+    // Save lead to database so admin panel captures valuation inquiries
+    await supabase.from("leads").insert({
+      full_name: safeName,
+      phone: safePhone,
+      email: null,
+      message: [safeAddress, safeType, safeNotes].filter(Boolean).join(" — ") || null,
+      source: "valuation",
+    });
 
-    setSubmitted(true);
+    const waMessage = isHe
+      ? `היי, אני מעוניין/ת בהערכת שווי לנכסי בזכרון יעקב.\n\nשם: ${safeName}\nטלפון: ${safePhone}\nכתובת הנכס: ${safeAddress}\nסוג נכס: ${safeType || "לא צוין"}\nהערות: ${safeNotes || "אין"}`
+      : `Hi, I'd like a property valuation in Zichron Yaakov.\n\nName: ${safeName}\nPhone: ${safePhone}\nProperty address: ${safeAddress}\nProperty type: ${safeType || "Not specified"}\nNotes: ${safeNotes || "None"}`;
+
+    window.open(`https://wa.me/972522820632?text=${encodeURIComponent(waMessage)}`, "_blank");
+
     setSubmitting(false);
+    setSubmitted(true);
   };
 
   const inputBase = "w-full bg-background border border-border rounded-xl px-4 py-3.5 font-body text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold/60 transition-all";

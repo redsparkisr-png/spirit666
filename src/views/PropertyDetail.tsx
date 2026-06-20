@@ -87,8 +87,8 @@ const PropertyDetail = ({ property, similar }: Props) => {
       full_name: formData.name.trim(),
       phone: formData.phone.trim(),
       email: formData.email.trim() || null,
-      message: `${property?.title ? `[${property.title}] ` : ""}${formData.message.trim() || ""}`.trim() || null,
-      source: `property:${property?.title || property?.slug || "detail"}`,
+      message: formData.message.trim() || null,
+      source: `property:${property?.slug || property?.id || "detail"}`,
     });
     if (error) {
       console.error("Lead insert failed:", error.message);
