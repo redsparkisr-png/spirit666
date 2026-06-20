@@ -353,8 +353,8 @@ const MarketGuide2026 = () => {
                 </p>
               </div>
               <ul className="space-y-1 text-xs font-body text-muted-foreground">
-                <li>• Easy Aliyah — Zichron Ya'akov Real Estate Market Report Q1 2025</li>
-                <li>• Yokra Estate — Houses for Sale in Binyamina and Zichron Yaakov (2024)</li>
+                <li>• Easy Aliyah &mdash; Zichron Ya&apos;akov Real Estate Market Report Q1 2025</li>
+                <li>• Yokra Estate &mdash; Houses for Sale in Binyamina and Zichron Yaakov (2024)</li>
                 <li>• Israel Central Bureau of Statistics (CBS / למ"ס) — Housing Price Index, May 2026</li>
                 <li>• Israeli real estate platforms: Yad2, Madlan, Green-Acres (observed listings 2024–2025)</li>
                 <li>

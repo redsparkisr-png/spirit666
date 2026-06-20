@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { BedDouble, Ruler, LandPlot, ChevronLeft, ChevronRight, MessageCircle, CheckCircle, Bath, Car, Shield, Trees, MapPin, Calendar, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -178,14 +178,17 @@ const PropertyDetail = ({ property, similar }: Props) => {
     )
   );
 
-  const detailStats = [
-    property.bedrooms ? { icon: BedDouble, value: property.bedrooms, label: isHe ? "חדרים" : "Rooms" } : null,
-    property.bathrooms ? { icon: Bath, value: property.bathrooms, label: isHe ? "חדרי רחצה" : "Bathrooms" } : null,
-    property.built_sqm ? { icon: Ruler, value: `${property.built_sqm} m²`, label: isHe ? 'מ"ר בנוי' : "Built" } : null,
-    property.lot_sqm ? { icon: LandPlot, value: `${property.lot_sqm} m²`, label: isHe ? 'מ"ר מגרש' : "Lot" } : null,
-    property.parking ? { icon: Car, value: property.parking, label: isHe ? "חניה" : "Parking" } : null,
-    property.mamad ? { icon: Shield, value: isHe ? "כן" : "Yes", label: isHe ? "ממ\"ד" : "Mamad" } : null,
-  ].filter(Boolean) as { icon: any; value: any; label: string }[];
+  type StatItem = { icon: React.ElementType; value: string | number; label: string };
+  const detailStats = (
+    [
+      property.bedrooms ? { icon: BedDouble, value: property.bedrooms, label: isHe ? "חדרים" : "Rooms" } : null,
+      property.bathrooms ? { icon: Bath, value: property.bathrooms, label: isHe ? "חדרי רחצה" : "Bathrooms" } : null,
+      property.built_sqm ? { icon: Ruler, value: `${property.built_sqm} m²`, label: isHe ? 'מ"ר בנוי' : "Built" } : null,
+      property.lot_sqm ? { icon: LandPlot, value: `${property.lot_sqm} m²`, label: isHe ? 'מ"ר מגרש' : "Lot" } : null,
+      property.parking ? { icon: Car, value: property.parking, label: isHe ? "חניה" : "Parking" } : null,
+      property.mamad ? { icon: Shield, value: isHe ? "כן" : "Yes", label: isHe ? "ממ\"ד" : "Mamad" } : null,
+    ] as (StatItem | null)[]
+  ).filter((s): s is StatItem => s !== null);
 
   return (
     <main className="min-h-screen bg-background pb-24 lg:pb-0">
@@ -197,7 +200,7 @@ const PropertyDetail = ({ property, similar }: Props) => {
         ) : (
           <>
             {images.map((url, idx) => (
-              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={imageAlt(property, idx)} onClick={() => setLightboxOpen(true)} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 cursor-zoom-in" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" {...(idx === 0 ? { fetchpriority: "high" } as any : {})} />
+              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={imageAlt(property, idx)} onClick={() => setLightboxOpen(true)} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 cursor-zoom-in" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" fetchPriority={idx === 0 ? "high" : undefined} />
             ))}
             {images.length > 1 && (
               <>

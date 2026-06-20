@@ -16,6 +16,16 @@ const nextConfig: NextConfig = {
   },
   // Retain trailing slash consistency from old Vite site
   trailingSlash: false,
+  async redirects() {
+    return [
+      // Slug rename: old "4-bedroom-ramat-zvi" → new canonical slug (both languages)
+      {
+        source: "/:lang/property/4-bedroom-ramat-zvi-open-views-partial-sea-view",
+        destination: "/:lang/property/ramat-zvi-home-open-views-partial-sea-view-zichron-yaakov",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
