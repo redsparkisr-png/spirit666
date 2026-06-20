@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Clock, Calendar, ArrowLeft, ArrowRight, User, Share2, Facebook, Linkedin } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/lib/i18n";
 import Header from "@/components/Header";
 import TrustSection from "@/components/TrustSection";
@@ -38,44 +36,16 @@ interface Post {
   updated_at?: string;
 }
 
-const BlogPost = () => {
-  const params = useParams<{ slug: string; lang: string }>();
-  const slug = params?.slug;
+type Props = {
+  post: Post | null;
+  related: Post[];
+};
+
+const BlogPost = ({ post, related }: Props) => {
   const { lang } = useLanguage();
   const { t } = useSiteContent();
   const isHe = lang === "he";
   const prefix = `/${lang}`;
-
-  const [post, setPost] = useState<Post | null>(null);
-  const [related, setRelated] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!slug) return;
-    supabase
-      .from("blog_posts")
-      .select("*")
-      .eq("slug", slug)
-      .eq("status", "published")
-      .maybeSingle()
-      .then(({ data }) => {
-        setPost(data as Post | null);
-        setLoading(false);
-        if (data?.category) {
-          supabase
-            .from("blog_posts")
-            .select("*")
-            .eq("status", "published")
-            .eq("category", data.category)
-            .neq("id", data.id)
-            .order("publish_date", { ascending: false })
-            .limit(3)
-            .then(({ data: relData }) => {
-              if (relData) setRelated(relData as Post[]);
-            });
-        }
-      });
-  }, [slug]);
 
   const WHATSAPP_URL = `https://wa.me/972522820632?text=${encodeURIComponent(isHe ? "היי, אשמח לקבל מידע נוסף על נדל״ן בזכרון יעקב" : "Hi, I'd like to learn more about property in Zichron Yaakov.")}`;
 
@@ -99,17 +69,6 @@ const BlogPost = () => {
       return id ? `<h${lvl}${attrs} id="${id}">` : `<h${lvl}${attrs}>`;
     });
   }, [bodyForTOC, toc]);
-
-  if (loading) {
-    return (
-      <main>
-        <Header />
-        <div className="min-h-screen bg-background flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-        </div>
-      </main>
-    );
-  }
 
   if (!post) {
     return (
@@ -172,7 +131,7 @@ const BlogPost = () => {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="rounded-2xl overflow-hidden shadow-lg mb-10"
               >
-                <img src={post.featured_image} alt={title} className="w-full aspect-[16/9] object-cover" />
+                <img src={post.featured_image} alt={title} className="w-full aspect-[16/9] object-cover" loading="eager" fetchPriority="high" decoding="async" />
               </motion.div>
             )}
 

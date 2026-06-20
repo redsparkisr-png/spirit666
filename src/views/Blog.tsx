@@ -35,19 +35,25 @@ interface BlogCategory {
   slug: string;
 }
 
-const Blog = () => {
+type Props = {
+  initialPosts?: BlogPost[];
+  initialCategories?: BlogCategory[];
+};
+
+const Blog = ({ initialPosts, initialCategories }: Props = {}) => {
   const { lang } = useLanguage();
   const { t } = useSiteContent();
   const isHe = lang === "he";
   const prefix = `/${lang}`;
 
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [categories, setCategories] = useState<BlogCategory[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>(initialPosts ?? []);
+  const [categories, setCategories] = useState<BlogCategory[]>(initialCategories ?? []);
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(!!initialPosts);
 
   useEffect(() => {
+    if (initialPosts) return;
     Promise.all([
       supabase.from("blog_posts").select("*").eq("status", "published").order("publish_date", { ascending: false }),
       supabase.from("blog_categories").select("*").order("display_order"),
@@ -56,7 +62,7 @@ const Blog = () => {
       if (catsRes.data) setCategories(catsRes.data as BlogCategory[]);
       setLoaded(true);
     });
-  }, []);
+  }, [initialPosts]);
 
   const filtered = posts.filter((p) => {
     const matchesCat = activeCategory === "all" || p.category === activeCategory;
@@ -133,7 +139,7 @@ const Blog = () => {
                 <div className="grid md:grid-cols-2 gap-6 bg-card rounded-2xl overflow-hidden shadow-md border border-border/40 hover:shadow-xl transition-shadow">
                   {featured.featured_image && (
                     <div className="aspect-[16/10] md:aspect-auto overflow-hidden">
-                      <img src={featured.featured_image} alt={isHe ? featured.title_he : featured.title_en} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                      <img src={featured.featured_image} alt={isHe ? featured.title_he : featured.title_en} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="eager" fetchPriority="high" decoding="async" />
                     </div>
                   )}
                   <div className="p-6 md:p-8 flex flex-col justify-center text-start">

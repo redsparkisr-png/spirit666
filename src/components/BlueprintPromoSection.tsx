@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { MessageCircle, CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { trackGuideRequest } from "@/components/GoogleAnalyticsConsent";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import guideImg from "@/assets/guide-img-1.jpg";
@@ -23,14 +24,24 @@ const BlueprintPromoSection = () => {
   const isHe = lang === "he";
   const { t } = useSiteContent();
 
-  const phone = t("whatsapp.phone_number") || "972522820632";
-  const msg = encodeURIComponent(t("whatsapp.guide_message") || "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint.");
-  const blueprintUrl = `https://wa.me/${phone}?text=${msg}`;
+  const phone_number = t("whatsapp.phone_number") || "972522820632";
+  const waMsg = encodeURIComponent(
+    isHe
+      ? "היי, אשמח לקבל את מדריך הקונה לזכרון יעקב 2026."
+      : "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint 2026.",
+  );
+  const waUrl = `https://wa.me/${phone_number}?text=${waMsg}`;
+
+  const handleWhatsApp = () => {
+    trackGuideRequest();
+    window.open(waUrl, "_blank");
+  };
 
   return (
     <section className="py-14 md:py-20 bg-background" aria-labelledby="blueprint-promo-heading">
       <div className="container px-6">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+
           {/* Image */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -49,7 +60,7 @@ const BlueprintPromoSection = () => {
             </div>
           </motion.div>
 
-          {/* Text */}
+          {/* Text + CTA */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -69,26 +80,21 @@ const BlueprintPromoSection = () => {
             <p className="font-display italic text-base md:text-lg text-muted-foreground mb-6">
               {isHe
                 ? "כל מה שצריך לדעת לפני שקונים בית בזכרון יעקב."
-                : "The definitive guide for English-speaking buyers exploring property in Israel\u2019s most desirable moshava."}
+                : "The definitive guide for English-speaking buyers exploring property in Israel's most desirable moshava."}
             </p>
 
-            {/* Highlights from CMS */}
+            {/* Bullets */}
             <ul className="space-y-3 mb-8">
               {BULLET_KEYS.map((key) => (
                 <li key={key} className="flex items-start gap-3 font-body text-sm text-foreground">
-                  <CheckCircle className="w-4 h-4 text-gold flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
                   <span>{t(key)}</span>
                 </li>
               ))}
             </ul>
 
-            {/* Private positioning line */}
-            <p className="font-body text-xs text-muted-foreground/70 italic mb-4">
-              {t("guide.home.positioning")}
-            </p>
-
-            {/* Internal SEO links */}
-            <div className="flex flex-wrap gap-3 mb-6 text-xs font-body">
+            {/* SEO internal links */}
+            <div className="flex flex-wrap gap-3 mb-8 text-xs font-body">
               <Link href={`/${lang}/properties`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
                 {isHe ? "נכסים בזכרון יעקב" : "Homes for sale in Zichron Yaakov"}
               </Link>
@@ -100,32 +106,21 @@ const BlueprintPromoSection = () => {
               </Link>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href={blueprintUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2.5 bg-gold hover:bg-gold-hover text-white py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
-                style={{ fontSize: "16px" }}
-              >
-                {t("guide.home.cta_primary")}
-              </a>
-              <a
-                href={blueprintUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center justify-center gap-2.5 border-2 border-gold/40 text-foreground hover:bg-gold/10 py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] ${isHe ? "flex-row-reverse" : ""}`}
-                style={{ fontSize: "16px" }}
-              >
-                <MessageCircle className="w-5 h-5" />
-                {t("guide.home.cta_secondary")}
-              </a>
-            </div>
+            {/* Single WhatsApp CTA */}
+            <button
+              onClick={handleWhatsApp}
+              className={`w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] text-white py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] ${isHe ? "flex-row-reverse" : ""}`}
+              style={{ fontSize: "17px" }}
+            >
+              <MessageCircle className="w-5 h-5 flex-shrink-0" />
+              {isHe ? "שלחו לי את המדריך בוואטסאפ" : "Send Me the Guide via WhatsApp"}
+            </button>
 
-            <p className="mt-3 text-xs text-muted-foreground/70 font-body">
-              {t("guide.home.trust_line")}
+            <p className="text-xs text-muted-foreground/60 font-body text-center mt-3">
+              {isHe ? "נשלח מיידית · ללא ספאם · ניתן לבטל בכל עת" : "Sent instantly · No spam · Cancel anytime"}
             </p>
           </motion.div>
+
         </div>
       </div>
     </section>

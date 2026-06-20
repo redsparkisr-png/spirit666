@@ -63,13 +63,16 @@ CREATE POLICY "No one can delete user_roles via API"
   USING (false);
 
 -- 4. Restrict Realtime channel subscriptions to CRM users for sensitive tables
-ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY;
-
-DROP POLICY IF EXISTS "CRM users can receive crm realtime" ON realtime.messages;
-CREATE POLICY "CRM users can receive crm realtime"
-  ON realtime.messages
-  FOR SELECT
-  TO authenticated
-  USING (
-    public.has_crm_access(auth.uid())
-  );
+-- Wrapped in DO block: realtime.messages does not exist in all Supabase plan/version combos
+DO $$
+BEGIN
+  ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY;
+  DROP POLICY IF EXISTS "CRM users can receive crm realtime" ON realtime.messages;
+  CREATE POLICY "CRM users can receive crm realtime"
+    ON realtime.messages
+    FOR SELECT
+    TO authenticated
+    USING (public.has_crm_access(auth.uid()));
+EXCEPTION
+  WHEN undefined_table THEN NULL;
+END $$;

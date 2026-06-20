@@ -27,11 +27,13 @@ interface Props {
 const ImageGallery = ({
   images,
   title,
+  location,
   isMobile,
   noImageText,
 }: {
   images: string[];
   title: string;
+  location?: string | null;
   isMobile: boolean;
   noImageText: string;
 }) => {
@@ -68,7 +70,7 @@ const ImageGallery = ({
         <img
           key={idx}
           src={url}
-          alt={`${title} – photo ${idx + 1}`}
+          alt={`${title}${location ? `, ${location}, Zichron Yaakov` : ""} – photo ${idx + 1}`}
           className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ease-in-out"
           style={{ opacity: active === idx ? 1 : 0 }}
           loading={idx === 0 ? "eager" : "lazy"}
@@ -256,7 +258,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
 
   const content = (
     <>
-      <ImageGallery images={images} title={property.title} isMobile={isMobile} noImageText={t("property.modal.no_image")} />
+      <ImageGallery images={images} title={property.title} location={property.location} isMobile={isMobile} noImageText={t("property.modal.no_image")} />
 
       <div className="px-6 py-6 space-y-5">
         {/* Title + price */}

@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
   }
 
   const suffix = pathname === "/" ? "" : pathname;
-  return NextResponse.redirect(new URL(`/${lang}${suffix}`, request.url));
+  return NextResponse.redirect(new URL(`/${lang}${suffix}`, request.url), 301);
 }
 
 export const config = {

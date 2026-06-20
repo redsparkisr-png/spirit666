@@ -147,6 +147,9 @@ const MovingToZichron = () => {
             <Link href={`${prefix}/homes-for-sale-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
               {isHe ? "בתים למכירה" : "Homes for Sale"}
             </Link>
+            <Link href={`${prefix}/living-in-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {isHe ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov"}
+            </Link>
             <Link href={`${prefix}/properties`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
               {isHe ? "כל הנכסים" : "All Properties"}
             </Link>

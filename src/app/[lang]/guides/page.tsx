@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { createServerSupabase } from "@/lib/supabase/server";
 import Blog from "@/views/Blog";
+
+export const revalidate = 3600;
 
 const META = {
   en: {
@@ -26,10 +29,16 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       canonical: url,
       languages: { en: `${SITE}/en/guides`, he: `${SITE}/he/guides`, "x-default": `${SITE}/en/guides` },
     },
-    openGraph: { title: m.title, description: m.description, url, locale: l === "he" ? "he_IL" : "en_US" },
+    openGraph: { title: m.title, description: m.description, url, locale: l === "he" ? "he_IL" : "en_US", images: [{ url: "/og-image.webp", width: 1200, height: 630 }] },
   };
 }
 
-export default function GuidesPage() {
-  return <Blog />;
+export default async function GuidesPage() {
+  const supabase = createServerSupabase();
+  const [{ data: posts }, { data: categories }] = await Promise.all([
+    supabase.from("blog_posts").select("*").eq("status", "published").order("publish_date", { ascending: false }),
+    supabase.from("blog_categories").select("*").order("display_order"),
+  ]);
+
+  return <Blog initialPosts={posts ?? []} initialCategories={categories ?? []} />;
 }

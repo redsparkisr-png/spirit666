@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
+      { protocol: "https", hostname: "vtcpmbjzzbggxhsjpnhu.supabase.co" },
       { protocol: "https", hostname: "zbrkbianodvzpwxgaonb.supabase.co" },
       { protocol: "https", hostname: "storage.googleapis.com" },
     ],

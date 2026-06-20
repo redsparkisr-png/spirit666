@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Download } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import heroBg from "@/assets/hero-bg.webp";
 import { useLanguage } from "@/lib/i18n";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -29,18 +30,18 @@ const HeroSection = () => {
         animate={{ scale: 1.05 }}
         transition={{ duration: 10, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
       >
-        <img
-          src={(heroBg as any).src ?? (heroBg as unknown as string)}
+        <Image
+          src={heroBg}
           alt="Aerial view of Zichron Yaakov with Mediterranean Sea views"
-          className="w-full h-full object-cover"
+          fill
+          priority
+          quality={85}
+          sizes="100vw"
           style={{
+            objectFit: "cover",
             objectPosition: "50% 35%",
             filter: "contrast(1.06) saturate(1.08) brightness(0.92)",
           }}
-          width={2000}
-          height={1125}
-          loading="eager"
-          {...({ fetchpriority: "high" } as any)}
         />
       </motion.div>
 
@@ -156,7 +157,7 @@ const HeroSection = () => {
                   boxShadow: "0 4px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1)",
                 }}
               >
-                <Download className="w-4 h-4 flex-shrink-0" />
+                <BookOpen className="w-4 h-4 flex-shrink-0" />
                 {ctaSecondary}
               </button>
             </div>

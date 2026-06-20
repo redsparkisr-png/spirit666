@@ -20,7 +20,7 @@ const SocialProofStrip = () => {
 
   const stats = [
     {
-      value: tf("social_proof.stat_1_value", "70+"),
+      value: tf("social_proof.stat_1_value", "288+"),
       label: tf("social_proof.stat_1_label", isHe ? "משפחות שליווינו" : "Families guided"),
     },
     {

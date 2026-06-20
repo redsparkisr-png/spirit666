@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
-import { FileText, MessageCircle } from "lucide-react";
+import { FileText, MessageCircle, CheckCircle } from "lucide-react";
 import spiritLogo from "@/assets/spirit-logo.jpg";
 import hagitImg from "@/assets/hagit-cohen-morgan.png";
 import aviImg from "@/assets/avi-suliman.png";
@@ -93,6 +93,174 @@ const FooterLine = () => (
   </p>
 );
 
+/* ─── GUIDE LANDING PAGE (shown when no token — fully indexable by Google) ─── */
+type GuideLandingProps = { lang: string };
+
+const CHAPTERS = [
+  { n: "01", en: "Zichron Yaakov at a Glance — History, Character & Why Buyers Choose It", he: "זכרון יעקב במבט ראשון — היסטוריה, אופי ומדוע קונים בוחרים כאן" },
+  { n: "02", en: "Neighborhood-by-Neighborhood Guide — Neve Remez, Ramat Zvi, HaMoshava & More", he: "מדריך שכונות — נווה רמז, רמת צבי, המושבה ועוד" },
+  { n: "03", en: "Real Estate Prices 2026 — Price Per m², Trends & What to Expect", he: "מחירי נדל\"ן 2026 — מחיר למ\"ר, מגמות ומה לצפות" },
+  { n: "04", en: "Buying as a Foreigner — Mas Rechisha, Mortgages & Legal Process", he: "רכישה כאזרח זר — מס רכישה, משכנתאות ותהליך משפטי" },
+  { n: "05", en: "Due Diligence Checklist — What to Verify Before You Sign", he: "רשימת בדיקות נאותות — מה לאמת לפני החתימה" },
+  { n: "06", en: "Off-Market Opportunities — How a Local Agent Changes Everything", he: "נכסים לא מפורסמים — כיצד סוכן מקומי משנה הכל" },
+];
+
+const STATS = [
+  { value: "₪27,400", label: "Avg ₪/m² (Q1 2025)" },
+  { value: "+13.5%", label: "Year-on-Year Growth" },
+  { value: "22%", label: "Foreign Buyers" },
+  { value: "15%", label: "English-Speaking Residents" },
+];
+
+function GuideLandingPage({ lang }: GuideLandingProps) {
+  const isHe = lang === "he";
+
+  const waMsg = encodeURIComponent(
+    isHe
+      ? "היי, אשמח לקבל את מדריך הקונה לזכרון יעקב 2026."
+      : "Hi, I'd like to receive the Zichron Yaakov Buyer Blueprint 2026.",
+  );
+  const waUrl = `https://wa.me/972522820632?text=${waMsg}`;
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+
+      {/* Hero */}
+      <section className="bg-primary py-16 md:py-24">
+        <div className="container px-6 text-center max-w-3xl mx-auto">
+          <p className="text-xs tracking-[0.3em] uppercase font-body text-gold mb-4">
+            Spirit Real Estate · Zichron Yaakov
+          </p>
+          <h1 className="font-display font-bold text-4xl md:text-5xl text-primary-foreground leading-tight mb-4">
+            {isHe ? "המדריך לרוכשי נדל\"ן בזכרון יעקב 2026" : "Zichron Yaakov Buyer Blueprint 2026"}
+          </h1>
+          <p className="font-body text-primary-foreground/75 text-lg max-w-xl mx-auto mb-10">
+            {isHe
+              ? "המדריך המקיף ביותר לרכישת נכס בזכרון יעקב — מחירים, שכונות, מיסים ותובנות מהשטח שלא תמצאו בשום מקום אחר."
+              : "The most comprehensive guide to buying property in Zichron Yaakov — pricing, neighborhoods, taxes, and insider insights you won't find anywhere else."}
+          </p>
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+            {STATS.map((s) => (
+              <div key={s.label} className="bg-primary-foreground/8 rounded-xl p-4 border border-primary-foreground/15">
+                <p className="font-display text-2xl font-semibold text-gold">{s.value}</p>
+                <p className="font-body text-xs text-primary-foreground/65 mt-1 leading-snug">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What's inside */}
+      <section className="py-14 md:py-20 bg-background">
+        <div className="container px-6 max-w-3xl mx-auto">
+          <p className="text-xs tracking-[0.25em] uppercase font-body text-gold mb-4">
+            {isHe ? "מה תמצאו במדריך" : "What's inside"}
+          </p>
+          <h2 className="font-display font-semibold text-2xl md:text-3xl text-foreground mb-10">
+            {isHe ? "6 פרקים. כל מה שצריך לדעת." : "6 chapters. Everything you need to know."}
+          </h2>
+          <div className="space-y-4">
+            {CHAPTERS.map((ch) => (
+              <div key={ch.n} className="flex items-start gap-5 p-5 rounded-xl border border-border hover:border-gold/40 transition-colors">
+                <span className="font-display text-gold text-sm font-semibold shrink-0 mt-0.5">{ch.n}</span>
+                <p className="font-body text-sm text-foreground leading-relaxed">{isHe ? ch.he : ch.en}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Zichron */}
+      <section className="py-10 bg-muted/30">
+        <div className="container px-6 max-w-3xl mx-auto">
+          <h2 className="font-display font-semibold text-xl md:text-2xl text-foreground mb-6">
+            {isHe ? "למה זכרון יעקב?" : "Why Zichron Yaakov?"}
+          </h2>
+          <div className="grid md:grid-cols-2 gap-3">
+            {[
+              isHe ? "60–70% זול יותר מתל אביב" : "60–70% cheaper than Tel Aviv",
+              isHe ? "15% מהתושבים דוברי אנגלית" : "15% English-speaking residents",
+              isHe ? "תחנת רכבת בבנימינה — 5 דקות" : "Binyamina train station — 5 min away",
+              isHe ? "קהילת עולים חמה ומגובשת" : "Warm, established olim community",
+              isHe ? "נכסים עם נוף לים" : "Properties with Mediterranean sea views",
+              isHe ? "ריחוק מתל אביב — שעה אחת" : "1 hour from Tel Aviv, airports & hospitals",
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-3">
+                <CheckCircle className="w-4 h-4 text-gold shrink-0" />
+                <p className="font-body text-sm text-foreground">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WhatsApp CTA */}
+      <section className="py-14 md:py-20 bg-background">
+        <div className="container px-6 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+            <FileText className="w-7 h-7 text-primary" />
+          </div>
+          <h2 className="font-display text-2xl font-semibold text-foreground mb-2">
+            {isHe ? "קבלו את המדריך בוואטסאפ" : "Get the Guide via WhatsApp"}
+          </h2>
+          <p className="font-body text-sm text-muted-foreground mb-8">
+            {isHe
+              ? "לחצו על הכפתור ונשלח לכם את המדריך מיידית."
+              : "Click the button and we'll send you the guide instantly."}
+          </p>
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] text-white py-4 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+            style={{ fontSize: "17px" }}
+          >
+            <MessageCircle className="w-5 h-5 flex-shrink-0" />
+            {isHe ? "שלחו לי את המדריך בוואטסאפ" : "Send Me the Guide via WhatsApp"}
+          </a>
+          <p className="text-xs text-muted-foreground/60 font-body text-center mt-3">
+            {isHe ? "נשלח מיידית · ללא ספאם · ניתן לבטל בכל עת" : "Sent instantly · No spam · Cancel anytime"}
+          </p>
+
+          {/* FAQ for SEO */}
+          <div className="mt-16 text-left space-y-6">
+            <h2 className="font-display text-lg font-semibold text-foreground">
+              {isHe ? "שאלות נפוצות" : "Frequently Asked Questions"}
+            </h2>
+            {[
+              {
+                q: isHe ? "כמה עולה נכס ממוצע בזכרון יעקב?" : "What is the average property price in Zichron Yaakov?",
+                a: isHe
+                  ? "נכון לרבעון הראשון של 2025, מחיר נכס ממוצע בזכרון יעקב עומד על כ-3,670,000 ₪, עם מחיר ממוצע של 27,400 ₪ למ\"ר — עלייה של 13.5% בהשוואה לשנה הקודמת."
+                  : "As of Q1 2025, the average property price in Zichron Yaakov is ₪3,670,000, with an average of ₪27,400 per square meter — a 13.5% year-on-year increase.",
+              },
+              {
+                q: isHe ? "האם זרים יכולים לקנות נדל\"ן בזכרון יעקב?" : "Can foreigners buy property in Zichron Yaakov?",
+                a: isHe
+                  ? "כן. אזרחים זרים רשאים לרכוש נדל\"ן בישראל ללא הגבלה. מס רכישה לרוכש זר על דירה ראשונה עומד על 8% מהמחיר המלא. ניתן לקבל משכנתה של עד 50% מימון מבנקים ישראלים."
+                  : "Yes. Foreign nationals can freely purchase real estate in Israel. Purchase tax (mas rechisha) for foreign buyers on a first property is 8% of the full price. Israeli banks offer up to 50% LTV mortgages to non-residents.",
+              },
+              {
+                q: isHe ? "מהן השכונות הטובות ביותר בזכרון יעקב?" : "What are the best neighborhoods in Zichron Yaakov?",
+                a: isHe
+                  ? "השכונות הראשיות הן: נווה רמז (שקטה, נוף לים), רמת צבי (מתפתחת, המחירים הנגישים ביותר), המושבה ההיסטורית (קרבה להמייסדים), חלומות זכרון (בנייה חדשה, משפחות צעירות), נווה הבארון (בתים צמודי קרקע פרמיום), וגבעת עדן (נוף להרים ולים)."
+                  : "Main neighborhoods: Neve Remez (peaceful, sea views), Ramat Zvi (developing, most affordable), HaMoshava historic center, Halomot Zichron (new construction, young families), Neve HaBaron (premium semi-detached), and Givat Eden (hillside views).",
+              },
+            ].map(({ q, a }) => (
+              <div key={q} className="border-b border-border pb-5">
+                <p className="font-body font-semibold text-sm text-foreground mb-2">{q}</p>
+                <p className="font-body text-sm text-muted-foreground leading-relaxed">{a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 /* ─── MAIN PAGE ─── */
 const BuyerGuide2026 = () => {
   const { lang } = useLanguage();
@@ -100,30 +268,18 @@ const BuyerGuide2026 = () => {
   const [accessStatus, setAccessStatus] = useState<"loading" | "granted" | "denied">("loading");
 
   useEffect(() => {
-    const checkAccess = async () => {
-      if (sessionStorage.getItem("buyer_guide_access") === "granted") {
-        setAccessStatus("granted");
-        return;
-      }
-      const urlToken = searchParams?.get("token");
-      if (!urlToken) {
-        setAccessStatus("denied");
-        return;
-      }
-      const { data } = await supabase
-        .from("site_content")
-        .select("value_en")
-        .eq("key", "access_token")
-        .eq("page", "buyer_guide")
-        .single();
-      if (data && data.value_en === urlToken) {
-        sessionStorage.setItem("buyer_guide_access", "granted");
-        setAccessStatus("granted");
-      } else {
-        setAccessStatus("denied");
-      }
-    };
-    checkAccess();
+    if (sessionStorage.getItem("buyer_guide_access") === "granted") {
+      setAccessStatus("granted");
+      return;
+    }
+    const urlToken = searchParams?.get("token");
+    const secret = process.env.NEXT_PUBLIC_GUIDE_TOKEN || "spirit-blueprint-2026";
+    if (urlToken === secret) {
+      sessionStorage.setItem("buyer_guide_access", "granted");
+      setAccessStatus("granted");
+    } else {
+      setAccessStatus("denied");
+    }
   }, [searchParams]);
 
   useEffect(() => {
@@ -146,38 +302,7 @@ const BuyerGuide2026 = () => {
   }
 
   if (accessStatus === "denied") {
-    const whatsappMsg = encodeURIComponent(
-      lang === "he"
-        ? "שלום, אשמח לקבל גישה למדריך הקונה לזכרון יעקב 2026."
-        : "Hello, I would like to receive access to the Zichron Yaakov Buyer Blueprint 2026."
-    );
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="flex flex-col items-center justify-center py-32 px-6 text-center">
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6">
-            <FileText className="w-8 h-8 text-primary" />
-          </div>
-          <h1 className="font-display text-3xl font-bold text-foreground mb-4">
-            {lang === "he" ? "תוכן בלעדי" : "Exclusive Content"}
-          </h1>
-          <p className="font-body text-muted-foreground max-w-md mb-8">
-            {lang === "he"
-              ? "מדריך זה זמין באופן בלעדי ללקוחותינו. צרו קשר בוואטסאפ לקבלת קישור גישה אישי."
-              : "This guide is available exclusively to our clients. Contact us via WhatsApp to receive your personal access link."}
-          </p>
-          <a
-            href={`https://wa.me/972522820632?text=${whatsappMsg}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-charcoal hover:bg-charcoal-hover text-white py-4 px-8 rounded-lg font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
-          >
-            <MessageCircle className="w-5 h-5" />
-            {lang === "he" ? "בקשו גישה בוואטסאפ" : "Request Access via WhatsApp"}
-          </a>
-        </div>
-      </div>
-    );
+    return <GuideLandingPage lang={lang} />;
   }
 
   return (
@@ -200,7 +325,7 @@ const BuyerGuide2026 = () => {
       <section className="relative overflow-hidden">
         {/* Background image with overlay */}
         <div className="absolute inset-0">
-          <img src={(heroBg as any).src ?? (heroBg as unknown as string)} alt="" className="w-full h-full object-cover" />
+          <img src={(heroBg as any).src ?? (heroBg as unknown as string)} alt="" className="w-full h-full object-cover" loading="eager" fetchPriority="high" decoding="async" />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/90 to-charcoal/95" />
         </div>
         <div className="relative z-10 container px-6 py-24 md:py-36 flex flex-col items-center text-center">

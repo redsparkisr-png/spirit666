@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { trackWhatsAppClick } from "@/components/GoogleAnalyticsConsent";
 
 const FloatingElements = () => {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -36,6 +37,7 @@ const FloatingElements = () => {
   }, []);
 
   const openWhatsApp = () => {
+    trackWhatsAppClick("floating_button");
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent("Hi Hagit,\nI'm looking at homes in Zichron Yaakov and would love to learn more.\nCould you also send me the buying guide?"), "_blank");
   };
 

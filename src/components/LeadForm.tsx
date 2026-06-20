@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
+import { trackLeadForm } from "@/components/GoogleAnalyticsConsent";
 
 type Variant = "contact" | "sell" | "valuation" | "guide";
 
@@ -66,6 +67,7 @@ const LeadForm = ({
       toast.error(t("contact.form.error"));
     } else {
       toast.success(t("contact.form.success"));
+      trackLeadForm(source);
       setData({ name: "", phone: "", email: "", message: "", address: "" });
       setConsent(false);
       onSuccess?.();

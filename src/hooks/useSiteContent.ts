@@ -55,7 +55,7 @@ export function useSiteContent() {
     "property.detail.similar_title": { en: "Similar Properties", he: "נכסים דומים" },
     "property.detail.privacy_note": { en: "Your details are kept confidential.", he: "פרטיכם נשמרים בסודיות." },
     "home.trust_line.item_1": { en: "Licensed Professionals", he: "מתווכים מורשים" },
-    "home.trust_line.item_2": { en: "70+ Families", he: "70+ משפחות" },
+    "home.trust_line.item_2": { en: "288+ Families", he: "מעל 288 משפחות" },
     "home.trust_line.item_3": { en: "Strategic Negotiation", he: "משא ומתן אסטרטגי" },
     "home.trust_line.item_4": { en: "Local Specialists", he: "מומחים מקומיים" },
     "whatsapp.phone_number": { en: "972522820632", he: "972522820632" },

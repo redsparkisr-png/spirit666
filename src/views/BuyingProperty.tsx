@@ -152,6 +152,9 @@ const BuyingProperty = () => {
             <Link href={`${prefix}/living-in-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
               {isHe ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov"}
             </Link>
+            <Link href={`${prefix}/moving-to-zichron-yaakov`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {isHe ? "מעבר לזכרון יעקב" : "Moving to Zichron Yaakov"}
+            </Link>
             <Link href={`${prefix}/contact`} className="text-sm font-body text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
               {isHe ? "צור קשר" : "Contact Us"}
             </Link>
