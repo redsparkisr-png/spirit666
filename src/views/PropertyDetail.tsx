@@ -179,7 +179,7 @@ const PropertyDetail = ({ property, similar }: Props) => {
   );
 
   const detailStats = [
-    property.bedrooms ? { icon: BedDouble, value: property.bedrooms, label: isHe ? "חדרי שינה" : "Bedrooms" } : null,
+    property.bedrooms ? { icon: BedDouble, value: property.bedrooms, label: isHe ? "חדרים" : "Rooms" } : null,
     property.bathrooms ? { icon: Bath, value: property.bathrooms, label: isHe ? "חדרי רחצה" : "Bathrooms" } : null,
     property.built_sqm ? { icon: Ruler, value: `${property.built_sqm} m²`, label: isHe ? 'מ"ר בנוי' : "Built" } : null,
     property.lot_sqm ? { icon: LandPlot, value: `${property.lot_sqm} m²`, label: isHe ? 'מ"ר מגרש' : "Lot" } : null,
@@ -291,6 +291,11 @@ const PropertyDetail = ({ property, similar }: Props) => {
                 </div>
               ))}
             </div>
+            {!!property.bedrooms && (
+              <p className="text-[11px] text-muted-foreground/60 font-body -mt-1">
+                {isHe ? "ספירת חדרים כוללת בדרך כלל את הסלון, כנהוג בישראל." : "In Israel, room count usually includes the living room."}
+              </p>
+            )}
 
             {property.short_description && (
               <div>

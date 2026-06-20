@@ -220,6 +220,7 @@ interface MoreFiltersSheetProps {
 const MoreFiltersSheet = ({ beds, onBedsChange, maxPrice, onMaxPriceChange, dataMax, onClose }: MoreFiltersSheetProps) => {
   const { t } = useSiteContent();
   const { lang } = useLanguage();
+  const roomsLabel = lang === "he" ? "חדרים" : "Rooms";
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -255,7 +256,7 @@ const MoreFiltersSheet = ({ beds, onBedsChange, maxPrice, onMaxPriceChange, data
         <div className="flex-1 overflow-y-auto px-5 py-5 space-y-6">
           {/* Bedrooms */}
           <div>
-            <p className="text-sm font-body font-medium text-foreground mb-3">{t("search.bedrooms")}</p>
+            <p className="text-sm font-body font-medium text-foreground mb-3">{roomsLabel}</p>
             <div className="flex gap-2 flex-wrap">
               {BEDROOM_OPTIONS.map((b) => (
                 <button
@@ -332,6 +333,7 @@ const SearchBar = ({
   const { t } = useSiteContent();
   const router = useRouter();
   const isMobile = useIsMobile();
+  const roomsLabel = lang === "he" ? "חדרים" : "Rooms";
   const [moreFiltersOpen, setMoreFiltersOpen] = useState(false);
 
   const [locations, setLocations] = useState<Option[]>([]);
@@ -390,7 +392,7 @@ const SearchBar = ({
           <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocation} onChange={(val) => setSelectedLocation(val as string)} inline isMobile={isMobile} />
           <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} inline isMobile={isMobile} />
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs font-body text-muted-foreground">{t("search.bedrooms")}</span>
+            <span className="text-xs font-body text-muted-foreground">{roomsLabel}</span>
             <div className="flex gap-1 flex-wrap">
               {BEDROOM_OPTIONS.map((b) => (
                 <button key={b} onClick={() => setSelectedBeds(selectedBeds === b ? "" : b)} className={`px-2.5 py-2 rounded-lg text-xs font-body font-medium transition-colors ${selectedBeds === b ? "bg-charcoal text-white" : "bg-muted text-foreground/70 hover:bg-muted/80"}`}>
@@ -443,7 +445,7 @@ const SearchBar = ({
           <div className="space-y-0.5">
             {/* Bedrooms */}
             <div>
-              <span className="text-[10px] font-body text-white/80 font-semibold tracking-wide uppercase mb-0.5 block">{t("search.bedrooms")}</span>
+              <span className="text-[10px] font-body text-white/80 font-semibold tracking-wide uppercase mb-0.5 block">{roomsLabel}</span>
               <div className="flex gap-1 overflow-x-auto scrollbar-hide">
                 {BEDROOM_OPTIONS.map((b) => (
                   <button
@@ -506,7 +508,7 @@ const SearchBar = ({
             <Dropdown label={t("search.location")} placeholder={t("search.all_locations")} options={locationOptions} value={selectedLocation} onChange={(val) => setSelectedLocation(val as string)} isMobile={false} />
             <Dropdown label={t("search.property_type")} placeholder={t("search.all_types")} options={typeOptions} value={selectedType} onChange={(val) => setSelectedType(val as string)} isMobile={false} />
             <div className="flex flex-col gap-1">
-              <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase">{t("search.bedrooms")}</span>
+              <span className="text-[11px] font-body text-white/80 font-semibold tracking-wide uppercase">{roomsLabel}</span>
               <div className="flex gap-1.5">
                 {BEDROOM_OPTIONS.map((b) => (
                   <button

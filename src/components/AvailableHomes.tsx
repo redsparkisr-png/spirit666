@@ -82,12 +82,14 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
         transition={{ duration: 0.4, delay: index * 0.1 }}
         className="bg-card rounded-2xl overflow-hidden shadow-md transition-all duration-[600ms] ease-out group hover:-translate-y-1 md:hover:[box-shadow:0_18px_44px_-18px_hsl(var(--gold)/0.35)] h-full flex flex-col"
       >
-        <div className="relative aspect-[4/3] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
+        <div className="relative aspect-[3/2] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
           {images.length === 0 && (
             <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
           )}
           {images.map((url, idx) => (
-            <img key={idx} src={optimizedImageUrl(url, { width: 800, quality: 75 })} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-[600ms] ease-out group-hover:scale-[1.03]" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
+            <img key={idx} src={optimizedImageUrl(url, { width: 800, quality: 75 })} alt={lang === "he"
+              ? `${property.title}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
+              : `${property.title}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-all duration-[600ms] ease-out group-hover:scale-[1.03]" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)", objectPosition: "50% 35%" }} loading="lazy" decoding="async" />
           ))}
           {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
           {isNew && (
@@ -128,7 +130,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
 
           {/* Stats row */}
           <div className="flex items-center gap-3 text-xs text-muted-foreground font-body mb-3 flex-wrap">
-            {property.bedrooms && (<span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />{property.bedrooms} {lang === "he" ? "חד׳" : "Bed"}</span>)}
+            {property.bedrooms && (<span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-primary" />{property.bedrooms} {lang === "he" ? "חד׳" : "Rooms"}</span>)}
             {property.built_sqm && (<span className="flex items-center gap-1.5"><Ruler className="w-3.5 h-3.5 text-primary" />{property.built_sqm} {lang === "he" ? 'מ"ר' : "sqm"}</span>)}
             {property.lot_sqm && (<span className="flex items-center gap-1.5"><LandPlot className="w-3.5 h-3.5 text-primary" />{property.lot_sqm} {lang === "he" ? 'מ"ר' : "sqm"}</span>)}
           </div>
@@ -156,19 +158,20 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
   );
 };
 
-const AvailableHomes = ({ limit }: { limit?: number }) => {
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [loaded, setLoaded] = useState(false);
+const AvailableHomes = ({ limit, initialProperties }: { limit?: number; initialProperties?: Property[] }) => {
+  const [properties, setProperties] = useState<Property[]>(initialProperties ?? []);
+  const [loaded, setLoaded] = useState(!!initialProperties);
   const { t } = useSiteContent();
   const { lang } = useLanguage();
   const isHe = lang === "he";
 
   useEffect(() => {
+    if (initialProperties) return;
     supabase.from("properties_available").select("*").order("priority_order", { ascending: true }).then(({ data }) => {
       if (data) setProperties(data);
       setLoaded(true);
     });
-  }, []);
+  }, [initialProperties]);
 
   const isEmpty = loaded && properties.length === 0;
   const displayProperties = limit ? properties.slice(0, limit) : properties;
@@ -201,7 +204,7 @@ const AvailableHomes = ({ limit }: { limit?: number }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="bg-card rounded-2xl overflow-hidden shadow-md">
-                  <div className="aspect-[4/3] bg-muted/60 animate-pulse" />
+                  <div className="aspect-[3/2] bg-muted/60 animate-pulse" />
                   <div className="p-6 space-y-3">
                     <div className="h-5 bg-muted/60 rounded w-3/4 animate-pulse" />
                     <div className="h-4 bg-muted/60 rounded w-full animate-pulse" />
