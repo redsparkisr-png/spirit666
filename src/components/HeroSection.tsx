@@ -138,7 +138,7 @@ const HeroSection = () => {
           >
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
-                href={`/${lang}/properties`}
+                href={`/${lang}/homes-for-sale-zichron-yaakov`}
                 className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3.5 px-8 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] min-h-[52px]"
                 style={{ fontSize: "16px" }}
               >
@@ -175,6 +175,21 @@ const HeroSection = () => {
             >
               {t("home.hero.helper_text")}
             </p>
+
+            {/* Tertiary seller link — English only; Hebrew copy to be added separately */}
+            {!isHe && (
+              <p
+                className="text-white/65 font-body"
+                style={{ fontSize: "clamp(11px, 1.2vw, 13px)", lineHeight: 1.4, marginTop: "6px" }}
+              >
+                <Link
+                  href={`/${lang}/sell`}
+                  className="underline decoration-white/35 hover:text-white/90 hover:decoration-white/70 transition-colors"
+                >
+                  Selling a home in Zichron Yaakov? Request a confidential valuation.
+                </Link>
+              </p>
+            )}
           </motion.div>
         </div>
 
