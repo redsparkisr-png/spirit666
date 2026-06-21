@@ -8,6 +8,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useIsMobile } from "@/hooks/use-mobile";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
+import {
+  trackLeadFormStart,
+  trackLeadFormSubmit,
+  trackLeadFormSuccess,
+  trackLeadFormError,
+} from "@/components/GoogleAnalyticsConsent";
+import { readAttribution } from "@/lib/attribution";
 
 const COOLDOWN_KEY = "exit_popup_last_shown";
 const COOLDOWN_DAYS = 7;
@@ -15,6 +22,7 @@ const COOLDOWN_DAYS = 7;
 const ExitIntentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
+  const [honeypot, setHoneypot] = useState("");
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasFired, setHasFired] = useState(false);
@@ -22,6 +30,7 @@ const ExitIntentPopup = () => {
   const isMobile = useIsMobile();
   const lastScrollY = useRef(0);
   const hasScrolledPast50 = useRef(false);
+  const hasStarted = useRef(false);
 
   const isInCooldown = () => {
     const last = localStorage.getItem(COOLDOWN_KEY);
@@ -66,8 +75,21 @@ const ExitIntentPopup = () => {
     return () => window.removeEventListener("scroll", handler);
   }, [isMobile, showPopup]);
 
+  const onFirstFocus = () => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+    trackLeadFormStart("exit_popup");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) {
+      toast.success(t("home.contact.success"));
+      setFormData({ name: "", phone: "", email: "" });
+      setPrivacyConsent(false);
+      setIsVisible(false);
+      return;
+    }
     if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
       toast.error(t("home.contact.validation_error"));
       return;
@@ -77,17 +99,24 @@ const ExitIntentPopup = () => {
       return;
     }
     setIsSubmitting(true);
+    trackLeadFormSubmit("exit_popup");
+    const attribution = readAttribution();
     const { error } = await supabase.from("leads").insert({
       full_name: formData.name.trim(),
       phone: formData.phone.trim(),
       email: formData.email.trim(),
       source: "under_radar_popup",
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      ...attribution,
     });
     if (error) {
       toast.error(t("home.contact.error"));
+      trackLeadFormError("exit_popup", error.message);
     } else {
+      trackLeadFormSuccess("exit_popup");
       toast.success(t("home.contact.success"));
       setFormData({ name: "", phone: "", email: "" });
+      setHoneypot("");
       setPrivacyConsent(false);
       setIsVisible(false);
     }
@@ -134,11 +163,23 @@ const ExitIntentPopup = () => {
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-3">
+              {/* Honeypot: visually hidden, tab-skipped. Bots fill it; real users never see it. */}
+              <input
+                type="text"
+                name="website_url"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                aria-hidden="true"
+                autoComplete="off"
+                style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+              />
               <input
                 type="text"
                 placeholder={t("home.contact.placeholder_name")}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onFocus={onFirstFocus}
                 maxLength={100}
                 className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
               />

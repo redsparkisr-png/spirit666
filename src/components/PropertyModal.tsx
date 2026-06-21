@@ -14,6 +14,14 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import {
+  trackLeadFormStart,
+  trackLeadFormSubmit,
+  trackLeadFormSuccess,
+  trackLeadFormError,
+  trackWhatsAppClick,
+} from "@/components/GoogleAnalyticsConsent";
+import { readAttribution } from "@/lib/attribution";
 
 type Property = Tables<"properties_available">;
 
@@ -209,35 +217,58 @@ const StickyMobileCTA = ({ onClick, label }: { onClick: () => void; label: strin
 /* ── Main wrapper ── */
 const PropertyModal = ({ property, open, onOpenChange }: Props) => {
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [honeypot, setHoneypot] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const isMobile = useIsMobile();
   const { t } = useSiteContent();
   const formRef = useRef<HTMLFormElement>(null);
+  const hasStarted = useRef(false);
 
   if (!property) return null;
 
+  const slug = property.slug || property.id;
   const images = property.images || [];
   const whatsappText = t("property.modal.whatsapp_text").replace("{title}", property.title);
   const whatsappUrl = `https://wa.me/972522820632?text=${encodeURIComponent(whatsappText)}`;
+  const source = `property_modal:${slug}`;
+
+  const onFirstFocus = () => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+    trackLeadFormStart("property_modal", { property_slug: slug });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) {
+      setSubmitted(true);
+      toast.success(t("property.modal.success"));
+      return;
+    }
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
       toast.error(t("property.modal.validation_error"));
       return;
     }
     setSubmitting(true);
+    trackLeadFormSubmit("property_modal", { property_slug: slug, source });
+    const attribution = readAttribution();
     const { error } = await supabase.from("leads").insert({
       full_name: form.name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
-      source: `property_modal:${property.slug || property.id}`,
+      source,
       message: `${t("property.modal.interested_in")} ${property.title}`,
+      property_slug: slug,
+      property_title: property.title ?? null,
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      ...attribution,
     });
     if (error) {
       toast.error(t("property.modal.error"));
+      trackLeadFormError("property_modal", error.message, { property_slug: slug });
     } else {
+      trackLeadFormSuccess("property_modal", { property_slug: slug, source });
       setSubmitted(true);
       toast.success(t("property.modal.success"));
     }
@@ -247,9 +278,15 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
   const handleClose = (v: boolean) => {
     if (!v) {
       setForm({ name: "", email: "", phone: "" });
+      setHoneypot("");
       setSubmitted(false);
+      hasStarted.current = false;
     }
     onOpenChange(v);
+  };
+
+  const handleWhatsApp = () => {
+    trackWhatsAppClick("property_modal", { property_slug: slug });
   };
 
   const scrollToForm = () => {
@@ -336,11 +373,23 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
             </div>
 
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
+              {/* Honeypot: visually hidden, tab-skipped. Bots fill it; real users never see it. */}
+              <input
+                type="text"
+                name="website_url"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                aria-hidden="true"
+                autoComplete="off"
+                style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+              />
               <input
                 type="text"
                 placeholder={t("property.modal.placeholder_name")}
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onFocus={onFirstFocus}
                 maxLength={100}
                 className="w-full px-4 py-3.5 rounded-lg border border-border bg-card text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               />
@@ -382,6 +431,8 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={handleWhatsApp}
+          data-track-source="property_modal"
           className="flex items-center justify-center gap-2 text-xs font-body font-medium text-muted-foreground hover:text-foreground transition-colors py-1.5"
         >
           <MessageCircle className="w-3.5 h-3.5 text-[hsl(142,70%,40%)]" />

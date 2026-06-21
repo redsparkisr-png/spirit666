@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
-import { trackLeadForm } from "@/components/GoogleAnalyticsConsent";
+import {
+  trackLeadForm,
+  trackLeadFormStart,
+  trackLeadFormSubmit,
+  trackLeadFormSuccess,
+  trackLeadFormError,
+} from "@/components/GoogleAnalyticsConsent";
+import { readAttribution } from "@/lib/attribution";
 
 type Variant = "contact" | "sell" | "valuation" | "guide";
 
@@ -38,11 +45,26 @@ const LeadForm = ({
 }: Props) => {
   const { t } = useSiteContent();
   const [data, setData] = useState({ name: "", phone: "", email: "", message: "", address: "" });
+  const [honeypot, setHoneypot] = useState("");
   const [consent, setConsent] = useState(false);
   const [busy, setBusy] = useState(false);
+  const hasStarted = useRef(false);
+
+  const onFirstFocus = () => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+    trackLeadFormStart(`lead_form_${variant}`, { lang: undefined });
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) {
+      toast.success(t("contact.form.success"));
+      setData({ name: "", phone: "", email: "", message: "", address: "" });
+      setConsent(false);
+      onSuccess?.();
+      return;
+    }
     if (!data.name.trim() || !data.phone.trim() || !data.email.trim()) {
       toast.error(t("home.contact.validation_error"));
       return;
@@ -56,19 +78,27 @@ const LeadForm = ({
     if (includeAddress && data.address.trim()) messageParts.push(`Address: ${data.address.trim()}`);
     if (data.message.trim()) messageParts.push(data.message.trim());
 
+    trackLeadFormSubmit(`lead_form_${variant}`, { source });
+    const attribution = readAttribution();
     const { error } = await supabase.from("leads").insert({
       full_name: data.name.trim(),
       phone: data.phone.trim(),
       email: data.email.trim(),
       message: messageParts.length ? messageParts.join("\n") : null,
       source,
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      ...attribution,
     });
     if (error) {
       toast.error(t("contact.form.error"));
+      trackLeadFormError(`lead_form_${variant}`, error.message);
     } else {
       toast.success(t("contact.form.success"));
       trackLeadForm(source);
+      trackLeadFormSuccess(`lead_form_${variant}`, { source });
       setData({ name: "", phone: "", email: "", message: "", address: "" });
+      setHoneypot("");
+      hasStarted.current = false;
       setConsent(false);
       onSuccess?.();
     }
@@ -87,6 +117,17 @@ const LeadForm = ({
       transition={{ duration: 0.5 }}
       className={`space-y-4 ${className}`}
     >
+      {/* Honeypot: visually hidden, tab-skipped. Bots fill it; real users never see it. */}
+      <input
+        type="text"
+        name="website_url"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        aria-hidden="true"
+        autoComplete="off"
+        style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+      />
       <input
         id={`${idPrefix}-name`}
         type="text"
@@ -94,6 +135,7 @@ const LeadForm = ({
         placeholder={t("contact.form.placeholder_name")}
         value={data.name}
         onChange={(e) => setData({ ...data, name: e.target.value })}
+        onFocus={onFirstFocus}
         maxLength={100}
         className={inputClass}
       />

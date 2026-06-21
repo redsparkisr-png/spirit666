@@ -3,6 +3,7 @@
 import { Calendar, MessageCircle } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import type { Tables } from "@/integrations/supabase/types";
+import { trackWhatsAppClick, trackStickyCtaClick } from "@/components/GoogleAnalyticsConsent";
 
 type Property = Tables<"properties_available">;
 
@@ -14,12 +15,14 @@ type Props = {
 const PropertyStickyBar = ({ property, lang }: Props) => {
   const isHe = lang === "he";
   const { t } = useSiteContent();
+  const slug = property.slug || property.id;
 
   const openWhatsApp = () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
     const text = isHe
       ? `היי, אני מתעניין/ת ב: ${property.title}\n${url}`
       : `Hi, I'm interested in: ${property.title}\n${url}`;
+    trackWhatsAppClick("sticky_bar", { property_slug: slug, lang });
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
 
@@ -28,6 +31,7 @@ const PropertyStickyBar = ({ property, lang }: Props) => {
     const text = isHe
       ? `היי חגית, אשמח לתאם סיור בנכס: ${property.title}\n${url}`
       : `Hi Hagit, I'd like to schedule a viewing for: ${property.title}\n${url}`;
+    trackStickyCtaClick("sticky_bar", "schedule_viewing");
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
 

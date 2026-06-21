@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Calendar, CheckCircle, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +8,15 @@ import { toast } from "sonner";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 import type { Tables } from "@/integrations/supabase/types";
+import {
+  trackLeadFormStart,
+  trackLeadFormSubmit,
+  trackLeadFormSuccess,
+  trackLeadFormError,
+  trackWhatsAppClick,
+  trackStickyCtaClick,
+} from "@/components/GoogleAnalyticsConsent";
+import { readAttribution } from "@/lib/attribution";
 
 type Property = Tables<"properties_available">;
 
@@ -23,6 +32,7 @@ const inputClasses =
 const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
   const isHe = lang === "he";
   const { t } = useSiteContent();
+  const hasStarted = useRef(false);
 
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
   const [honeypot, setHoneypot] = useState("");
@@ -30,11 +40,22 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  const slug = property.slug || property.id || "detail";
+  const formName = `property_inquiry_${variant}`;
+  const source = `property:${slug}`;
+
+  const onFirstFocus = () => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+    trackLeadFormStart(formName, { property_slug: slug, lang });
+  };
+
   const openWhatsApp = () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
     const text = isHe
       ? `היי, אני מתעניין/ת ב: ${property.title}\n${url}`
       : `Hi, I'm interested in: ${property.title}\n${url}`;
+    trackWhatsAppClick("property_inquiry", { property_slug: slug, lang });
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
 
@@ -43,6 +64,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
     const text = isHe
       ? `היי חגית, אשמח לתאם סיור בנכס: ${property.title}\n${url}`
       : `Hi Hagit, I'd like to schedule a viewing for: ${property.title}\n${url}`;
+    trackStickyCtaClick("property_inquiry", "schedule_viewing");
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
 
@@ -63,19 +85,29 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
       return;
     }
     setSubmitting(true);
+    trackLeadFormSubmit(formName, { property_slug: slug, lang, source });
+
+    const attribution = readAttribution();
     const { error } = await supabase.from("leads").insert({
       full_name: formData.name.trim(),
       phone: formData.phone.trim(),
       email: formData.email.trim() || null,
       message: formData.message.trim() || null,
-      source: `property:${property.slug || property.id || "detail"}`,
+      source,
+      lang,
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      property_slug: slug,
+      property_title: property.title ?? null,
+      ...attribution,
     });
     if (error) {
       console.error("Lead insert failed:", error.message);
       toast.error(isHe ? "שגיאה בשליחה, נסו שוב" : "Send failed, please try again");
+      trackLeadFormError(formName, error.message, { property_slug: slug, lang });
       setSubmitting(false);
       return;
     }
+    trackLeadFormSuccess(formName, { property_slug: slug, lang, source });
     toast.success(t("property.detail.inquiry_success"));
     setFormData({ name: "", phone: "", email: "", message: "" });
     setPrivacyConsent(false);
@@ -113,6 +145,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
         placeholder={t("property.detail.name_placeholder")}
         value={formData.name}
         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        onFocus={onFirstFocus}
         className={inputClasses}
         aria-label={t("property.detail.name_placeholder")}
         maxLength={100}

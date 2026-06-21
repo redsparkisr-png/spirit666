@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
@@ -9,6 +9,14 @@ import Header from "@/components/Header";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
 import FAQSection from "@/components/FAQSection";
 import { MapPin, CheckCircle2, Clock, ArrowLeft, ArrowRight, Home, TrendingUp, Eye } from "lucide-react";
+import {
+  trackLeadFormStart,
+  trackLeadFormSubmit,
+  trackLeadFormSuccess,
+  trackLeadFormError,
+  trackWhatsAppClick,
+} from "@/components/GoogleAnalyticsConsent";
+import { readAttribution } from "@/lib/attribution";
 
 // ── Form state ───────────────────────────────────────────────────────────────
 interface FormData {
@@ -49,18 +57,31 @@ const PropertyValuation = () => {
   const Arrow = isHe ? ArrowLeft : ArrowRight;
 
   const [form, setForm] = useState<FormData>(EMPTY);
+  const [honeypot, setHoneypot] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const hasStarted = useRef(false);
 
   const types = isHe ? TYPES_HE : TYPES_EN;
 
   const set = (k: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm((p) => ({ ...p, [k]: e.target.value }));
 
+  const onFirstFocus = () => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+    trackLeadFormStart("valuation_form", { lang });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
+    if (honeypot) {
+      setSubmitting(false);
+      setSubmitted(true);
+      return;
+    }
     if (!form.name.trim() || !form.phone.trim() || !form.address.trim()) {
       setError(isHe ? "אנא מלאו שם, טלפון וכתובת הנכס" : "Please fill in name, phone and property address");
       return;
@@ -75,19 +96,31 @@ const PropertyValuation = () => {
     const safeType = form.type.replace(/[\r\n]+/g, " ");
     const safeNotes = form.notes.replace(/[\r\n]+/g, " ");
 
+    trackLeadFormSubmit("valuation_form", { lang, source: "valuation" });
+    const attribution = readAttribution();
     // Save lead to database so admin panel captures valuation inquiries
-    await supabase.from("leads").insert({
+    const { error: dbError } = await supabase.from("leads").insert({
       full_name: safeName,
       phone: safePhone,
       email: null,
       message: [safeAddress, safeType, safeNotes].filter(Boolean).join(" — ") || null,
       source: "valuation",
+      lang,
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      ...attribution,
     });
+
+    if (dbError) {
+      trackLeadFormError("valuation_form", dbError.message, { lang });
+    } else {
+      trackLeadFormSuccess("valuation_form", { lang, source: "valuation" });
+    }
 
     const waMessage = isHe
       ? `היי, אני מעוניין/ת בהערכת שווי לנכסי בזכרון יעקב.\n\nשם: ${safeName}\nטלפון: ${safePhone}\nכתובת הנכס: ${safeAddress}\nסוג נכס: ${safeType || "לא צוין"}\nהערות: ${safeNotes || "אין"}`
       : `Hi, I'd like a property valuation in Zichron Yaakov.\n\nName: ${safeName}\nPhone: ${safePhone}\nProperty address: ${safeAddress}\nProperty type: ${safeType || "Not specified"}\nNotes: ${safeNotes || "None"}`;
 
+    trackWhatsAppClick("valuation_form", { lang });
     window.open(`https://wa.me/972522820632?text=${encodeURIComponent(waMessage)}`, "_blank");
 
     setSubmitting(false);
@@ -236,6 +269,17 @@ const PropertyValuation = () => {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                      {/* Honeypot: visually hidden, tab-skipped. Bots fill it; real users never see it. */}
+                      <input
+                        type="text"
+                        name="website_url"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                        tabIndex={-1}
+                        aria-hidden="true"
+                        autoComplete="off"
+                        style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+                      />
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-body font-semibold text-muted-foreground mb-1.5">
@@ -245,6 +289,7 @@ const PropertyValuation = () => {
                             type="text"
                             value={form.name}
                             onChange={set("name")}
+                            onFocus={onFirstFocus}
                             placeholder={isHe ? "ישראל ישראלי" : "John Smith"}
                             className={inputBase}
                             autoComplete="name"

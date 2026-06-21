@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { optimizedImageUrl } from "@/lib/image";
 import type { Tables } from "@/integrations/supabase/types";
+import { trackGalleryOpen } from "@/components/GoogleAnalyticsConsent";
 
 type Property = Tables<"properties_available">;
 
@@ -23,6 +24,15 @@ const PropertyGallery = ({ property, lang }: Props) => {
 
   const [currentImg, setCurrentImg] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const galleryTracked = useRef(false);
+
+  const openLightbox = () => {
+    if (!galleryTracked.current) {
+      galleryTracked.current = true;
+      trackGalleryOpen({ property_slug: property.slug || property.id, property_title: property.title });
+    }
+    setLightboxOpen(true);
+  };
 
   useEffect(() => {
     setCurrentImg(0);
@@ -60,7 +70,7 @@ const PropertyGallery = ({ property, lang }: Props) => {
             key={idx}
             src={optimizedImageUrl(url, { width: 1600, quality: 80 })}
             alt={imageAlt(idx)}
-            onClick={() => setLightboxOpen(true)}
+            onClick={openLightbox}
             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 cursor-zoom-in"
             style={{ opacity: currentImg === idx ? 1 : 0 }}
             loading={idx === 0 ? "eager" : "lazy"}

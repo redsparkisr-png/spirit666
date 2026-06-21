@@ -7,6 +7,7 @@ import { optimizedImageUrl } from "@/lib/image";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import PropertyInquiryForm from "@/components/property/PropertyInquiryForm";
 import PropertyStickyBar from "@/components/property/PropertyStickyBar";
+import PropertyViewTracker from "@/components/property/PropertyViewTracker";
 
 type Property = Tables<"properties_available">;
 
@@ -66,6 +67,9 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
   return (
     <main className="min-h-screen bg-background pb-24 lg:pb-0">
       <Header />
+
+      {/* Invisible tracker — fires property_view GA4 event once per page load */}
+      <PropertyViewTracker slug={property.slug || property.id} title={property.title} lang={lang} />
 
       {/* Gallery — client island (carousel, thumbnails, lightbox) */}
       <PropertyGallery property={property} lang={lang} />
@@ -313,6 +317,32 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                 {/* Client island — sidebar inquiry form */}
                 <PropertyInquiryForm property={property} lang={lang} variant="sidebar" />
               </div>
+
+              {/* Trust reassurance block */}
+              <div className="bg-card rounded-2xl border border-border p-5 space-y-3">
+                <p className="font-display font-semibold text-foreground text-sm">
+                  {t("What happens after you contact us?", "מה קורה אחרי שמשאירים פרטים?", isHe)}
+                </p>
+                <ul className="space-y-2 list-none p-0">
+                  {(isHe ? [
+                    "אנחנו בודקים את הפנייה באופן אישי.",
+                    "נוודא אם הנכס עדיין רלוונטי וזמין.",
+                    "נוכל לשלוח כתובת מדויקת, סיור וידאו או פרטים נוספים כשמתאים.",
+                    "אם הנכס לא מדויק, נציע חלופות רלוונטיות.",
+                  ] : [
+                    "We review your request personally.",
+                    "We confirm whether the property is still available.",
+                    "We can share the exact address, video tour, or private details when appropriate.",
+                    "We can suggest similar homes if this one is not the right fit.",
+                  ]).map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-xs font-body text-muted-foreground leading-relaxed">
+                      <span className="text-gold mt-0.5 shrink-0" aria-hidden="true">✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
               <p className="text-[11px] text-muted-foreground/60 font-body text-center">
                 {t("Your details are kept confidential.", "פרטיכם נשמרים בסודיות.", isHe)}
               </p>
