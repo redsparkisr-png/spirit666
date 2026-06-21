@@ -24,6 +24,8 @@ type Props = {
   includeAddress?: boolean;
   idPrefix?: string;
   buttonLabel?: string;
+  /** Optional override for the address-field placeholder (presentational only). */
+  addressPlaceholder?: string;
   onSuccess?: () => void;
   className?: string;
 };
@@ -40,6 +42,7 @@ const LeadForm = ({
   includeAddress = false,
   idPrefix = "lead",
   buttonLabel,
+  addressPlaceholder,
   onSuccess,
   className = "",
 }: Props) => {
@@ -163,8 +166,8 @@ const LeadForm = ({
         <input
           id={`${idPrefix}-address`}
           type="text"
-          aria-label={t("sell.valuation.address_placeholder")}
-          placeholder={t("sell.valuation.address_placeholder")}
+          aria-label={addressPlaceholder ?? t("sell.valuation.address_placeholder")}
+          placeholder={addressPlaceholder ?? t("sell.valuation.address_placeholder")}
           value={data.address}
           onChange={(e) => setData({ ...data, address: e.target.value })}
           maxLength={200}
