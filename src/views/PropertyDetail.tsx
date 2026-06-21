@@ -1,26 +1,19 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { BedDouble, Ruler, LandPlot, ChevronLeft, ChevronRight, MessageCircle, CheckCircle, Bath, Car, Shield, Trees, MapPin, Calendar, X } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { BedDouble, Ruler, LandPlot, Bath, Car, Shield, MapPin, ChevronRight } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
-import { useLanguage } from "@/lib/i18n";
-import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
-import { toast } from "sonner";
-import { motion } from "framer-motion";
-import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
-import BreadcrumbNav from "@/components/BreadcrumbNav";
 import { optimizedImageUrl } from "@/lib/image";
-
-const SITE_ORIGIN = "https://spiritisraelhomes.com";
+import PropertyGallery from "@/components/property/PropertyGallery";
+import PropertyInquiryForm from "@/components/property/PropertyInquiryForm";
+import PropertyStickyBar from "@/components/property/PropertyStickyBar";
 
 type Property = Tables<"properties_available">;
 
 type Props = {
   property: Property | null;
   similar: Property[];
+  lang: string;
 };
 
 const TAG_STYLES: Record<string, string> = {
@@ -35,158 +28,38 @@ const TAG_STYLES: Record<string, string> = {
 };
 const getTagStyle = (tag: string) => TAG_STYLES[tag] || "bg-muted text-muted-foreground border-border";
 
-const PropertyDetail = ({ property, similar }: Props) => {
-  const { lang } = useLanguage();
-  const { t } = useSiteContent();
+const t = (en: string, he: string, isHe: boolean) => (isHe ? he : en);
+
+const PropertyDetail = ({ property, similar, lang }: Props) => {
   const isHe = lang === "he";
-  const imageAlt = (p: Property, idx: number) =>
-    isHe
-      ? `${p.title}${p.location ? ` ב${p.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
-      : `${p.title}${p.location ? ` in ${p.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`;
-  const [currentImg, setCurrentImg] = useState(0);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
-  const [privacyConsent, setPrivacyConsent] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  useEffect(() => {
-    setCurrentImg(0);
-    setSubmitted(false);
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, [property?.id]);
-
-  useEffect(() => {
-    if (!lightboxOpen) return;
-    const imgs = property?.images || [];
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLightboxOpen(false);
-      else if (e.key === "ArrowRight") setCurrentImg((c) => (c + 1) % imgs.length);
-      else if (e.key === "ArrowLeft") setCurrentImg((c) => (c - 1 + imgs.length) % imgs.length);
-    };
-    window.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [lightboxOpen, property]);
-
-  const handleInquiry = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name.trim() || !formData.phone.trim()) {
-      toast.error(t("property.detail.validation_error"));
-      return;
-    }
-    if (!privacyConsent) {
-      toast.error(t("form.privacy_consent_required"));
-      return;
-    }
-    setSubmitting(true);
-    const { error } = await supabase.from("leads").insert({
-      full_name: formData.name.trim(),
-      phone: formData.phone.trim(),
-      email: formData.email.trim() || null,
-      message: formData.message.trim() || null,
-      source: `property:${property?.slug || property?.id || "detail"}`,
-    });
-    if (error) {
-      console.error("Lead insert failed:", error.message);
-      toast.error(isHe ? "שגיאה בשליחה, נסו שוב" : "Send failed, please try again");
-      setSubmitting(false);
-      return;
-    }
-    toast.success(t("property.detail.inquiry_success"));
-    setFormData({ name: "", phone: "", email: "", message: "" });
-    setPrivacyConsent(false);
-    setSubmitting(false);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-  };
-
-  const openWhatsApp = () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    const text = isHe
-      ? `היי, אני מתעניין/ת ב: ${property?.title || "נכס"}\n${url}`
-      : `Hi, I'm interested in: ${property?.title || "a property"}\n${url}`;
-    window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
-  };
-
-  const scheduleViewing = () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    const text = isHe
-      ? `היי חגית, אשמח לתאם סיור בנכס: ${property?.title || "נכס"}\n${url}`
-      : `Hi Hagit, I'd like to schedule a viewing for: ${property?.title || "a property"}\n${url}`;
-    window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
-  };
 
   if (!property) {
     return (
       <main className="min-h-screen bg-background">
         <Header />
         <div className="container px-6 py-20 text-center">
-          <h1 className="text-2xl font-display font-semibold text-foreground mb-4">{t("property.detail.not_found")}</h1>
-          <Link href={`/${lang}/properties`} className="text-charcoal underline font-body text-sm">{t("property.detail.back_to_listings")}</Link>
+          <h1 className="text-2xl font-display font-semibold text-foreground mb-4">
+            {t("Property not found", "הנכס לא נמצא", isHe)}
+          </h1>
+          <Link href={`/${lang}/properties`} className="text-charcoal underline font-body text-sm">
+            {t("Back to listings", "חזרה לנכסים", isHe)}
+          </Link>
         </div>
       </main>
     );
   }
 
-  const images = property.images || [];
   const tags = property.tags || [];
-  const inputClasses = "w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground font-body text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-charcoal/30";
-
-  const inquiryForm = (idSuffix: string) => (
-    submitted ? (
-      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center py-6 gap-3">
-        <CheckCircle className="w-10 h-10 text-green-600" />
-        <p className="font-body text-foreground font-medium text-sm">{t("property.detail.inquiry_success")}</p>
-      </motion.div>
-    ) : (
-      <form onSubmit={handleInquiry} className="space-y-3">
-        <input type="text" placeholder={t("property.detail.name_placeholder")} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClasses} aria-label={t("property.detail.name_placeholder")} />
-        <input type="tel" placeholder={t("property.detail.phone_placeholder")} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className={inputClasses} aria-label={t("property.detail.phone_placeholder")} />
-        <input type="email" placeholder={t("property.detail.email_placeholder")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputClasses} aria-label={t("property.detail.email_placeholder")} />
-        <textarea placeholder={t("property.detail.message_placeholder")} value={formData.message || `${isHe ? "מעוניין ב:" : "Interested in:"} ${property.title}`} onChange={(e) => setFormData({ ...formData, message: e.target.value })} rows={2} className={`${inputClasses} resize-none`} aria-label={t("property.detail.message_placeholder")} />
-        <PrivacyConsentCheckbox
-          checked={privacyConsent}
-          onCheckedChange={setPrivacyConsent}
-          id={`property-privacy-consent-${idSuffix}`}
-        />
-        {idSuffix === "sidebar" ? (
-          <div className="space-y-2">
-            <div className="flex gap-3">
-              <button type="submit" disabled={submitting} className="flex-1 bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
-                {submitting ? "..." : t("property.detail.send_inquiry")}
-              </button>
-              <button type="button" onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
-                <MessageCircle className="w-4 h-4" />
-                WhatsApp
-              </button>
-            </div>
-            <button type="button" onClick={scheduleViewing} className="w-full flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-all duration-300 hover:shadow-md">
-              <Calendar className="w-4 h-4" />
-              {isHe ? "תאמו סיור בנכס" : "Schedule a Viewing"}
-            </button>
-          </div>
-        ) : (
-          <button type="submit" disabled={submitting} className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors disabled:opacity-60">
-            {submitting ? "..." : t("property.detail.send_inquiry")}
-          </button>
-        )}
-      </form>
-    )
-  );
 
   type StatItem = { icon: React.ElementType; value: string | number; label: string };
   const detailStats = (
     [
-      property.bedrooms ? { icon: BedDouble, value: property.bedrooms, label: isHe ? "חדרים" : "Rooms" } : null,
-      property.bathrooms ? { icon: Bath, value: property.bathrooms, label: isHe ? "חדרי רחצה" : "Bathrooms" } : null,
-      property.built_sqm ? { icon: Ruler, value: `${property.built_sqm} m²`, label: isHe ? 'מ"ר בנוי' : "Built" } : null,
-      property.lot_sqm ? { icon: LandPlot, value: `${property.lot_sqm} m²`, label: isHe ? 'מ"ר מגרש' : "Lot" } : null,
-      property.parking ? { icon: Car, value: property.parking, label: isHe ? "חניה" : "Parking" } : null,
-      property.mamad ? { icon: Shield, value: isHe ? "כן" : "Yes", label: isHe ? "ממ\"ד" : "Mamad" } : null,
+      property.bedrooms ? { icon: BedDouble, value: property.bedrooms, label: t("Rooms", "חדרים", isHe) } : null,
+      property.bathrooms ? { icon: Bath, value: property.bathrooms, label: t("Bathrooms", "חדרי רחצה", isHe) } : null,
+      property.built_sqm ? { icon: Ruler, value: `${property.built_sqm} m²`, label: t("Built", 'מ"ר בנוי', isHe) } : null,
+      property.lot_sqm ? { icon: LandPlot, value: `${property.lot_sqm} m²`, label: t("Lot", 'מ"ר מגרש', isHe) } : null,
+      property.parking ? { icon: Car, value: property.parking, label: t("Parking", "חניה", isHe) } : null,
+      property.mamad ? { icon: Shield, value: t("Yes", "כן", isHe), label: t('Mamad', 'ממ"ד', isHe) } : null,
     ] as (StatItem | null)[]
   ).filter((s): s is StatItem => s !== null);
 
@@ -194,212 +67,262 @@ const PropertyDetail = ({ property, similar }: Props) => {
     <main className="min-h-screen bg-background pb-24 lg:pb-0">
       <Header />
 
-      <div className="relative w-full aspect-[16/9] md:aspect-[2.1/1] bg-charcoal overflow-hidden">
-        {images.length === 0 ? (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground font-body">No images</div>
-        ) : (
-          <>
-            {images.map((url, idx) => (
-              <img key={idx} src={optimizedImageUrl(url, { width: 1600, quality: 80 })} alt={imageAlt(property, idx)} onClick={() => setLightboxOpen(true)} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 cursor-zoom-in" style={{ opacity: currentImg === idx ? 1 : 0 }} loading={idx === 0 ? "eager" : "lazy"} decoding="async" fetchPriority={idx === 0 ? "high" : undefined} />
-            ))}
-            {images.length > 1 && (
-              <>
-                <button onClick={() => setCurrentImg((c) => (c - 1 + images.length) % images.length)} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/50 transition-colors" aria-label="Previous image">
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button onClick={() => setCurrentImg((c) => (c + 1) % images.length)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/50 transition-colors" aria-label="Next image">
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/40 backdrop-blur-sm text-white text-xs font-body px-3 py-1 rounded-full">
-                  {currentImg + 1} / {images.length}
-                </div>
-              </>
-            )}
-          </>
-        )}
-      </div>
-
-      {images.length > 1 && (
-        <div className="container px-6 py-3 flex gap-2.5 overflow-x-auto scrollbar-hide">
-          {images.map((url, idx) => (
-            <button key={idx} onClick={() => setCurrentImg(idx)} className={`flex-shrink-0 w-[88px] h-[60px] rounded-lg overflow-hidden border-2 bg-charcoal/5 transition-colors ${currentImg === idx ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"}`} aria-label={`View image ${idx + 1}`}>
-              <img src={optimizedImageUrl(url, { width: 200, quality: 70 })} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
-            </button>
-          ))}
-        </div>
-      )}
-
-      {lightboxOpen && images.length > 0 && (
-        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={() => setLightboxOpen(false)} role="dialog" aria-modal="true">
-          <button onClick={(e) => { e.stopPropagation(); setLightboxOpen(false); }} className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10" aria-label="Close">
-            <X className="w-6 h-6" />
-          </button>
-          <img src={optimizedImageUrl(images[currentImg], { width: 2000, quality: 85 })} alt={imageAlt(property, currentImg)} onClick={(e) => e.stopPropagation()} className="max-w-[95vw] max-h-[90vh] object-contain select-none" />
-          {images.length > 1 && (
-            <>
-              <button onClick={(e) => { e.stopPropagation(); setCurrentImg((c) => (c - 1 + images.length) % images.length); }} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors" aria-label="Previous image">
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button onClick={(e) => { e.stopPropagation(); setCurrentImg((c) => (c + 1) % images.length); }} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors" aria-label="Next image">
-                <ChevronRight className="w-6 h-6" />
-              </button>
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-sm text-white text-sm font-body px-4 py-1.5 rounded-full">
-                {currentImg + 1} / {images.length}
-              </div>
-            </>
-          )}
-        </div>
-      )}
+      {/* Gallery — client island (carousel, thumbnails, lightbox) */}
+      <PropertyGallery property={property} lang={lang} />
 
       <div className="container px-6 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-          <div className="lg:col-span-2 space-y-8">
-            <div>
-              <BreadcrumbNav items={[
-                { label: t("header.nav.properties"), to: `/${lang}/properties` },
-                { label: property.title },
-              ]} />
-              <h1 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-2">{property.title}</h1>
+
+          {/* Main content column */}
+          <article className="lg:col-span-2 space-y-8">
+
+            {/* Breadcrumbs */}
+            <nav aria-label="Breadcrumb">
+              <ol className="flex items-center gap-1.5 text-sm font-body text-muted-foreground flex-wrap mb-4">
+                <li>
+                  <Link href={`/${lang}/`} className="hover:text-foreground transition-colors">
+                    {t("Home", "דף הבית", isHe)}
+                  </Link>
+                </li>
+                <li className="flex items-center gap-1.5">
+                  <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/50 rtl:rotate-180" aria-hidden="true" />
+                  <Link href={`/${lang}/properties`} className="hover:text-foreground transition-colors">
+                    {t("Properties", "נכסים", isHe)}
+                  </Link>
+                </li>
+                <li className="flex items-center gap-1.5">
+                  <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/50 rtl:rotate-180" aria-hidden="true" />
+                  <span className="text-foreground font-medium">{property.title}</span>
+                </li>
+              </ol>
+            </nav>
+
+            {/* H1, location, tags, price */}
+            <section aria-label={t("Property overview", "סקירת נכס", isHe)}>
+              <h1 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-2">
+                {property.title}
+              </h1>
               {property.location && (
-                <p className="flex items-center gap-1.5 text-muted-foreground font-body text-sm">
-                  <MapPin className="w-4 h-4 text-gold" />
+                <p className="flex items-center gap-1.5 text-muted-foreground font-body text-sm mb-4">
+                  <MapPin className="w-4 h-4 text-gold" aria-hidden="true" />
                   {property.location}
                   {property.neighborhood_note ? ` — ${property.neighborhood_note}` : ""}
                 </p>
               )}
-            </div>
-
-            {tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <span key={tag} className={`text-xs font-body font-semibold px-3 py-1 rounded-full border ${getTagStyle(tag)}`}>{tag}</span>
-                ))}
-              </div>
-            )}
-
-            <div>
-              {property.price_label ? (
-                <p className="text-2xl font-display font-semibold bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">{property.price_label}</p>
-              ) : (
-                <p className="text-lg font-body text-muted-foreground italic">{t("property.detail.price_upon_request")}</p>
+              {tags.length > 0 && (
+                <ul className="flex flex-wrap gap-2 list-none p-0 mb-4" aria-label={t("Property features", "מאפייני הנכס", isHe)}>
+                  {tags.map((tag) => (
+                    <li key={tag}>
+                      <span className={`text-xs font-body font-semibold px-3 py-1 rounded-full border ${getTagStyle(tag)}`}>
+                        {tag}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               )}
-            </div>
+              {property.price_label ? (
+                <p className="text-2xl font-display font-semibold bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">
+                  {property.price_label}
+                </p>
+              ) : (
+                <p className="text-lg font-body text-muted-foreground italic">
+                  {t("Price upon request", "מחיר לפי בקשה", isHe)}
+                </p>
+              )}
+            </section>
 
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-              {detailStats.map((stat, idx) => (
-                <div key={idx} className="bg-card rounded-xl p-3 md:p-4 text-center border border-border">
-                  <stat.icon className="w-5 h-5 mx-auto mb-1.5 text-charcoal" />
-                  <p className="font-display font-semibold text-foreground text-sm">{stat.value}</p>
-                  <p className="text-[10px] text-muted-foreground font-body">{stat.label}</p>
+            {/* Stats grid */}
+            {detailStats.length > 0 && (
+              <section aria-label={t("Property details", "פרטי הנכס", isHe)}>
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                  {detailStats.map((stat, idx) => (
+                    <div key={idx} className="bg-card rounded-xl p-3 md:p-4 text-center border border-border">
+                      <stat.icon className="w-5 h-5 mx-auto mb-1.5 text-charcoal" aria-hidden="true" />
+                      <p className="font-display font-semibold text-foreground text-sm">{stat.value}</p>
+                      <p className="text-[10px] text-muted-foreground font-body">{stat.label}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            {!!property.bedrooms && (
-              <p className="text-[11px] text-muted-foreground/60 font-body -mt-1">
-                {isHe ? "ספירת חדרים כוללת בדרך כלל את הסלון, כנהוג בישראל." : "In Israel, room count usually includes the living room."}
-              </p>
+                {!!property.bedrooms && (
+                  <p className="text-[11px] text-muted-foreground/60 font-body mt-2">
+                    {t(
+                      "In Israel, room count usually includes the living room.",
+                      "ספירת חדרים כוללת בדרך כלל את הסלון, כנהוג בישראל.",
+                      isHe
+                    )}
+                  </p>
+                )}
+              </section>
             )}
 
-            {property.short_description && (
-              <div>
-                <h2 className="text-xl font-display font-semibold text-foreground mb-3">{t("property.detail.overview")}</h2>
-                <p className="text-muted-foreground font-body leading-relaxed">{property.short_description}</p>
-              </div>
+            {/* Descriptions */}
+            {(property.short_description || property.full_description) && (
+              <section aria-label={t("Property description", "תיאור הנכס", isHe)}>
+                {property.short_description && (
+                  <div className="mb-6">
+                    <h2 className="text-xl font-display font-semibold text-foreground mb-3">
+                      {t("Overview", "סקירה", isHe)}
+                    </h2>
+                    <p className="text-muted-foreground font-body leading-relaxed">{property.short_description}</p>
+                  </div>
+                )}
+                {property.full_description && (
+                  <div>
+                    <h2 className="text-xl font-display font-semibold text-foreground mb-3">
+                      {t("Full Description", "תיאור מלא", isHe)}
+                    </h2>
+                    <div className="text-muted-foreground font-body leading-relaxed whitespace-pre-line">
+                      {property.full_description}
+                    </div>
+                  </div>
+                )}
+              </section>
             )}
 
-            {property.full_description && (
-              <div>
-                <h2 className="text-xl font-display font-semibold text-foreground mb-3">{isHe ? "תיאור מלא" : "Full Description"}</h2>
-                <div className="text-muted-foreground font-body leading-relaxed whitespace-pre-line">{property.full_description}</div>
-              </div>
-            )}
-
+            {/* Neighborhood */}
             {(property.location || property.neighborhood_note) && (
-              <div className="bg-card rounded-xl border border-border p-6">
+              <section
+                aria-label={t("About the neighborhood", "על השכונה", isHe)}
+                className="bg-card rounded-xl border border-border p-6"
+              >
                 <h2 className="text-xl font-display font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-gold" />
-                  {isHe ? "על השכונה" : "About the Neighborhood"}
+                  <MapPin className="w-5 h-5 text-gold" aria-hidden="true" />
+                  {t("About the Neighborhood", "על השכונה", isHe)}
                 </h2>
                 <p className="text-muted-foreground font-body leading-relaxed">
-                  {property.neighborhood_note || (isHe
-                    ? `${property.location} הוא אזור מבוקש בזכרון יעקב עם קהילה חמה ונגישות מצוינת.`
-                    : `${property.location} is a sought-after area in Zichron Yaakov with a warm community and excellent accessibility.`
+                  {property.neighborhood_note || t(
+                    `${property.location} is a sought-after area in Zichron Yaakov with a warm community and excellent accessibility.`,
+                    `${property.location} הוא אזור מבוקש בזכרון יעקב עם קהילה חמה ונגישות מצוינת.`,
+                    isHe
                   )}
                 </p>
                 {property.google_maps_url && (
-                  <a href={property.google_maps_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-gold hover:text-gold-hover font-body text-sm mt-3 transition-colors">
-                    <MapPin className="w-3.5 h-3.5" />
-                    {isHe ? "הצג במפה" : "View on Map"}
+                  <a
+                    href={property.google_maps_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-gold hover:text-gold-hover font-body text-sm mt-3 transition-colors"
+                  >
+                    <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
+                    {t("View on Map", "הצג במפה", isHe)}
                   </a>
                 )}
-              </div>
+              </section>
             )}
 
+            {/* FOMO banner */}
             <div className="bg-bronze/10 border border-bronze/20 rounded-lg px-5 py-3">
-              <p className="text-sm text-bronze font-body italic">{t("property.detail.fomo_line")}</p>
+              <p className="text-sm text-bronze font-body italic">
+                {t(
+                  "Premium properties in this area don't stay available long.",
+                  "נכסי פרימיום באזור הזה לא נשארים זמינים לאורך זמן.",
+                  isHe
+                )}
+              </p>
             </div>
 
-            <div id="inquiry-form-mobile" className="bg-card rounded-2xl border border-border p-6 space-y-5 shadow-sm">
-              <h3 className="font-display font-semibold text-foreground text-lg">{t("property.detail.interested_title")}</h3>
-              <div className="flex gap-3">
-                <button onClick={scheduleViewing} className="flex-1 flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3 px-5 rounded-lg font-body font-medium text-sm transition-all duration-300">
-                  <Calendar className="w-4 h-4" />
-                  {isHe ? "תאמו סיור" : "Schedule a Viewing"}
-                </button>
-                <button onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-5 rounded-lg font-body font-medium text-sm transition-colors">
-                  <MessageCircle className="w-4 h-4" />
-                  WhatsApp
-                </button>
-              </div>
-              <div>{inquiryForm("mobile")}</div>
-            </div>
+            {/* Mobile inquiry section — client island */}
+            <section id="inquiry-form-mobile" className="bg-card rounded-2xl border border-border p-6 space-y-5 shadow-sm">
+              <h3 className="font-display font-semibold text-foreground text-lg">
+                {t("Interested in this home?", "מתעניינים בנכס הזה?", isHe)}
+              </h3>
+              <PropertyInquiryForm property={property} lang={lang} variant="mobile" />
+            </section>
 
+            {/* Similar properties */}
             {similar.length > 0 && (
-              <div className="pt-4">
-                <h2 className="text-xl font-display font-semibold text-foreground mb-6">{t("property.detail.similar_title")}</h2>
+              <section aria-label={t("Similar properties", "נכסים דומים", isHe)} className="pt-4">
+                <h2 className="text-xl font-display font-semibold text-foreground mb-6">
+                  {t("Similar Properties", "נכסים דומים", isHe)}
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {similar.map((sp) => (
-                    <Link key={sp.id} href={`/${lang}/property/${sp.slug || sp.id}`} className="group cursor-pointer rounded-2xl overflow-hidden bg-card border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-                      <div className="aspect-[4/3] bg-muted overflow-hidden">
-                        {sp.images?.[0] ? (
-                          <img src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })} alt={imageAlt(sp, 0)} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
-                        ) : (
-                          <div className="w-full h-full bg-muted" />
-                        )}
-                      </div>
-                      <div className="p-3">
-                        <p className="font-display font-semibold text-foreground text-sm truncate">{sp.title}</p>
-                        {sp.price_label && (<p className="text-xs text-gold font-body mt-1">{sp.price_label}</p>)}
-                      </div>
-                    </Link>
-                  ))}
+                  {similar.map((sp) => {
+                    const alt = isHe
+                      ? `${sp.title}${sp.location ? ` ב${sp.location}` : ""}, זכרון יעקב`
+                      : `${sp.title}${sp.location ? ` in ${sp.location}` : ""}, Zichron Yaakov`;
+                    return (
+                      <Link
+                        key={sp.id}
+                        href={`/${lang}/property/${sp.slug || sp.id}`}
+                        className="group cursor-pointer rounded-2xl overflow-hidden bg-card border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                      >
+                        <div className="aspect-[4/3] bg-muted overflow-hidden">
+                          {sp.images?.[0] ? (
+                            <img
+                              src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })}
+                              alt={alt}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-muted" />
+                          )}
+                        </div>
+                        <div className="p-3">
+                          <p className="font-display font-semibold text-foreground text-sm truncate">{sp.title}</p>
+                          {sp.price_label && (
+                            <p className="text-xs text-gold font-body mt-1">{sp.price_label}</p>
+                          )}
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
-              </div>
+              </section>
             )}
-          </div>
 
-          <div className="lg:col-span-1 hidden lg:block">
+            {/* Internal links */}
+            <nav aria-label={t("Explore more", "עמודים נוספים", isHe)} className="pt-2 border-t border-border">
+              <ul className="flex flex-wrap gap-x-6 gap-y-2 list-none p-0">
+                <li>
+                  <Link
+                    href={`/${lang}/properties`}
+                    className="text-sm font-body text-gold hover:text-gold-hover transition-colors underline-offset-2 hover:underline"
+                  >
+                    {t("All properties for sale", "כל הנכסים למכירה", isHe)}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${lang}/homes-for-sale-zichron-yaakov`}
+                    className="text-sm font-body text-gold hover:text-gold-hover transition-colors underline-offset-2 hover:underline"
+                  >
+                    {t("Homes for sale – Zichron Yaakov", "דירות למכירה – זכרון יעקב", isHe)}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${lang}/contact`}
+                    className="text-sm font-body text-gold hover:text-gold-hover transition-colors underline-offset-2 hover:underline"
+                  >
+                    {t("Contact us", "צרו קשר", isHe)}
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </article>
+
+          {/* Sidebar — desktop only */}
+          <aside className="lg:col-span-1 hidden lg:block">
             <div className="sticky top-20 space-y-4">
               <div id="inquiry-form" className="bg-card rounded-2xl border border-border p-5 md:p-6 space-y-4 shadow-sm">
-                <h3 className="font-display font-semibold text-foreground text-lg">{t("property.detail.inquiry_title")}</h3>
-                {inquiryForm("sidebar")}
+                <h3 className="font-display font-semibold text-foreground text-lg">
+                  {t("Request Private Details", "בקשת פרטים", isHe)}
+                </h3>
+                {/* Client island — sidebar inquiry form */}
+                <PropertyInquiryForm property={property} lang={lang} variant="sidebar" />
               </div>
-              <p className="text-[11px] text-muted-foreground/60 font-body text-center">{t("property.detail.privacy_note")}</p>
+              <p className="text-[11px] text-muted-foreground/60 font-body text-center">
+                {t("Your details are kept confidential.", "פרטיכם נשמרים בסודיות.", isHe)}
+              </p>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
 
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-card border-t border-border px-4 py-3 flex gap-3" style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}>
-        <button onClick={scheduleViewing} className="flex-1 flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-all duration-300">
-          <Calendar className="w-4 h-4" />
-          {isHe ? "סיור" : "Schedule Viewing"}
-        </button>
-        <button onClick={openWhatsApp} className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-body font-medium text-sm transition-colors">
-          <MessageCircle className="w-4 h-4" />
-          {t("property.detail.whatsapp_cta")}
-        </button>
-      </div>
+      {/* Mobile sticky bar — client island */}
+      <PropertyStickyBar property={property} lang={lang} />
     </main>
   );
 };

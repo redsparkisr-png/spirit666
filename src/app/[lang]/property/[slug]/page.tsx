@@ -208,7 +208,7 @@ export default async function PropertyDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPropertySchema(property, lang)) }}
       />
-      <PropertyDetail property={property} similar={similar} />
+      <PropertyDetail property={property} similar={similar} lang={l} />
     </>
   );
 }
