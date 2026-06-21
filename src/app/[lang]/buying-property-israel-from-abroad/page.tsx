@@ -3,11 +3,9 @@ import { notFound } from "next/navigation";
 import { getSeoPageContent, buildMetadata, buildSeoPageJsonLd } from "@/lib/seo";
 import SeoLandingPage from "@/components/seo/SeoLandingPage";
 
-// Old view: src/views/BuyingProperty.tsx — preserved on disk, no longer imported.
-
 export const revalidate = 3600;
 
-const SLUG = "buying-property-zichron-yaakov";
+const SLUG = "buying-property-israel-from-abroad";
 
 export async function generateMetadata({
   params,
@@ -20,7 +18,7 @@ export async function generateMetadata({
   return buildMetadata(content);
 }
 
-export default async function BuyingPropertyZichronPage({
+export default async function BuyingPropertyAbroadPage({
   params,
 }: {
   params: Promise<{ lang: string }>;

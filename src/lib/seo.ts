@@ -7,6 +7,8 @@
 import type { Metadata } from "next";
 import type { BilingualSeoPageContent, ResolvedSeoPageContent } from "@/types/seo-content";
 import { homesForSaleContent } from "@/content/seo/homes-for-sale";
+import { buyingPropertyZichronContent } from "@/content/seo/buying-property-zichron-yaakov";
+import { buyingPropertyAbroadContent } from "@/content/seo/buying-property-israel-from-abroad";
 
 const SITE = "https://spiritisraelhomes.com";
 
@@ -14,6 +16,8 @@ const SITE = "https://spiritisraelhomes.com";
 // Add new BilingualSeoPageContent entries here as pages are built.
 const REGISTRY: Record<string, BilingualSeoPageContent> = {
   [homesForSaleContent.slug]: homesForSaleContent,
+  [buyingPropertyZichronContent.slug]: buyingPropertyZichronContent,
+  [buyingPropertyAbroadContent.slug]: buyingPropertyAbroadContent,
 };
 
 // Resolves bilingual content to a single language. Returns null for unknown slugs.
