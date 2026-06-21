@@ -5,7 +5,7 @@ export const buyingPropertyZichronContent: BilingualSeoPageContent = {
 
   // ─── English (Phase 3B.2: approved content) ───────────────────────────────
   en: {
-    seoTitle: "Buying Property in Zichron Yaakov | Local Buyer Guide",
+    seoTitle: "Buying Property in Zichron Yaakov | Spirit Real Estate",
 
     metaDescription:
       "A practical guide to buying property in Zichron Yaakov, including neighborhoods, property types, due diligence, common buyer mistakes and how local guidance helps before making an offer.",

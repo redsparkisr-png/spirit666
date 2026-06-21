@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const m = META[l];
   const url = `${SITE}/${l}/`;
   return {
-    title: m.title,
+    title: { absolute: m.title },
     description: m.description,
     alternates: {
       canonical: url,
