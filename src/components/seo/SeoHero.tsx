@@ -10,8 +10,10 @@ interface Props {
 }
 
 // Server component — no hooks, no framer-motion. Content renders in initial HTML.
+// intro supports \n\n paragraph breaks.
 export default function SeoHero({ h1, eyebrow, intro, breadcrumbLabel, lang }: Props) {
   const isHe = lang === "he";
+  const paragraphs = intro.split(/\n\n+/).filter(Boolean);
 
   return (
     <section className="py-16 md:py-24 bg-background">
@@ -40,7 +42,11 @@ export default function SeoHero({ h1, eyebrow, intro, breadcrumbLabel, lang }: P
             </span>
           )}
           <h1 className="font-display font-semibold text-foreground mb-4">{h1}</h1>
-          <p className="text-muted-foreground font-body text-lg max-w-xl mx-auto">{intro}</p>
+          {paragraphs.map((para, i) => (
+            <p key={i} className="text-muted-foreground font-body text-lg max-w-xl mx-auto mb-3 last:mb-0">
+              {para}
+            </p>
+          ))}
         </div>
       </div>
     </section>

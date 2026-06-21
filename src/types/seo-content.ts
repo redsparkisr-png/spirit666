@@ -1,8 +1,10 @@
 export interface SeoSection {
   h2: string;
-  body?: string;
+  body?: string;                 // supports \n\n for multiple paragraphs
   bullets?: string[];
+  bodyAfterBullets?: string;     // text rendered after the bullet list
   subsections?: Array<{ h3: string; body: string }>;
+  sectionLink?: { label: string; href: string }; // inline CTA link at end of section
 }
 
 export interface SeoFaqItem {
@@ -17,9 +19,11 @@ export interface SeoCta {
   headline?: string;
   subline?: string;
   label: string;
-  href?: string;        // for "link" variant — relative path e.g. "/contact"
-  formSource?: string;  // for "form" variant — leads.source value
-  waText?: string;      // for "whatsapp" variant — pre-filled message text
+  href?: string;            // "link" variant — relative path e.g. "/contact"
+  formSource?: string;      // "form" variant — leads.source value
+  waText?: string;          // "whatsapp" variant — pre-filled message text
+  waHref?: string;          // "whatsapp" variant — full URL override (overrides waText + hardcoded number)
+  secondaryCta?: { label: string; href: string }; // optional secondary link below primary CTA
 }
 
 export interface SeoInternalLink {
@@ -35,11 +39,12 @@ export interface ResolvedSeoPageContent {
   metaDescription: string;
   h1: string;
   eyebrow?: string;
-  heroIntro: string;
+  heroIntro: string;             // supports \n\n for multiple paragraphs
   sections: SeoSection[];
   faq?: SeoFaqItem[];
   faqTitle?: string;
   inlineProperties?: boolean;
+  inlinePropertiesAfterSection?: number; // 0-based index; properties render after this section
   disclaimer?: string;
   showBlueprintBlock?: boolean;
   showRelatedGuides?: boolean;

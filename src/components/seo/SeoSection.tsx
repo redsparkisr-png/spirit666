@@ -1,13 +1,17 @@
+import Link from "next/link";
 import type { SeoSection as SeoSectionData } from "@/types/seo-content";
 
 interface Props {
   section: SeoSectionData;
-  alt?: boolean; // alternates background: false = bg-background, true = bg-card
+  alt?: boolean;   // alternates background: false = bg-background, true = bg-card
+  lang?: string;   // required only when section has a sectionLink
 }
 
-// Server component — renders H2, body, bullets and subsections in initial HTML.
-export default function SeoSection({ section, alt = false }: Props) {
+// Server component — renders H2, multi-paragraph body, bullets, bodyAfterBullets,
+// subsections, and an optional inline section link. All in initial HTML.
+export default function SeoSection({ section, alt = false, lang }: Props) {
   const bg = alt ? "bg-card" : "bg-background";
+  const bodyParas = section.body ? section.body.split(/\n\n+/).filter(Boolean) : [];
 
   return (
     <section className={`py-12 md:py-20 ${bg}`}>
@@ -17,9 +21,11 @@ export default function SeoSection({ section, alt = false }: Props) {
             {section.h2}
           </h2>
 
-          {section.body && (
-            <p className="text-muted-foreground font-body leading-relaxed mb-4">{section.body}</p>
-          )}
+          {bodyParas.map((para, i) => (
+            <p key={i} className="text-muted-foreground font-body leading-relaxed mb-4">
+              {para}
+            </p>
+          ))}
 
           {section.bullets && section.bullets.length > 0 && (
             <ul className="space-y-2 list-none p-0 mb-4">
@@ -37,6 +43,12 @@ export default function SeoSection({ section, alt = false }: Props) {
             </ul>
           )}
 
+          {section.bodyAfterBullets && (
+            <p className="text-muted-foreground font-body leading-relaxed mb-4">
+              {section.bodyAfterBullets}
+            </p>
+          )}
+
           {section.subsections &&
             section.subsections.map((sub, i) => (
               <div key={i} className="mt-6">
@@ -46,6 +58,17 @@ export default function SeoSection({ section, alt = false }: Props) {
                 <p className="text-muted-foreground font-body leading-relaxed">{sub.body}</p>
               </div>
             ))}
+
+          {section.sectionLink && lang && (
+            <p className="mt-6">
+              <Link
+                href={`/${lang}${section.sectionLink.href}`}
+                className="text-gold underline underline-offset-4 hover:text-gold-hover transition-colors font-body text-sm"
+              >
+                {section.sectionLink.label}
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </section>

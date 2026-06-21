@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Header from "@/components/Header";
 import TrustSection from "@/components/TrustSection";
 import BuyerBlueprintBlock from "@/components/BuyerBlueprintBlock";
@@ -19,6 +20,7 @@ interface Props {
 // LeadForm, WaButton) are client islands hydrated after initial HTML is delivered.
 export default function SeoLandingPage({ content }: Props) {
   const { lang } = content;
+  const inlineAfter = content.inlinePropertiesAfterSection;
 
   return (
     <main className="min-h-screen bg-background">
@@ -33,10 +35,18 @@ export default function SeoLandingPage({ content }: Props) {
       />
 
       {content.sections.map((section, i) => (
-        <SeoSection key={i} section={section} alt={i % 2 === 1} />
+        <Fragment key={i}>
+          <SeoSection section={section} alt={i % 2 === 1} lang={lang} />
+          {content.inlineProperties && inlineAfter === i && (
+            <InlinePropertiesServerBlock lang={lang} />
+          )}
+        </Fragment>
       ))}
 
-      {content.inlineProperties && <InlinePropertiesServerBlock lang={lang} />}
+      {/* Fallback: render after all sections when no per-section index is set */}
+      {content.inlineProperties && inlineAfter == null && (
+        <InlinePropertiesServerBlock lang={lang} />
+      )}
 
       {content.faq && content.faq.length > 0 && (
         <SeoFAQ title={content.faqTitle} items={content.faq} />
