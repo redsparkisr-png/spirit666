@@ -35,7 +35,7 @@ export function buildMetadata(content: ResolvedSeoPageContent): Metadata {
   const { slug, lang, seoTitle, metaDescription } = content;
   const url = `${SITE}/${lang}/${slug}`;
   return {
-    title: seoTitle,
+    title: { absolute: seoTitle },
     description: metaDescription,
     alternates: {
       canonical: url,
