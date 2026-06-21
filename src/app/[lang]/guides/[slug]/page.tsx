@@ -58,22 +58,31 @@ export async function generateMetadata({
     return { title: "Article Not Found | Spirit Real Estate" };
   }
 
-  const title = (l === "he" ? post.seo_title_he : post.seo_title_en) ||
+  const baseTitle = (l === "he" ? post.seo_title_he : post.seo_title_en) ||
     `${l === "he" ? post.title_he : post.title_en} | Spirit Real Estate`;
+  // The root layout template appends "| Spirit Real Estate". When the title
+  // already contains a brand (English or Hebrew), use an absolute title so the
+  // brand is not duplicated; otherwise let the template add it. This collapses
+  // the duplicate-brand cases only — titles without a brand render exactly as
+  // before (template adds the brand once).
+  const titleField =
+    baseTitle.includes("Spirit Real Estate") || baseTitle.includes("ספיריט")
+      ? { absolute: baseTitle }
+      : baseTitle;
   const description = (l === "he" ? post.meta_description_he : post.meta_description_en) ||
     (l === "he" ? post.excerpt_he : post.excerpt_en);
   const url = `${SITE}/${l}/guides/${post.slug}`;
   const image = post.og_image || post.featured_image;
 
   return {
-    title,
+    title: titleField,
     description,
     alternates: {
       canonical: url,
       languages: { en: `${SITE}/en/guides/${post.slug}`, he: `${SITE}/he/guides/${post.slug}` },
     },
     openGraph: {
-      title,
+      title: baseTitle,
       description,
       url,
       type: "article",
