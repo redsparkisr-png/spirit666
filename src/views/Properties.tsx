@@ -186,8 +186,14 @@ const Properties = ({ initialProperties }: { initialProperties: Property[] }) =>
               : "Looking for more information about buying property in Zichron Yaakov?"}
           </p>
           <div className="flex flex-wrap justify-center gap-4 text-xs font-body">
+            <Link href={`/${lang}/homes-for-sale-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "בתים למכירה בזכרון יעקב" : "Homes for Sale in Zichron Yaakov"}
+            </Link>
             <Link href={`/${lang}/buying-property-zichron-yaakov`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
               {lang === "he" ? "מדריך רכישת נכס" : "Buying Property Guide"}
+            </Link>
+            <Link href={`/${lang}/buying-property-israel-from-abroad`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
+              {lang === "he" ? "רכישה מחו״ל" : "Buying from Abroad"}
             </Link>
             <Link href={`/${lang}/zichron-yaakov-neighborhoods`} className="text-gold hover:text-gold-hover underline underline-offset-4 transition-colors">
               {lang === "he" ? "מדריך שכונות" : "Neighborhood Guide"}

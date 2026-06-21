@@ -76,7 +76,9 @@ const Index = ({ featuredProperties }: { featuredProperties?: Property[] }) => {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {[
+              { href: `/${lang}/homes-for-sale-zichron-yaakov`, labelHe: "בתים למכירה", labelEn: "Homes for Sale" },
               { href: `/${lang}/buying-property-zichron-yaakov`, labelHe: "מדריך רכישת נכס", labelEn: "Buying Property Guide" },
+              { href: `/${lang}/buying-property-israel-from-abroad`, labelHe: "קנייה מחו״ל", labelEn: "Buying from Abroad" },
               { href: `/${lang}/zichron-yaakov-neighborhoods`, labelHe: "מדריך שכונות", labelEn: "Neighborhood Guide" },
               { href: `/${lang}/zichron-yaakov-real-estate-market-2026`, labelHe: "דוח שוק 2026", labelEn: "Market Report 2026" },
               { href: `/${lang}/property-valuation-zichron-yaakov`, labelHe: "הערכת שווי נכס", labelEn: "Property Valuation" },

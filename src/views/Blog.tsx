@@ -128,6 +128,61 @@ const Blog = ({ initialPosts, initialCategories }: Props = {}) => {
             </div>
           </div>
 
+          {/* Essential Buyer Resources — static SEO landing pages, not blog posts */}
+          <div className="max-w-5xl mx-auto mb-14">
+            <div className="border-t border-border pt-10">
+              <p className="text-center text-xs font-body font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+                {isHe ? "משאבים חשובים לקונים" : "Essential Buyer Resources"}
+              </p>
+              <p className="text-center text-sm font-body text-muted-foreground mb-7 max-w-xl mx-auto">
+                {isHe
+                  ? "לפני שמשווים נכסים או מגישים הצעה, התחילו מהמדריכים המרכזיים שיעזרו להבין את תהליך הקנייה בזכרון יעקב ובישראל."
+                  : "Start with these practical guides before comparing homes, booking viewings or making an offer in Zichron Yaakov."}
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {[
+                  {
+                    href: `${prefix}/homes-for-sale-zichron-yaakov`,
+                    titleEn: "Homes for Sale in Zichron Yaakov",
+                    titleHe: "בתים למכירה בזכרון יעקב",
+                    descEn: "Explore selected homes and learn how to compare neighborhoods, property types and practical details before making an offer.",
+                    descHe: "סקירה של נכסים זמינים והדרך הנכונה להשוות בין שכונות, סוגי נכסים ופרטים חשובים לפני קבלת החלטה.",
+                  },
+                  {
+                    href: `${prefix}/buying-property-zichron-yaakov`,
+                    titleEn: "Buying Property in Zichron Yaakov",
+                    titleHe: "רכישת נכס בזכרון יעקב",
+                    descEn: "Understand the local buying process, common mistakes, due diligence questions and how local guidance helps buyers move forward with clarity.",
+                    descHe: "מדריך מעשי להבנת תהליך הקנייה, בדיקות חשובות, טעויות נפוצות והחשיבות של ליווי מקומי.",
+                  },
+                  {
+                    href: `${prefix}/buying-property-israel-from-abroad`,
+                    titleEn: "Buying Property in Israel from Abroad",
+                    titleHe: "רכישת נכס בישראל מחו״ל",
+                    descEn: "A practical guide for overseas buyers, including remote search, local representation, legal checks, tax questions and buying with the right professional support.",
+                    descHe: "מדריך לקונים מחו״ל שמתחילים תהליך מרחוק וצריכים להבין ייצוג מקומי, בדיקות משפטיות, מיסוי וליווי מקצועי.",
+                  },
+                ].map((card) => (
+                  <Link
+                    key={card.href}
+                    href={card.href}
+                    className="group block bg-card rounded-2xl border border-border/40 p-5 md:p-6 hover:shadow-md hover:border-gold/30 transition-all duration-300"
+                  >
+                    <h3 className="font-display font-semibold text-foreground text-base mb-2 group-hover:text-gold transition-colors">
+                      {isHe ? card.titleHe : card.titleEn}
+                    </h3>
+                    <p className="text-muted-foreground font-body text-sm leading-relaxed mb-4">
+                      {isHe ? card.descHe : card.descEn}
+                    </p>
+                    <span className="text-gold font-body text-xs font-semibold uppercase tracking-wide group-hover:text-gold-hover transition-colors">
+                      {isHe ? "קראו את המדריך ←" : "Read guide →"}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {featured && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}

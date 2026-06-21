@@ -30,6 +30,7 @@ const TrustSection = () => {
   const guideLinks = [
     { to: `${prefix}/buying-property-zichron-yaakov`, label: lang === "he" ? "רכישת נכס בזכרון יעקב" : "Buying Property in Zichron Yaakov" },
     { to: `${prefix}/homes-for-sale-zichron-yaakov`, label: lang === "he" ? "בתים למכירה בזכרון יעקב" : "Homes for Sale in Zichron Yaakov" },
+    { to: `${prefix}/buying-property-israel-from-abroad`, label: lang === "he" ? "רכישת נכס בישראל מחו״ל" : "Buying Property in Israel from Abroad" },
     { to: `${prefix}/living-in-zichron-yaakov`, label: lang === "he" ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov" },
     { to: `${prefix}/moving-to-zichron-yaakov`, label: lang === "he" ? "מעבר לזכרון יעקב" : "Moving to Zichron Yaakov" },
   ];
