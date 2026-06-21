@@ -25,6 +25,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
   const { t } = useSiteContent();
 
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
+  const [honeypot, setHoneypot] = useState("");
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -47,6 +48,12 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
 
   const handleInquiry = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Honeypot: bots fill this hidden field, humans don't. Silently succeed without inserting.
+    if (honeypot) {
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 4000);
+      return;
+    }
     if (!formData.name.trim() || !formData.phone.trim()) {
       toast.error(t("property.detail.validation_error"));
       return;
@@ -90,6 +97,17 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
 
   const formFields = (
     <>
+      {/* Honeypot: visually hidden, tab-skipped. Bots fill it; real users never see it. */}
+      <input
+        type="text"
+        name="website_url"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        aria-hidden="true"
+        autoComplete="off"
+        style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+      />
       <input
         type="text"
         placeholder={t("property.detail.name_placeholder")}
@@ -97,6 +115,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         className={inputClasses}
         aria-label={t("property.detail.name_placeholder")}
+        maxLength={100}
       />
       <input
         type="tel"
@@ -105,6 +124,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
         className={inputClasses}
         aria-label={t("property.detail.phone_placeholder")}
+        maxLength={20}
       />
       <input
         type="email"
@@ -113,6 +133,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         className={inputClasses}
         aria-label={t("property.detail.email_placeholder")}
+        maxLength={254}
       />
       <textarea
         placeholder={t("property.detail.message_placeholder")}
@@ -121,6 +142,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
         rows={2}
         className={`${inputClasses} resize-none`}
         aria-label={t("property.detail.message_placeholder")}
+        maxLength={1000}
       />
       <PrivacyConsentCheckbox
         checked={privacyConsent}

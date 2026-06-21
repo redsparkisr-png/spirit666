@@ -232,7 +232,7 @@ const PropertyModal = ({ property, open, onOpenChange }: Props) => {
       full_name: form.name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
-      source: `property_modal:${property.title}`,
+      source: `property_modal:${property.slug || property.id}`,
       message: `${t("property.modal.interested_in")} ${property.title}`,
     });
     if (error) {
