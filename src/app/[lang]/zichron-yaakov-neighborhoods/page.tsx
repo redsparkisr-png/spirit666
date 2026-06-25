@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ZichronNeighborhoods from "@/views/ZichronNeighborhoods";
 import { neighborhoodsEnContent } from "@/content/neighborhoods-en";
-import { neighborhoodsHeFaq } from "@/content/neighborhoods-he";
+import { neighborhoodsHeContent, neighborhoodsHeFaq } from "@/content/neighborhoods-he";
 
 const SITE = "https://spiritisraelhomes.com";
 const SLUG = "zichron-yaakov-neighborhoods";
@@ -9,14 +9,9 @@ const SLUG = "zichron-yaakov-neighborhoods";
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const l = lang === "he" ? "he" : "en";
-  const title =
-    l === "he"
-      ? 'שכונות זכרון יעקב — המדריך המלא | ספיריט נדל"ן'
-      : neighborhoodsEnContent.seoTitle;
+  const title = l === "he" ? neighborhoodsHeContent.seoTitle : neighborhoodsEnContent.seoTitle;
   const description =
-    l === "he"
-      ? "מדריך שכונות זכרון יעקב: נווה רמז, המושבה, גבעת עדן, רמת צבי, חלומות זכרון ועוד — אופי, מחירים, יתרונות וחסרונות לכל שכונה."
-      : neighborhoodsEnContent.metaDescription;
+    l === "he" ? neighborhoodsHeContent.metaDescription : neighborhoodsEnContent.metaDescription;
   const url = `${SITE}/${l}/${SLUG}`;
   return {
     title: { absolute: title },
@@ -42,11 +37,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 function buildJsonLd(l: "en" | "he") {
   const url = `${SITE}/${l}/${SLUG}`;
   const faq = l === "he" ? neighborhoodsHeFaq : neighborhoodsEnContent.faq;
-  const headline = l === "he" ? "שכונות זכרון יעקב — המדריך המלא" : neighborhoodsEnContent.h1;
+  const headline = l === "he" ? neighborhoodsHeContent.articleHeadline : neighborhoodsEnContent.h1;
   const articleDescription =
-    l === "he"
-      ? "סקירה מקיפה של שכונות זכרון יעקב, כולל אופי, מחירים, יתרונות וחסרונות לכל שכונה."
-      : neighborhoodsEnContent.metaDescription;
+    l === "he" ? neighborhoodsHeContent.articleDescription : neighborhoodsEnContent.metaDescription;
 
   return {
     "@context": "https://schema.org",
