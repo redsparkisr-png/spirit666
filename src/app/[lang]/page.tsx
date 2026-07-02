@@ -24,13 +24,13 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const l = lang === "he" ? "he" : "en";
   const m = META[l];
-  const url = `${SITE}/${l}/`;
+  const url = `${SITE}/${l}`;
   return {
     title: { absolute: m.title },
     description: m.description,
     alternates: {
       canonical: url,
-      languages: { en: `${SITE}/en/`, he: `${SITE}/he/`, "x-default": `${SITE}/en/` },
+      languages: { en: `${SITE}/en`, he: `${SITE}/he`, "x-default": `${SITE}/en` },
     },
     openGraph: { title: m.title, description: m.description, url, locale: l === "he" ? "he_IL" : "en_US", images: [{ url: "/og-image.webp", width: 1200, height: 630 }] },
   };

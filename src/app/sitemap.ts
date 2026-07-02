@@ -46,12 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const route of STATIC_ROUTES) {
     for (const lang of LANGS) {
       entries.push({
-        url: `${BASE}/${lang}${route.path || "/"}`,
+        url: `${BASE}/${lang}${route.path}`,
         lastModified: SITE_LAST_DEPLOY,
         changeFrequency: route.changeFrequency,
         priority: route.priority,
         alternates: {
-          languages: Object.fromEntries(LANGS.map((l) => [l, `${BASE}/${l}${route.path || "/"}`])),
+          languages: Object.fromEntries(LANGS.map((l) => [l, `${BASE}/${l}${route.path}`])),
         },
       });
     }
