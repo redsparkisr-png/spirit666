@@ -9,6 +9,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
 import { optimizedImageUrl } from "@/lib/image";
+import { propertyStatusLabel } from "@/lib/property-status";
 
 type Property = Tables<"properties_available">;
 
@@ -98,7 +99,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             </span>
           )}
           {property.property_status && property.property_status !== "Active" && (
-            <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">{property.property_status}</span>
+            <span className="absolute top-3 left-3 rtl:left-auto rtl:right-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">{propertyStatusLabel(property.property_status, lang)}</span>
           )}
         </div>
         <div className="p-5 md:p-6 text-start flex-1 flex flex-col">

@@ -12,6 +12,7 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
+import { propertyStatusLabel } from "@/lib/property-status";
 
 type Property = Tables<"properties_available">;
 
@@ -62,7 +63,7 @@ const PropertyCard = ({ property }: { property: Property }) => {
           </>
         )}
         {property.property_status && property.property_status !== "Active" && (
-          <span className="absolute top-3 left-3 bg-charcoal text-white text-xs font-body font-medium px-2.5 py-1 rounded-full">{property.property_status}</span>
+          <span className="absolute top-3 left-3 bg-charcoal text-white text-xs font-body font-medium px-2.5 py-1 rounded-full">{propertyStatusLabel(property.property_status, lang)}</span>
         )}
       </div>
       <div className="p-5 text-start">
