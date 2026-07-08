@@ -28,6 +28,10 @@ Sitemap: https://spiritisraelhomes.com/sitemap.xml
 
 - [Guides Hub](https://spiritisraelhomes.com/en/guides): Articles on buying, taxes, neighborhoods, and the Olim experience.
 
+## Tools
+
+- [Purchase Tax Calculator](https://spiritisraelhomes.com/en/purchase-tax-calculator): Estimate Israel purchase tax (mas rechisha) by buyer type — single home, investor, foreign resident, or new immigrant (Oleh).
+
 ## Legal
 
 - [Privacy Policy](https://spiritisraelhomes.com/en/privacy)

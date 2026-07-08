@@ -17,6 +17,7 @@ const STATIC_ROUTES: { path: string; changeFrequency: MetadataRoute.Sitemap[0]["
   { path: "/zichron-yaakov-neighborhoods", changeFrequency: "monthly", priority: 0.85 },
   { path: "/zichron-yaakov-real-estate-market-2026", changeFrequency: "monthly", priority: 0.85 },
   { path: "/property-valuation-zichron-yaakov", changeFrequency: "monthly", priority: 0.85 },
+  { path: "/purchase-tax-calculator", changeFrequency: "monthly", priority: 0.8 },
   { path: "/living-in-zichron-yaakov", changeFrequency: "monthly", priority: 0.8 },
   { path: "/moving-to-zichron-yaakov", changeFrequency: "monthly", priority: 0.8 },
   { path: "/guides", changeFrequency: "weekly", priority: 0.7 },
