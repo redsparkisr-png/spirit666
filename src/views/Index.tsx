@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import TrustBar from "@/components/TrustBar";
 import AvailableHomes from "@/components/AvailableHomes";
+import RecentlySold, { useRecentlySold } from "@/components/RecentlySold";
 import LifestyleSection from "@/components/LifestyleSection";
 import BlueprintPromoSection from "@/components/BlueprintPromoSection";
 import Testimonials from "@/components/Testimonials";
@@ -26,6 +27,7 @@ const Index = ({ featuredProperties }: { featuredProperties?: Property[] }) => {
   const isHe = lang === "he";
   // Single-sourced with the FAQPage schema (page.tsx) via src/content/home-faq.ts.
   const faqItems = isHe ? homeFaqHe : homeFaqEn;
+  const recentlySold = useRecentlySold();
 
   return (
     <main>
@@ -38,6 +40,11 @@ const Index = ({ featuredProperties }: { featuredProperties?: Property[] }) => {
       <TrustBar />
       <GoldDivider />
       <AvailableHomes limit={6} initialProperties={featuredProperties} />
+      <RecentlySold
+        sold={recentlySold}
+        title={isHe ? "נמכרו לאחרונה בזכרון יעקב" : "Recently Sold in Zichron Yaakov"}
+        subtitle={isHe ? "כמה מהבתים שחיברנו לבעלים החדשים שלהם." : "A few of the homes we've matched with their new owners."}
+      />
       <GoldDivider />
       <div id="buyer-guide-section">
         <BlueprintPromoSection />
