@@ -172,7 +172,7 @@ const ExitIntentPopup = () => {
                 tabIndex={-1}
                 aria-hidden="true"
                 autoComplete="off"
-                style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+                style={{ position: "absolute", width: "1px", height: "1px", padding: 0, margin: "-1px", overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap", border: 0 }}
               />
               <input
                 type="text"

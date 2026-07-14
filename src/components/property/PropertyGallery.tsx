@@ -36,6 +36,9 @@ const PropertyGallery = ({ property, lang }: Props) => {
 
   useEffect(() => {
     setCurrentImg(0);
+    // Navigating property→property reuses the same route segment, so the
+    // browser can keep the previous scroll position — open each at the top.
+    window.scrollTo(0, 0);
   }, [property.id]);
 
   useEffect(() => {
