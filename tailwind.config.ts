@@ -14,7 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['"Playfair Display"', '"Heebo"', 'Georgia', 'serif'],
+        // Per-glyph fallback: Latin renders Playfair; Hebrew glyphs (missing in
+        // Playfair) fall through to Frank Ruhl Libre — a serif, so Hebrew
+        // headings keep the luxury serif/sans contrast instead of flat Heebo.
+        display: ['"Playfair Display"', '"Frank Ruhl Libre"', '"Heebo"', 'Georgia', 'serif'],
         body: ['"DM Sans"', '"Heebo"', 'system-ui', 'sans-serif'],
       },
       colors: {

@@ -13,6 +13,7 @@ import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
 import { propertyStatusLabel } from "@/lib/property-status";
+import { optimizedImageUrl } from "@/lib/image";
 
 type Property = Tables<"properties_available">;
 
@@ -34,7 +35,7 @@ const useCarousel = (count: number) => {
   return { current, next, prev, onTouchStart, onTouchEnd };
 };
 
-const PropertyCard = ({ property }: { property: Property }) => {
+const PropertyCard = ({ property, eager = false }: { property: Property; eager?: boolean }) => {
   const { lang } = useLanguage();
   const { t } = useSiteContent();
   const images = property.images || [];
@@ -65,7 +66,7 @@ const PropertyCard = ({ property }: { property: Property }) => {
           <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
         )}
         {images.map((url, idx) => (
-          <img key={idx} ref={measureRef(idx)} src={url} onLoad={noteRatio(idx)} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading="lazy" />
+          <img key={idx} ref={measureRef(idx)} src={optimizedImageUrl(url, { width: 800, quality: 75 })} onLoad={noteRatio(idx)} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading={eager && idx === 0 ? "eager" : "lazy"} fetchPriority={eager && idx === 0 ? "high" : undefined} />
         ))}
         {images.length > 1 && (
           <>
@@ -191,7 +192,7 @@ const Properties = ({ initialProperties }: { initialProperties: Property[] }) =>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-            {properties.map((p) => (<PropertyCard key={p.id} property={p} />))}
+            {properties.map((p, i) => (<PropertyCard key={p.id} property={p} eager={i < 3} />))}
           </div>
         )}
 
