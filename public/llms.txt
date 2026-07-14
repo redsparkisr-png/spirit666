@@ -24,9 +24,26 @@ Sitemap: https://spiritisraelhomes.com/sitemap.xml
 - [About](https://spiritisraelhomes.com/en/about): Team and approach.
 - [Contact](https://spiritisraelhomes.com/en/contact): Reach the team.
 
+## Market & Buying Guides (pillar pages)
+
+- [Zichron Yaakov Neighborhoods Guide](https://spiritisraelhomes.com/en/zichron-yaakov-neighborhoods): Character, prices and fit of each neighborhood — Neve Remez, HaMoshava, Givat Eden, Ramat Zvi, Halomot Zichron and more.
+- [Zichron Yaakov Real Estate Market 2026](https://spiritisraelhomes.com/en/zichron-yaakov-real-estate-market-2026): Market report — price trends, neighborhood comparison and outlook.
+- [Buyer Guide 2026](https://spiritisraelhomes.com/en/buyer-guide-2026): The in-depth buyer blueprint — neighborhoods, process, costs and insider guidance.
+- [Property Valuation](https://spiritisraelhomes.com/en/property-valuation-zichron-yaakov): Free property valuation by local agents.
+
 ## Guides & Insights
 
 - [Guides Hub](https://spiritisraelhomes.com/en/guides): Articles on buying, taxes, neighborhoods, and the Olim experience.
+- [Real Estate Prices 2026](https://spiritisraelhomes.com/en/guides/zichron-yaakov-real-estate-prices-2026): Market report with price breakdown by neighborhood.
+- [Foreign Buyer Guide](https://spiritisraelhomes.com/en/guides/buying-property-zichron-yaakov-foreign-buyer-guide): Step-by-step purchase process, taxes and costs for non-residents.
+- [Zichron vs. Binyamina vs. Caesarea](https://spiritisraelhomes.com/en/guides/zichron-yaakov-vs-binyamina-vs-caesarea): Side-by-side town comparison for buyers.
+- [Living in Zichron — Olim Guide](https://spiritisraelhomes.com/en/guides/living-in-zichron-yaakov-olim-guide): Community, healthcare, schools and daily life for English speakers.
+- [The Rothschild Legacy](https://spiritisraelhomes.com/en/guides/zichron-yaakov-rothschild-history-property-values): How the town's history shapes its property market.
+- [Neighborhood Guide 2026](https://spiritisraelhomes.com/en/guides/zichron-yaakov-neighborhood-guide-2026): All areas compared — character, prices, and who each suits.
+- [Neve Remez Guide](https://spiritisraelhomes.com/en/guides/neve-remez-zichron-yaakov-neighborhood-guide): Location, pricing and buyer fit for Neve Remez.
+- [Ramat Zvi Guide](https://spiritisraelhomes.com/en/guides/ramat-zvi-zichron-yaakov-best-value): Value-focused look at Ramat Zvi.
+- [Halomot Zichron & Neve HaBaron](https://spiritisraelhomes.com/en/guides/halomot-zichron-neve-habaron-premium-neighborhoods): The premium neighborhoods — ranges, pros and buyer profiles.
+- [Relocation Checklist](https://spiritisraelhomes.com/en/guides/moving-to-zichron-yaakov-relocation-checklist): Month-by-month moving plan for olim and foreign buyers.
 
 ## Tools
 
