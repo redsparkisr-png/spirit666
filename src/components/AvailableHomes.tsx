@@ -87,11 +87,20 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
           {images.length === 0 && (
             <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
           )}
-          {images.map((url, idx) => (
-            <img key={idx} src={optimizedImageUrl(url, { width: 800, quality: 75 })} alt={lang === "he"
-              ? `${property.title}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
-              : `${property.title}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-all duration-[600ms] ease-out group-hover:scale-[1.03]" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)", objectPosition: "50% 35%" }} loading="lazy" decoding="async" />
-          ))}
+          {images.map((url, idx) => {
+            const src = optimizedImageUrl(url, { width: 800, quality: 75 });
+            return (
+              <div key={idx} className="absolute inset-0 transition-opacity duration-[600ms] ease-out" style={{ opacity: carousel.current === idx ? 1 : 0 }}>
+                {/* Blurred self-backdrop: fills the 3:2 frame behind portrait/odd-ratio photos so the
+                    full original composition shows uncropped. Same src as the foreground — no extra download.
+                    Landscape 3:2 photos cover the frame natively, hiding this layer entirely. */}
+                <img src={src} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-110 blur-lg" loading="lazy" decoding="async" />
+                <img src={src} alt={lang === "he"
+                  ? `${property.title}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
+                  : `${property.title}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`} className="relative w-full h-full object-contain transition-transform duration-[600ms] ease-out group-hover:scale-[1.03]" style={{ filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
+              </div>
+            );
+          })}
           {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
           {isNew && (
             <span className="absolute top-3 right-3 rtl:right-auto rtl:left-3 bg-gold text-primary-foreground text-[11px] font-body font-semibold tracking-wider uppercase px-3 py-1 rounded-full shadow-md">

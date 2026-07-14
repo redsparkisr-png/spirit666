@@ -50,7 +50,11 @@ const PropertyCard = ({ property }: { property: Property }) => {
           <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
         )}
         {images.map((url, idx) => (
-          <img key={idx} src={url} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0, objectPosition: "50% 35%" }} loading="lazy" />
+          <div key={idx} className="absolute inset-0 transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }}>
+            {/* Blurred self-backdrop so portrait photos show uncropped inside the 3:2 frame (same src — no extra download). */}
+            <img src={url} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-110 blur-lg" loading="lazy" />
+            <img src={url} alt={`${property.title} – photo ${idx + 1}`} className="relative w-full h-full object-contain" loading="lazy" />
+          </div>
         ))}
         {images.length > 1 && (
           <>
