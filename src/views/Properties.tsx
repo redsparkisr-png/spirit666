@@ -44,7 +44,7 @@ const PropertyCard = ({ property }: { property: Property }) => {
   const [ratios, setRatios] = useState<Record<number, number>>({});
   const noteRatio = (idx: number) => (e: React.SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
-    if (w && h) setRatios((r) => (r[idx] ? r : { ...r, [idx]: Math.min(2, Math.max(0.6, w / h)) }));
+    if (w && h) setRatios((r) => (r[idx] ? r : { ...r, [idx]: Math.min(2.5, Math.max(0.4, w / h)) }));
   };
   const frameRatio = ratios[carousel.current] ?? 1.5;
 
@@ -58,7 +58,7 @@ const PropertyCard = ({ property }: { property: Property }) => {
           <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
         )}
         {images.map((url, idx) => (
-          <img key={idx} src={url} onLoad={noteRatio(idx)} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading="lazy" />
+          <img key={idx} src={url} onLoad={noteRatio(idx)} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading="lazy" />
         ))}
         {images.length > 1 && (
           <>

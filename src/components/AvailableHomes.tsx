@@ -79,7 +79,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
   const [ratios, setRatios] = useState<Record<number, number>>({});
   const noteRatio = (idx: number) => (e: React.SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
-    if (w && h) setRatios((r) => (r[idx] ? r : { ...r, [idx]: Math.min(2, Math.max(0.6, w / h)) }));
+    if (w && h) setRatios((r) => (r[idx] ? r : { ...r, [idx]: Math.min(2.5, Math.max(0.4, w / h)) }));
   };
   const frameRatio = ratios[carousel.current] ?? 1.5;
 
@@ -99,7 +99,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
           {images.map((url, idx) => (
             <img key={idx} src={optimizedImageUrl(url, { width: 800, quality: 75 })} onLoad={noteRatio(idx)} alt={lang === "he"
               ? `${property.title}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
-              : `${property.title}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-all duration-[600ms] ease-out group-hover:scale-[1.03]" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
+              : `${property.title}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-[600ms] ease-out" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
           ))}
           {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
           {isNew && (
