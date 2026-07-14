@@ -39,22 +39,26 @@ const PropertyCard = ({ property }: { property: Property }) => {
   const { t } = useSiteContent();
   const images = property.images || [];
   const carousel = useCarousel(Math.max(images.length, 1));
+  // Natural aspect ratio per slide (measured on load) — full original composition,
+  // no crop, no letterbox. Clamped; 3:2 fallback until measured.
+  const [ratios, setRatios] = useState<Record<number, number>>({});
+  const noteRatio = (idx: number) => (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+    if (w && h) setRatios((r) => (r[idx] ? r : { ...r, [idx]: Math.min(2, Math.max(0.6, w / h)) }));
+  };
+  const frameRatio = ratios[carousel.current] ?? 1.5;
 
   return (
     <Link
       href={`/${lang}/property/${property.slug || property.id}`}
       className="block bg-card rounded-2xl overflow-hidden shadow-md md:hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
     >
-      <div className="relative aspect-[3/2] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
+      <div className="relative overflow-hidden bg-muted transition-[aspect-ratio] duration-500 ease-out" style={{ aspectRatio: frameRatio }} onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
         {images.length === 0 && (
           <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
         )}
         {images.map((url, idx) => (
-          <div key={idx} className="absolute inset-0 transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }}>
-            {/* Blurred self-backdrop so portrait photos show uncropped inside the 3:2 frame (same src — no extra download). */}
-            <img src={url} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-110 blur-lg" loading="lazy" />
-            <img src={url} alt={`${property.title} – photo ${idx + 1}`} className="relative w-full h-full object-contain" loading="lazy" />
-          </div>
+          <img key={idx} src={url} onLoad={noteRatio(idx)} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading="lazy" />
         ))}
         {images.length > 1 && (
           <>
@@ -163,7 +167,7 @@ const Properties = ({ initialProperties }: { initialProperties: Property[] }) =>
           </select>
         </div>
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-card rounded-2xl overflow-hidden shadow-md">
                 <div className="aspect-[3/2] bg-muted animate-pulse" />
@@ -179,7 +183,7 @@ const Properties = ({ initialProperties }: { initialProperties: Property[] }) =>
             <p className="text-muted-foreground font-body">{t("properties.no_results")}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
             {properties.map((p) => (<PropertyCard key={p.id} property={p} />))}
           </div>
         )}

@@ -73,6 +73,15 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
   const { lang } = useLanguage();
   const tags = property.tags || [];
   const isNew = isNewListing(property.created_at);
+  // Natural aspect ratio per slide, measured on load, so every photo renders
+  // full-width in its original composition — no crop, no letterbox, no blur.
+  // Clamped to avoid extreme frames; falls back to 3:2 until measured.
+  const [ratios, setRatios] = useState<Record<number, number>>({});
+  const noteRatio = (idx: number) => (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+    if (w && h) setRatios((r) => (r[idx] ? r : { ...r, [idx]: Math.min(2, Math.max(0.6, w / h)) }));
+  };
+  const frameRatio = ratios[carousel.current] ?? 1.5;
 
   return (
     <Link href={`/${lang}/property/${property.slug || property.id}`} className="block cursor-pointer h-full">
@@ -83,24 +92,15 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
         transition={{ duration: 0.4, delay: index * 0.1 }}
         className="bg-card rounded-2xl overflow-hidden shadow-md transition-all duration-[600ms] ease-out group hover:-translate-y-1 md:hover:[box-shadow:0_18px_44px_-18px_hsl(var(--gold)/0.35)] h-full flex flex-col"
       >
-        <div className="relative aspect-[3/2] overflow-hidden bg-muted" onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
+        <div className="relative overflow-hidden bg-muted transition-[aspect-ratio] duration-500 ease-out" style={{ aspectRatio: frameRatio }} onTouchStart={carousel.onTouchStart} onTouchEnd={carousel.onTouchEnd}>
           {images.length === 0 && (
             <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
           )}
-          {images.map((url, idx) => {
-            const src = optimizedImageUrl(url, { width: 800, quality: 75 });
-            return (
-              <div key={idx} className="absolute inset-0 transition-opacity duration-[600ms] ease-out" style={{ opacity: carousel.current === idx ? 1 : 0 }}>
-                {/* Blurred self-backdrop: fills the 3:2 frame behind portrait/odd-ratio photos so the
-                    full original composition shows uncropped. Same src as the foreground — no extra download.
-                    Landscape 3:2 photos cover the frame natively, hiding this layer entirely. */}
-                <img src={src} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-110 blur-lg" loading="lazy" decoding="async" />
-                <img src={src} alt={lang === "he"
-                  ? `${property.title}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
-                  : `${property.title}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`} className="relative w-full h-full object-contain transition-transform duration-[600ms] ease-out group-hover:scale-[1.03]" style={{ filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
-              </div>
-            );
-          })}
+          {images.map((url, idx) => (
+            <img key={idx} src={optimizedImageUrl(url, { width: 800, quality: 75 })} onLoad={noteRatio(idx)} alt={lang === "he"
+              ? `${property.title}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
+              : `${property.title}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover transition-all duration-[600ms] ease-out group-hover:scale-[1.03]" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
+          ))}
           {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
           {isNew && (
             <span className="absolute top-3 right-3 rtl:right-auto rtl:left-3 bg-gold text-primary-foreground text-[11px] font-body font-semibold tracking-wider uppercase px-3 py-1 rounded-full shadow-md">
@@ -211,7 +211,7 @@ const AvailableHomes = ({ limit, initialProperties }: { limit?: number; initialP
 
         {isEmpty ? (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="bg-card rounded-2xl overflow-hidden shadow-md">
                   <div className="aspect-[3/2] bg-muted/60 animate-pulse" />
@@ -227,7 +227,7 @@ const AvailableHomes = ({ limit, initialProperties }: { limit?: number; initialP
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
               {displayProperties.map((p, idx) => (
                 <PropertyCard key={p.id} property={p} index={idx} detailsLabel={t("home.available.details_button")} />
               ))}
