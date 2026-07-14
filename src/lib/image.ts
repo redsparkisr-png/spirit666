@@ -17,7 +17,10 @@ export function optimizedImageUrl(url: string | null | undefined, opts: ImageOpt
   const [, origin, rest] = match;
   const width = opts.width ?? 1200;
   const quality = opts.quality ?? 75;
-  const resize = opts.resize ?? "cover";
+  // Default is "contain": with a width-only request, Supabase's "cover" mode
+  // keeps the original height and CROPS the sides instead of scaling
+  // proportionally — silently cutting text off flyer-style property images.
+  const resize = opts.resize ?? "contain";
   const format = opts.format ?? "origin";
   return `${origin}/storage/v1/render/image/public/${rest}?width=${width}&quality=${quality}&resize=${resize}&format=${format}`;
 }

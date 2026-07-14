@@ -77,10 +77,18 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
   // full-width in its original composition — no crop, no letterbox, no blur.
   // Clamped to avoid extreme frames; falls back to 3:2 until measured.
   const [ratios, setRatios] = useState<Record<number, number>>({});
-  const noteRatio = (idx: number) => (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
-    if (w && h) setRatios((r) => (r[idx] ? r : { ...r, [idx]: Math.min(2.5, Math.max(0.4, w / h)) }));
+  const recordRatio = (idx: number, el: HTMLImageElement | null) => {
+    if (!el || !el.naturalWidth || !el.naturalHeight) return;
+    const ratio = Math.min(2.5, Math.max(0.4, el.naturalWidth / el.naturalHeight));
+    setRatios((r) => (r[idx] ? r : { ...r, [idx]: ratio }));
   };
+  // Ref callback covers images already complete before hydration (cache hit —
+  // onLoad never fires for those); onLoad covers everything loaded after mount.
+  const measureRef = (idx: number) => (el: HTMLImageElement | null) => {
+    if (el && el.complete) recordRatio(idx, el);
+  };
+  const noteRatio = (idx: number) => (e: React.SyntheticEvent<HTMLImageElement>) =>
+    recordRatio(idx, e.currentTarget);
   const frameRatio = ratios[carousel.current] ?? 1.5;
 
   return (
@@ -97,7 +105,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
           )}
           {images.map((url, idx) => (
-            <img key={idx} src={optimizedImageUrl(url, { width: 800, quality: 75 })} onLoad={noteRatio(idx)} alt={lang === "he"
+            <img key={idx} ref={measureRef(idx)} src={optimizedImageUrl(url, { width: 800, quality: 75 })} onLoad={noteRatio(idx)} alt={lang === "he"
               ? `${property.title}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
               : `${property.title}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-[600ms] ease-out" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
           ))}

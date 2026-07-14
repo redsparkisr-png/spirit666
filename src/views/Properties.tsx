@@ -42,10 +42,17 @@ const PropertyCard = ({ property }: { property: Property }) => {
   // Natural aspect ratio per slide (measured on load) — full original composition,
   // no crop, no letterbox. Clamped; 3:2 fallback until measured.
   const [ratios, setRatios] = useState<Record<number, number>>({});
-  const noteRatio = (idx: number) => (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
-    if (w && h) setRatios((r) => (r[idx] ? r : { ...r, [idx]: Math.min(2.5, Math.max(0.4, w / h)) }));
+  const recordRatio = (idx: number, el: HTMLImageElement | null) => {
+    if (!el || !el.naturalWidth || !el.naturalHeight) return;
+    const ratio = Math.min(2.5, Math.max(0.4, el.naturalWidth / el.naturalHeight));
+    setRatios((r) => (r[idx] ? r : { ...r, [idx]: ratio }));
   };
+  // Ref callback covers cache-complete images (onLoad never fires for those).
+  const measureRef = (idx: number) => (el: HTMLImageElement | null) => {
+    if (el && el.complete) recordRatio(idx, el);
+  };
+  const noteRatio = (idx: number) => (e: React.SyntheticEvent<HTMLImageElement>) =>
+    recordRatio(idx, e.currentTarget);
   const frameRatio = ratios[carousel.current] ?? 1.5;
 
   return (
@@ -58,7 +65,7 @@ const PropertyCard = ({ property }: { property: Property }) => {
           <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
         )}
         {images.map((url, idx) => (
-          <img key={idx} src={url} onLoad={noteRatio(idx)} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading="lazy" />
+          <img key={idx} ref={measureRef(idx)} src={url} onLoad={noteRatio(idx)} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading="lazy" />
         ))}
         {images.length > 1 && (
           <>
