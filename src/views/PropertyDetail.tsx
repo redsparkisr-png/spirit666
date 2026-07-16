@@ -7,7 +7,7 @@ import { optimizedImageUrl } from "@/lib/image";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import PropertyInquiryForm from "@/components/property/PropertyInquiryForm";
 import PropertyStickyBar from "@/components/property/PropertyStickyBar";
-import { propertyTitle, propertyShortDescription, propertyFullDescription } from "@/lib/property-i18n";
+import { propertyTitle, propertyShortDescription, propertyFullDescription, propertyParking, propertyNeighborhoodNote } from "@/lib/property-i18n";
 import PropertyViewTracker from "@/components/property/PropertyViewTracker";
 
 type Property = Tables<"properties_available">;
@@ -60,7 +60,7 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
       property.bathrooms ? { icon: Bath, value: property.bathrooms, label: t("Bathrooms", "חדרי רחצה", isHe) } : null,
       property.built_sqm ? { icon: Ruler, value: `${property.built_sqm} m²`, label: t("Built", 'מ"ר בנוי', isHe) } : null,
       property.lot_sqm ? { icon: LandPlot, value: `${property.lot_sqm} m²`, label: t("Lot", 'מ"ר מגרש', isHe) } : null,
-      property.parking ? { icon: Car, value: property.parking, label: t("Parking", "חניה", isHe) } : null,
+      property.parking ? { icon: Car, value: propertyParking(property, lang) as string, label: t("Parking", "חניה", isHe) } : null,
       property.mamad ? { icon: Shield, value: t("Yes", "כן", isHe), label: t('Mamad', 'ממ"ד', isHe) } : null,
     ] as (StatItem | null)[]
   ).filter((s): s is StatItem => s !== null);
@@ -111,7 +111,7 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                 <p className="flex items-center gap-1.5 text-muted-foreground font-body text-sm mb-4">
                   <MapPin className="w-4 h-4 text-gold" aria-hidden="true" />
                   {property.location}
-                  {property.neighborhood_note ? ` — ${property.neighborhood_note}` : ""}
+                  {property.neighborhood_note ? ` — ${propertyNeighborhoodNote(property, lang)}` : ""}
                 </p>
               )}
               {tags.length > 0 && (
@@ -195,7 +195,7 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                   {t("About the Neighborhood", "על השכונה", isHe)}
                 </h2>
                 <p className="text-muted-foreground font-body leading-relaxed">
-                  {property.neighborhood_note || t(
+                  {propertyNeighborhoodNote(property, lang) || t(
                     `${property.location} is a sought-after area in Zichron Yaakov with a warm community and excellent accessibility.`,
                     `${property.location} הוא אזור מבוקש בזכרון יעקב עם קהילה חמה ונגישות מצוינת.`,
                     isHe

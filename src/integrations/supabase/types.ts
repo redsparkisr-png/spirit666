@@ -539,8 +539,10 @@ export type Database = {
           meta_description: string | null
           meta_title: string | null
           neighborhood_note: string | null
+          neighborhood_note_he: string | null
           og_image: string | null
           parking: string | null
+          parking_he: string | null
           price_label: string | null
           price_number: number | null
           price_status: string
@@ -573,8 +575,10 @@ export type Database = {
           meta_description?: string | null
           meta_title?: string | null
           neighborhood_note?: string | null
+          neighborhood_note_he?: string | null
           og_image?: string | null
           parking?: string | null
+          parking_he?: string | null
           price_label?: string | null
           price_number?: number | null
           price_status?: string
@@ -607,8 +611,10 @@ export type Database = {
           meta_description?: string | null
           meta_title?: string | null
           neighborhood_note?: string | null
+          neighborhood_note_he?: string | null
           og_image?: string | null
           parking?: string | null
+          parking_he?: string | null
           price_label?: string | null
           price_number?: number | null
           price_status?: string

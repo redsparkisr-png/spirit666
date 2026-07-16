@@ -6,9 +6,13 @@ type PropertyText = {
   title: string;
   short_description?: string | null;
   full_description?: string | null;
+  parking?: string | null;
+  neighborhood_note?: string | null;
   title_he?: string | null;
   short_description_he?: string | null;
   full_description_he?: string | null;
+  parking_he?: string | null;
+  neighborhood_note_he?: string | null;
 };
 
 export const propertyTitle = (p: PropertyText, lang: string): string =>
@@ -19,6 +23,12 @@ export const propertyShortDescription = (p: PropertyText, lang: string): string 
 
 export const propertyFullDescription = (p: PropertyText, lang: string): string | null =>
   (lang === "he" && p.full_description_he) || p.full_description || null;
+
+export const propertyParking = (p: PropertyText, lang: string): string | null =>
+  (lang === "he" && p.parking_he) || p.parking || null;
+
+export const propertyNeighborhoodNote = (p: PropertyText, lang: string): string | null =>
+  (lang === "he" && p.neighborhood_note_he) || p.neighborhood_note || null;
 
 // DB convention stores price_number in millions of ILS (e.g. 7.8). Schema.org
 // offers.price must be the full amount. Values ≥ 100k are treated as already-full.
