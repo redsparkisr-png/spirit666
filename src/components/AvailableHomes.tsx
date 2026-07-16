@@ -10,6 +10,7 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 import { useLanguage } from "@/lib/i18n";
 import { optimizedImageUrl } from "@/lib/image";
 import { propertyStatusLabel } from "@/lib/property-status";
+import { propertyTitle, propertyShortDescription } from "@/lib/property-i18n";
 
 type Property = Tables<"properties_available">;
 
@@ -132,7 +133,7 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
               </span>
             )}
           </div>
-          <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug transition-colors duration-300 group-hover:text-primary">{property.title}</h3>
+          <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug transition-colors duration-300 group-hover:text-primary">{propertyTitle(property, lang)}</h3>
           
           {/* Neighborhood / Location */}
           {property.location && (
@@ -142,8 +143,8 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
             </p>
           )}
 
-          {property.short_description && (
-            <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{property.short_description}</p>
+          {propertyShortDescription(property, lang) && (
+            <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{propertyShortDescription(property, lang)}</p>
           )}
 
           {/* Stats row */}

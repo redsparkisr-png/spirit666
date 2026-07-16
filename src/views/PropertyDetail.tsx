@@ -7,6 +7,7 @@ import { optimizedImageUrl } from "@/lib/image";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import PropertyInquiryForm from "@/components/property/PropertyInquiryForm";
 import PropertyStickyBar from "@/components/property/PropertyStickyBar";
+import { propertyTitle, propertyShortDescription, propertyFullDescription } from "@/lib/property-i18n";
 import PropertyViewTracker from "@/components/property/PropertyViewTracker";
 
 type Property = Tables<"properties_available">;
@@ -96,7 +97,7 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                 </li>
                 <li className="flex items-center gap-1.5">
                   <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/50 rtl:rotate-180" aria-hidden="true" />
-                  <span className="text-foreground font-medium">{property.title}</span>
+                  <span className="text-foreground font-medium">{propertyTitle(property, lang)}</span>
                 </li>
               </ol>
             </nav>
@@ -104,7 +105,7 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
             {/* H1, location, tags, price */}
             <section aria-label={t("Property overview", "סקירת נכס", isHe)}>
               <h1 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-2">
-                {property.title}
+                {propertyTitle(property, lang)}
               </h1>
               {property.location && (
                 <p className="flex items-center gap-1.5 text-muted-foreground font-body text-sm mb-4">
@@ -160,23 +161,23 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
             )}
 
             {/* Descriptions */}
-            {(property.short_description || property.full_description) && (
+            {(propertyShortDescription(property, lang) || propertyFullDescription(property, lang)) && (
               <section aria-label={t("Property description", "תיאור הנכס", isHe)}>
-                {property.short_description && (
+                {propertyShortDescription(property, lang) && (
                   <div className="mb-6">
                     <h2 className="text-xl font-display font-semibold text-foreground mb-3">
                       {t("Overview", "סקירה", isHe)}
                     </h2>
-                    <p className="text-muted-foreground font-body leading-relaxed">{property.short_description}</p>
+                    <p className="text-muted-foreground font-body leading-relaxed">{propertyShortDescription(property, lang)}</p>
                   </div>
                 )}
-                {property.full_description && (
+                {propertyFullDescription(property, lang) && (
                   <div>
                     <h2 className="text-xl font-display font-semibold text-foreground mb-3">
                       {t("Full Description", "תיאור מלא", isHe)}
                     </h2>
                     <div className="text-muted-foreground font-body leading-relaxed whitespace-pre-line">
-                      {property.full_description}
+                      {propertyFullDescription(property, lang)}
                     </div>
                   </div>
                 )}
@@ -264,7 +265,7 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                           )}
                         </div>
                         <div className="p-3">
-                          <p className="font-display font-semibold text-foreground text-sm truncate">{sp.title}</p>
+                          <p className="font-display font-semibold text-foreground text-sm truncate">{propertyTitle(sp, lang)}</p>
                           {sp.price_label && (
                             <p className="text-xs text-gold font-body mt-1">{sp.price_label}</p>
                           )}

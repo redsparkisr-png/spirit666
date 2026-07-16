@@ -529,6 +529,7 @@ export type Database = {
           currency: string
           featured: boolean
           full_description: string | null
+          full_description_he: string | null
           google_maps_url: string | null
           id: string
           images: string[] | null
@@ -547,10 +548,12 @@ export type Database = {
           property_status: string
           property_type: string | null
           short_description: string | null
+          short_description_he: string | null
           slug: string | null
           storage: boolean | null
           tags: string[] | null
           title: string
+          title_he: string | null
         }
         Insert: {
           bathrooms?: number | null
@@ -560,6 +563,7 @@ export type Database = {
           currency?: string
           featured?: boolean
           full_description?: string | null
+          full_description_he?: string | null
           google_maps_url?: string | null
           id?: string
           images?: string[] | null
@@ -578,10 +582,12 @@ export type Database = {
           property_status?: string
           property_type?: string | null
           short_description?: string | null
+          short_description_he?: string | null
           slug?: string | null
           storage?: boolean | null
           tags?: string[] | null
           title: string
+          title_he?: string | null
         }
         Update: {
           bathrooms?: number | null
@@ -591,6 +597,7 @@ export type Database = {
           currency?: string
           featured?: boolean
           full_description?: string | null
+          full_description_he?: string | null
           google_maps_url?: string | null
           id?: string
           images?: string[] | null
@@ -609,10 +616,12 @@ export type Database = {
           property_status?: string
           property_type?: string | null
           short_description?: string | null
+          short_description_he?: string | null
           slug?: string | null
           storage?: boolean | null
           tags?: string[] | null
           title?: string
+          title_he?: string | null
         }
         Relationships: []
       }

@@ -3,6 +3,7 @@ import { permanentRedirect, notFound } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import type { Tables } from "@/integrations/supabase/types";
 import PropertyDetail from "@/views/PropertyDetail";
+import { propertyTitle, propertyShortDescription, schemaPrice } from "@/lib/property-i18n";
 
 export const revalidate = 3600;
 
@@ -54,8 +55,8 @@ function buildPropertySchema(p: Property, lang: string) {
   const listing: Record<string, any> = {
     "@type": "RealEstateListing",
     "@id": `${url}#listing`,
-    name: p.title,
-    description: p.short_description || p.title,
+    name: propertyTitle(p, l),
+    description: propertyShortDescription(p, l) || propertyTitle(p, l),
     url,
     datePosted,
     inLanguage: l,
@@ -67,7 +68,7 @@ function buildPropertySchema(p: Property, lang: string) {
   if (p.price_number) {
     listing.offers = {
       "@type": "Offer",
-      price: p.price_number,
+      price: schemaPrice(p.price_number),
       priceCurrency: p.currency || "ILS",
       availability: "https://schema.org/InStock",
       url,
@@ -110,7 +111,7 @@ function buildPropertySchema(p: Property, lang: string) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: l === "he" ? "דף הבית" : "Home", item: `${SITE}/${l}/` },
       { "@type": "ListItem", position: 2, name: l === "he" ? "נכסים" : "Properties", item: `${SITE}/${l}/properties` },
-      { "@type": "ListItem", position: 3, name: p.title, item: url },
+      { "@type": "ListItem", position: 3, name: propertyTitle(p, l), item: url },
     ],
   };
 
@@ -128,14 +129,14 @@ export async function generateMetadata({
 
   let { data: property } = await supabase
     .from("properties_available")
-    .select("title, short_description, meta_title, meta_description, og_image, images, slug, id")
+    .select("title, title_he, short_description, short_description_he, meta_title, meta_description, og_image, images, slug, id")
     .eq("slug", slug)
     .maybeSingle();
 
   if (!property) {
     const res = await supabase
       .from("properties_available")
-      .select("title, short_description, meta_title, meta_description, og_image, images, slug, id")
+      .select("title, title_he, short_description, short_description_he, meta_title, meta_description, og_image, images, slug, id")
       .eq("id", slug)
       .maybeSingle();
     property = res.data;
@@ -145,8 +146,13 @@ export async function generateMetadata({
     return { title: "Property Not Found | Spirit Real Estate" };
   }
 
-  const title = property.meta_title || `${property.title} | Spirit Real Estate`;
-  const description = property.meta_description || property.short_description || property.title;
+  const localizedTitle = propertyTitle(property, l);
+  const localizedShort = propertyShortDescription(property, l);
+  const brand = l === "he" ? 'ספיריט נדל"ן' : "Spirit Real Estate";
+  const title = l === "he" && property.title_he
+    ? `${localizedTitle} | ${brand}`
+    : property.meta_title || `${localizedTitle} | ${brand}`;
+  const description = (l === "he" && localizedShort) || property.meta_description || localizedShort || localizedTitle;
   // Always use clean slug as canonical; fall back to id only when slug is absent
   const canonicalId = property.slug || property.id;
   const url = `${SITE}/${l}/property/${canonicalId}`;

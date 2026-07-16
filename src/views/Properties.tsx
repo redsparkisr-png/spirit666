@@ -14,6 +14,7 @@ import SearchBar from "@/components/SearchBar";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
 import { propertyStatusLabel } from "@/lib/property-status";
 import { optimizedImageUrl } from "@/lib/image";
+import { propertyTitle, propertyShortDescription } from "@/lib/property-i18n";
 
 type Property = Tables<"properties_available">;
 
@@ -94,9 +95,9 @@ const PropertyCard = ({ property, eager = false }: { property: Property; eager?:
             </span>
           </div>
         )}
-        <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">{property.title}</h3>
-        {property.short_description && (
-          <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{property.short_description}</p>
+        <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">{propertyTitle(property, lang)}</h3>
+        {propertyShortDescription(property, lang) && (
+          <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{propertyShortDescription(property, lang)}</p>
         )}
         <div className="flex items-center gap-3 text-xs text-muted-foreground font-body mb-4 flex-wrap">
           {property.bedrooms && (<span className="flex items-center gap-1"><BedDouble className="w-3.5 h-3.5 text-primary" /> {property.bedrooms} {t("search.beds_label")}</span>)}
