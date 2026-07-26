@@ -11,6 +11,7 @@ const SITE_LAST_DEPLOY = new Date("2026-06-21");
 const STATIC_ROUTES: { path: string; changeFrequency: MetadataRoute.Sitemap[0]["changeFrequency"]; priority: number }[] = [
   { path: "", changeFrequency: "weekly", priority: 1.0 },
   { path: "/properties", changeFrequency: "daily", priority: 0.9 },
+  { path: "/homes-sold-zichron-yaakov", changeFrequency: "weekly", priority: 0.75 },
   { path: "/buying-property-zichron-yaakov", changeFrequency: "monthly", priority: 0.8 },
   { path: "/buying-property-israel-from-abroad", changeFrequency: "monthly", priority: 0.8 },
   { path: "/homes-for-sale-zichron-yaakov", changeFrequency: "weekly", priority: 0.8 },

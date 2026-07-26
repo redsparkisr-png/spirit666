@@ -98,7 +98,20 @@ export function buildSeoPageJsonLd(content: ResolvedSeoPageContent): object {
       inLanguage: lang,
       datePublished: datePublished ?? "2026-01-01",
       dateModified: dateModified ?? new Date().toISOString().slice(0, 10),
-      author: { "@type": "Organization", name: "Spirit Real Estate", url: SITE },
+      author: {
+        "@type": "Person",
+        "@id": `${SITE}/#person-hagit`,
+        name: "Hagit Cohen-Morgan",
+        jobTitle: "Senior Sales Agent",
+        url: `${SITE}/${lang}/about`,
+        worksFor: { "@id": `${SITE}/#organization` },
+        hasCredential: {
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "Real estate broker license",
+          recognizedBy: { "@type": "GovernmentOrganization", name: "Israel Ministry of Justice" },
+          identifier: "30515545",
+        },
+      },
       publisher: {
         "@type": "Organization",
         name: "Spirit Real Estate",

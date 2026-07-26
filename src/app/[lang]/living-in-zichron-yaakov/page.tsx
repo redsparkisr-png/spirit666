@@ -40,7 +40,7 @@ export default async function LivingInZichronPage({ params }: { params: Promise<
         inLanguage: l,
         datePublished: "2025-01-01",
         dateModified: "2026-01-01",
-        author: { "@type": "Organization", name: "Spirit Real Estate", url: SITE },
+        author: { "@type": "Person", "@id": `${SITE}/#person-hagit`, name: "Hagit Cohen-Morgan", jobTitle: "Senior Sales Agent", url: `${SITE}/${l}/about`, worksFor: { "@id": `${SITE}/#organization` }, hasCredential: { "@type": "EducationalOccupationalCredential", credentialCategory: "Real estate broker license", recognizedBy: { "@type": "GovernmentOrganization", name: "Israel Ministry of Justice" }, identifier: "30515545" } },
         publisher: { "@type": "Organization", name: "Spirit Real Estate", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/og-image.webp` } },
         mainEntityOfPage: { "@type": "WebPage", "@id": url },
         about: { "@type": "Place", name: "Zichron Yaakov", containedInPlace: { "@type": "Country", name: "Israel" } },

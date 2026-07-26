@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { optimizedImageUrl } from "@/lib/image";
@@ -25,7 +26,9 @@ export const useRecentlySold = () => {
   return sold;
 };
 
-const SoldCard = ({ p }: { p: SoldProp }) => {
+// Exported so the dedicated /homes-sold-zichron-yaakov page can reuse the
+// exact same card rendering (image treatment, badge, i18n) as the homepage strip.
+export const SoldCard = ({ p }: { p: SoldProp }) => {
   const { lang } = useLanguage();
   // Adaptive frame: the container adopts the photo's measured natural aspect
   // ratio so every image renders in full, uncropped — same approach as the
@@ -80,6 +83,7 @@ const SoldCard = ({ p }: { p: SoldProp }) => {
 };
 
 const RecentlySold = ({ sold, title, subtitle }: { sold: SoldProp[]; title: string; subtitle: string }) => {
+  const { lang } = useLanguage();
   if (sold.length === 0) return null;
   return (
     <section className="py-14 md:py-20 bg-card">
@@ -92,6 +96,14 @@ const RecentlySold = ({ sold, title, subtitle }: { sold: SoldProp[]; title: stri
           {sold.map((p) => (
             <SoldCard key={p.id} p={p} />
           ))}
+        </div>
+        <div className="text-center mt-10">
+          <Link
+            href={`/${lang}/homes-sold-zichron-yaakov`}
+            className="inline-flex items-center justify-center border border-gold/40 hover:border-gold text-foreground hover:text-gold py-3 px-7 rounded-full font-body font-semibold text-sm transition-all duration-300"
+          >
+            {lang === "he" ? "לכל הנכסים שנמכרו" : "View All Sold Homes"}
+          </Link>
         </div>
       </div>
     </section>

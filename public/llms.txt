@@ -16,6 +16,7 @@ Sitemap: https://spiritisraelhomes.com/sitemap.xml
 - [Home (EN)](https://spiritisraelhomes.com/en/): Boutique real estate in Zichron Yaakov.
 - [Home (HE)](https://spiritisraelhomes.com/he/): נדל"ן בוטיק בזכרון יעקב.
 - [Available Properties](https://spiritisraelhomes.com/en/properties): Current homes for sale in Zichron Yaakov.
+- [Homes We've Sold](https://spiritisraelhomes.com/en/homes-sold-zichron-yaakov): Track record of closed sales in Zichron Yaakov.
 - [Homes for Sale Guide](https://spiritisraelhomes.com/en/homes-for-sale-zichron-yaakov): Overview of the local market.
 - [Buying Property in Zichron Yaakov](https://spiritisraelhomes.com/en/buying-property-zichron-yaakov): Step-by-step buyer guidance.
 - [Living in Zichron Yaakov](https://spiritisraelhomes.com/en/living-in-zichron-yaakov): Lifestyle, neighborhoods, amenities.

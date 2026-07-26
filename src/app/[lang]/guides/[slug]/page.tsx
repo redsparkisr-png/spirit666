@@ -26,7 +26,23 @@ function buildArticleSchema(post: Post, lang: "en" | "he") {
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     datePublished: post.publish_date,
     dateModified: post.updated_at || post.publish_date,
-    author: { "@type": "Person", name: post.author },
+    author:
+      post.author === "Hagit Cohen-Morgan"
+        ? {
+            "@type": "Person",
+            "@id": `${SITE}/#person-hagit`,
+            name: "Hagit Cohen-Morgan",
+            jobTitle: "Senior Sales Agent",
+            url: `${SITE}/${lang}/about`,
+            worksFor: { "@id": `${SITE}/#organization` },
+            hasCredential: {
+              "@type": "EducationalOccupationalCredential",
+              credentialCategory: "Real estate broker license",
+              recognizedBy: { "@type": "GovernmentOrganization", name: "Israel Ministry of Justice" },
+              identifier: "30515545",
+            },
+          }
+        : { "@type": "Person", name: post.author },
     publisher: {
       "@type": "Organization",
       name: "Spirit Real Estate",
