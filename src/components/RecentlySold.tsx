@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { optimizedImageUrl } from "@/lib/image";
+import { useLanguage } from "@/lib/i18n";
+import { propertyTitle, propertyShortDescription, propertyNeighborhoodNote } from "@/lib/property-i18n";
 
 type SoldProp = Tables<"properties_sold">;
 
@@ -24,6 +26,7 @@ export const useRecentlySold = () => {
 };
 
 const SoldCard = ({ p }: { p: SoldProp }) => {
+  const { lang } = useLanguage();
   // Adaptive frame: the container adopts the photo's measured natural aspect
   // ratio so every image renders in full, uncropped — same approach as the
   // available-homes and properties cards.
@@ -36,6 +39,10 @@ const SoldCard = ({ p }: { p: SoldProp }) => {
     if (el && el.complete) recordRatio(el);
   };
 
+  const localTitle = propertyTitle(p, lang);
+  const localNote = propertyNeighborhoodNote(p, lang);
+  const localShort = propertyShortDescription(p, lang);
+
   return (
     <div className="bg-background rounded-2xl overflow-hidden border border-border shadow-sm">
       <div
@@ -47,24 +54,24 @@ const SoldCard = ({ p }: { p: SoldProp }) => {
             ref={measureRef}
             src={optimizedImageUrl(p.images[0], { width: 600 })}
             onLoad={(e) => recordRatio(e.currentTarget)}
-            alt={p.title}
+            alt={localTitle}
             className="w-full h-full object-contain"
             loading="lazy"
             decoding="async"
           />
         )}
         <span className="absolute top-3 start-3 bg-primary text-primary-foreground text-[10px] font-body font-semibold tracking-wider uppercase px-3 py-1 rounded-full">
-          Sold
+          {lang === "he" ? "נמכר" : "Sold"}
         </span>
       </div>
       <div className="p-5">
-        <h3 className="font-display font-semibold text-foreground text-base mb-1 line-clamp-1">{p.title}</h3>
-        {p.neighborhood_note && (
-          <p className="text-muted-foreground font-body text-xs mb-2 line-clamp-1">{p.neighborhood_note}</p>
+        <h3 className="font-display font-semibold text-foreground text-base mb-1 line-clamp-1">{localTitle}</h3>
+        {localNote && (
+          <p className="text-muted-foreground font-body text-xs mb-2 line-clamp-1">{localNote}</p>
         )}
-        {p.short_description && (
+        {localShort && (
           <p className="text-muted-foreground font-body text-sm leading-relaxed line-clamp-2">
-            {p.short_description}
+            {localShort}
           </p>
         )}
       </div>

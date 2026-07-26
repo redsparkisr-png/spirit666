@@ -641,11 +641,14 @@ export type Database = {
           images: string[] | null
           lot_sqm: number | null
           neighborhood_note: string | null
+          neighborhood_note_he: string | null
           price_label: string | null
           price_number: number | null
           short_description: string | null
+          short_description_he: string | null
           sold_date: string | null
           title: string
+          title_he: string | null
         }
         Insert: {
           bedrooms?: number | null
@@ -656,11 +659,14 @@ export type Database = {
           images?: string[] | null
           lot_sqm?: number | null
           neighborhood_note?: string | null
+          neighborhood_note_he?: string | null
           price_label?: string | null
           price_number?: number | null
           short_description?: string | null
+          short_description_he?: string | null
           sold_date?: string | null
           title: string
+          title_he?: string | null
         }
         Update: {
           bedrooms?: number | null
@@ -671,11 +677,14 @@ export type Database = {
           images?: string[] | null
           lot_sqm?: number | null
           neighborhood_note?: string | null
+          neighborhood_note_he?: string | null
           price_label?: string | null
           price_number?: number | null
           short_description?: string | null
+          short_description_he?: string | null
           sold_date?: string | null
           title?: string
+          title_he?: string | null
         }
         Relationships: []
       }
