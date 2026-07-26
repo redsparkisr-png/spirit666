@@ -166,6 +166,15 @@ const PropertyValuation = () => {
                   : "Zichron Yaakov is a market unto itself. A property with Carmel views on a shaded Hameyasdim side-street commands a fundamentally different price than a comparable unit one block away. We know those differences — and we know exactly what the market will pay for yours today."}
               </p>
 
+              <div className="bg-card border border-gold/25 rounded-2xl p-5 mb-8 max-w-lg">
+                <p className="text-foreground font-body text-sm leading-relaxed">
+                  <strong className="text-gold">{isHe ? "בקצרה: " : "Quick answer: "}</strong>
+                  {isHe
+                    ? "כדי לדעת כמה שווה הנכס שלכם בזכרון יעקב, בקשו הערכה מסוכן מקומי שמבקר בנכס פיזית ומבסס את ההערכה על עסקאות שבאמת נסגרו לאחרונה — לא על ממוצע ארצי. אצלנו זה תהליך של עד 48 שעות מהביקור, ללא עלות וללא התחייבות."
+                    : "To know what your home is worth in Zichron Yaakov, get a valuation from a local agent who visits the property in person and bases the number on transactions that actually closed recently — not a national average. Ours is delivered within 48 hours of the visit, free and with no obligation."}
+                </p>
+              </div>
+
               {/* Trust pillars */}
               <div className="space-y-4 mb-10">
                 {[

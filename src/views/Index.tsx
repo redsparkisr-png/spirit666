@@ -70,6 +70,8 @@ const Index = ({ featuredProperties }: { featuredProperties?: Property[] }) => {
               { href: `/${lang}/property-valuation-zichron-yaakov`, labelHe: "הערכת שווי נכס", labelEn: "Property Valuation" },
               { href: `/${lang}/purchase-tax-calculator`, labelHe: "מחשבון מס רכישה", labelEn: "Purchase Tax Calculator" },
               { href: `/${lang}/homes-sold-zichron-yaakov`, labelHe: "נכסים שנמכרו", labelEn: "Homes We've Sold" },
+              { href: `/${lang}/givat-eden-zichron-yaakov`, labelHe: "נכסים בגבעת עדן", labelEn: "Homes in Givat Eden" },
+              { href: `/${lang}/hashmura-zichron-yaakov`, labelHe: "נכסים בהשמורה", labelEn: "Homes in HaShmura" },
               { href: `/${lang}/living-in-zichron-yaakov`, labelHe: "חיים בזכרון יעקב", labelEn: "Living in Zichron Yaakov" },
               { href: `/${lang}/guides`, labelHe: "כל המדריכים", labelEn: "All Guides" },
             ].map((l) => (

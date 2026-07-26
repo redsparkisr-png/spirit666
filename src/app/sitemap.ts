@@ -16,6 +16,8 @@ const STATIC_ROUTES: { path: string; changeFrequency: MetadataRoute.Sitemap[0]["
   { path: "/buying-property-israel-from-abroad", changeFrequency: "monthly", priority: 0.8 },
   { path: "/homes-for-sale-zichron-yaakov", changeFrequency: "weekly", priority: 0.8 },
   { path: "/zichron-yaakov-neighborhoods", changeFrequency: "monthly", priority: 0.85 },
+  { path: "/givat-eden-zichron-yaakov", changeFrequency: "weekly", priority: 0.75 },
+  { path: "/hashmura-zichron-yaakov", changeFrequency: "weekly", priority: 0.75 },
   { path: "/zichron-yaakov-real-estate-market-2026", changeFrequency: "monthly", priority: 0.85 },
   { path: "/property-valuation-zichron-yaakov", changeFrequency: "monthly", priority: 0.85 },
   { path: "/purchase-tax-calculator", changeFrequency: "monthly", priority: 0.8 },

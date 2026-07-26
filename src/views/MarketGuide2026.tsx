@@ -124,6 +124,14 @@ const MarketGuide2026 = () => {
                 : "Price analysis, trends, transaction data, and neighborhood comparison — with full disclaimer and source attribution."}
             </p>
           </motion.div>
+          <div className="max-w-2xl mx-auto mt-8 bg-card border border-gold/25 rounded-2xl p-6">
+            <p className="text-foreground font-body leading-relaxed">
+              <strong className="text-gold">{isHe ? "בקצרה: " : "Quick answer: "}</strong>
+              {isHe
+                ? 'לפי Easy Aliyah Real Estate Market Report Q1 2025 ו-Yokra Estate, מחיר הנכס הממוצע בזכרון יעקב עמד על כ-₪3,670,000 (כ-₪27,400 למ"ר) ברבעון הראשון של 2025, עלייה של כ-13.5% משנה לשנה. נתונים אלה משתנים בין שכונות ולפי מצב הנכס — פירוט מלא ומקורות למטה.'
+                : "According to the Easy Aliyah Real Estate Market Report Q1 2025 and Yokra Estate, the average property price in Zichron Yaakov was approximately ₪3,670,000 (about ₪27,400/m²) in Q1 2025, up roughly 13.5% year over year. These figures vary by neighborhood and property condition — full detail and sources below."}
+            </p>
+          </div>
         </div>
       </section>
 

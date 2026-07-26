@@ -53,6 +53,14 @@ const BuyingProperty = () => {
                 : "A comprehensive guide to buying property in Zichron Yaakov — local insights, key considerations, and expert guidance."}
             </p>
           </motion.div>
+          <div className="max-w-2xl mx-auto mt-8 bg-card border border-gold/25 rounded-2xl p-6">
+            <p className="text-foreground font-body leading-relaxed">
+              <strong className="text-gold">{isHe ? "בקצרה: " : "Quick answer: "}</strong>
+              {isHe
+                ? "רכישת נכס בזכרון יעקב כוללת בדרך כלל: הבנת השכונה והנכס הספציפי, בניית צוות מקצועי (עורך דין ישראלי לפחות), בדיקות משפטיות ורישום, בירור שאלות מס מול איש מקצוע מוסמך, תכנון מימון, ולבסוף משא ומתן וחתימה. לקונים מחו״ל יש שיקולים נוספים — ראו את המדריך המלא לרכישה מחו״ל למטה."
+                : "Buying property in Zichron Yaakov generally involves: understanding the neighborhood and the specific home, building a professional team (at minimum an Israeli attorney), legal and registration checks, tax questions reviewed with a qualified professional, financing planning, and finally negotiation and signing. Overseas buyers face additional considerations — see the full guide to buying from abroad below."}
+            </p>
+          </div>
         </div>
       </section>
 

@@ -64,6 +64,12 @@ const ZichronNeighborhoodsHebrew = () => {
               {c.heroSubtitle}
             </p>
           </motion.div>
+          <div className="max-w-2xl mx-auto mt-8 bg-card border border-gold/25 rounded-2xl p-6">
+            <p className="text-foreground font-body leading-relaxed">
+              <strong className="text-gold">בקצרה: </strong>
+              אין שכונה אחת ש&ldquo;הכי טובה&rdquo; בזכרון יעקב — הבחירה תלויה באורח החיים שלכם. המושבה ההיסטורית וגבעת זמארין מתאימות למי שרוצה הליכה למדרחוב ואופי ותיק; נווה הברון, גבעת עדן ווילות בחורש מתאימים למי שמחפש שקט, גינה ומרחב; חלומות זכרון מתאימה למי שרוצה נכס חדש ופרקטי; ורמת צבי מציעה את נקודות הכניסה הנגישות ביותר. פירוט מלא לכל שכונה — כולל למי היא מתאימה ולמי פחות — למטה.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -400,6 +406,12 @@ const ZichronNeighborhoodsEnglish = () => {
               {c.heroSubtitle}
             </p>
           </motion.div>
+          <div className="max-w-2xl mx-auto mt-8 bg-card border border-gold/25 rounded-2xl p-6">
+            <p className="text-foreground font-body leading-relaxed">
+              <strong className="text-gold">Quick answer: </strong>
+              There is no single &ldquo;best&rdquo; neighborhood in Zichron Yaakov — it depends on lifestyle. HaMoshava and Givat Zamarin suit buyers who want to walk to the Midrachov and historic character; Neve HaBaron, Givat Eden and Villot BaHoresh suit those who want quiet, gardens and space; Halomot Zichron suits buyers who want a newer, low-maintenance home; and Ramat Zvi offers the most accessible entry points. Full detail on who each area suits — and who it doesn&apos;t — is below.
+            </p>
+          </div>
         </div>
       </section>
 
