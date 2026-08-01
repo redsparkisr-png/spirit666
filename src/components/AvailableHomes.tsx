@@ -123,15 +123,13 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
         <div className="p-5 md:p-6 text-start flex-1 flex flex-col">
           {/* Price display — premium badge (reserved height to keep cards aligned) */}
           <div className="mb-3 min-h-[34px] flex items-center">
-            {(property.price_label || property.price_number) && (
-              <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold">
-                {property.price_label
-                  ? property.price_label
-                  : lang === "he"
-                    ? `₪${Number(property.price_number).toLocaleString()}`
-                    : `ILS ${Number(property.price_number).toLocaleString()}`}
-              </span>
-            )}
+            <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold">
+              {property.price_label
+                ? property.price_label
+                : property.price_number
+                  ? (lang === "he" ? `₪${Number(property.price_number).toLocaleString()}` : `ILS ${Number(property.price_number).toLocaleString()}`)
+                  : (lang === "he" ? "מחיר לפי בקשה" : "Price Upon Request")}
+            </span>
           </div>
           <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug transition-colors duration-300 group-hover:text-primary">{propertyTitle(property, lang)}</h3>
           

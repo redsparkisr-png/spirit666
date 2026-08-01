@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const m = META[l];
   const url = `${SITE}/${l}/${SLUG}`;
   return {
-    title: m.title,
+    title: { absolute: m.title },
     description: m.description,
     alternates: { canonical: url, languages: { en: `${SITE}/en/${SLUG}`, he: `${SITE}/he/${SLUG}`, "x-default": `${SITE}/en/${SLUG}` } },
     openGraph: { title: m.title, description: m.description, url, locale: l === "he" ? "he_IL" : "en_US", images: [{ url: "/og-image.webp", width: 1200, height: 630 }] },

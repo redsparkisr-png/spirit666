@@ -84,17 +84,15 @@ const PropertyCard = ({ property, eager = false }: { property: Property; eager?:
         )}
       </div>
       <div className="p-5 text-start">
-        {(property.price_label || property.price_number) && (
-          <div className="mb-3">
-            <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold">
-              {property.price_label
-                ? property.price_label
-                : lang === "he"
-                  ? `₪${Number(property.price_number).toLocaleString()}`
-                  : `ILS ${Number(property.price_number).toLocaleString()}`}
-            </span>
-          </div>
-        )}
+        <div className="mb-3">
+          <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold">
+            {property.price_label
+              ? property.price_label
+              : property.price_number
+                ? (lang === "he" ? `₪${Number(property.price_number).toLocaleString()}` : `ILS ${Number(property.price_number).toLocaleString()}`)
+                : (lang === "he" ? "מחיר לפי בקשה" : "Price Upon Request")}
+          </span>
+        </div>
         <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">{propertyTitle(property, lang)}</h3>
         {propertyShortDescription(property, lang) && (
           <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">{propertyShortDescription(property, lang)}</p>

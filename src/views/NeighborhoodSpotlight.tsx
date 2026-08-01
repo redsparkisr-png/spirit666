@@ -45,11 +45,13 @@ const AvailableCard = ({ p, lang }: { p: AvailableProp; lang: "en" | "he" }) => 
       )}
     </div>
     <div className="p-5">
-      {(p.price_label || p.price_number) && (
-        <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold mb-2">
-          {p.price_label || (lang === "he" ? `₪${Number(p.price_number).toLocaleString()}` : `ILS ${Number(p.price_number).toLocaleString()}`)}
-        </span>
-      )}
+      <span className="inline-block bg-gold/10 border border-gold/20 rounded-lg px-3 py-1.5 text-sm font-body font-semibold text-gold mb-2">
+        {p.price_label
+          ? p.price_label
+          : p.price_number
+            ? (lang === "he" ? `₪${Number(p.price_number).toLocaleString()}` : `ILS ${Number(p.price_number).toLocaleString()}`)
+            : (lang === "he" ? "מחיר לפי בקשה" : "Price Upon Request")}
+      </span>
       <h3 className="font-display font-semibold text-foreground text-base mb-1 line-clamp-1">{propertyTitle(p, lang)}</h3>
       {propertyShortDescription(p, lang) && (
         <p className="text-muted-foreground font-body text-sm leading-relaxed line-clamp-2">{propertyShortDescription(p, lang)}</p>

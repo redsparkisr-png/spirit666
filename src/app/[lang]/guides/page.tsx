@@ -23,7 +23,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const m = META[l];
   const url = `${SITE}/${l}/guides`;
   return {
-    title: m.title,
+    // absolute: title already contains the brand — the root layout's "%s | Spirit
+    // Real Estate" template would otherwise append it a second time.
+    title: { absolute: m.title },
     description: m.description,
     alternates: {
       canonical: url,

@@ -24,6 +24,14 @@ const nextConfig: NextConfig = {
         destination: "/:lang/property/ramat-zvi-home-open-views-partial-sea-view-zichron-yaakov",
         permanent: true,
       },
+      // www was already deferring to the apex domain via canonical tags, but both
+      // hosts served 200 independently — a hard redirect fully consolidates signals.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.spiritisraelhomes.com" }],
+        destination: "https://spiritisraelhomes.com/:path*",
+        permanent: true,
+      },
     ];
   },
 };

@@ -124,6 +124,22 @@ const TrustSection = () => {
             </button>
           </nav>
 
+          {/* NAP — same facts already published in the site's schema; visible here
+              too as a plain E-E-A-T / local-SEO signal for crawlers and readers. */}
+          <p className="text-primary-foreground/40 font-body text-[13px] leading-relaxed mb-2">
+            {lang === "he"
+              ? 'הצ׳וכית 15, זכרון יעקב · '
+              : "HaChochit 15, Zichron Yaakov · "}
+            <a href="tel:+972522820632" className="hover:text-primary-foreground/70 transition-colors">
+              052-282-0632
+            </a>
+          </p>
+          <p className="text-primary-foreground/35 font-body text-[12px] mb-4">
+            {lang === "he"
+              ? 'חגית כהן מורגן, מ.ר. 30515545 · אבי סולימן, מ.ר. 30615602'
+              : "Hagit Cohen-Morgan, License No. 30515545 · Avi Suliman, License No. 30615602"}
+          </p>
+
           <p className="text-primary-foreground/40 font-body text-[13px] leading-relaxed max-w-lg mx-auto mb-4">
             {t("home.footer.disclaimer")}
           </p>
