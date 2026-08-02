@@ -3,7 +3,7 @@ import { permanentRedirect, notFound } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import type { Tables } from "@/integrations/supabase/types";
 import PropertyDetail from "@/views/PropertyDetail";
-import { propertyTitle, propertyShortDescription, propertyNeighborhoodNote, schemaPrice } from "@/lib/property-i18n";
+import { propertyTitle, propertyShortDescription, schemaPrice } from "@/lib/property-i18n";
 
 export const revalidate = 3600;
 
@@ -127,19 +127,16 @@ export async function generateMetadata({
   const l = lang === "he" ? "he" : "en";
   const supabase = createServerSupabase();
 
-  const metaFields =
-    "title, title_he, short_description, short_description_he, meta_title, meta_description, og_image, images, slug, id, price_label, price_number, bedrooms, location, neighborhood_note, neighborhood_note_he";
-
   let { data: property } = await supabase
     .from("properties_available")
-    .select(metaFields)
+    .select("title, title_he, short_description, short_description_he, meta_title, meta_description, og_image, images, slug, id")
     .eq("slug", slug)
     .maybeSingle();
 
   if (!property) {
     const res = await supabase
       .from("properties_available")
-      .select(metaFields)
+      .select("title, title_he, short_description, short_description_he, meta_title, meta_description, og_image, images, slug, id")
       .eq("id", slug)
       .maybeSingle();
     property = res.data;
@@ -161,19 +158,6 @@ export async function generateMetadata({
   const url = `${SITE}/${l}/property/${canonicalId}`;
   const image = property.og_image || (property.images as string[])?.[0];
 
-  // Share-preview facts line (price · rooms · neighborhood) — WhatsApp/Facebook
-  // cards show og:description prominently, so lead with the numbers buyers
-  // scan for first. Kept separate from the SEO meta description above.
-  const priceText = property.price_label
-    ? property.price_label
-    : property.price_number
-      ? (l === "he" ? `₪${Number(property.price_number).toLocaleString()}` : `ILS ${Number(property.price_number).toLocaleString()}`)
-      : (l === "he" ? "מחיר לפי בקשה" : "Price Upon Request");
-  const roomsText = property.bedrooms ? (l === "he" ? `${property.bedrooms} חדרים` : `${property.bedrooms} rooms`) : null;
-  const neighborhoodText = propertyNeighborhoodNote(property, l) || property.location;
-  const factsLine = [priceText, roomsText, neighborhoodText].filter(Boolean).join(" · ");
-  const ogDescription = factsLine ? `${factsLine} — ${description}` : description;
-
   return {
     title,
     description,
@@ -186,7 +170,7 @@ export async function generateMetadata({
     },
     openGraph: {
       title,
-      description: ogDescription,
+      description,
       url,
       type: "article",
       locale: l === "he" ? "he_IL" : "en_US",

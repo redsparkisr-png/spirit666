@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { BedDouble, Ruler, LandPlot, Bath, Car, Shield, MapPin, ChevronRight, Share2 } from "lucide-react";
+import { BedDouble, Ruler, LandPlot, Bath, Car, Shield, MapPin, ChevronRight } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 import Header from "@/components/Header";
 import { optimizedImageUrl } from "@/lib/image";
@@ -65,22 +65,6 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
     ] as (StatItem | null)[]
   ).filter((s): s is StatItem => s !== null);
 
-  const priceText = property.price_label
-    ? property.price_label
-    : property.price_number
-      ? (isHe ? `₪${Number(property.price_number).toLocaleString()}` : `ILS ${Number(property.price_number).toLocaleString()}`)
-      : t("Price Upon Request", "מחיר לפי בקשה", isHe);
-
-  const shareOnWhatsApp = () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    const roomsText = property.bedrooms ? t(`${property.bedrooms} rooms`, `${property.bedrooms} חדרים`, isHe) : "";
-    const facts = [priceText, roomsText, property.location].filter(Boolean).join(" · ");
-    const text = isHe
-      ? `${propertyTitle(property, lang)}\n${facts}\n${url}`
-      : `${propertyTitle(property, lang)}\n${facts}\n${url}`;
-    window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank");
-  };
-
   return (
     <main className="min-h-screen bg-background pb-24 lg:pb-0">
       <Header />
@@ -141,24 +125,15 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                   ))}
                 </ul>
               )}
-              <div className="flex items-center justify-between gap-4 flex-wrap">
-                {property.price_label ? (
-                  <p className="text-2xl font-display font-semibold bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">
-                    {property.price_label}
-                  </p>
-                ) : (
-                  <p className="text-lg font-body text-muted-foreground italic">
-                    {t("Price upon request", "מחיר לפי בקשה", isHe)}
-                  </p>
-                )}
-                <button
-                  onClick={shareOnWhatsApp}
-                  className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground font-body text-sm transition-colors"
-                >
-                  <Share2 className="w-4 h-4" aria-hidden="true" />
-                  {t("Share", "שיתוף", isHe)}
-                </button>
-              </div>
+              {property.price_label ? (
+                <p className="text-2xl font-display font-semibold bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">
+                  {property.price_label}
+                </p>
+              ) : (
+                <p className="text-lg font-body text-muted-foreground italic">
+                  {t("Price upon request", "מחיר לפי בקשה", isHe)}
+                </p>
+              )}
             </section>
 
             {/* Stats grid */}
