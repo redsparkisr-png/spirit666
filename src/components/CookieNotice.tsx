@@ -27,6 +27,13 @@ const emitConsentEvent = (prefs: CookiePreferences) => {
   window.dispatchEvent(new CustomEvent("cookie-consent", { detail: prefs }));
 };
 
+// FloatingElements (the WhatsApp bubble) listens for this to raise itself
+// clear of the banner while it's on screen — it was previously never
+// dispatched anywhere, so that coordination silently did nothing.
+const emitBannerVisibility = (visible: boolean) => {
+  window.dispatchEvent(new CustomEvent("cookie-banner", { detail: visible ? "visible" : "hidden" }));
+};
+
 const CookieNotice = () => {
   const [visible, setVisible] = useState(false);
   const { lang } = useLanguage();
@@ -35,7 +42,10 @@ const CookieNotice = () => {
   useEffect(() => {
     const stored = getStoredPreferences();
     if (!stored) {
-      const timer = setTimeout(() => setVisible(true), 1500);
+      const timer = setTimeout(() => {
+        setVisible(true);
+        emitBannerVisibility(true);
+      }, 1500);
       return () => clearTimeout(timer);
     } else {
       emitConsentEvent(stored);
@@ -46,6 +56,7 @@ const CookieNotice = () => {
     const handleReopen = () => {
       localStorage.removeItem(STORAGE_KEY);
       setVisible(true);
+      emitBannerVisibility(true);
     };
     window.addEventListener("cookie-reopen", handleReopen);
     return () => window.removeEventListener("cookie-reopen", handleReopen);
@@ -56,6 +67,7 @@ const CookieNotice = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
     emitConsentEvent(prefs);
     setVisible(false);
+    emitBannerVisibility(false);
   };
 
   return (
