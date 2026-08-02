@@ -7,6 +7,7 @@ import { optimizedImageUrl } from "@/lib/image";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import PropertyInquiryForm from "@/components/property/PropertyInquiryForm";
 import PropertyStickyBar from "@/components/property/PropertyStickyBar";
+import PropertyShareButton from "@/components/property/PropertyShareButton";
 import { propertyTitle, propertyShortDescription, propertyFullDescription, propertyParking, propertyNeighborhoodNote } from "@/lib/property-i18n";
 import PropertyViewTracker from "@/components/property/PropertyViewTracker";
 
@@ -125,15 +126,18 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                   ))}
                 </ul>
               )}
-              {property.price_label ? (
-                <p className="text-2xl font-display font-semibold bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">
-                  {property.price_label}
-                </p>
-              ) : (
-                <p className="text-lg font-body text-muted-foreground italic">
-                  {t("Price upon request", "מחיר לפי בקשה", isHe)}
-                </p>
-              )}
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                {property.price_label ? (
+                  <p className="text-2xl font-display font-semibold bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">
+                    {property.price_label}
+                  </p>
+                ) : (
+                  <p className="text-lg font-body text-muted-foreground italic">
+                    {t("Price upon request", "מחיר לפי בקשה", isHe)}
+                  </p>
+                )}
+                <PropertyShareButton property={property} lang={lang} />
+              </div>
             </section>
 
             {/* Stats grid */}
