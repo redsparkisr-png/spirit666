@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, MessageCircle } from "lucide-react";
+import { Calendar, MessageCircle, Phone } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import type { Tables } from "@/integrations/supabase/types";
 import { trackWhatsAppClick, trackStickyCtaClick } from "@/components/GoogleAnalyticsConsent";
@@ -42,6 +42,14 @@ const PropertyStickyBar = ({ property, lang }: Props) => {
       className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-card border-t border-border px-4 py-3 flex gap-3"
       style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
     >
+      <a
+        href="tel:+972522820632"
+        onClick={() => trackStickyCtaClick("sticky_bar", "call_now")}
+        aria-label={isHe ? "התקשרו עכשיו" : "Call now"}
+        className="shrink-0 flex items-center justify-center w-12 bg-charcoal hover:bg-charcoal-hover text-white rounded-lg transition-colors"
+      >
+        <Phone className="w-4 h-4" />
+      </a>
       <button
         onClick={scheduleViewing}
         className="flex-1 flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-white py-3 rounded-lg font-body font-medium text-sm transition-all duration-300"
