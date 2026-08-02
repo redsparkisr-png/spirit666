@@ -11,6 +11,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Pass through the special icon routes (src/app/icon.tsx, apple-icon.tsx).
+  // They render at extension-less URLs, so the matcher's `.*\..*` exclusion
+  // doesn't catch them — without this they get language-prefixed like a
+  // normal page (/en/icon), which 404s since no such route exists there,
+  // breaking the favicon site-wide.
+  if (pathname === "/icon" || pathname === "/apple-icon") {
+    return NextResponse.next();
+  }
+
   // If path already starts with a valid lang prefix, pass through
   const firstSegment = pathname.split("/")[1];
   if (VALID_LANGS.includes(firstSegment)) {
