@@ -207,11 +207,16 @@ const AccessibilityWidget = () => {
 
   return (
     <>
-      {/* Floating button — bottom-left in LTR, bottom-right in RTL */}
+      {/* Floating button — bottom-left in LTR, bottom-right in RTL.
+          Raised above bottom-6 below the lg breakpoint: the property detail
+          page's mobile sticky CTA bar (lg:hidden, fixed to the very bottom)
+          shares that same corner and would otherwise sit underneath this
+          button. lg:bottom-6 restores the original position where no sticky
+          bar exists. */}
       <button
         ref={btnRef}
         onClick={() => setOpen((o) => !o)}
-        className="fixed z-[9999] w-11 h-11 rounded-full bg-foreground/80 hover:bg-foreground text-background shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 bottom-6 ltr:left-6 rtl:right-6"
+        className="fixed z-[9999] w-11 h-11 rounded-full bg-foreground/80 hover:bg-foreground text-background shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 bottom-28 lg:bottom-6 ltr:left-6 rtl:right-6"
         aria-label={isHe ? "אפשרויות נגישות" : "Accessibility options"}
         aria-expanded={open}
         aria-controls="a11y-panel"
@@ -237,7 +242,7 @@ const AccessibilityWidget = () => {
             role="dialog"
             aria-modal="true"
             aria-label={isHe ? "לוח נגישות" : "Accessibility panel"}
-            className="fixed bottom-20 z-[10000] w-[300px] max-w-[calc(100vw-32px)] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[70vh] ltr:left-4 rtl:right-4"
+            className="fixed bottom-[184px] lg:bottom-20 z-[10000] w-[300px] max-w-[calc(100vw-32px)] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[70vh] ltr:left-4 rtl:right-4"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-border">
