@@ -1,10 +1,21 @@
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
 import type { Tables } from "@/integrations/supabase/types";
+import { propertyTitle, propertyShortDescription } from "@/lib/property-i18n";
 
 type PropertyRow = Pick<
   Tables<"properties_available">,
-  "id" | "slug" | "title" | "short_description" | "price_label" | "bedrooms" | "built_sqm" | "lot_sqm" | "images"
+  | "id"
+  | "slug"
+  | "title"
+  | "title_he"
+  | "short_description"
+  | "short_description_he"
+  | "price_label"
+  | "bedrooms"
+  | "built_sqm"
+  | "lot_sqm"
+  | "images"
 >;
 
 interface Props {
@@ -19,7 +30,7 @@ export default async function InlinePropertiesServerBlock({ lang, limit = 12 }: 
   const { data: properties } = await supabase
     .from("properties_available")
     .select(
-      "id, slug, title, short_description, price_label, bedrooms, built_sqm, lot_sqm, images"
+      "id, slug, title, title_he, short_description, short_description_he, price_label, bedrooms, built_sqm, lot_sqm, images"
     )
     .order("priority_order", { ascending: true })
     .limit(limit);
@@ -57,6 +68,9 @@ function PropertyCard({ property, lang }: { property: PropertyRow; lang: string 
   const href = `/${lang}/property/${slug}`;
   const img = property.images?.[0];
   const isHe = lang === "he";
+  const title = propertyTitle(property, lang);
+  const description = propertyShortDescription(property, lang);
+  const sqmUnit = isHe ? 'מ"ר' : "sqm";
 
   return (
     <Link
@@ -67,7 +81,7 @@ function PropertyCard({ property, lang }: { property: PropertyRow; lang: string 
         {img ? (
           <img
             src={img}
-            alt={property.title}
+            alt={title}
             className="w-full h-full object-cover"
             loading="lazy"
             decoding="async"
@@ -86,11 +100,11 @@ function PropertyCard({ property, lang }: { property: PropertyRow; lang: string 
           </p>
         )}
         <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">
-          {property.title}
+          {title}
         </h3>
-        {property.short_description && (
+        {description && (
           <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">
-            {property.short_description}
+            {description}
           </p>
         )}
         <div className="flex items-center gap-3 text-xs text-muted-foreground font-body flex-wrap">
@@ -99,10 +113,10 @@ function PropertyCard({ property, lang }: { property: PropertyRow; lang: string 
               {property.bedrooms} {isHe ? "חד׳" : "rooms"}
             </span>
           )}
-          {property.built_sqm != null && <span>{property.built_sqm} sqm</span>}
+          {property.built_sqm != null && <span>{property.built_sqm} {sqmUnit}</span>}
           {property.lot_sqm != null && (
             <span>
-              {isHe ? "מגרש" : "lot"} {property.lot_sqm} sqm
+              {isHe ? "מגרש" : "lot"} {property.lot_sqm} {sqmUnit}
             </span>
           )}
         </div>
