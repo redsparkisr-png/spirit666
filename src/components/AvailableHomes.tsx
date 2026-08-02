@@ -107,8 +107,8 @@ const PropertyCard = ({ property, index, detailsLabel }: { property: Property; i
           )}
           {images.map((url, idx) => (
             <img key={idx} ref={measureRef(idx)} src={optimizedImageUrl(url, { width: 800, quality: 75 })} onLoad={noteRatio(idx)} alt={lang === "he"
-              ? `${propertyTitle(property, lang)}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
-              : `${propertyTitle(property, lang)}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-[600ms] ease-out" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
+              ? `${propertyTitle(property, lang)}, זכרון יעקב – תמונה ${idx + 1}`
+              : `${propertyTitle(property, lang)}, Zichron Yaakov – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-[600ms] ease-out" style={{ opacity: carousel.current === idx ? 1 : 0, filter: "brightness(1.02) contrast(1.02)" }} loading="lazy" decoding="async" />
           ))}
           {images.length > 1 && <CarouselControls count={images.length} current={carousel.current} prev={carousel.prev} next={carousel.next} />}
           {isNew && (

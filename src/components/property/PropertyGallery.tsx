@@ -21,8 +21,8 @@ const PropertyGallery = ({ property, lang }: Props) => {
 
   const imageAlt = (idx: number) =>
     isHe
-      ? `${localizedTitle}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
-      : `${localizedTitle}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`;
+      ? `${localizedTitle}, זכרון יעקב – תמונה ${idx + 1}`
+      : `${localizedTitle}, Zichron Yaakov – photo ${idx + 1}`;
 
   const [currentImg, setCurrentImg] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
