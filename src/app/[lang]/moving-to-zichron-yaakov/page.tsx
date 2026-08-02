@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     : "Planning to move to Zichron Yaakov? Everything you need to know about relocating, the housing market, and how we help buyers settle in.";
   const url = `${SITE}/${l}/${SLUG}`;
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: url, languages: { en: `${SITE}/en/${SLUG}`, he: `${SITE}/he/${SLUG}`, "x-default": `${SITE}/en/${SLUG}` } },
     openGraph: { title, description, url, locale: l === "he" ? "he_IL" : "en_US", images: [{ url: "/og-image.webp", width: 1200, height: 630 }] },

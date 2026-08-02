@@ -17,6 +17,7 @@ import {
   trackStickyCtaClick,
 } from "@/components/GoogleAnalyticsConsent";
 import { readAttribution } from "@/lib/attribution";
+import { propertyTitle } from "@/lib/property-i18n";
 
 type Property = Tables<"properties_available">;
 
@@ -33,6 +34,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
   const isHe = lang === "he";
   const { t } = useSiteContent();
   const hasStarted = useRef(false);
+  const localizedTitle = propertyTitle(property, lang);
 
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
   const [honeypot, setHoneypot] = useState("");
@@ -53,8 +55,8 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
   const openWhatsApp = () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
     const text = isHe
-      ? `היי, אני מתעניין/ת ב: ${property.title}\n${url}`
-      : `Hi, I'm interested in: ${property.title}\n${url}`;
+      ? `היי, אני מתעניין/ת ב: ${localizedTitle}\n${url}`
+      : `Hi, I'm interested in: ${localizedTitle}\n${url}`;
     trackWhatsAppClick("property_inquiry", { property_slug: slug, lang });
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
@@ -62,8 +64,8 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
   const scheduleViewing = () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
     const text = isHe
-      ? `היי חגית, אשמח לתאם סיור בנכס: ${property.title}\n${url}`
-      : `Hi Hagit, I'd like to schedule a viewing for: ${property.title}\n${url}`;
+      ? `היי חגית, אשמח לתאם סיור בנכס: ${localizedTitle}\n${url}`
+      : `Hi Hagit, I'd like to schedule a viewing for: ${localizedTitle}\n${url}`;
     trackStickyCtaClick("property_inquiry", "schedule_viewing");
     window.open("https://wa.me/972522820632?text=" + encodeURIComponent(text), "_blank");
   };
@@ -170,7 +172,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
       />
       <textarea
         placeholder={t("property.detail.message_placeholder")}
-        value={formData.message || `${isHe ? "מעוניין ב:" : "Interested in:"} ${property.title}`}
+        value={formData.message || `${isHe ? "מעוניין ב:" : "Interested in:"} ${localizedTitle}`}
         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
         rows={2}
         className={`${inputClasses} resize-none`}

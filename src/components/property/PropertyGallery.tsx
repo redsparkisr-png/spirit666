@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { optimizedImageUrl } from "@/lib/image";
 import type { Tables } from "@/integrations/supabase/types";
 import { trackGalleryOpen } from "@/components/GoogleAnalyticsConsent";
+import { propertyTitle } from "@/lib/property-i18n";
 
 type Property = Tables<"properties_available">;
 
@@ -16,11 +17,12 @@ type Props = {
 const PropertyGallery = ({ property, lang }: Props) => {
   const isHe = lang === "he";
   const images = property.images || [];
+  const localizedTitle = propertyTitle(property, lang);
 
   const imageAlt = (idx: number) =>
     isHe
-      ? `${property.title}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
-      : `${property.title}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`;
+      ? `${localizedTitle}${property.location ? ` ב${property.location}` : ""}, זכרון יעקב – תמונה ${idx + 1}`
+      : `${localizedTitle}${property.location ? ` in ${property.location}` : ""}, Zichron Yaakov – photo ${idx + 1}`;
 
   const [currentImg, setCurrentImg] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);

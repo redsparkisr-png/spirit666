@@ -243,8 +243,8 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {similar.map((sp) => {
                     const alt = isHe
-                      ? `${sp.title}${sp.location ? ` ב${sp.location}` : ""}, זכרון יעקב`
-                      : `${sp.title}${sp.location ? ` in ${sp.location}` : ""}, Zichron Yaakov`;
+                      ? `${propertyTitle(sp, lang)}${sp.location ? ` ב${sp.location}` : ""}, זכרון יעקב`
+                      : `${propertyTitle(sp, lang)}${sp.location ? ` in ${sp.location}` : ""}, Zichron Yaakov`;
                     return (
                       <Link
                         key={sp.id}

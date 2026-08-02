@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     : "Get in touch with Spirit Real Estate for property inquiries in Zichron Yaakov.";
   const url = `${SITE}/${l}/contact`;
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: url, languages: { en: `${SITE}/en/contact`, he: `${SITE}/he/contact`, "x-default": `${SITE}/en/contact` } },
     openGraph: { title, description, url, locale: l === "he" ? "he_IL" : "en_US", images: [{ url: "/og-image.webp", width: 1200, height: 630 }] },

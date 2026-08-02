@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const l = lang === "he" ? "he" : "en";
   const title = l === "he" ? 'מדיניות עוגיות | ספיריט נדל"ן' : "Cookie Policy | Spirit Real Estate";
   const url = `${SITE}/${l}/cookies`;
-  return { title, alternates: { canonical: url } };
+  return { title: { absolute: title }, alternates: { canonical: url } };
 }
 
 export default function CookiesPage() {

@@ -24,7 +24,7 @@ const SPIRIT = {
   name: "Spirit Real Estate",
   url: SITE,
   telephone: "+972-52-282-0632",
-  email: "info@spiritisraelhomes.com",
+  email: "spiritisraelhomes@gmail.com",
   logo: `${SITE}/og-image.webp`,
   address: {
     "@type": "PostalAddress",
@@ -143,7 +143,7 @@ export async function generateMetadata({
   }
 
   if (!property) {
-    return { title: "Property Not Found | Spirit Real Estate" };
+    return { title: { absolute: "Property Not Found | Spirit Real Estate" } };
   }
 
   const localizedTitle = propertyTitle(property, l);

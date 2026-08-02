@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     ? "הורידו את המדריך המקיף לרוכשי דירות בזכרון יעקב — חינם."
     : "Download the complete Zichron Yaakov Buyer Blueprint — free.";
   return {
-    title,
+    title: { absolute: title },
     description,
     robots: { index: false },
   };

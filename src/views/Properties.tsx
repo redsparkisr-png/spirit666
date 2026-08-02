@@ -67,7 +67,7 @@ const PropertyCard = ({ property, eager = false }: { property: Property; eager?:
           <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">No image</div>
         )}
         {images.map((url, idx) => (
-          <img key={idx} ref={measureRef(idx)} src={optimizedImageUrl(url, { width: 800, quality: 75 })} onLoad={noteRatio(idx)} alt={`${property.title} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading={eager && idx === 0 ? "eager" : "lazy"} fetchPriority={eager && idx === 0 ? "high" : undefined} />
+          <img key={idx} ref={measureRef(idx)} src={optimizedImageUrl(url, { width: 800, quality: 75 })} onLoad={noteRatio(idx)} alt={`${propertyTitle(property, lang)} – photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-contain transition-opacity duration-400" style={{ opacity: carousel.current === idx ? 1 : 0 }} loading={eager && idx === 0 ? "eager" : "lazy"} fetchPriority={eager && idx === 0 ? "high" : undefined} />
         ))}
         {images.length > 1 && (
           <>
@@ -164,6 +164,14 @@ const Properties = ({ initialProperties }: { initialProperties: Property[] }) =>
       <Header />
       <div className="container px-6 py-8 md:py-12">
         <BreadcrumbNav items={[{ label: t("header.nav.properties") }]} />
+        <h1 className="font-display font-semibold text-foreground text-2xl md:text-3xl mt-4 mb-2">
+          {lang === "he" ? "בתים ונכסים למכירה בזכרון יעקב" : "Homes and Properties for Sale in Zichron Yaakov"}
+        </h1>
+        <p className="text-muted-foreground font-body text-sm mb-6 max-w-2xl">
+          {lang === "he"
+            ? "עיינו בנכסים הזמינים שלנו בזכרון יעקב ובקהילות הסובבות."
+            : "Browse our current listings in Zichron Yaakov and the surrounding communities."}
+        </p>
         <SearchBar inline initialLocation={locFilter} initialType={typeFilter} initialBeds={bedsFilter} initialPriceMin={priceMinFilter} initialPriceMax={priceMaxFilter} />
         <div className="flex items-center justify-between mt-8 mb-6">
           <p className="text-sm text-muted-foreground font-body">{loading ? "..." : `${properties.length} ${t("properties.results_count")}`}</p>

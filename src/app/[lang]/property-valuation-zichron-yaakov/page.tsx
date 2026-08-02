@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       : "Get an accurate property valuation in Zichron Yaakov from local experts who know every neighborhood, street and transaction. Free, no obligation.";
   const url = `${SITE}/${l}/${SLUG}`;
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: {
       canonical: url,

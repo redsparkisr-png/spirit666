@@ -1176,7 +1176,7 @@ const BuyerGuide2026 = () => {
           <div className="grid md:grid-cols-3 gap-6 mt-12">
             {[
               { img: hagitImg, name: "Hagit Cohen Morgan", role: "Founder" },
-              { img: aviImg, name: "Avi Suleiman", role: "Founder" },
+              { img: aviImg, name: "Avi Suliman", role: "Founder" },
               { img: eliranImg, name: "Eliran Amsalem", role: "International Marketing & Overseas Buyers" },
             ].map((member) => (
               <div key={member.name} className="text-center">

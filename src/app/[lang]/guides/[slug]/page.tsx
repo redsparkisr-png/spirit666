@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import type { Tables } from "@/integrations/supabase/types";
 import BlogPost from "@/views/BlogPost";
@@ -71,7 +72,7 @@ export async function generateMetadata({
     .maybeSingle();
 
   if (!post) {
-    return { title: "Article Not Found | Spirit Real Estate" };
+    return { title: { absolute: "Article Not Found | Spirit Real Estate" } };
   }
 
   const baseTitle = (l === "he" ? post.seo_title_he : post.seo_title_en) ||
@@ -132,6 +133,8 @@ export default async function BlogPostPage({
     .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
+
+  if (!post) notFound();
 
   let related: Post[] = [];
   if (post?.category) {

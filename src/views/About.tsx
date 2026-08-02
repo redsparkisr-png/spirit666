@@ -5,6 +5,7 @@ import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
 import { motion } from "framer-motion";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { useLanguage } from "@/lib/i18n";
 import eliranImg from "@/assets/eliran-amsalem.jpg";
 import hagitImg from "@/assets/hagit-cohen-morgan.png";
 import aviImg from "@/assets/avi-suliman.png";
@@ -14,6 +15,7 @@ import BreadcrumbNav from "@/components/BreadcrumbNav";
 
 const About = () => {
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
 
   const values = [
     { icon: Eye, titleKey: "about.values.item_1_title", descKey: "about.values.item_1_desc" },
@@ -22,9 +24,9 @@ const About = () => {
   ];
 
   const team = [
-    { img: eliranImg, nameKey: "home.why.eliran_name", roleKey: "home.why.eliran_role", bioKey: "about.team.eliran_bio" },
-    { img: hagitImg, nameKey: "home.why.hagit_name", roleKey: "home.why.hagit_role", bioKey: "about.team.hagit_bio" },
-    { img: aviImg, nameKey: "home.why.avi_name", roleKey: "home.why.avi_role", bioKey: "about.team.avi_bio" },
+    { img: eliranImg, nameKey: "home.why.eliran_name", roleKey: "home.why.eliran_role", bioKey: "about.team.eliran_bio", license: null },
+    { img: hagitImg, nameKey: "home.why.hagit_name", roleKey: "home.why.hagit_role", bioKey: "about.team.hagit_bio", license: "30515545" },
+    { img: aviImg, nameKey: "home.why.avi_name", roleKey: "home.why.avi_role", bioKey: "about.team.avi_bio", license: "30615602" },
   ];
 
   const timeline = [1, 2, 3, 4].map((i) => ({
@@ -135,7 +137,12 @@ const About = () => {
                   <img src={(m.img as any).src ?? (m.img as unknown as string)} alt={t(m.nameKey)} className="w-full h-full object-cover"  loading="lazy" decoding="async" />
                 </div>
                 <h3 className="font-display font-semibold text-foreground text-base">{t(m.nameKey)}</h3>
-                <p className="text-xs text-muted-foreground font-body mb-2">{t(m.roleKey)}</p>
+                <p className="text-xs text-muted-foreground font-body mb-1">{t(m.roleKey)}</p>
+                {m.license && (
+                  <p className="text-[11px] text-gold font-body font-medium mb-2">
+                    {lang === "he" ? `מתווך מקרקעין מורשה · רישיון מס' ${m.license}` : `Licensed Real Estate Agent · License No. ${m.license}`}
+                  </p>
+                )}
                 <p className="text-sm text-muted-foreground font-body leading-relaxed">{t(m.bioKey)}</p>
               </motion.div>
             ))}

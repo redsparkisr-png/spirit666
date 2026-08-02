@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const title = l === "he" ? 'הצהרת נגישות | ספיריט נדל"ן' : "Accessibility Statement | Spirit Real Estate";
   const description = l === "he" ? "המחויבות שלנו לנגישות דיגיטלית לפי תקן 5568 ו-WCAG 2.1 AA." : "Our commitment to digital accessibility — WCAG 2.1 AA and Israeli Standard 5568.";
   const url = `${SITE}/${l}/accessibility`;
-  return { title, description, alternates: { canonical: url } };
+  return { title: { absolute: title }, description, alternates: { canonical: url } };
 }
 
 export default function AccessibilityPage() {

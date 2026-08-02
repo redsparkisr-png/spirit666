@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       : "Estimate Israel purchase tax (mas rechisha) for a home in Zichron Yaakov — single home, investor, foreign resident or new immigrant. Fast estimate by Tax Authority brackets.";
   const url = `${SITE}/${l}/${SLUG}`;
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: {
       canonical: url,

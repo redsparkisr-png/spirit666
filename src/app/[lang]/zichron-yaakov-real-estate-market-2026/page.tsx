@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       : "Zichron Yaakov real estate market report 2026: average prices, transaction trends, neighborhood comparison, and market outlook — with full data disclaimer.";
   const url = `${SITE}/${l}/${SLUG}`;
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: {
       canonical: url,

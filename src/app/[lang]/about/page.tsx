@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     : "Spirit Real Estate — Zichron Yaakov's leading agency for English-speaking buyers, olim and international investors. Local expertise, bilingual service, deep market knowledge.";
   const url = `${SITE}/${l}/about`;
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: url, languages: { en: `${SITE}/en/about`, he: `${SITE}/he/about`, "x-default": `${SITE}/en/about` } },
     openGraph: { title, description, url, locale: l === "he" ? "he_IL" : "en_US", images: [{ url: "/og-image.webp", width: 1200, height: 630 }] },
@@ -59,7 +59,7 @@ function buildAboutSchema(lang: string) {
         },
         geo: { "@type": "GeoCoordinates", latitude: 32.5703, longitude: 34.9474 },
         telephone: "+972-52-282-0632",
-        email: "info@spiritisraelhomes.com",
+        email: "spiritisraelhomes@gmail.com",
         areaServed: ["Zichron Yaakov", "Binyamina", "Caesarea", "Northern Sharon", "Carmel Coast"],
         knowsLanguage: ["en", "he", "fr"],
         employee: [
