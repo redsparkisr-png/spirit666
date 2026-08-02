@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Calendar, MessageCircle, Phone } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import type { Tables } from "@/integrations/supabase/types";
@@ -18,6 +19,20 @@ const PropertyStickyBar = ({ property, lang }: Props) => {
   const { t } = useSiteContent();
   const slug = property.slug || property.id;
   const localizedTitle = propertyTitle(property, lang);
+
+  // Both this bar and the cookie-consent banner are fixed to the very
+  // bottom of the screen — without this, the full-width cookie banner
+  // (higher z-index) completely hides the Call/Schedule/WhatsApp CTAs for
+  // first-time mobile visitors until they dismiss it.
+  const [cookieBannerVisible, setCookieBannerVisible] = useState(false);
+  useEffect(() => {
+    const handleCookie = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      setCookieBannerVisible(detail === "visible");
+    };
+    window.addEventListener("cookie-banner", handleCookie);
+    return () => window.removeEventListener("cookie-banner", handleCookie);
+  }, []);
 
   const openWhatsApp = () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
@@ -39,8 +54,8 @@ const PropertyStickyBar = ({ property, lang }: Props) => {
 
   return (
     <div
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-card border-t border-border px-4 py-3 flex gap-3"
-      style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+      className={`lg:hidden fixed ${cookieBannerVisible ? "bottom-28" : "bottom-0"} left-0 right-0 z-30 bg-card border-t border-border px-4 py-3 flex gap-3 transition-all duration-300`}
+      style={{ paddingBottom: cookieBannerVisible ? undefined : "max(0.75rem, env(safe-area-inset-bottom))" }}
     >
       <a
         href="tel:+972522820632"

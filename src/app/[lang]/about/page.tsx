@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import About from "@/views/About";
-import Script from "next/script";
 
 export const revalidate = 3600;
 
@@ -125,7 +124,7 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
   const { lang } = await params;
   return (
     <>
-      <Script id="about-jsonld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildAboutSchema(lang)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildAboutSchema(lang)) }} />
       <About />
     </>
   );
