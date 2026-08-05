@@ -128,7 +128,7 @@ const TrustSection = () => {
               too as a plain E-E-A-T / local-SEO signal for crawlers and readers. */}
           <p className="text-primary-foreground/40 font-body text-[13px] leading-relaxed mb-2">
             {lang === "he"
-              ? 'הצ׳וכית 15, זכרון יעקב · '
+              ? 'החוחית 15, זכרון יעקב · '
               : "HaChochit 15, Zichron Yaakov · "}
             <a href="tel:+972522820632" className="hover:text-primary-foreground/70 transition-colors">
               052-282-0632
