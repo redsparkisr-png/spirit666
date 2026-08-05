@@ -245,7 +245,7 @@ function GuideLandingPage({ lang }: GuideLandingProps) {
               {
                 q: isHe ? "מהן השכונות הטובות ביותר בזכרון יעקב?" : "What are the best neighborhoods in Zichron Yaakov?",
                 a: isHe
-                  ? "השכונות הראשיות הן: נווה רמז (שקטה, נוף לים), רמת צבי (מתפתחת, המחירים הנגישים ביותר), המושבה ההיסטורית (קרבה להמייסדים), חלומות זכרון (בנייה חדשה, משפחות צעירות), נווה הבארון (בתים צמודי קרקע פרמיום), וגבעת עדן (נוף להרים ולים)."
+                  ? "השכונות הראשיות הן: נווה רמז (שקטה, נוף לים), רמת צבי (מתפתחת, המחירים הנגישים ביותר), המושבה ההיסטורית (קרבה להמייסדים), חלומות זכרון (בנייה חדשה, משפחות צעירות), נווה הברון (בתים צמודי קרקע פרמיום), וגבעת עדן (נוף להרים ולים)."
                   : "Main neighborhoods: Neve Remez (peaceful, sea views), Ramat Zvi (developing, most affordable), HaMoshava historic center, Halomot Zichron (new construction, young families), Neve HaBaron (premium semi-detached), and Givat Eden (hillside views).",
               },
             ].map(({ q, a }) => (
