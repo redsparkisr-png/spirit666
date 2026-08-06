@@ -77,6 +77,11 @@ const PropertyCard = ({ property, eager = false }: { property: Property; eager?:
             <button onClick={carousel.next} className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Next">
               <ChevronRight className="w-4 h-4 text-white" />
             </button>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {images.map((_, i) => (
+                <div key={i} className="w-1.5 h-1.5 rounded-full transition-colors" style={{ backgroundColor: i === carousel.current ? "#fff" : "rgba(255,255,255,0.4)" }} />
+              ))}
+            </div>
           </>
         )}
         {property.property_status && property.property_status !== "Active" && (
