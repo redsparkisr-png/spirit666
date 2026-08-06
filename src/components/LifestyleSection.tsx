@@ -254,7 +254,7 @@ const LifestyleSection = () => {
                     <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">
                       <span className="text-gold text-lg mt-0.5">🏖️</span>
                       <div>
-                        <p className="font-display font-semibold text-foreground text-sm">Dor Beach (HaBukhta)</p>
+                        <p className="font-display font-semibold text-foreground text-sm">Dor Beach</p>
                         <p className="text-xs text-muted-foreground mt-0.5">A stunning turquoise lagoon surrounded by natural rock formations — one of Israel's most beautiful beaches.</p>
                       </div>
                     </div>
