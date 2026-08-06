@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import { FileText, MessageCircle, CheckCircle } from "lucide-react";
+import BuyerGuide2026HeContent from "./BuyerGuide2026HeContent";
 import spiritLogo from "@/assets/spirit-logo.jpg";
 import hagitImg from "@/assets/hagit-cohen-morgan.png";
 import aviImg from "@/assets/avi-suliman.png";
@@ -284,14 +285,18 @@ const BuyerGuide2026 = () => {
 
   useEffect(() => {
     if (accessStatus !== "granted") return;
-    document.title = "Zichron Yaakov Buyer Blueprint 2026 — Spirit Real Estate";
+    document.title = lang === "he"
+      ? "מדריך הרוכש לזכרון יעקב 2026 — ספיריט נדל\"ן"
+      : "Zichron Yaakov Buyer Blueprint 2026 — Spirit Real Estate";
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "The definitive guide for English-speaking Olim buying real estate in Zichron Yaakov, Israel. Market data, neighborhood profiles, tax benefits & buying roadmap.");
+    if (meta) meta.setAttribute("content", lang === "he"
+      ? "המדריך המקיף לרוכשים בזכרון יעקב, ישראל. נתוני שוק, פרופילי שכונות, הטבות מס ומפת דרכים לרכישה."
+      : "The definitive guide for English-speaking Olim buying real estate in Zichron Yaakov, Israel. Market data, neighborhood profiles, tax benefits & buying roadmap.");
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement("meta"); robots.setAttribute("name", "robots"); document.head.appendChild(robots); }
     robots.setAttribute("content", "noindex, nofollow");
     return () => { robots?.setAttribute("content", "index, follow"); };
-  }, [accessStatus]);
+  }, [accessStatus, lang]);
 
   if (accessStatus === "loading") {
     return (
@@ -303,6 +308,10 @@ const BuyerGuide2026 = () => {
 
   if (accessStatus === "denied") {
     return <GuideLandingPage lang={lang} />;
+  }
+
+  if (lang === "he") {
+    return <BuyerGuide2026HeContent />;
   }
 
   return (
@@ -1192,12 +1201,10 @@ const BuyerGuide2026 = () => {
           {/* CTA — WhatsApp */}
           <div className="text-center mt-16 bg-primary rounded-2xl p-10 md:p-14">
             <h3 className="font-display text-2xl md:text-3xl font-semibold text-primary-foreground mb-4">
-              {lang === "he" ? "מחפשים נכס בזכרון יעקב?" : "Looking for Homes in Zichron Yaakov?"}
+              Looking for Homes in Zichron Yaakov?
             </h3>
             <p className="font-body text-primary-foreground/70 mb-8 max-w-lg mx-auto">
-              {lang === "he"
-                ? "נשמח לשלוח לכם נכסים זמינים שמתאימים למה שאתם מחפשים."
-                : "If you'd like, we can also send you available homes that match what you're looking for."}
+              If you&apos;d like, we can also send you available homes that match what you&apos;re looking for.
             </p>
             <a
               href={`https://wa.me/972522820632?text=${encodeURIComponent("Hi Hagit,\nI just read the buyer guide and I'm interested in seeing available homes in Zichron Yaakov.")}`}
@@ -1206,7 +1213,7 @@ const BuyerGuide2026 = () => {
               className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 px-10 rounded-full font-body font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
             >
               <MessageCircle className="w-5 h-5" />
-              {lang === "he" ? "דברו איתנו ב-WhatsApp" : "Message Us on WhatsApp"}
+              Message Us on WhatsApp
             </a>
           </div>
         </section>
