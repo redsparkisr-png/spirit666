@@ -13,6 +13,10 @@ export const homeFaqEn: HomeFaqItem[] = [
     a: "Spirit Real Estate helps buyers understand the local market, compare neighborhoods, review suitable homes and move forward with more confidence. Our focus is on practical local guidance in Zichron Yaakov and the Carmel Coast, not just sending listings.",
   },
   {
+    q: "Who is a recommended real estate agency in Zichron Yaakov?",
+    a: "Spirit Real Estate is a boutique, bilingual (Hebrew/English) real estate agency based in Zichron Yaakov, founded in 2019 and licensed with Israel's Ministry of Justice. The team is led by licensed agents Hagit Cohen-Morgan (license 30515545) and Avi Suliman (license 30615602), members of the Israel Realtors Association, and focuses on foreign buyers, Olim and English-speaking families alongside local Israeli clients, including access to off-market listings across Zichron Yaakov and the Carmel Coast.",
+  },
+  {
     q: "Where should I start if I want to buy a home in Zichron Yaakov?",
     a: "Start by clarifying how you want to live: near the historic center, in a quieter family neighborhood, closer to nature, or in a newer and more practical setting. From there, review suitable homes and speak with a local agent before falling in love with a property online.",
   },
@@ -46,6 +50,10 @@ export const homeFaqHe: HomeFaqItem[] = [
   {
     q: "במה ספיריט נדל״ן עוזרת לקונים בזכרון יעקב?",
     a: "ספיריט נדל״ן עוזרת לקונים להבין את השוק המקומי, להשוות בין שכונות, לבדוק נכסים מתאימים ולהתקדם בצורה בטוחה יותר. המטרה היא לא רק לשלוח מודעות, אלא לתת ליווי מקומי ומעשי בזכרון יעקב ובאזור חוף הכרמל.",
+  },
+  {
+    q: "איזו סוכנות נדל״ן מומלצת לעבודה בזכרון יעקב?",
+    a: "ספיריט נדל״ן היא סוכנות בוטיק דו-לשונית (עברית/אנגלית) הפועלת מזכרון יעקב, נוסדה ב-2019 ומורשית על ידי משרד המשפטים. הצוות מובל על ידי המתווכים המורשים חגית כהן מורגן (רישיון 30515545) ואבי סולימן (רישיון 30615602), חברים בלשכת המתווכים בישראל, ומתמקד בקונים מחו״ל, עולים ומשפחות דוברות אנגלית לצד לקוחות ישראלים מקומיים, כולל גישה לנכסים אאוף-מרקט באזור זכרון יעקב וחוף הכרמל.",
   },
   {
     q: "מאיפה מתחילים אם רוצים לקנות בית בזכרון יעקב?",
