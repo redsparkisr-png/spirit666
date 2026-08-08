@@ -1,11 +1,43 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Script from "next/script";
+import { Playfair_Display, DM_Sans, Heebo, Frank_Ruhl_Libre } from "next/font/google";
 import "./globals.css";
 import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const SC_VERIFY = process.env.NEXT_PUBLIC_SEARCH_CONSOLE_VERIFICATION;
+
+// Self-hosted via next/font (was a blocking fonts.googleapis.com <link>).
+// Only `.variable` is used — this registers each font's @font-face under its
+// real family name (e.g. "Playfair Display") without setting a font-family
+// on <html>, so tailwind.config.ts's existing literal-name fontFamily stacks
+// (display/body, incl. the Hebrew fallback chain) keep working unchanged.
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-playfair-display",
+  display: "swap",
+});
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+const heebo = Heebo({
+  subsets: ["latin", "hebrew"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-heebo",
+  display: "swap",
+});
+const frankRuhlLibre = Frank_Ruhl_Libre({
+  subsets: ["latin", "hebrew"],
+  weight: ["500", "600", "700"],
+  variable: "--font-frank-ruhl-libre",
+  display: "swap",
+});
+const fontVariables = `${playfairDisplay.variable} ${dmSans.variable} ${heebo.variable} ${frankRuhlLibre.variable}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://spiritisraelhomes.com"),
@@ -46,15 +78,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const dir = lang === "he" ? "rtl" : "ltr";
 
   return (
-    <html lang={lang} dir={dir} suppressHydrationWarning>
+    <html lang={lang} dir={dir} suppressHydrationWarning className={fontVariables}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="preconnect" href="https://vtcpmbjzzbggxhsjpnhu.supabase.co" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Heebo:wght@400;500;600;700&family=Frank+Ruhl+Libre:wght@500;600;700&display=swap"
-        />
         {/* Google Analytics — Consent Mode v2 (fires only after cookie accept) */}
         {GA_ID && (
           <Script id="ga-consent-init" strategy="afterInteractive">

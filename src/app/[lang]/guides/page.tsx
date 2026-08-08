@@ -35,12 +35,53 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   };
 }
 
-export default async function GuidesPage() {
+export default async function GuidesPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const l = lang === "he" ? "he" : "en";
+  const url = `${SITE}/${l}/guides`;
   const supabase = createServerSupabase();
   const [{ data: posts }, { data: categories }] = await Promise.all([
     supabase.from("blog_posts").select("*").eq("status", "published").order("publish_date", { ascending: false }),
     supabase.from("blog_categories").select("*").order("display_order"),
   ]);
 
-  return <Blog initialPosts={posts ?? []} initialCategories={categories ?? []} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${url}#collection`,
+        url,
+        name: META[l].title,
+        description: META[l].description,
+        inLanguage: l,
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: (posts ?? []).map((p, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: {
+              "@type": "Article",
+              headline: l === "he" ? p.title_he : p.title_en,
+              url: `${SITE}/${l}/guides/${p.slug}`,
+            },
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: l === "he" ? "דף הבית" : "Home", item: `${SITE}/${l}/` },
+          { "@type": "ListItem", position: 2, name: l === "he" ? "מדריכים" : "Guides", item: url },
+        ],
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Blog initialPosts={posts ?? []} initialCategories={categories ?? []} />
+    </>
+  );
 }

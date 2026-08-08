@@ -175,6 +175,7 @@ export const buyingPropertyAbroadContent: BilingualSeoPageContent = {
 
     inlineProperties: true,
     inlinePropertiesAfterSection: 7,
+    showRelatedGuides: true,
 
     faqTitle: "Frequently asked questions",
     faq: [
@@ -251,6 +252,7 @@ export const buyingPropertyAbroadContent: BilingualSeoPageContent = {
     faq: [],
     inlineProperties: true,
     inlinePropertiesAfterSection: undefined,
+    showRelatedGuides: true,
     schemaType: "Article",
     datePublished: "2026-01-01",
     dateModified: "2026-06-21",

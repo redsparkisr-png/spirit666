@@ -21,7 +21,12 @@ export function optimizedImageUrl(url: string | null | undefined, opts: ImageOpt
   // keeps the original height and CROPS the sides instead of scaling
   // proportionally — silently cutting text off flyer-style property images.
   const resize = opts.resize ?? "contain";
-  const format = opts.format ?? "origin";
+  // WebP by default — matches this function's documented purpose. Only
+  // LifestyleSection was opting in explicitly; every other call site (the
+  // bulk of the site's image weight, incl. every property page's LCP image)
+  // was silently serving originals. Callers can still pass format: "origin"
+  // to opt out.
+  const format = opts.format ?? "webp";
   return `${origin}/storage/v1/render/image/public/${rest}?width=${width}&quality=${quality}&resize=${resize}&format=${format}`;
 }
 

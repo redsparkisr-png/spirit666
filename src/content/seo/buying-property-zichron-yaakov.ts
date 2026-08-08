@@ -183,6 +183,7 @@ export const buyingPropertyZichronContent: BilingualSeoPageContent = {
 
     inlineProperties: true,
     inlinePropertiesAfterSection: 7, // property cards appear after "Ready to begin your search?" (index 7)
+    showRelatedGuides: true,
 
     faqTitle: "Frequently asked questions",
     faq: [
@@ -292,6 +293,7 @@ export const buyingPropertyZichronContent: BilingualSeoPageContent = {
     ],
     inlineProperties: true,
     inlinePropertiesAfterSection: undefined,
+    showRelatedGuides: true,
     faqTitle: "שאלות נפוצות — קונים",
     faq: [
       {

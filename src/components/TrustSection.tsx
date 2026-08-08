@@ -33,6 +33,10 @@ const TrustSection = () => {
     { to: `${prefix}/buying-property-israel-from-abroad`, label: lang === "he" ? "רכישת נכס בישראל מחו״ל" : "Buying Property in Israel from Abroad" },
     { to: `${prefix}/living-in-zichron-yaakov`, label: lang === "he" ? "חיים בזכרון יעקב" : "Living in Zichron Yaakov" },
     { to: `${prefix}/moving-to-zichron-yaakov`, label: lang === "he" ? "מעבר לזכרון יעקב" : "Moving to Zichron Yaakov" },
+    { to: `${prefix}/property-valuation-zichron-yaakov`, label: lang === "he" ? "הערכת שווי נכס" : "Property Valuation" },
+    { to: `${prefix}/purchase-tax-calculator`, label: lang === "he" ? "מחשבון מס רכישה" : "Purchase Tax Calculator" },
+    { to: `${prefix}/givat-eden-zichron-yaakov`, label: lang === "he" ? "גבעת עדן" : "Givat Eden" },
+    { to: `${prefix}/hashmura-zichron-yaakov`, label: lang === "he" ? "השמורה" : "HaShmura" },
   ];
 
   return (

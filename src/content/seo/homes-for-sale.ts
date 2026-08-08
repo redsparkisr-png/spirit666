@@ -159,6 +159,7 @@ export const homesForSaleContent: BilingualSeoPageContent = {
 
     inlineProperties: true,
     inlinePropertiesAfterSection: 1, // property cards appear after "Current homes for sale" (index 1)
+    showRelatedGuides: true,
 
     faqTitle: "Frequently asked questions",
     faq: [
@@ -234,6 +235,7 @@ export const homesForSaleContent: BilingualSeoPageContent = {
     sections: [],
     inlineProperties: true,
     inlinePropertiesAfterSection: undefined,
+    showRelatedGuides: true,
     schemaType: "Article",
     datePublished: "2026-01-01",
     dateModified: "2026-06-21",
