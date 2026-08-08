@@ -96,7 +96,11 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: url,
-      languages: { en: `${SITE}/en/guides/${post.slug}`, he: `${SITE}/he/guides/${post.slug}` },
+      languages: {
+        en: `${SITE}/en/guides/${post.slug}`,
+        he: `${SITE}/he/guides/${post.slug}`,
+        "x-default": `${SITE}/en/guides/${post.slug}`,
+      },
     },
     openGraph: {
       title: baseTitle,

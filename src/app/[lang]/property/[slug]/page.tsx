@@ -182,6 +182,7 @@ export async function generateMetadata({
       languages: {
         en: `${SITE}/en/property/${canonicalId}`,
         he: `${SITE}/he/property/${canonicalId}`,
+        "x-default": `${SITE}/en/property/${canonicalId}`,
       },
     },
     openGraph: {
