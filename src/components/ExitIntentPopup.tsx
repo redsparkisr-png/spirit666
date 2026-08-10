@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLanguage } from "@/lib/i18n";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 import {
   trackLeadFormStart,
@@ -19,6 +21,22 @@ import { readAttribution } from "@/lib/attribution";
 const COOLDOWN_KEY = "exit_popup_last_shown";
 const COOLDOWN_DAYS = 7;
 
+// Pages where a marketing popup would compete with the page's own purpose:
+// legal/utility pages, the admin panel, and pages that already are the
+// conversion point (contact/sell) or a gated private-lead-nurture flow
+// (buyer-guide-2026, blueprint-download).
+const EXCLUDED_SEGMENTS = [
+  "admin",
+  "buyer-guide-2026",
+  "blueprint-download",
+  "contact",
+  "sell",
+  "privacy",
+  "terms",
+  "cookies",
+  "accessibility",
+];
+
 const ExitIntentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
@@ -27,10 +45,16 @@ const ExitIntentPopup = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasFired, setHasFired] = useState(false);
   const { t } = useSiteContent();
+  const { lang } = useLanguage();
   const isMobile = useIsMobile();
+  const pathname = usePathname();
   const lastScrollY = useRef(0);
   const hasScrolledPast50 = useRef(false);
   const hasStarted = useRef(false);
+
+  // e.g. "/en/property/foo" -> "property"
+  const topSegment = pathname?.split("/")[2];
+  const isExcludedPage = topSegment ? EXCLUDED_SEGMENTS.includes(topSegment) : false;
 
   const isInCooldown = () => {
     const last = localStorage.getItem(COOLDOWN_KEY);
@@ -40,25 +64,25 @@ const ExitIntentPopup = () => {
   };
 
   const showPopup = useCallback(() => {
-    if (hasFired || isInCooldown()) return;
+    if (hasFired || isExcludedPage || isInCooldown()) return;
     setIsVisible(true);
     setHasFired(true);
     localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
-  }, [hasFired]);
+  }, [hasFired, isExcludedPage]);
 
   // Desktop: exit intent (mouse leaves top)
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile || isExcludedPage) return;
     const handler = (e: MouseEvent) => {
       if (e.clientY <= 5) showPopup();
     };
     document.addEventListener("mouseleave", handler);
     return () => document.removeEventListener("mouseleave", handler);
-  }, [isMobile, showPopup]);
+  }, [isMobile, isExcludedPage, showPopup]);
 
   // Mobile: scroll >50% + upward scroll
   useEffect(() => {
-    if (!isMobile) return;
+    if (!isMobile || isExcludedPage) return;
     const handler = () => {
       const scrollY = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -73,7 +97,7 @@ const ExitIntentPopup = () => {
     };
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
-  }, [isMobile, showPopup]);
+  }, [isMobile, isExcludedPage, showPopup]);
 
   const onFirstFocus = () => {
     if (hasStarted.current) return;
@@ -107,6 +131,7 @@ const ExitIntentPopup = () => {
       email: formData.email.trim(),
       source: "under_radar_popup",
       page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      lang,
       ...attribution,
     });
     if (error) {

@@ -14,7 +14,6 @@ import Testimonials from "@/components/Testimonials";
 import TeamTrustSection from "@/components/TeamTrustSection";
 import TrustSection from "@/components/TrustSection";
 import FloatingElements from "@/components/FloatingElements";
-import ExitIntentPopup from "@/components/ExitIntentPopup";
 import ClosingCTA from "@/components/ClosingCTA";
 import GoldDivider from "@/components/ui/gold-divider";
 import FAQSection from "@/components/FAQSection";
@@ -90,7 +89,6 @@ const Index = ({ featuredProperties }: { featuredProperties?: Property[] }) => {
       />
       <TrustSection />
       <FloatingElements />
-      <ExitIntentPopup />
     </main>
   );
 };

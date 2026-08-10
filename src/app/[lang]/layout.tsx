@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
 import CookieNotice from "@/components/CookieNotice";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
+import ExitIntentPopup from "@/components/ExitIntentPopup";
 import Providers from "@/providers/Providers";
 import { fetchSiteContentServer } from "@/lib/site-content-server";
 
@@ -39,6 +40,7 @@ export default async function LangLayout({
       <div id="main-content">{children}</div>
       <CookieNotice />
       <AccessibilityWidget />
+      <ExitIntentPopup />
     </Providers>
   );
 }
