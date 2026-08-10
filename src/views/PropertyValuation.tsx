@@ -41,8 +41,8 @@ const FAQ_EN = [
 const FAQ_HE = [
   { q: "כמה עולה הערכת שווי?", a: "כלום. הערכת הנכס הראשונית שלנו היא ללא עלות וללא כל התחייבות. אנחנו מאמינים שהמחיר הנכון מתחיל בשיחה — לא בחתימה על הסכם תיווך." },
   { q: "כמה זמן לוקח התהליך?", a: "אנחנו חוזרים תוך 24 שעות לתיאום ביקור בנכס. ההערכה עצמה מועברת תוך 48 שעות מהביקור." },
-  { q: "מה ההבדל בין הערכת סוכן להערכת שמאי?", a: "שמאי מוסמך נדרש למשכנתאות והליכים משפטיים. הערכת סוכן משקפת את הסכום שקונה אמיתי ישלם היום — מבוסס על עסקאות השוואתיות אחרונות, ביקוש נוכחי והיכרות אמיתית עם השוק. לצורך תמחור נכון, ידע שוק מקומי מדויק לרוב יותר מהערכה פורמלית." },
-  { q: "מה משפיע על שווי הנכס בזכרון יעקב ספציפית?", a: "נוף לים הוא גורם הפרמיום הגדול ביותר — מוסיף 10–20% בהתאם לרמת הנוף ומידת החסימה. השכונה משפיעה אנושות: הפרש המחירים בין נווה רמז לרמת צבי על מ\"ר דומה יכול לעלות על 40%. גודל מגרש, זכויות בנייה, קרבה לרחוב המייסדים, גיל הבניין וחנייה — כולם משפיעים משמעותית על המחיר הסופי." },
+  { q: "מה ההבדל בין הערכת סוכן להערכת שמאי?", a: "שמאי מוסמך נדרש למשכנתאות והליכים משפטיים. הערכת סוכן משקפת את הסכום שקונה אמיתי ישלם היום — מבוססת על עסקאות דומות שנסגרו לאחרונה, ביקוש נוכחי והיכרות אמיתית עם השוק. לצורך תמחור נכון, ידע שוק מקומי לרוב מדויק יותר מהערכה פורמלית." },
+  { q: "מה משפיע על שווי הנכס בזכרון יעקב ספציפית?", a: "נוף לים הוא גורם הפרמיום הגדול ביותר — מוסיף ⁦10–20%⁩ בהתאם לרמת הנוף ומידת החסימה. השכונה משפיעה מהותית: הפרש המחירים בין נווה רמז לרמת צבי על מ\"ר דומה יכול לעלות על 40%. גודל מגרש, זכויות בנייה, קרבה לרחוב המייסדים, גיל הבניין וחנייה — כולם משפיעים משמעותית על המחיר הסופי." },
   { q: "האם אני חייב למכור דרככם אם קיבלתי הערכה?", a: "בהחלט לא. ההערכה שייכת לכם ללא קשר להחלטה שתקבלו. רבים משתמשים בה כדי לקבל בהירות לפני שמחליטים משהו. אנחנו מעדיפים לזכות באמון שלכם לפני שנזכה בחתימה." },
 ];
 
@@ -162,7 +162,7 @@ const PropertyValuation = () => {
 
               <p className="text-muted-foreground font-body text-lg leading-relaxed mb-8 max-w-lg">
                 {isHe
-                  ? "זכרון יעקב היא שוק בפני עצמו. נכס עם נוף לכרמל ברחוב מוצל מייסדים שווה סכום שונה לחלוטין מנכס דומה ברחוב מקביל. אנחנו מכירים את ההבדלים — ויודעים בדיוק מה השוק ישלם עליכם היום."
+                  ? "זכרון יעקב היא שוק בפני עצמו. נכס עם נוף לכרמל בסמטה צדדית ומוצלת ליד רחוב המייסדים שווה סכום שונה לחלוטין מנכס דומה ברחוב הסמוך. אנחנו מכירים את ההבדלים — ויודעים בדיוק מה השוק ישלם עליכם היום."
                   : "Zichron Yaakov is a market unto itself. A property with Carmel views on a shaded Hameyasdim side-street commands a fundamentally different price than a comparable unit one block away. We know those differences — and we know exactly what the market will pay for yours today."}
               </p>
 
@@ -170,7 +170,7 @@ const PropertyValuation = () => {
                 <p className="text-foreground font-body text-sm leading-relaxed">
                   <strong className="text-gold">{isHe ? "בקצרה: " : "Quick answer: "}</strong>
                   {isHe
-                    ? "כדי לדעת כמה שווה הנכס שלכם בזכרון יעקב, בקשו הערכה מסוכן מקומי שמבקר בנכס פיזית ומבסס את ההערכה על עסקאות שבאמת נסגרו לאחרונה — לא על ממוצע ארצי. אצלנו זה תהליך של עד 48 שעות מהביקור, ללא עלות וללא התחייבות."
+                    ? "כדי לדעת כמה שווה הנכס שלכם בזכרון יעקב, בקשו הערכה מסוכן מקומי שמגיע לבקר בנכס באופן אישי ומבסס את ההערכה על עסקאות שבאמת נסגרו לאחרונה — לא על ממוצע ארצי. אצלנו זה תהליך של עד 48 שעות מהביקור, ללא עלות וללא התחייבות."
                     : "To know what your home is worth in Zichron Yaakov, get a valuation from a local agent who visits the property in person and bases the number on transactions that actually closed recently — not a national average. Ours is delivered within 48 hours of the visit, free and with no obligation."}
                 </p>
               </div>
@@ -220,9 +220,9 @@ const PropertyValuation = () => {
                 <div className="space-y-3">
                   {[
                     { step: "01", he: "חוזרים אליכם תוך 24 שעות לתיאום ביקור", en: "We respond within 24 hours to schedule a visit" },
-                    { step: "02", he: "ביקור בנכס — רואים אותו בעיניים, שואלים שאלות", en: "Property visit — we see it firsthand and ask questions" },
+                    { step: "02", he: "ביקור בנכס — מתרשמים מקרוב, שואלים שאלות", en: "Property visit — we see it firsthand and ask questions" },
                     { step: "03", he: "הערכת שווי כתובה תוך 48 שעות — מה השוק ישלם היום", en: "Written valuation within 48 hours — what the market pays today" },
-                    { step: "04", he: "אתם מחליטים מה לעשות עם המידע — אנחנו ממשיכים לתמוך", en: "You decide what to do with the information — we stay available" },
+                    { step: "04", he: "אתם מחליטים מה לעשות עם המידע — אנחנו כאן בשבילכם בכל מקרה", en: "You decide what to do with the information — we stay available" },
                   ].map(({ step, he, en }) => (
                     <div key={step} className="flex items-start gap-3">
                       <span className="w-7 h-7 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center text-xs font-body font-semibold text-gold shrink-0">{step}</span>
@@ -373,7 +373,7 @@ const PropertyValuation = () => {
 
                       <p className="text-xs text-muted-foreground font-body text-center leading-relaxed">
                         {isHe
-                          ? "הפרטים ישלחו ישירות אלינו בוואטסאפ. ללא תשלום, ללא התחייבות, ללא ספאם."
+                          ? "הפרטים יישלחו ישירות אלינו בוואטסאפ. ללא תשלום, ללא התחייבות, ללא ספאם."
                           : "Details sent directly to us via WhatsApp. No payment, no commitment, no spam."}
                       </p>
                     </form>
@@ -402,7 +402,7 @@ const PropertyValuation = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
-                  he: "נוף לים מוסיף 10–20% לשווי הנכס",
+                  he: "נוף לים מוסיף ⁦10–20%⁩ לשווי הנכס",
                   en: "Sea view adds 10–20% to a property's value",
                   noteHe: "הבדל בין שני נכסים זהים באותה שכונה",
                   noteEn: "The gap between two identical units in the same neighborhood",
