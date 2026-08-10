@@ -96,7 +96,7 @@ export const SoldCard = ({ p }: { p: SoldProp }) => {
           <DialogDescription className="sr-only">
             {isHe ? "פרטי הנכס שנמכר" : "Sold property details"}
           </DialogDescription>
-          <div className="relative overflow-hidden bg-muted" style={{ aspectRatio: ratio ?? 4 / 3 }}>
+          <div className="relative overflow-hidden bg-muted shrink-0" style={{ aspectRatio: "4/3", maxHeight: "min(45vh, 360px)" }}>
             {p.images?.[0] && (
               <img
                 src={optimizedImageUrl(p.images[0], { width: 900 })}
@@ -104,7 +104,7 @@ export const SoldCard = ({ p }: { p: SoldProp }) => {
                 className="w-full h-full object-contain"
               />
             )}
-            <span className="absolute top-3 start-3 bg-primary text-primary-foreground text-[10px] font-body font-semibold tracking-wider uppercase px-3 py-1 rounded-full">
+            <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-body font-semibold tracking-wider uppercase px-3 py-1 rounded-full">
               {isHe ? "נמכר" : "Sold"}
             </span>
           </div>
