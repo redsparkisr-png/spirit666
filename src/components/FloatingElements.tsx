@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { useScrollHide } from "@/hooks/useScrollHide";
 import { trackWhatsAppClick } from "@/components/GoogleAnalyticsConsent";
 
 const FloatingElements = () => {
@@ -11,6 +12,7 @@ const FloatingElements = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
   const { t } = useSiteContent();
+  const scrollHidden = useScrollHide();
 
   useEffect(() => {
     const handleCookie = (e: Event) => {
@@ -47,7 +49,11 @@ const FloatingElements = () => {
 
   return (
     <AnimatePresence>
-      <div className={`fixed ${bottomOffset} right-6 z-40 transition-all duration-300 rtl:right-auto rtl:left-6`}>
+      <div
+        className={`fixed ${bottomOffset} right-6 z-40 transition-all duration-300 rtl:right-auto rtl:left-6 ${
+          scrollHidden ? "opacity-0 translate-y-20 pointer-events-none" : "opacity-100 translate-y-0"
+        }`}
+      >
         {showTooltip && (
           <motion.div
             initial={{ opacity: 0, x: 10 }}

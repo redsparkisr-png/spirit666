@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { X, RotateCcw, Plus, Minus, Type, Eye, Sun, Moon, Contrast, Link2, Heading, Underline, BookOpen, Pause, MousePointer, Keyboard } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
+import { useScrollHide } from "@/hooks/useScrollHide";
 
 const STORAGE_KEY = "a11y_prefs";
 
@@ -100,6 +101,7 @@ const AccessibilityWidget = () => {
   const [prefs, setPrefs] = useState<A11yPrefs>(loadPrefs);
   const panelRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
+  const scrollHidden = useScrollHide() && !open;
 
   useEffect(() => {
     applyPrefs(prefs);
@@ -216,7 +218,9 @@ const AccessibilityWidget = () => {
       <button
         ref={btnRef}
         onClick={() => setOpen((o) => !o)}
-        className="fixed z-[9999] w-11 h-11 rounded-full bg-foreground/80 hover:bg-foreground text-background shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 bottom-28 lg:bottom-6 ltr:left-6 rtl:right-6"
+        className={`fixed z-[9999] w-11 h-11 rounded-full bg-foreground/80 hover:bg-foreground text-background shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 bottom-28 lg:bottom-6 ltr:left-6 rtl:right-6 ${
+          scrollHidden ? "opacity-0 translate-y-20 pointer-events-none" : "opacity-100 translate-y-0"
+        }`}
         aria-label={isHe ? "אפשרויות נגישות" : "Accessibility options"}
         aria-expanded={open}
         aria-controls="a11y-panel"
