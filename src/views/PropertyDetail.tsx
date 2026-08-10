@@ -3,13 +3,13 @@ import Link from "next/link";
 import { BedDouble, Ruler, LandPlot, Bath, Car, Shield, MapPin, ChevronRight } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 import Header from "@/components/Header";
-import { optimizedImageUrl } from "@/lib/image";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import PropertyInquiryForm from "@/components/property/PropertyInquiryForm";
 import PropertyStickyBar from "@/components/property/PropertyStickyBar";
 import PropertyShareButton from "@/components/property/PropertyShareButton";
 import { propertyTitle, propertyShortDescription, propertyFullDescription, propertyParking, propertyNeighborhoodNote } from "@/lib/property-i18n";
 import PropertyViewTracker from "@/components/property/PropertyViewTracker";
+import PropertyImageCarousel from "@/components/property/PropertyImageCarousel";
 
 type Property = Tables<"properties_available">;
 
@@ -255,19 +255,12 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                         href={`/${lang}/property/${sp.slug || sp.id}`}
                         className="group cursor-pointer rounded-2xl overflow-hidden bg-card border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
                       >
-                        <div className="aspect-[4/3] bg-muted overflow-hidden">
-                          {sp.images?.[0] ? (
-                            <img
-                              src={optimizedImageUrl(sp.images[0], { width: 600, quality: 75 })}
-                              alt={alt}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-muted" />
-                          )}
-                        </div>
+                        <PropertyImageCarousel
+                          images={sp.images || []}
+                          altBase={alt}
+                          fallbackRatio={4 / 3}
+                          noImageText={t("No image", "אין תמונה", isHe)}
+                        />
                         <div className="p-3">
                           <p className="font-display font-semibold text-foreground text-sm truncate">{propertyTitle(sp, lang)}</p>
                           {sp.price_label && (

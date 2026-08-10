@@ -1,22 +1,6 @@
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
-import type { Tables } from "@/integrations/supabase/types";
-import { propertyTitle, propertyShortDescription } from "@/lib/property-i18n";
-
-type PropertyRow = Pick<
-  Tables<"properties_available">,
-  | "id"
-  | "slug"
-  | "title"
-  | "title_he"
-  | "short_description"
-  | "short_description_he"
-  | "price_label"
-  | "bedrooms"
-  | "built_sqm"
-  | "lot_sqm"
-  | "images"
->;
+import InlinePropertyCard from "@/components/seo/InlinePropertyCard";
 
 interface Props {
   lang: string;
@@ -47,7 +31,7 @@ export default async function InlinePropertiesServerBlock({ lang, limit = 12 }: 
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {properties.map((p) => (
-            <PropertyCard key={p.id} property={p} lang={lang} />
+            <InlinePropertyCard key={p.id} property={p} lang={lang} />
           ))}
         </div>
         <div className="text-center mt-10">
@@ -60,67 +44,5 @@ export default async function InlinePropertiesServerBlock({ lang, limit = 12 }: 
         </div>
       </div>
     </section>
-  );
-}
-
-function PropertyCard({ property, lang }: { property: PropertyRow; lang: string }) {
-  const slug = property.slug ?? property.id;
-  const href = `/${lang}/property/${slug}`;
-  const img = property.images?.[0];
-  const isHe = lang === "he";
-  const title = propertyTitle(property, lang);
-  const description = propertyShortDescription(property, lang);
-  const sqmUnit = isHe ? 'מ"ר' : "sqm";
-
-  return (
-    <Link
-      href={href}
-      className="block bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
-    >
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-        {img ? (
-          <img
-            src={img}
-            alt={title}
-            className="w-full h-full object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">
-            {isHe ? "אין תמונה" : "No image"}
-          </div>
-        )}
-      </div>
-
-      <div className="p-5">
-        {property.price_label && (
-          <p className="text-sm font-body font-semibold mb-1.5 bg-gradient-to-r from-gold to-gold-hover bg-clip-text text-transparent">
-            {property.price_label}
-          </p>
-        )}
-        <h3 className="text-lg font-display font-semibold text-foreground mb-1 leading-snug">
-          {title}
-        </h3>
-        {description && (
-          <p className="text-muted-foreground text-sm font-body mb-3 line-clamp-2">
-            {description}
-          </p>
-        )}
-        <div className="flex items-center gap-3 text-xs text-muted-foreground font-body flex-wrap">
-          {property.bedrooms != null && (
-            <span>
-              {property.bedrooms} {isHe ? "חד׳" : "rooms"}
-            </span>
-          )}
-          {property.built_sqm != null && <span>{property.built_sqm} {sqmUnit}</span>}
-          {property.lot_sqm != null && (
-            <span>
-              {isHe ? "מגרש" : "lot"} {property.lot_sqm} {sqmUnit}
-            </span>
-          )}
-        </div>
-      </div>
-    </Link>
   );
 }

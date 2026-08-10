@@ -10,8 +10,8 @@ import FloatingElements from "@/components/FloatingElements";
 import { SoldCard } from "@/components/RecentlySold";
 import { propertyTitle, propertyShortDescription } from "@/lib/property-i18n";
 import { propertyStatusLabel } from "@/lib/property-status";
-import { optimizedImageUrl } from "@/lib/image";
 import { MapPin, CheckCircle2, XCircle } from "lucide-react";
+import PropertyImageCarousel from "@/components/property/PropertyImageCarousel";
 
 type AvailableProp = Tables<"properties_available">;
 type SoldProp = Tables<"properties_sold">;
@@ -28,16 +28,12 @@ const AvailableCard = ({ p, lang }: { p: AvailableProp; lang: "en" | "he" }) => 
     href={`/${lang}/property/${p.slug || p.id}`}
     className="block bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 border border-border"
   >
-    <div className="relative aspect-[3/2] overflow-hidden bg-muted">
-      {p.images?.[0] && (
-        <img
-          src={optimizedImageUrl(p.images[0], { width: 600, quality: 75 })}
-          alt={propertyTitle(p, lang)}
-          className="w-full h-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
+    <div className="relative">
+      <PropertyImageCarousel
+        images={p.images || []}
+        altBase={lang === "he" ? `${propertyTitle(p, lang)}, זכרון יעקב` : `${propertyTitle(p, lang)}, Zichron Yaakov`}
+        noImageText={lang === "he" ? "אין תמונה" : "No image"}
+      />
       {p.property_status && p.property_status !== "Active" && (
         <span className="absolute top-3 start-3 bg-charcoal text-white text-[11px] font-body font-semibold tracking-wider uppercase px-2.5 py-1 rounded">
           {propertyStatusLabel(p.property_status, lang)}
