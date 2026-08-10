@@ -150,8 +150,9 @@ const Properties = ({ initialProperties }: { initialProperties: Property[] }) =>
         const minBeds = parseInt(bedsFilter);
         if (!isNaN(minBeds)) query = query.gte("bedrooms", minBeds);
       }
-      if (priceMinFilter) query = query.or(`price_number.gte.${Number(priceMinFilter)},price_number.is.null`);
-      if (priceMaxFilter) query = query.or(`price_number.lte.${Number(priceMaxFilter)},price_number.is.null`);
+      // price_number is stored in millions (e.g. 6.7 for ₪6,700,000); filter values arrive as raw shekels.
+      if (priceMinFilter) query = query.or(`price_number.gte.${Number(priceMinFilter) / 1_000_000},price_number.is.null`);
+      if (priceMaxFilter) query = query.or(`price_number.lte.${Number(priceMaxFilter) / 1_000_000},price_number.is.null`);
 
       if (sort === "price_asc") query = query.order("price_number", { ascending: true, nullsFirst: false });
       else if (sort === "price_desc") query = query.order("price_number", { ascending: false, nullsFirst: false });

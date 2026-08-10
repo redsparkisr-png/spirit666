@@ -83,8 +83,9 @@ export default async function PropertiesPage({
     const minBeds = parseInt(bedsFilter);
     if (!isNaN(minBeds)) query = query.gte("bedrooms", minBeds);
   }
-  if (priceMinFilter) query = query.or(`price_number.gte.${Number(priceMinFilter)},price_number.is.null`);
-  if (priceMaxFilter) query = query.or(`price_number.lte.${Number(priceMaxFilter)},price_number.is.null`);
+  // price_number is stored in millions (e.g. 6.7 for ₪6,700,000); filter values arrive as raw shekels.
+  if (priceMinFilter) query = query.or(`price_number.gte.${Number(priceMinFilter) / 1_000_000},price_number.is.null`);
+  if (priceMaxFilter) query = query.or(`price_number.lte.${Number(priceMaxFilter) / 1_000_000},price_number.is.null`);
   query = query.order("created_at", { ascending: false });
 
   const { data } = await query;
