@@ -172,7 +172,7 @@ const PropertyInquiryForm = ({ property, lang, variant }: Props) => {
       />
       <textarea
         placeholder={t("property.detail.message_placeholder")}
-        value={formData.message || `${isHe ? "מעוניין ב:" : "Interested in:"} ${localizedTitle}`}
+        value={formData.message || `${isHe ? "מתעניין/ת ב:" : "Interested in:"} ${localizedTitle}`}
         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
         rows={2}
         className={`${inputClasses} resize-none`}
