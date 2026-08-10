@@ -212,7 +212,7 @@ const LifestyleSection = () => {
               {isHe ? (
                 <>
                   <p>
-                    אחד הדברים שהופכים את זכרון יעקב למיוחדת במיוחד הוא הקרבה לטבע ולים. תוך דקות ספורות מהבית אפשר להגיע לאתרים מדהימים:
+                    אחד הדברים שהופכים את זכרון יעקב למקום כל כך מיוחד הוא הקרבה לטבע ולים. תוך דקות ספורות מהבית אפשר להגיע לאתרים מדהימים:
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
                     <div className="flex items-start gap-2 bg-background/60 rounded-xl p-3">

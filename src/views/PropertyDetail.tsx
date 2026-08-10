@@ -320,7 +320,7 @@ const PropertyDetail = ({ property, similar, lang }: Props) => {
                   {t("Request Private Details", "בקשת פרטים", isHe)}
                 </h3>
                 <p className="text-xs font-body text-muted-foreground -mt-2">
-                  {t("We reply within 2 hours, Sun–Thu 9:00–19:00.", "עונים תוך שעתיים, א׳–ה׳ 9:00–19:00.", isHe)}
+                  {t("We reply within 2 hours, Sun–Thu 9:00–19:00.", "עונים תוך שעתיים, א׳–ה׳ ⁦9:00–19:00⁩.", isHe)}
                 </p>
                 {/* Client island — sidebar inquiry form */}
                 <PropertyInquiryForm property={property} lang={lang} variant="sidebar" />
