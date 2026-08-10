@@ -43,7 +43,7 @@ const Index = ({ featuredProperties }: { featuredProperties?: Property[] }) => {
       <RecentlySold
         sold={recentlySold}
         title={isHe ? "נמכרו לאחרונה בזכרון יעקב" : "Recently Sold in Zichron Yaakov"}
-        subtitle={isHe ? "כמה מהבתים שחיברנו לבעלים החדשים שלהם." : "A few of the homes we've matched with their new owners."}
+        subtitle={isHe ? "עסקאות שנסגרו. משפחות שמצאו את הבית שלהן." : "Deals that closed. Families who found their home."}
       />
       <GoldDivider />
       <div id="buyer-guide-section">

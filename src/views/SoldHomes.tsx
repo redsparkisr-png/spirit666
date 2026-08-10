@@ -29,8 +29,8 @@ const SoldHomes = ({ sold }: { sold: SoldProp[] }) => {
             </h1>
             <p className="font-body text-muted-foreground leading-relaxed">
               {isHe
-                ? `${sold.length} מהבתים שחיברנו לבעלים החדשים שלהם — עדות למכירות אמיתיות, לא רק לליסטינגים.`
-                : `${sold.length} of the homes we've matched with their new owners — real closed deals, not just listings.`}
+                ? "עסקאות שנסגרו. משפחות שמצאו את הבית שלהן."
+                : "Deals that closed. Families who found their home."}
             </p>
           </div>
 
