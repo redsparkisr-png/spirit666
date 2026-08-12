@@ -281,6 +281,7 @@ const MoreFiltersSheet = ({ beds, onBedsChange, maxPrice, onMaxPriceChange, data
             </p>
             <div className="space-y-3 pt-1">
               <SliderPrimitive.Root
+                dir={lang === "he" ? "rtl" : "ltr"}
                 value={[maxPrice]}
                 onValueChange={(val) => onMaxPriceChange(val[0])}
                 min={0}
@@ -406,7 +407,7 @@ const SearchBar = ({
               {lang === "he" ? "עד" : "Up to"} {formatPrice(maxPrice)}
             </span>
             <div className="space-y-2 pt-1">
-              <SliderPrimitive.Root value={[maxPrice]} onValueChange={(val) => setMaxPrice(val[0])} min={0} max={dataMax} step={50000} className="relative flex w-full touch-none select-none items-center h-5">
+              <SliderPrimitive.Root dir={lang === "he" ? "rtl" : "ltr"} value={[maxPrice]} onValueChange={(val) => setMaxPrice(val[0])} min={0} max={dataMax} step={50000} className="relative flex w-full touch-none select-none items-center h-5">
                 <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-muted">
                   <SliderPrimitive.Range className="absolute h-full bg-gold" />
                 </SliderPrimitive.Track>
@@ -470,6 +471,7 @@ const SearchBar = ({
               </span>
               <div className="space-y-0.5">
                 <SliderPrimitive.Root
+                  dir={lang === "he" ? "rtl" : "ltr"}
                   value={[maxPrice]}
                   onValueChange={(val) => setMaxPrice(val[0])}
                   min={0}
@@ -534,6 +536,7 @@ const SearchBar = ({
               </span>
               <div className="space-y-1.5 pt-0.5">
                 <SliderPrimitive.Root
+                  dir={lang === "he" ? "rtl" : "ltr"}
                   value={[maxPrice]}
                   onValueChange={(val) => setMaxPrice(val[0])}
                   min={0}

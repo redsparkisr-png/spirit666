@@ -41,11 +41,32 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
   return (
     <header ref={ref} className="sticky top-0 z-50 bg-primary border-b border-white/10">
       <div className="container px-5 flex items-center justify-between" style={{ minHeight: 72, paddingTop: 8, paddingBottom: 8 }}>
-        {/* Left: hamburger */}
+        {/* Start: desktop nav (xl+), hidden entirely below xl so it never affects
+            the mobile flex spacing — the mobile hamburger (rendered separately
+            below) is the only "start" element at narrower widths. */}
+        <nav className="hidden xl:flex items-center gap-6" aria-label="Main navigation">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`font-body text-sm transition-colors relative py-1 ${
+                isActive(link.href) ? "text-white" : "text-white/70 hover:text-white"
+              }`}
+              style={
+                isActive(link.href)
+                  ? { borderBottomColor: "hsl(var(--gold))", borderBottomWidth: 2, paddingBottom: 2 }
+                  : undefined
+              }
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <button
-              className="text-white/80 hover:text-white transition-colors"
+              className="xl:hidden text-white/80 hover:text-white transition-colors"
               aria-label={lang === "he" ? "פתח תפריט" : "Open menu"}
             >
               <Menu className="w-6 h-6" />
