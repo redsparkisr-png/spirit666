@@ -98,6 +98,7 @@ const AccessibilityWidget = () => {
   const isHe = lang === "he";
   const [open, setOpen] = useState(false);
   const [prefs, setPrefs] = useState<A11yPrefs>(loadPrefs);
+  const [otherOverlayOpen, setOtherOverlayOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -105,6 +106,23 @@ const AccessibilityWidget = () => {
     applyPrefs(prefs);
     savePrefs(prefs);
   }, [prefs]);
+
+  // Step aside while another dialog/bottom-sheet is open (e.g. the mobile
+  // location/filter sheets) — this fixed button sits at z-[9999], above
+  // everything else on the page, so without this it visually overlaps
+  // whatever the user is actively interacting with. This is distinct from
+  // the "always visible" rule above: that's about not hiding on passive
+  // scroll, this is about not blocking a dialog the user opened on purpose.
+  useEffect(() => {
+    const check = () => {
+      const dialog = document.querySelector("[data-state='open'][role='dialog']");
+      setOtherOverlayOpen(!!dialog && dialog.id !== "a11y-panel");
+    };
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-state"] });
+    return () => observer.disconnect();
+  }, []);
 
   // ESC to close
   useEffect(() => {
@@ -204,6 +222,8 @@ const AccessibilityWidget = () => {
       ],
     },
   ];
+
+  if (otherOverlayOpen) return null;
 
   return (
     <>

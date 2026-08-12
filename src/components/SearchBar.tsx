@@ -166,6 +166,9 @@ const Dropdown = ({ label, placeholder, options, value, onChange, multi, inline,
             onClick={() => setOpen(false)}
           />
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            data-state="open"
             initial={{ transform: "translateY(100%)" }}
             animate={{ transform: "translateY(0%)" }}
             exit={{ transform: "translateY(100%)" }}
@@ -236,6 +239,9 @@ const MoreFiltersSheet = ({ beds, onBedsChange, maxPrice, onMaxPriceChange, data
       onClick={onClose}
     >
       <motion.div
+        role="dialog"
+        aria-modal="true"
+        data-state="open"
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
