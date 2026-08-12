@@ -66,7 +66,7 @@ const Header = forwardRef<HTMLElement, Record<string, never>>((_props, ref) => {
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <button
-              className="xl:hidden text-white/80 hover:text-white transition-colors"
+              className="xl:hidden -m-2.5 p-2.5 text-white/80 hover:text-white transition-colors"
               aria-label={lang === "he" ? "פתח תפריט" : "Open menu"}
             >
               <Menu className="w-6 h-6" />

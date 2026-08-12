@@ -452,7 +452,7 @@ const SearchBar = ({
                   <button
                     key={b}
                     onClick={() => setSelectedBeds(selectedBeds === b ? "" : b)}
-                    className={`flex-shrink-0 px-2.5 py-1 rounded-md text-[11px] font-body font-medium transition-all duration-200 ${
+                    className={`flex-shrink-0 px-3.5 py-2.5 rounded-md text-xs font-body font-medium transition-all duration-200 ${
                       selectedBeds === b
                         ? "bg-white text-charcoal scale-105 shadow-sm"
                         : "bg-white/10 text-white/60 hover:bg-white/20 hover:scale-105"
@@ -495,7 +495,7 @@ const SearchBar = ({
           {/* Row 3: Search CTA */}
           <button
             onClick={handleSearch}
-            className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-2.5 rounded-lg font-body font-medium text-sm btn-text transition-colors flex items-center justify-center gap-2 border border-gold/30"
+            className="w-full bg-charcoal hover:bg-charcoal-hover text-white py-3 rounded-lg font-body font-medium text-sm btn-text transition-colors flex items-center justify-center gap-2 border border-gold/30"
             aria-label={t("search.button")}
           >
             <Search className="w-4 h-4" />

@@ -16,26 +16,37 @@ const PrivacyConsentCheckbox = ({ checked, onCheckedChange, id = "privacy-consen
   const { t } = useSiteContent();
 
   return (
-    <div className="flex items-start gap-3">
+    <label className="flex items-start gap-3 py-1.5 cursor-pointer select-none">
       <Checkbox
         id={id}
         checked={checked}
         onCheckedChange={(val) => onCheckedChange(val === true)}
-        className="mt-0.5 border-border data-[state=checked]:bg-gold data-[state=checked]:border-gold"
+        className="mt-0.5 h-5 w-5 border-border data-[state=checked]:bg-gold data-[state=checked]:border-gold"
         aria-required="true"
       />
-      <label htmlFor={id} className="text-sm font-body text-foreground/70 cursor-pointer leading-snug select-none">
+      <span
+        className="text-sm font-body text-foreground/70 leading-snug"
+        onClick={(e) => {
+          // The Checkbox is nested in the same <label>, so a click anywhere in
+          // the label (including this span) also triggers the browser's native
+          // label→control activation on it — preventDefault stops that so only
+          // this explicit toggle applies, avoiding a conflicting double-update.
+          e.preventDefault();
+          onCheckedChange(!checked);
+        }}
+      >
         {t("form.privacy_consent")}{" "}
         <Link
           href={`/${lang}/privacy`}
           className="underline text-gold hover:text-gold-hover transition-colors"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
         >
           {t("header.nav.privacy")}
         </Link>
-      </label>
-    </div>
+      </span>
+    </label>
   );
 };
 

@@ -84,7 +84,7 @@ const CookieNotice = () => {
           aria-label={isHe ? "הסכמה לעוגיות" : "Cookie consent"}
         >
           <div className="mx-auto max-w-lg w-full bg-charcoal border border-white/10 rounded-xl shadow-2xl">
-            <div className="px-5 py-4 flex items-center gap-4">
+            <div className={`px-5 py-4 flex items-center gap-4 ${isHe ? "flex-row-reverse" : ""}`}>
               <p className="flex-1 text-white/70 font-body text-xs leading-snug">
                 {isHe
                   ? "המשך הגלישה באתר מהווה הסכמה לשימוש בעוגיות לשיפור חוויית המשתמש. "

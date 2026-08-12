@@ -120,7 +120,7 @@ const HeroSection = () => {
             transition={{ duration: 0.55, delay: 0.42 }}
             className="text-white/75 font-body mt-3"
             style={{
-              fontSize: "clamp(14px, 1.6vw, 17px)",
+              fontSize: "clamp(16px, 1.6vw, 17px)",
               lineHeight: 1.5,
               textShadow: "0 1px 10px rgba(0,0,0,0.5)",
               maxWidth: "520px",
@@ -166,7 +166,7 @@ const HeroSection = () => {
             <p
               className="text-white font-body"
               style={{
-                fontSize: "clamp(12px, 1.3vw, 14px)",
+                fontSize: "clamp(14px, 1.3vw, 14px)",
                 lineHeight: 1.5,
                 marginTop: "-2px",
                 textShadow: "0 2px 12px rgba(0,0,0,0.7), 0 0 4px rgba(0,0,0,0.5)",
@@ -180,7 +180,7 @@ const HeroSection = () => {
             {!isHe && (
               <p
                 className="text-white/65 font-body"
-                style={{ fontSize: "clamp(11px, 1.2vw, 13px)", lineHeight: 1.4, marginTop: "6px" }}
+                style={{ fontSize: "clamp(13px, 1.2vw, 13px)", lineHeight: 1.4, marginTop: "6px" }}
               >
                 <Link
                   href={`/${lang}/sell`}
